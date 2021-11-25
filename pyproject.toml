@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "saleor-export"
+version = "0.1.0"
+description = "An app that allows sellers exporting certain data to a file."
+authors = ["Anatolii Serebrianskii <anatolii.serebrianskii@tango.agency>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+saleor-app-base = {git = "ssh://git@github.com/SaleorIntegrations/saleor-app-base.git", rev = "main"}
+
+[tool.poetry.dev-dependencies]
+pytest = "^6.2.5"
+pytest-cov = "^3.0.0"
+pytest-asyncio = "^0.16.0"
+pytest-mock = "^3.6.1"
+pytest-sugar = "^0.9.4"
+
+ 
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
