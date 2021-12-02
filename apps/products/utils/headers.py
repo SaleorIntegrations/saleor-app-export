@@ -7,7 +7,7 @@ from common.utils.sdk.saleor import SaleorClient
 from . import ProductExportFields
 
 
-def get_export_fields_and_headers_info(
+async def get_export_fields_and_headers_info(
     export_info: Dict[str, list]
 ) -> Tuple[List[str], List[str], List[str]]:
     """Get export fields, all headers and headers mapping.
@@ -22,7 +22,7 @@ def get_export_fields_and_headers_info(
         attributes_headers,
         warehouses_headers,
         channels_headers,
-    ) = get_object_headers(export_info)
+    ) = await get_object_headers(export_info)
 
     data_headers = (
         export_fields + attributes_headers + warehouses_headers + channels_headers
@@ -66,6 +66,10 @@ async def get_object_headers(export_info: Dict[str, list]) -> List[str]:
     attribute_ids = export_info.get("attributes")
     warehouse_ids = export_info.get("warehouses")
     channel_ids = export_info.get("channels")
+
+    # There is no reason to proceed if the ids weren't provided.
+    if not attribute_ids and warehouse_ids and channel_ids:
+        return [], [], []
 
     client = SaleorClient()
     ds = client.get_ds()
