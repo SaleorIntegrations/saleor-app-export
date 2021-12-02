@@ -1,6 +1,10 @@
 from collections import ChainMap
 from typing import Dict, List, Tuple
 
+from gql import Client
+from gql.dsl import DSLQuery, DSLSchema, dsl_gql
+from gql.transport.aiohttp import AIOHTTPTransport
+
 from . import ProductExportFields
 
 
@@ -64,18 +68,29 @@ def get_object_headers(export_info: Dict[str, list]) -> List[str]:
     warehouse_ids = export_info.get("warehouses")
     channel_ids = export_info.get("channels")
 
-    # TODO use graphql fragments here
-    query = "maine query to the core project"
+    # TODO change the url to the correct one
+    transport = AIOHTTPTransport(url="https://countries.trevorblades.com/graphql")
+    client = Client(transport=transport, fetch_schema_from_transport=True)
+
+    ds = DSLSchema(client.schema)
+
+    queries = []
+
     if attribute_ids:
-        query += f"query with the attribute_ids: {attribute_ids}"
-
+        # TODO check if the filtering is correct
+        attributes_query = ds.Query.attributes(id__in=attribute_ids)
+        queries.append(attributes_query)
     if warehouse_ids:
-        query += f"query with the warehouse_ids: {warehouse_ids}"
-
+        warehouses_query = ds.Query.warehouses(id__in=warehouse_ids)
+        queries.append(warehouses_query)
     if channel_ids:
-        query += f"query with the channel_ids: {channel_ids}"
+        channels_query = ds.Query.channels(id__in=channel_ids)
+        queries.append(channels_query)
 
-    response = f"Execute the query: {query}"
+    query = dsl_gql(DSLQuery(*queries))
+
+    # TODO make it async
+    response = client.execute(query)
 
     attributes_headers = get_attributes_headers(response.get("attributes"))
     warehouses_headers = get_warehoses_headers(response.get("warehouses"))
