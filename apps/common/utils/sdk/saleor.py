@@ -10,7 +10,11 @@ from saleor_app_base.sdk.saleor import SALEOR_PROTOCOL
 logger = structlog.get_logger()
 
 
-class SaleorClient:
+class SaleorDSLClient:
+    """
+    Graphql client that executes DSL queries, making calls to the SALEOR core project.
+    """
+
     def __init__(self):
         tc = tenant_context()
         domain = tc.immutable.saleor_domain
@@ -30,9 +34,11 @@ class SaleorClient:
         self.ds = DSLSchema(self.client.schema)
 
     def get_ds(self):
+        """Return DSL schema that is required to build a query."""
         return self.ds
 
     async def execute(self, query: DocumentNode):
+
         async with self.client as session:
             response = await session.execute(query)
             return response

@@ -3,7 +3,7 @@ from typing import Dict, List, Tuple
 
 from gql.dsl import DSLQuery, dsl_gql
 
-from common.utils.sdk.saleor import SaleorClient
+from common.utils.sdk.saleor import SaleorDSLClient
 from . import ProductExportFields
 
 
@@ -71,7 +71,7 @@ async def get_object_headers(export_info: Dict[str, list]) -> List[str]:
     if not attribute_ids and warehouse_ids and channel_ids:
         return [], [], []
 
-    client = SaleorClient()
+    client = SaleorDSLClient()
     ds = client.get_ds()
 
     queries = []
