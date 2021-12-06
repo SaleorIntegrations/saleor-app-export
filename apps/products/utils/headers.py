@@ -3,7 +3,7 @@ from typing import Dict, List, Tuple
 
 from gql.dsl import DSLQuery, dsl_gql
 
-from common.utils.sdk.saleor import SaleorDSLClient
+from ...common.utils.sdk.saleor import SaleorDSLClient
 from . import ProductExportFields
 
 
@@ -86,8 +86,8 @@ async def get_object_headers(export_info: Dict[str, list]) -> List[str]:
         channels_query = ds.Query.channels(filter={"id": {"in": channel_ids}})
         queries.append(channels_query)
 
-    query = dsl_gql(DSLQuery(*queries))
-    response = await client.execute(query)
+    dsl_query = dsl_gql(DSLQuery(*queries))
+    response = await client.execute(dsl_query)
 
     attributes_headers = get_attributes_headers(response.get("attributes"))
     warehouses_headers = get_warehoses_headers(response.get("warehouses"))

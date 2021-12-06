@@ -1,10 +1,11 @@
 from typing import IO, TYPE_CHECKING, Any, Dict, List, Set, Union
 
-from ...product.models import Product
-from ..notifications import send_export_download_link_notification
-from .product_headers import get_export_fields_and_headers_info
-from .products_data import get_products_data
+from gql.dsl import DSLQuery, dsl_gql
 
+from ...products.utils.headers import get_export_fields_and_headers_info
+from ...products.utils.data import get_products_data
+from ...common.notifications import send_export_download_link_notification
+from ...common.utils.sdk.saleor import SaleorDSLClient
 from ...common.utils.export import (
     get_filename,
     create_file_with_headers,
@@ -22,7 +23,7 @@ if TYPE_CHECKING:
 BATCH_SIZE = 10000
 
 
-def export_products(
+async def export_products(
     export_file: "ExportFile",
     scope: Dict[str, Union[str, dict]],
     export_info: Dict[str, list],
@@ -30,7 +31,7 @@ def export_products(
     delimiter: str = ";",
 ):
     file_name = get_filename("product", file_type)
-    queryset = get_product_queryset(scope)
+    queryset = await get_product_queryset(scope)
 
     export_fields, file_headers, data_headers = get_export_fields_and_headers_info(
         export_info
@@ -54,26 +55,27 @@ def export_products(
     send_export_download_link_notification(export_file)
 
 
-def get_product_queryset(scope: Dict[str, Union[str, dict]]) -> List[Dict[str, Any]]:
-    """Get product queryset based on a scope."""
+async def get_product_queryset(
+    scope: Dict[str, Union[str, dict]]
+) -> List[Dict[str, Any]]:
+    """Get product list based on a scope."""
 
-    # FIXME
-    # from ...graphql.product.filters import ProductFilter
+    client = SaleorDSLClient()
+    ds = client.get_ds()
 
-    # queryset = Product.objects.all()
-    # if "ids" in scope:
-    #     queryset = Product.objects.filter(pk__in=scope["ids"])
-    # elif "filter" in scope:
-    #     queryset = ProductFilter(
-    #         data=parse_input(scope["filter"]), queryset=queryset
-    #     ).qs
+    if "ids" in scope:
+        query = ds.Query.products(filter={"id": {"in": scope["ids"]}})
+    elif "filter" in scope:
+        # FIXME Add a proper filter
+        query = ds.Query.products(filter=parse_input(scope["filter"]))
+    else:
+        query = ds.Query.products()
 
-    # queryset = queryset.order_by("pk")
+    dsl_query = dsl_gql(DSLQuery(query))
+    response = await client.execute(dsl_query)
 
-    response = "call the core project with filters"
-    queryset = "extract a list of dicts from the response"
-
-    return queryset
+    # TODO sort by pk
+    return response.get("products")
 
 
 def export_products_in_batches(

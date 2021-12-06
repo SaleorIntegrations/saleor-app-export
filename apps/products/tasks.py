@@ -2,11 +2,10 @@ from typing import Dict, Union
 
 from sqlalchemy import select
 
-from ..celeryconf import app
-from .models import ExportFile
+from ...celery import app
+from ..common.models import ExportFile
+from ..common.tasks import on_task_success, on_task_failure
 from .utils.export import export_products
-
-from .common.tasks import on_task_success, on_task_failure
 
 
 @app.task(on_success=on_task_success, on_failure=on_task_failure)
