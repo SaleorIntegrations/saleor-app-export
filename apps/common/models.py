@@ -19,6 +19,11 @@ class ExportFileTypesEnum(str, enum.Enum):
     ORDERS = "orders"
 
 
+class FileTypesEnum(str, enum.Enum):
+    CSV = "csv"
+    XLSX = "xlsx"
+
+
 class ExportFile(BaseModel):
 
     id = Column(Integer, primary_key=True, autoincrement=True)

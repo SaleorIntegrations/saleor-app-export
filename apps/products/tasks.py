@@ -1,6 +1,7 @@
 from typing import Dict, Union
 
 from sqlalchemy import select
+from saleor_app_base.database import get_db
 
 from ...celery import app
 from ..common.models import ExportFile
@@ -16,6 +17,10 @@ def export_products_task(
     file_type: str,
     delimiter: str = ";",
 ):
-    query = select(ExportFile).where(ExportFile.id == export_file_id)
-    export_file = "execute(query)"
+    db = get_db()
+    export_file = db.fetch_one(
+        query=select(ExportFile.__table__)
+        .where(ExportFile.id == export_file_id)
+        .returning(ExportFile.__table__)
+    )
     export_products(export_file, scope, export_info, file_type, delimiter)

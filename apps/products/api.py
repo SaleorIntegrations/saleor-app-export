@@ -20,7 +20,8 @@ async def export_products(
         .values(**values)
         .returning(ExportFile.__table__)
     )
-    export_products_task.delay(file.id)
+    # TODO update the arguments
+    export_products_task.delay(file.id, {}, {}, "csv")
     return {"status": "ok"}
 
 
@@ -29,10 +30,10 @@ async def get_export_file(
     file_id: int,
     db: Database = Depends(get_db),
 ):
-    file = await db.fetch_one(
+    export_file = await db.fetch_one(
         query=select(ExportFile.__table__)
         .where(ExportFile.id == file_id)
         .returning(ExportFile.__table__)
     )
 
-    return {"status": "ok", "file": file.content_file}
+    return {"status": "ok", "export_file": export_file.content_file}

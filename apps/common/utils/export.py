@@ -4,9 +4,10 @@ from tempfile import NamedTemporaryFile
 from typing import IO, TYPE_CHECKING, Any, Dict, List, Union
 
 import petl as etl
-from django.utils import timezone
 
-from .. import FileTypes
+# TODO replace timezone
+from django.utils import timezone
+from ...common.models import FileTypesEnum
 
 if TYPE_CHECKING:
     from ...common.models import ExportFile
@@ -71,7 +72,7 @@ def get_queryset_batches(queryset):
 def create_file_with_headers(file_headers: List[str], delimiter: str, file_type: str):
     table = etl.wrap([file_headers])
 
-    if file_type == FileTypes.CSV:
+    if file_type == FileTypesEnum.CSV.value():
         temp_file = NamedTemporaryFile("ab+", suffix=".csv")
         etl.tocsv(table, temp_file.name, delimiter=delimiter)
     else:
@@ -90,7 +91,7 @@ def append_to_file(
 ):
     table = etl.fromdicts(export_data, header=headers, missing=" ")
 
-    if file_type == FileTypes.CSV:
+    if file_type == FileTypesEnum.CSV.value():
         etl.io.csv.appendcsv(table, temporary_file.name, delimiter=delimiter)
     else:
         etl.io.xlsx.appendxlsx(table, temporary_file.name)
