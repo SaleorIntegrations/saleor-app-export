@@ -14,22 +14,25 @@ class JobStatusesEnum(str, enum.Enum):
     DELETED = "deleted"
 
 
+class ExportFileTypesEnum(str, enum.Enum):
+    PRODUCTS = "products"
+    ORDERS = "orders"
+
+
 class ExportFile(BaseModel):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     status = Column(Enum(JobStatusesEnum), default=JobStatusesEnum.PENDING)
+    type = Column(Enum(ExportFileTypesEnum))
     message = Column(String(255), default="")
-    # TODO use tz?
     created_at = Column(DateTime(timezone=True), default=datetime.datetime.utcnow)
-    # TODO use tz?
     updated_at = Column(
         DateTime(timezone=True),
         default=datetime.datetime.utcnow,
         onupdate=datetime.datetime.utcnow,
     )
-    # TODO decide what to do with the APP and USER
+    # TODO decide what to do with the USER
     user = Column(String(255), default="")
-    app = Column(String(255), default="")
     # TODO find out how to handle files with SQLAlchemy
     content_file = Column(String(255), default="")
     events = relationship("ExportEvent", back_populates="export_file")
@@ -53,6 +56,5 @@ class ExportEvent(BaseModel):
     export_file_id = Column(Integer, ForeignKey("export_file.id"))
     export_file = relationship("ExportFile", back_populates="events")
 
-    # TODO Do we really need this???
+    # TODO Do we really need this??? It's at least kept in the related model.
     user = Column(String(255), default="")
-    app = Column(String(255), default="")
