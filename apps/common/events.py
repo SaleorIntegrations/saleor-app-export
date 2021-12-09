@@ -1,79 +1,79 @@
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 
-from . import ExportEvents
-from .models import ExportEvent
+from saleor_app_base.database import get_db
+from sqlalchemy.dialects.postgresql import insert
+
+from .models import ExportEvent, ExportEventsEnum
 
 if TYPE_CHECKING:
-    from ..account.models import User
-    from ..app.models import App
     from .models import ExportFile
 
 
-# TODO refactore APP and USER
+def export_started_event(*, export_file: "ExportFile"):
 
-
-UserType = Optional["User"]
-AppType = Optional["App"]
-
-
-def export_started_event(
-    *, export_file: "ExportFile", user: UserType = None, app: AppType = None
-):
-    event = ExportEvent(
-        export_file=export_file, user=user, app=app, type=ExportEvents.EXPORT_PENDING
+    db = get_db()
+    db.fetch_one(
+        query=insert(ExportEvent.__table__).values(
+            export_file=export_file, type=ExportEventsEnum.EXPORT_PENDING.value()
+        )
     )
-    # TODO Commit to DB
 
 
 def export_success_event(
-    *, export_file: "ExportFile", user: UserType = None, app: AppType = None
+    *,
+    export_file: "ExportFile",
 ):
-    event = ExportEvent(
-        export_file=export_file, user=user, app=app, type=ExportEvents.EXPORT_SUCCESS
+    db = get_db()
+    db.fetch_one(
+        query=insert(ExportEvent.__table__).values(
+            export_file=export_file, type=ExportEventsEnum.EXPORT_SUCCESS.value()
+        )
     )
-    # TODO Commit to DB
 
 
 def export_failed_event(
     *,
     export_file: "ExportFile",
-    user: UserType = None,
-    app: AppType = None,
     message: str,
-    error_type: str
+    error_type: str,
 ):
-    event = ExportEvent(
-        export_file=export_file,
-        user=user,
-        app=app,
-        type=ExportEvents.EXPORT_FAILED,
-        parameters={"message": message, "error_type": error_type},
+    db = get_db()
+    db.fetch_one(
+        query=insert(ExportEvent.__table__).values(
+            export_file=export_file,
+            type=ExportEventsEnum.EXPORT_FAILED.value(),
+            parameters={"message": message, "error_type": error_type},
+        )
     )
-    # TODO Commit to DB
 
 
 def export_deleted_event(
-    *, export_file: "ExportFile", user: UserType = None, app: AppType = None
+    *,
+    export_file: "ExportFile",
 ):
-    event = ExportEvent(
-        export_file=export_file, user=user, app=app, type=ExportEvents.EXPORT_DELETED
+    db = get_db()
+    db.fetch_one(
+        query=insert(ExportEvent.__table__).values(
+            export_file=export_file, type=ExportEventsEnum.EXPORT_DELETED.value()
+        )
     )
-    # TODO Commit to DB
 
 
-def export_file_sent_event(*, export_file_id: int, user_id: int):
-    event = ExportEvent(
-        export_file_id=export_file_id,
-        user_id=user_id,
-        type=ExportEvents.EXPORTED_FILE_SENT,
+def export_file_sent_event(*, export_file_id: int):
+    db = get_db()
+    db.fetch_one(
+        query=insert(ExportEvent.__table__).values(
+            export_file_id=export_file_id,
+            type=ExportEventsEnum.EXPORTED_FILE_SENT.value(),
+        )
     )
-    # TODO Commit to DB
 
 
 def export_failed_info_sent_event(*, export_file_id: int, user_id: int):
-    event = ExportEvent(
-        export_file_id=export_file_id,
-        user_id=user_id,
-        type=ExportEvents.EXPORT_FAILED_INFO_SENT,
+    db = get_db()
+    db.fetch_one(
+        query=insert(ExportEvent.__table__).values(
+            export_file_id=export_file_id,
+            type=ExportEventsEnum.EXPORT_FAILED_INFO_SENT.value(),
+        )
     )
-    # TODO Commit to DB

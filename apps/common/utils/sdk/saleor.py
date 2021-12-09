@@ -13,6 +13,8 @@ logger = structlog.get_logger()
 class SaleorDSLClient:
     """
     Graphql client that executes DSL queries, making calls to the SALEOR core project.
+
+    DSL stands for Domain Specific Language.
     """
 
     def __init__(self):
