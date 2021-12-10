@@ -22,4 +22,4 @@ COPY . /usr/src/app
 
 VOLUME /usr/src/app
 
-CMD ["python", "app/main.py"]
+CMD ["python", "main.py"]
