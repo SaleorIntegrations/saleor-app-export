@@ -6,7 +6,7 @@ from typing import Dict, List, Optional, Set, Union, Any
 # from ...attribute import AttributeInputType
 # from ...core.utils import build_absolute_uri
 # from ...core.utils.editorjs import clean_editor_js
-from . import ProductExportFields
+from .. import ProductExportFields
 
 
 def get_products_data(

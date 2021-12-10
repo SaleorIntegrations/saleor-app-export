@@ -1,12 +1,13 @@
-from fastapi import Depends
+from fastapi import APIRouter, Depends
 from databases import Database
 from saleor_app_base.database import get_db
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy import select
 
-from ..router import router
 from ..common.models import ExportFile, ExportFileTypesEnum
 from .tasks import export_products_task
+
+router = APIRouter()
 
 
 @router.post("/export/products/")

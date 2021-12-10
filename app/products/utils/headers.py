@@ -4,7 +4,7 @@ from typing import Dict, List, Tuple
 from gql.dsl import DSLQuery, dsl_gql
 
 from ...common.utils.sdk.saleor import SaleorDSLClient
-from . import ProductExportFields
+from .. import ProductExportFields
 
 
 async def get_export_fields_and_headers_info(

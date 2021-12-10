@@ -55,6 +55,7 @@ class ExportEventsEnum(str, enum.Enum):
 class ExportEvent(BaseModel):
     """Model used to store events that happened during the export file lifecycle."""
 
+    id = Column(Integer, primary_key=True, autoincrement=True)
     date = Column(DateTime(timezone=True), default=datetime.datetime.utcnow)
     type = Column(Enum(ExportEventsEnum))
     parameters = Column(JSONB, default=dict)

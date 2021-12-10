@@ -5,8 +5,6 @@ from typing import IO, TYPE_CHECKING, Any, Dict, List, Union
 
 import petl as etl
 
-# TODO replace timezone
-from django.utils import timezone
 from ...common.models import FileTypesEnum
 
 if TYPE_CHECKING:
@@ -16,10 +14,13 @@ if TYPE_CHECKING:
 BATCH_SIZE = 10000
 
 
+# TODO add timezone?
+
+
 def get_filename(model_name: str, file_type: str) -> str:
     hash = secrets.token_hex(nbytes=3)
     return "{}_data_{}_{}.{}".format(
-        model_name, timezone.now().strftime("%d_%m_%Y_%H_%M_%S"), hash, file_type
+        model_name, datetime.now().strftime("%d_%m_%Y_%H_%M_%S"), hash, file_type
     )
 
 

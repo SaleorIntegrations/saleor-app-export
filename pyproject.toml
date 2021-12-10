@@ -7,6 +7,8 @@ authors = ["Anatolii Serebrianskii <anatolii.serebrianskii@tango.agency>"]
 [tool.poetry.dependencies]
 python = "^3.9"
 saleor-app-base = {git = "ssh://git@github.com/SaleorIntegrations/saleor-app-base.git", rev = "main"}
+celery = "^5.1"
+petl = "^1.7.4"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.5"
