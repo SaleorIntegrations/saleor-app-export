@@ -1,0 +1,16 @@
+.idea/
+.git/
+.docker-sync/
+node_modules/
+
+*.pyc
+*.po
+*.log
+
+__pycache__/
+
+media/
+
+docker-compose.yml
+
+Makefile

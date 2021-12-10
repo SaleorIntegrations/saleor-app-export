@@ -1,16 +1,15 @@
-from fastapi import FastAPI, Depends
+from fastapi import Depends
 from databases import Database
 from saleor_app_base.database import get_db
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy import select
 
+from ..router import router
 from ..common.models import ExportFile, ExportFileTypesEnum
 from .tasks import export_products_task
 
-app = FastAPI()
 
-
-@app.post("/export/products/")
+@router.post("/export/products/")
 async def export_products(
     db: Database = Depends(get_db),
 ):
@@ -25,7 +24,7 @@ async def export_products(
     return {"status": "ok"}
 
 
-@app.get("/export/products/file/{file_id}/")
+@router.get("/export/products/file/{file_id}/")
 async def get_export_file(
     file_id: int,
     db: Database = Depends(get_db),
