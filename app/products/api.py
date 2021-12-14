@@ -3,10 +3,13 @@ from databases import Database
 from saleor_app_base.database import get_db
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy import select
+import structlog
 
 from ..common.models import ExportFile, ExportFileTypesEnum
 from .tasks import export_products_task
+from .utils.export import get_product_queryset
 
+logger = structlog.get_logger()
 router = APIRouter()
 
 
@@ -14,15 +17,20 @@ router = APIRouter()
 async def export_products(
     db: Database = Depends(get_db),
 ):
-    values = {"type": ExportFileTypesEnum.PRODUCTS.value()}
-    file = await db.fetch_one(
-        query=insert(ExportFile.__table__)
-        .values(**values)
-        .returning(ExportFile.__table__)
-    )
-    # TODO update the arguments
-    export_products_task.delay(file.id, {}, {}, "csv")
-    return {"status": "ok"}
+    # FIXME remove after testing the connection
+    products = await get_product_queryset({})
+    values = {"type": ExportFileTypesEnum.PRODUCTS.value}
+    # FIXME
+    # file = await db.fetch_one(
+    #     query=insert(ExportFile.__table__)
+    #     .values(**values)
+    #     .returning(ExportFile.__table__)
+    # )
+    # # TODO update the arguments
+    # # FIXME get back to running it as a task
+    # # export_products_task.delay(file.id, {}, {}, "csv")
+    # export_products_task(file.id, {}, {}, "csv")
+    return {"status": "ok", "products": products}
 
 
 @router.get("/export/products/file/{file_id}/")

@@ -8,8 +8,6 @@ RUN apt-get update \
     && apt-get autoclean
 
 
-ARG ENVIRONMENT
-
 WORKDIR /usr/src/app
 
 RUN pip install poetry

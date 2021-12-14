@@ -1,11 +1,13 @@
 from typing import IO, TYPE_CHECKING, Any, Dict, List, Set, Union
 
-from gql.dsl import DSLQuery, dsl_gql
+from gql.dsl import DSLQuery, dsl_gql, DSLSchema
+from gql import Client
+import structlog
 
 from ...products.utils.headers import get_export_fields_and_headers_info
 from ...products.utils.data import get_products_data
 from ...common.notifications import send_export_download_link_notification
-from ...common.utils.sdk.saleor import SaleorDSLClient
+from ...common.utils.sdk.saleor import get_saleor_transport
 from ...common.utils.export import (
     get_filename,
     create_file_with_headers,
@@ -21,6 +23,9 @@ if TYPE_CHECKING:
 
 
 BATCH_SIZE = 10000
+
+
+logger = structlog.get_logger()
 
 
 async def export_products(
@@ -60,22 +65,54 @@ async def get_product_queryset(
 ) -> List[Dict[str, Any]]:
     """Get product list based on a scope."""
 
-    client = SaleorDSLClient()
-    ds = client.get_ds()
+    # client = SaleorDSLClient()
+    transport = await get_saleor_transport()
+    client = Client(transport=transport, fetch_schema_from_transport=True)
+    # TODO make the channel dynamic
+    channel = "moto"
+    first_object_num = 1
+    async with client as session:
+        ds = DSLSchema(client.schema)
 
-    if "ids" in scope:
-        query = ds.Query.products(filter={"id": {"in": scope["ids"]}})
-    elif "filter" in scope:
-        # FIXME Add a proper filter
-        query = ds.Query.products(filter=parse_input(scope["filter"]))
-    else:
-        query = ds.Query.products()
+        if "ids" in scope:
+            query = ds.Query.products(
+                filter={"id": {"in": scope["ids"]}},
+                first=first_object_num,
+                channel=channel,
+            )
+        elif "filter" in scope:
+            # FIXME Add a proper filter
+            query = ds.Query.products(
+                filter=parse_input(scope["filter"]),
+                first=first_object_num,
+                channel=channel,
+            )
+        else:
+            query = ds.Query.products(first=first_object_num, channel=channel)
 
-    dsl_query = dsl_gql(DSLQuery(query))
-    response = await client.execute(dsl_query)
+        dsl_query = dsl_gql(
+            DSLQuery(
+                query.select(
+                    ds.ProductCountableConnection.edges.select(
+                        ds.ProductCountableEdge.node.select(
+                            ds.Product.id,
+                            ds.Product.name,
+                            ds.Product.weight.select(ds.Weight.value),
+                            ds.Product.variants.select(
+                                ds.ProductVariant.weight.select(ds.Weight.value)
+                            ),
+                            ds.Product.description,
+                        )
+                    )
+                )
+            )
+        )
+        response = await session.execute(dsl_query)
+    products = response.get("products")
+    if products:
+        return products.get("edges")
 
-    # TODO sort by pk
-    return response.get("products")
+    return products
 
 
 def export_products_in_batches(

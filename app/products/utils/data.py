@@ -56,11 +56,14 @@ def get_products_data(
 
     for item in queryset:
         extra_fields = {
-            "product_weight": str(item["weight"] + " g") if item["weight"] else "",
-            "variant_weight": str(item["variant_weight"] + " g")
-            if item["variant_weight"]
+            "product_weight": str(item["node"]["weight"]["value"] + " g")
+            if item["node"]["weight"]["value"]
             else "",
-            "description_as_str": item["description"],
+            # FIXME: there can be multiple variants
+            # "variant_weight": str(item["node"]["variants"]["weight"] + " g")
+            # if item["node"]["variants"] and item["node"]["variants"]["weight"]
+            # else "",
+            "description_as_str": item["node"]["description"],
         }
         item.update(extra_fields)
 
