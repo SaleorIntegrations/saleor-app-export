@@ -1,11 +1,12 @@
-from fastapi import APIRouter, Depends
-from databases import Database
-from saleor_app_base.database import get_db
-from sqlalchemy.dialects.postgresql import insert
-from sqlalchemy import select
 import structlog
+from databases import Database
+from fastapi import APIRouter, Depends
+from saleor_app_base.database import get_db
+from sqlalchemy import select
+from sqlalchemy.dialects.postgresql import insert
 
-from ..common.models import ExportFile, ExportFileTypesEnum
+from app.core.reports.models import ExportFile, ExportFileTypesEnum
+
 from .tasks import export_products_task
 
 logger = structlog.get_logger()

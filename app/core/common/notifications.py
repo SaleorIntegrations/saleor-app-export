@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING
 # from ..plugins.manager import get_plugins_manager
 
 if TYPE_CHECKING:
-    from .models import ExportFile
+    from app.core.reports.models import ExportFile
 
 # TODO bring missing functions to the project
 

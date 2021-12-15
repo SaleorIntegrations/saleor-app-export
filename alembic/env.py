@@ -1,16 +1,14 @@
 from logging.config import fileConfig
 
-from sqlalchemy import engine_from_config
-from sqlalchemy import pool
+from saleor_app_base.core.app_settings import app_settings
+from sqlalchemy import engine_from_config, pool
 
 from alembic import context
 
-from saleor_app_base.core.app_settings import app_settings
-
-from app.common.models import BaseModel
-
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
+from app.core.models import ProxySQLModel
+
 config = context.config
 
 config.set_main_option("sqlalchemy.url", app_settings.SQLALCHEMY_DB_URI)
@@ -21,7 +19,7 @@ fileConfig(config.config_file_name)
 
 # add your model's MetaData object here
 # for 'autogenerate' support
-target_metadata = (BaseModel.metadata,)
+target_metadata = [ProxySQLModel.metadata]
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:

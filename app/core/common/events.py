@@ -3,10 +3,10 @@ from typing import TYPE_CHECKING
 from saleor_app_base.database import get_db
 from sqlalchemy.dialects.postgresql import insert
 
-from .models import ExportEvent, ExportEventsEnum
+from app.core.reports.models import ExportEvent, ExportEventsEnum
 
 if TYPE_CHECKING:
-    from .models import ExportFile
+    from app.core.reports.models import ExportFile
 
 
 def export_started_event(*, export_file: "ExportFile"):

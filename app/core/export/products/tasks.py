@@ -1,12 +1,11 @@
 from typing import Dict, Union
 import asyncio
 
-from sqlalchemy import select
 from saleor_app_base.database import get_db
+from sqlalchemy import select
 
-from ..celery import app
-from ..common.models import ExportFile
-from ..common.tasks import on_task_success, on_task_failure
+from app.core.reports.models import ExportFile
+
 from .utils.export import export_products
 
 

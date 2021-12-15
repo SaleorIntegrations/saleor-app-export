@@ -1,12 +1,12 @@
 # from collections import defaultdict, namedtuple
-from typing import Dict, List, Optional, Set, Union, Any
-
-# from urllib.parse import urljoin
+from typing import Any, Dict, List, Optional, Set, Union
 
 # from ...attribute import AttributeInputType
 # from ...core.utils import build_absolute_uri
 # from ...core.utils.editorjs import clean_editor_js
 from .. import ProductExportFields
+
+# from urllib.parse import urljoin
 
 
 def get_products_data(

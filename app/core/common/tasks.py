@@ -1,8 +1,9 @@
-from sqlalchemy import update
 from saleor_app_base.database import get_db
+from sqlalchemy import update
+
+from app.core.reports.models import ExportFile, JobStatusesEnum
 
 from . import events
-from .models import ExportFile, JobStatusesEnum
 from .notifications import send_export_failed_info
 
 
