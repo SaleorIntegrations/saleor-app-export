@@ -1,10 +1,11 @@
 from collections import ChainMap
 from typing import Dict, List, Tuple
 
-from gql.dsl import DSLQuery, dsl_gql, DSLSchema
 from gql import Client
+from gql.dsl import DSLQuery, DSLSchema, dsl_gql
 
-from ...common.utils.sdk.saleor import get_saleor_transport
+from app.core.common.utils.sdk.saleor import get_saleor_transport
+
 from .. import ProductExportFields
 
 

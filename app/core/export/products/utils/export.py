@@ -1,25 +1,25 @@
-from typing import IO, TYPE_CHECKING, Any, Dict, List, Set, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Set, Union
 
-from gql.dsl import DSLQuery, dsl_gql, DSLSchema
-from gql import Client
 import structlog
+from gql import Client
+from gql.dsl import DSLQuery, DSLSchema, dsl_gql
 
-from ...products.utils.headers import get_export_fields_and_headers_info
-from ...products.utils.data import get_products_data
-from ...common.notifications import send_export_download_link_notification
-from ...common.utils.sdk.saleor import get_saleor_transport
-from ...common.utils.export import (
-    get_filename,
-    create_file_with_headers,
-    save_csv_file_in_export_file,
-    parse_input,
-    get_queryset_batches,
+from app.core.common.utils.export import (
     append_to_file,
+    create_file_with_headers,
+    get_filename,
+    get_queryset_batches,
+    parse_input,
+    save_csv_file_in_export_file,
 )
+from app.core.common.utils.sdk.saleor import get_saleor_transport
+
+from ...products.utils.data import get_products_data
+from ...products.utils.headers import get_export_fields_and_headers_info
 
 if TYPE_CHECKING:
     # flake8: noqa
-    from ...common.models import ExportFile
+    from app.core.reports.models import ExportFile
 
 
 BATCH_SIZE = 10000

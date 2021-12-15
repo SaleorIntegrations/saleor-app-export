@@ -3,7 +3,6 @@ from gql import Client
 from gql.dsl import DSLSchema
 from gql.transport.aiohttp import AIOHTTPTransport
 from graphql import DocumentNode
-
 from saleor_app_base.core.context import tenant_context
 from saleor_app_base.sdk.saleor import SALEOR_PROTOCOL
 
