@@ -17,20 +17,17 @@ router = APIRouter()
 async def export_products(
     db: Database = Depends(get_db),
 ):
-    # FIXME remove after testing the connection
-    products = await get_product_queryset({})
     values = {"type": ExportFileTypesEnum.PRODUCTS.value}
-    # FIXME
-    # file = await db.fetch_one(
-    #     query=insert(ExportFile.__table__)
-    #     .values(**values)
-    #     .returning(ExportFile.__table__)
-    # )
+    file = await db.fetch_one(
+        query=insert(ExportFile.__table__)
+        .values(**values)
+        .returning(ExportFile.__table__)
+    )
     # # TODO update the arguments
     # # FIXME get back to running it as a task
     # # export_products_task.delay(file.id, {}, {}, "csv")
-    # export_products_task(file.id, {}, {}, "csv")
-    return {"status": "ok", "products": products}
+    await export_products_task(file.get("id"), {}, {}, "csv")
+    return {"status": "ok"}
 
 
 @router.get("/export/products/file/{file_id}/")

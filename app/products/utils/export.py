@@ -38,9 +38,11 @@ async def export_products(
     file_name = get_filename("product", file_type)
     queryset = await get_product_queryset(scope)
 
-    export_fields, file_headers, data_headers = get_export_fields_and_headers_info(
-        export_info
-    )
+    (
+        export_fields,
+        file_headers,
+        data_headers,
+    ) = await get_export_fields_and_headers_info(export_info)
 
     temporary_file = create_file_with_headers(file_headers, delimiter, file_type)
 
@@ -57,7 +59,8 @@ async def export_products(
     save_csv_file_in_export_file(export_file, temporary_file, file_name)
     temporary_file.close()
 
-    send_export_download_link_notification(export_file)
+    # TODO get back after the demo
+    # send_export_download_link_notification(export_file)
 
 
 async def get_product_queryset(
@@ -65,7 +68,6 @@ async def get_product_queryset(
 ) -> List[Dict[str, Any]]:
     """Get product list based on a scope."""
 
-    # client = SaleorDSLClient()
     transport = await get_saleor_transport()
     client = Client(transport=transport, fetch_schema_from_transport=True)
     # TODO make the channel dynamic

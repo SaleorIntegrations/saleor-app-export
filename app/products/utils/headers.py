@@ -1,9 +1,10 @@
 from collections import ChainMap
 from typing import Dict, List, Tuple
 
-from gql.dsl import DSLQuery, dsl_gql
+from gql.dsl import DSLQuery, dsl_gql, DSLSchema
+from gql import Client
 
-from ...common.utils.sdk.saleor import SaleorDSLClient
+from ...common.utils.sdk.saleor import get_saleor_transport
 from .. import ProductExportFields
 
 
@@ -39,8 +40,9 @@ def get_product_export_fields_and_headers(
     Based on given fields headers from export info, export fields set and
     headers mapping is prepared.
     """
-    export_fields = ["id"]
-    file_headers = ["id"]
+    # TODO get the fields from the API
+    export_fields = ["id", "name", "description_as_str", "product_weight"]
+    file_headers = ["id", "name", "description_as_str", "product_weight"]
 
     fields = export_info.get("fields")
     if not fields:
@@ -62,36 +64,38 @@ def get_product_export_fields_and_headers(
     return export_fields, file_headers
 
 
-async def get_object_headers(export_info: Dict[str, list]) -> List[str]:
+async def get_object_headers(export_info: Dict[str, list]) -> List[list]:
     attribute_ids = export_info.get("attributes")
     warehouse_ids = export_info.get("warehouses")
     channel_ids = export_info.get("channels")
 
     # There is no reason to proceed if the ids weren't provided.
-    if not attribute_ids and warehouse_ids and channel_ids:
+    if not attribute_ids and not warehouse_ids and not channel_ids:
         return [], [], []
 
-    client = SaleorDSLClient()
-    ds = client.get_ds()
+    transport = await get_saleor_transport()
+    client = Client(transport=transport, fetch_schema_from_transport=True)
 
-    queries = []
+    async with client as session:
+        ds = DSLSchema(client.schema)
+        queries = []
 
-    if attribute_ids:
-        attributes_query = ds.Query.attributes(filter={"id": {"in": attribute_ids}})
-        queries.append(attributes_query)
-    if warehouse_ids:
-        warehouses_query = ds.Query.warehouses(filter={"id": {"in": warehouse_ids}})
-        queries.append(warehouses_query)
-    if channel_ids:
-        channels_query = ds.Query.channels(filter={"id": {"in": channel_ids}})
-        queries.append(channels_query)
+        if attribute_ids:
+            attributes_query = ds.Query.attributes(filter={"id": {"in": attribute_ids}})
+            queries.append(attributes_query)
+        if warehouse_ids:
+            warehouses_query = ds.Query.warehouses(filter={"id": {"in": warehouse_ids}})
+            queries.append(warehouses_query)
+        if channel_ids:
+            channels_query = ds.Query.channels(filter={"id": {"in": channel_ids}})
+            queries.append(channels_query)
 
-    dsl_query = dsl_gql(DSLQuery(*queries))
-    response = await client.execute(dsl_query)
+        dsl_query = dsl_gql(DSLQuery(*queries))
+        response = await session.execute(dsl_query)
 
-    attributes_headers = get_attributes_headers(response.get("attributes"))
-    warehouses_headers = get_warehoses_headers(response.get("warehouses"))
-    channels_headers = get_channels_headers(response.get("channels"))
+        attributes_headers = get_attributes_headers(response.get("attributes"))
+        warehouses_headers = get_warehoses_headers(response.get("warehouses"))
+        channels_headers = get_channels_headers(response.get("channels"))
 
     return attributes_headers, warehouses_headers, channels_headers
 

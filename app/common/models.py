@@ -1,10 +1,20 @@
 import datetime
 import enum
 
-from sqlalchemy import Column, Integer, String, DateTime, Enum, ForeignKey
+from sqlalchemy import Table, Column, Integer, String, DateTime, Enum, ForeignKey
 from sqlalchemy.orm import relationship
+from sqlalchemy.ext.declarative import as_declarative, declared_attr
 from sqlalchemy.dialects.postgresql import JSONB
-from saleor_app_base.models import BaseModel
+
+
+@as_declarative()
+class BaseModel:
+    __name__: str
+    __table__: Table
+
+    @declared_attr
+    def __tablename__(self) -> str:
+        return self.__name__.lower()
 
 
 class JobStatusesEnum(str, enum.Enum):
@@ -42,6 +52,8 @@ class ExportFile(BaseModel):
     content_file = Column(String(255), default="")
     events = relationship("ExportEvent", back_populates="export_file")
 
+    __tablename__ = "export_file"
+
 
 class ExportEventsEnum(str, enum.Enum):
     EXPORT_PENDING = "export_pending"
@@ -64,3 +76,5 @@ class ExportEvent(BaseModel):
 
     # TODO Do we really need this??? It's at least kept in the related model.
     user = Column(String(255), default="")
+
+    __tablename__ = "export_event"

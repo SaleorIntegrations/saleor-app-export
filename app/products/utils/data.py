@@ -56,18 +56,17 @@ def get_products_data(
 
     for item in queryset:
         extra_fields = {
-            "product_weight": str(item["node"]["weight"]["value"] + " g")
+            "product_weight": str(item["node"]["weight"]["value"]) + " g"
             if item["node"]["weight"]["value"]
             else "",
             # FIXME: there can be multiple variants
-            # "variant_weight": str(item["node"]["variants"]["weight"] + " g")
+            # "variant_weight": str(item["node"]["variants"]["weight"]) + " g"
             # if item["node"]["variants"] and item["node"]["variants"]["weight"]
             # else "",
             "description_as_str": item["node"]["description"],
         }
-        item.update(extra_fields)
-
-        new_item = {k: v for k, v in item.items() if k in product_export_fields}
+        item["node"].update(extra_fields)
+        new_item = {k: v for k, v in item["node"].items() if k in product_export_fields}
         products_data.append(new_item)
 
     # TODO we do not need related fields for the MVP.

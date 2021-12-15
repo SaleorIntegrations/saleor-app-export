@@ -1,14 +1,15 @@
 import secrets
 from datetime import date, datetime
 from tempfile import NamedTemporaryFile
-from typing import IO, TYPE_CHECKING, Any, Dict, List, Union
+from typing import IO, Any, Dict, List, Union
+import os
+import shutil
 
 import petl as etl
+from sqlalchemy import update
+from saleor_app_base.database import get_db
 
-from ...common.models import FileTypesEnum
-
-if TYPE_CHECKING:
-    from ...common.models import ExportFile
+from ...common.models import FileTypesEnum, ExportFile
 
 
 BATCH_SIZE = 10000
@@ -73,7 +74,7 @@ def get_queryset_batches(queryset):
 def create_file_with_headers(file_headers: List[str], delimiter: str, file_type: str):
     table = etl.wrap([file_headers])
 
-    if file_type == FileTypesEnum.CSV.value():
+    if file_type == FileTypesEnum.CSV.value:
         temp_file = NamedTemporaryFile("ab+", suffix=".csv")
         etl.tocsv(table, temp_file.name, delimiter=delimiter)
     else:
@@ -92,7 +93,7 @@ def append_to_file(
 ):
     table = etl.fromdicts(export_data, header=headers, missing=" ")
 
-    if file_type == FileTypesEnum.CSV.value():
+    if file_type == FileTypesEnum.CSV.value:
         etl.io.csv.appendcsv(table, temporary_file.name, delimiter=delimiter)
     else:
         etl.io.xlsx.appendxlsx(table, temporary_file.name)
@@ -101,4 +102,12 @@ def append_to_file(
 def save_csv_file_in_export_file(
     export_file: "ExportFile", temporary_file: IO[bytes], file_name: str
 ):
-    export_file.content_file.save(file_name, temporary_file)
+    file_path = os.path.join(os.getcwd(), file_name)
+    shutil.copy(temporary_file.name, file_path)
+
+    db = get_db()
+    export_file = db.fetch_one(
+        query=update(ExportFile.__table__)
+        .where(ExportFile.id == export_file.get("id"))
+        .values(content_file=file_path)
+    )
