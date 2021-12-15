@@ -1,22 +1,21 @@
 from typing import TYPE_CHECKING
 
-from saleor_app_base.database import get_db
-from sqlalchemy.dialects.postgresql import insert
-
 from app.core.reports.models import ExportEvent, ExportEventsEnum
+from main import get_db
 
 if TYPE_CHECKING:
     from app.core.reports.models import ExportFile
 
 
 def export_started_event(*, export_file: "ExportFile"):
-
     db = get_db()
-    db.fetch_one(
-        query=insert(ExportEvent.__table__).values(
-            export_file=export_file, type=ExportEventsEnum.EXPORT_PENDING.value()
+    db.add(
+        ExportEvent(
+            export_file_id=export_file.id,
+            type=ExportEventsEnum.EXPORT_PENDING,
         )
     )
+    db.commit()
 
 
 def export_success_event(
@@ -24,11 +23,13 @@ def export_success_event(
     export_file: "ExportFile",
 ):
     db = get_db()
-    db.fetch_one(
-        query=insert(ExportEvent.__table__).values(
-            export_file=export_file, type=ExportEventsEnum.EXPORT_SUCCESS.value()
+    db.add(
+        ExportEvent(
+            export_file_id=export_file.id,
+            type=ExportEventsEnum.EXPORT_SUCCESS,
         )
     )
+    db.commit()
 
 
 def export_failed_event(
@@ -38,13 +39,14 @@ def export_failed_event(
     error_type: str,
 ):
     db = get_db()
-    db.fetch_one(
-        query=insert(ExportEvent.__table__).values(
-            export_file=export_file,
-            type=ExportEventsEnum.EXPORT_FAILED.value(),
+    db.add(
+        ExportEvent(
+            export_file_id=export_file.id,
+            type=ExportEventsEnum.EXPORT_FAILED,
             parameters={"message": message, "error_type": error_type},
         )
     )
+    db.commit()
 
 
 def export_deleted_event(
@@ -52,28 +54,29 @@ def export_deleted_event(
     export_file: "ExportFile",
 ):
     db = get_db()
-    db.fetch_one(
-        query=insert(ExportEvent.__table__).values(
-            export_file=export_file, type=ExportEventsEnum.EXPORT_DELETED.value()
-        )
+    db.add(
+        ExportEvent(export_file_id=export_file.id, type=ExportEventsEnum.EXPORT_DELETED)
     )
+    db.commit()
 
 
 def export_file_sent_event(*, export_file_id: int):
     db = get_db()
-    db.fetch_one(
-        query=insert(ExportEvent.__table__).values(
+    db.add(
+        ExportEvent(
             export_file_id=export_file_id,
-            type=ExportEventsEnum.EXPORTED_FILE_SENT.value(),
+            type=ExportEventsEnum.EXPORTED_FILE_SENT,
         )
     )
+    db.commit()
 
 
 def export_failed_info_sent_event(*, export_file_id: int, user_id: int):
     db = get_db()
-    db.fetch_one(
-        query=insert(ExportEvent.__table__).values(
+    db.add(
+        ExportEvent(
             export_file_id=export_file_id,
-            type=ExportEventsEnum.EXPORT_FAILED_INFO_SENT.value(),
+            type=ExportEventsEnum.EXPORT_FAILED_INFO_SENT,
         )
     )
+    db.commit()
