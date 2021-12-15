@@ -3,7 +3,12 @@ import pytest
 QUERY_REPORTS = """
 query {
     reports {
-        id
+        edges {
+            node {
+                id
+            }
+        }
+        totalCount
     }
 }
 """
@@ -14,4 +19,14 @@ async def test_get_report(graphql, report):
     # when
     result = await graphql.execute(QUERY_REPORTS)
     # then
-    assert result["data"]["reports"][0]["id"] == report.id
+    assert result["data"]["reports"]["edges"][0]["node"]["id"] == report.id
+
+
+@pytest.mark.asyncio
+async def test_get_reports(graphql, reports_factory):
+    # given
+    await reports_factory(5)
+    # when
+    result = await graphql.execute(QUERY_REPORTS)
+    # then
+    assert result["data"]["reports"]["totalCount"] == 5
