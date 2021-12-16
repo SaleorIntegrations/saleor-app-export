@@ -6,7 +6,7 @@ from app.core.reports.models import ExportObjectTypesEnum, Report
 
 
 @strawberry.input
-class ExportOrdersInfo:
+class ExportProductsInfo:
     fields: List[str]
     fileType: str
     scope: str
@@ -15,14 +15,14 @@ class ExportOrdersInfo:
 
 
 @strawberry.input
-class ExportOrdersInput:
-    export_info: ExportOrdersInfo
+class ExportProductsInput:
+    export_info: ExportProductsInfo
 
 
-async def mutate_export_orders(root, input: ExportOrdersInput, info):
+async def mutate_export_products(root, input: ExportProductsInput, info):
     db = info.context["db"]
     report = Report(
-        type=ExportObjectTypesEnum.ORDERS,
+        type=ExportObjectTypesEnum.PRODUCTS,
         scope=input.export_info.scope,
         filter_input=input.export_info.filter,
         ids=input.export_info.ids,
