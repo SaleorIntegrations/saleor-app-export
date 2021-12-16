@@ -5,7 +5,7 @@ from saleor_app_base.database import get_db
 from sqlalchemy import select
 from sqlalchemy.dialects.postgresql import insert
 
-from app.core.reports.models import ExportFile, ExportFileTypesEnum
+from app.core.reports.models import ExportFile, ExportObjectTypesEnum
 
 from .tasks import export_products_task
 
@@ -17,7 +17,7 @@ router = APIRouter()
 async def export_products(
     db: Database = Depends(get_db),
 ):
-    values = {"type": ExportFileTypesEnum.PRODUCTS.value}
+    values = {"type": ExportObjectTypesEnum.PRODUCTS.value}
     file = await db.fetch_one(
         query=insert(ExportFile.__table__)
         .values(**values)

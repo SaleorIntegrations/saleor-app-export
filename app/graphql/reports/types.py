@@ -1,16 +1,12 @@
-from enum import Enum
 from typing import List
 
 import strawberry
 from strawberry.types import Info
 
+from app.core.reports.models import ExportObjectTypesEnum
 from app.graphql.reports.resolvers import resolve_reports, resolve_reports_count
 
-
-@strawberry.enum
-class ReportTypes(Enum):
-    PRODUCTS = "products"
-    ORDERS = "orders"
+ReportTypes = strawberry.enum(ExportObjectTypesEnum)
 
 
 @strawberry.type

@@ -14,7 +14,7 @@ class JobStatusesEnum(str, enum.Enum):
     DELETED = "deleted"
 
 
-class ExportFileTypesEnum(str, enum.Enum):
+class ExportObjectTypesEnum(str, enum.Enum):
     PRODUCTS = "products"
     ORDERS = "orders"
 
@@ -24,14 +24,30 @@ class FileTypesEnum(str, enum.Enum):
     XLSX = "xlsx"
 
 
-class ExportFile(SQLModel, table=True):
+class ExportScopeEnum(str, enum.Enum):
+    ALL = "ALL"
+    IDS = "IDS"
+    FILTER = "FILTER"
+
+
+class Report(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
-    status: JobStatusesEnum = Field(default=JobStatusesEnum.PENDING)
-    type: ExportFileTypesEnum
-    message: constr(max_length=255)
     created_at: datetime = Field(default_factory=datetime.utcnow)
     updated_at: datetime = Field(default_factory=datetime.utcnow)
+    scope: ExportScopeEnum
+    type: ExportObjectTypesEnum
+    filter_input: dict = Field(sa_column=Column(JSON), default_factory=dict)
+    ids: dict = Field(sa_column=Column(JSON), default_factory=dict)
+
+
+class ExportFile(SQLModel, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_at: datetime = Field(default_factory=datetime.utcnow)
+    status: JobStatusesEnum = Field(default=JobStatusesEnum.PENDING)
+    message: constr(max_length=255)
     content_file: constr(max_length=255)
+    report_id: int = Field(foreign_key="report.id")
 
 
 class ExportEventsEnum(str, enum.Enum):
