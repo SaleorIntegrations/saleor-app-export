@@ -9,6 +9,7 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 from strawberry.fastapi import GraphQLRouter
 
 from app.core.export.products.api import router as products_router
+from app.graphql.mutations import Mutation
 from app.graphql.query import Query
 
 app = configure_application()
@@ -30,7 +31,7 @@ async def get_context(db=Depends(get_db)):
     }
 
 
-schema = strawberry.Schema(Query)
+schema = strawberry.Schema(Query, Mutation)
 graphql_app = GraphQLRouter(schema, context_getter=get_context)
 app.include_router(graphql_app, prefix="/graphql")
 

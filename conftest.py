@@ -59,8 +59,11 @@ async def async_client(fastapi):
 @pytest.fixture
 def graphql(async_client):
     class GqlClient:
-        async def execute(self, query):
-            response = await async_client.post("/graphql", json={"query": query})
+        async def execute(self, query, variables=None):
+            json = {"query": query}
+            if variables is not None:
+                json["variables"] = variables
+            response = await async_client.post("/graphql", json=json)
             return response.json()
 
     return GqlClient()
