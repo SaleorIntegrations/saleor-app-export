@@ -7,7 +7,6 @@ import structlog
 
 from ..common.models import ExportFile, ExportFileTypesEnum
 from .tasks import export_products_task
-from .utils.export import get_product_queryset
 
 logger = structlog.get_logger()
 router = APIRouter()

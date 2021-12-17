@@ -10,7 +10,7 @@ from .. import ProductExportFields
 
 
 def get_products_data(
-    queryset: List[Dict[str, Any]],
+    products: List[Dict[str, Any]],
     export_fields: Set[str],
     attribute_ids: Optional[List[int]],
     warehouse_ids: Optional[List[int]],
@@ -54,7 +54,7 @@ def get_products_data(
 
     products_data = []
 
-    for item in queryset:
+    for item in products:
         extra_fields = {
             "product_weight": str(item["node"]["weight"]["value"]) + " g"
             if item["node"]["weight"]["value"]
@@ -66,6 +66,8 @@ def get_products_data(
             "description_as_str": item["node"]["description"],
         }
         item["node"].update(extra_fields)
+        # TODO change the approach. Fetch required fields right away
+        # from the API rather than modifying them here.
         new_item = {k: v for k, v in item["node"].items() if k in product_export_fields}
         products_data.append(new_item)
 

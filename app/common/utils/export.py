@@ -51,16 +51,16 @@ def parse_input(data: Any) -> Dict[str, Union[str, dict]]:
     return data
 
 
-def get_queryset_batches(queryset):
-    """Slice a queryset into batches.
+def get_list_batches(objects: List[dict]):
+    """Slice a list of objects into batches.
 
-    Input queryset should be sorted be pk.
+    Input list should be sorted be pk.
     """
     start_pk = 0
     end_pk = BATCH_SIZE
 
     while True:
-        qs = queryset[start_pk:end_pk]
+        qs = objects[start_pk:end_pk]
 
         if not qs:
             break
