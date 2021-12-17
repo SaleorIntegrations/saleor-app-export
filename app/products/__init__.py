@@ -1,23 +1,27 @@
 class ProductExportFields:
     """Data structure with fields for product export."""
 
-    HEADERS_TO_FIELDS_MAPPING = {
+    PRODUCT_FIELDS = {
         "fields": {
-            "id": "id",
-            "name": "name",
+            "id": "ds.Product.id",
+            "name": "ds.Product.name",
+            "category": "ds.Product.category.select(ds.Category.slug)",
+            "product_type": "ds.Product.productType.select(ds.productType.name)",
+            "charge_taxes": "ds.Product.chargeTaxes",
+            "product_weight": "ds.Product.weight.select(ds.Weight.value)",
+            "variant_sku": "ds.Product.defaultVariant.select(ds.ProductVariant.sku)",
+            "variant_weight": "ds.Product.defaultVariant.select(ds.ProductVariant.weight.select(ds.Weight.value))",
+        },
+        "extra_fields": {
             "description": "description_as_str",
-            "category": "category__slug",
-            "product type": "product_type__name",
-            "charge taxes": "charge_taxes",
-            "product weight": "product_weight",
-            "variant sku": "variants__sku",
-            "variant weight": "variant_weight",
         },
         "product_many_to_many": {
-            "collections": "collections__slug",
-            "product media": "media__image",
+            "collections": "ds.Product.collections.select(ds.Collection.slug)",
+            "product_media": "ds.Product.media.select(ds.ProductMedia.url)",
         },
-        "variant_many_to_many": {"variant media": "variants__media__image"},
+        "variant_many_to_many": {
+            "variant_media": "ds.Product.variants.select(ds.ProductVariant.media.select(ds.ProductMedia.url))"
+        },
     }
 
     PRODUCT_ATTRIBUTE_FIELDS = {

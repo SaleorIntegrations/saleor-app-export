@@ -6,6 +6,7 @@ import structlog
 
 from ...products.utils.headers import get_export_fields_and_headers_info
 from ...products.utils.data import get_products_data
+from ...products import ProductExportFields
 from ...common.notifications import send_export_download_link_notification
 from ...common.utils.sdk.saleor import get_saleor_transport
 from ...common.utils.export import (
@@ -43,7 +44,7 @@ async def export_products(
         data_headers,
     ) = await get_export_fields_and_headers_info(export_info)
 
-    products = await get_products(scope)
+    products = await get_products(scope, export_fields)
 
     temporary_file = create_file_with_headers(file_headers, delimiter, file_type)
 
@@ -64,7 +65,9 @@ async def export_products(
     # send_export_download_link_notification(export_file)
 
 
-async def get_products(scope: Dict[str, Union[str, dict]]) -> List[Dict[str, Any]]:
+async def get_products(
+    scope: Dict[str, Union[str, dict]], export_fields: List[str]
+) -> List[Dict[str, Any]]:
     """Get product list based on a scope."""
 
     transport = await get_saleor_transport()
@@ -75,7 +78,9 @@ async def get_products(scope: Dict[str, Union[str, dict]]) -> List[Dict[str, Any
     async with client as session:
         ds = DSLSchema(client.schema)
         while continue_fetching:
-            response = await fetch_products(ds, fetch_after_num, scope, session)
+            response = await fetch_products(
+                ds, fetch_after_num, scope, export_fields, session
+            )
             if response.get("products", []):
                 edges = response["products"]["edges"]
                 products += edges
@@ -86,17 +91,16 @@ async def get_products(scope: Dict[str, Union[str, dict]]) -> List[Dict[str, Any
     return products
 
 
-def get_required_fields(ds):
-    return [
-        "id",
-        "name",
-        "weight",
-        "variants",
-        "description",
-    ]
+def get_required_product_fields(ds, export_fields):
+    query_fields = []
+    fields = ProductExportFields.PRODUCT_FIELDS["fields"].values()
+    for name, field in fields:
+        if name in export_fields:
+            query_fields.append(eval(field))
+    return query_fields
 
 
-async def fetch_products(ds, fetch_after_num, scope, session):
+async def fetch_products(ds, fetch_after_num, scope, export_fields, session):
     # TODO make the channel dynamic
     channel = "moto"
     first_object_num = 50
@@ -121,19 +125,13 @@ async def fetch_products(ds, fetch_after_num, scope, session):
             first=first_object_num, channel=channel, after=fetch_after_num
         )
 
+    required_fields = get_required_product_fields(ds, export_fields)
+
     dsl_query = dsl_gql(
         DSLQuery(
             query.select(
                 ds.ProductCountableConnection.edges.select(
-                    ds.ProductCountableEdge.node.select(
-                        ds.Product.id,
-                        ds.Product.name,
-                        ds.Product.weight.select(ds.Weight.value),
-                        ds.Product.variants.select(
-                            ds.ProductVariant.weight.select(ds.Weight.value)
-                        ),
-                        ds.Product.description,
-                    )
+                    ds.ProductCountableEdge.node.select(*required_fields)
                 )
             )
         )
