@@ -10,6 +10,14 @@ import './App.css'
 
 // to remove
 import ReportType from './components/ReportType'
+import ExportPicker from './components/ExportPicker'
+
+const options = (
+  <>
+    <ReportType isMutable reportType="Products" />
+    <ExportPicker />
+  </>
+)
 
 function App() {
   return (
@@ -20,7 +28,7 @@ function App() {
         content={
           <Content
             settings={<div>a</div>}
-            options={<ReportType isMutable reportType="Products" />}
+            options={options}
           />
         }
         footer={<Footer />}
