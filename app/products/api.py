@@ -25,7 +25,7 @@ async def export_products(
     # # TODO update the arguments
     # # FIXME get back to running it as a task
     # # export_products_task.delay(file.id, {}, {}, "csv")
-    await export_products_task(file.get("id"), {}, {}, "csv")
+    export_products_task(file.get("id"), {}, {}, "csv")
     return {"status": "ok"}
 
 
