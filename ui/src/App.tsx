@@ -8,13 +8,21 @@ import Footer from './components/Footer'
 import Content from './components/Content'
 import './App.css'
 
+// to remove
+import ReportType from './components/ReportType'
+
 function App() {
   return (
     <ThemeProvider>
       {/* <TenantProvider> */}
       <Layout
         header={<Header />}
-        content={<Content settings={<div>a</div>} options={<div>b</div>} />}
+        content={
+          <Content
+            settings={<div>a</div>}
+            options={<ReportType isMutable reportType="Products" />}
+          />
+        }
         footer={<Footer />}
       />
       {/* </TenantProvider> */}

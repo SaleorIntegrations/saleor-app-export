@@ -31,12 +31,12 @@ export function Content({ settings, options }: ContentProps) {
     >
       <Grid item md={4}>
         <Box className={classes.list}>
-          {settings}
+          {options}
         </Box>
       </Grid>
       <Grid item md={8}>
         <Box className={classes.list}>
-          {options}
+          {settings}
         </Box>
       </Grid>
     </Grid>
