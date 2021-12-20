@@ -4,6 +4,7 @@ import { ThemeProvider } from '@saleor/macaw-ui'
 
 import Layout from './components/Layout'
 import Header from './components/Header'
+import Footer from './components/Footer'
 import './App.css'
 
 function App() {
@@ -13,7 +14,7 @@ function App() {
       <Layout
         header={<Header />}
         content={<div>Content</div>}
-        footer={<div>Footer</div>}
+        footer={<Footer />}
       />
       {/* </TenantProvider> */}
     </ThemeProvider>
