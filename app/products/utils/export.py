@@ -96,12 +96,15 @@ def get_required_product_fields(ds, export_fields):
     fields = ProductExportFields.PRODUCT_FIELDS["fields"].values()
     for name, field in fields:
         if name in export_fields:
+            # TODO double check if there is a danger in using eval in this case.
+            # In theory it should be safe as we define the passed strings ourselves.
+            # And so far it seems the most convenient way of dealing with dynamic queries using DSL.
             query_fields.append(eval(field))
     return query_fields
 
 
 async def fetch_products(ds, fetch_after_num, scope, export_fields, session):
-    # TODO make the channel dynamic
+    # TODO fetch channels from the scope
     channel = "moto"
     first_object_num = 50
 

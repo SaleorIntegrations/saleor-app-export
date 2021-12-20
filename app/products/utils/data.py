@@ -59,17 +59,13 @@ def get_products_data(
             "product_weight": str(item["node"]["weight"]["value"]) + " g"
             if item["node"]["weight"]["value"]
             else "",
-            # FIXME: there can be multiple variants
-            # "variant_weight": str(item["node"]["variants"]["weight"]) + " g"
-            # if item["node"]["variants"] and item["node"]["variants"]["weight"]
-            # else "",
-            "description_as_str": item["node"]["description"],
+            "variant_weight": str(item["node"]["defaultVariant"]["weight"]) + " g"
+            if item["node"]["defaultVariant"]
+            and item["node"]["defaultVariant"]["weight"]
+            else "",
         }
         item["node"].update(extra_fields)
-        # TODO change the approach. Fetch required fields right away
-        # from the API rather than modifying them here.
-        new_item = {k: v for k, v in item["node"].items() if k in product_export_fields}
-        products_data.append(new_item)
+        products_data.append(item)
 
     # TODO we do not need related fields for the MVP.
     # Return it back later.

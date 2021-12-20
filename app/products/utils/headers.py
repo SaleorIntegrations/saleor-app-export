@@ -40,9 +40,8 @@ def get_product_export_fields_and_headers(
     Based on given fields headers from export info, export fields set and
     headers mapping is prepared.
     """
-    # TODO get the fields from the API
-    export_fields = ["id", "name", "description_as_str", "product_weight"]
-    file_headers = ["id", "name", "description_as_str", "product_weight"]
+    export_fields = ["id"]
+    file_headers = ["id"]
 
     fields = export_info.get("fields")
     if not fields:
@@ -55,7 +54,7 @@ def get_product_export_fields_and_headers(
     for field in fields:
         lookup_field = fields_mapping[field]
         export_fields.append(lookup_field)
-        file_headers.append(field)
+        file_headers.append(field.replace("_", " ").title())
 
     return export_fields, file_headers
 

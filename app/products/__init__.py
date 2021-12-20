@@ -5,15 +5,13 @@ class ProductExportFields:
         "fields": {
             "id": "ds.Product.id",
             "name": "ds.Product.name",
+            "description": "ds.Product.description",
             "category": "ds.Product.category.select(ds.Category.slug)",
             "product_type": "ds.Product.productType.select(ds.productType.name)",
             "charge_taxes": "ds.Product.chargeTaxes",
             "product_weight": "ds.Product.weight.select(ds.Weight.value)",
             "variant_sku": "ds.Product.defaultVariant.select(ds.ProductVariant.sku)",
             "variant_weight": "ds.Product.defaultVariant.select(ds.ProductVariant.weight.select(ds.Weight.value))",
-        },
-        "extra_fields": {
-            "description": "description_as_str",
         },
         "product_many_to_many": {
             "collections": "ds.Product.collections.select(ds.Collection.slug)",
