@@ -22,6 +22,25 @@ class ProductExportFields:
         },
     }
 
+    ALT_PRODUCT_FIELDS = {
+        "fields": {
+            "id": "id",
+            "name": "name",
+            "description": "description",
+            "category": "category {slug}",
+            "product_type": "productType {name}",
+            "charge_taxes": "chargeTaxes",
+            "product_weight": "weight {value}",
+            "variant_sku": "defaultVariant {sku}",
+            "variant_weight": "defaultVariant {weight {value}}",
+        },
+        "product_many_to_many": {
+            "collections": "collections {slug}",
+            "product_media": "media {url}",
+        },
+        "variant_many_to_many": {"variant_media": "variants {media {url}}"},
+    }
+
     PRODUCT_ATTRIBUTE_FIELDS = {
         "value": "attributes__values__slug",
         "file_url": "attributes__values__file_url",
