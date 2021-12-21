@@ -9,6 +9,7 @@ import Content from './components/Content'
 import './App.css'
 
 // to remove
+import ReportList from './pages/ReportList'
 import ReportType from './components/ReportType'
 import ExportPicker from './components/ExportPicker'
 import ActionsContainer from './components/ActionsContainer'
@@ -25,11 +26,12 @@ function App() {
   return (
     <ThemeProvider>
       {/* <TenantProvider> */}
-      <Layout
+      {/* <Layout
         header={<Header />}
         content={<Content settings={<div>a</div>} options={options} />}
         footer={<Footer />}
-      />
+      /> */}
+      <Layout header={<ReportList />} content={<div />} footer={<div />} />
       {/* </TenantProvider> */}
     </ThemeProvider>
   )
