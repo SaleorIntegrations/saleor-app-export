@@ -3,12 +3,13 @@ from typing import TYPE_CHECKING, Any, Dict, List, Set, Union
 import structlog
 from gql import Client
 from gql.dsl import DSLQuery, DSLSchema, dsl_gql
+from saleor_app_base.sdk.saleor import call_authorized
 
 from app.core.common.utils.export import (
     append_to_file,
     create_file_with_headers,
     get_filename,
-    get_queryset_batches,
+    get_list_batches,
     parse_input,
     save_csv_file_in_export_file,
 )
@@ -16,6 +17,8 @@ from app.core.common.utils.sdk.saleor import get_saleor_transport
 
 from ...products.utils.data import get_products_data
 from ...products.utils.headers import get_export_fields_and_headers_info
+
+from .. import ProductExportFields
 
 if TYPE_CHECKING:
     # flake8: noqa

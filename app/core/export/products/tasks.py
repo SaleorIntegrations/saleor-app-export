@@ -5,6 +5,8 @@ from saleor_app_base.database import get_db
 from sqlalchemy import select
 
 from app.core.reports.models import ExportFile
+from app.core.common.tasks import on_task_failure, on_task_success
+from app.celery import app
 
 from .utils.export import export_products
 
