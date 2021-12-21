@@ -11,11 +11,13 @@ import './App.css'
 // to remove
 import ReportType from './components/ReportType'
 import ExportPicker from './components/ExportPicker'
+import ActionsContainer from './components/ActionsContainer'
 
 const options = (
   <>
     <ReportType isMutable reportType="Products" />
     <ExportPicker />
+    <ActionsContainer />
   </>
 )
 
@@ -25,12 +27,7 @@ function App() {
       {/* <TenantProvider> */}
       <Layout
         header={<Header />}
-        content={
-          <Content
-            settings={<div>a</div>}
-            options={options}
-          />
-        }
+        content={<Content settings={<div>a</div>} options={options} />}
         footer={<Footer />}
       />
       {/* </TenantProvider> */}

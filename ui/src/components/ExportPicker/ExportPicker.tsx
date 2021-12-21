@@ -1,34 +1,20 @@
 import React from 'react'
 import {
   Typography,
-  FormLabel,
   FormControl,
   FormControlLabel,
   Radio,
   RadioGroup
 } from '@material-ui/core'
-import { makeStyles } from '@saleor/macaw-ui'
 
 import Surface from '../Surface'
-
-const useStyles = makeStyles((theme) => ({
-  formLabel: {
-    display: 'block',
-    marginBottom: theme.spacing(1),
-    marginTop: theme.spacing(1),
-    fontSize: '0.8em',
-  }
-}))
+import Label from '../Label'
 
 export function ExportPicker() {
-  const classes = useStyles()
-
   return (
     <Surface>
       <Typography variant="h6">Settings</Typography>
-      <FormLabel className={classes.formLabel}>
-        FILE EXPORTED
-      </FormLabel>
+      <Label>FILE EXPORTED</Label>
       <FormControl fullWidth variant="outlined">
         <RadioGroup name="export">
           <FormControlLabel

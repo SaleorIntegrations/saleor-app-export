@@ -1,23 +1,14 @@
 import React from 'react'
 import {
   FormControl,
-  FormLabel,
   Select,
   InputLabel,
   MenuItem,
   Typography
 } from '@material-ui/core'
-import { makeStyles } from '@saleor/macaw-ui'
 
 import Surface from '../Surface'
-
-const useStyles = makeStyles((theme) => ({
-  formLabel: {
-    display: 'block',
-    marginBottom: theme.spacing(1),
-    fontSize: '0.8em',
-  }
-}))
+import Label from '../Label'
 
 export interface ReportTypeProps {
   isMutable?: boolean
@@ -25,14 +16,10 @@ export interface ReportTypeProps {
 }
 
 export function ReportType({ isMutable, reportType }: ReportTypeProps) {
-  const classes = useStyles()
-
   return (
     isMutable ? (
       <Surface>
-        <FormLabel className={classes.formLabel}>
-          REPORT TYPE
-        </FormLabel>
+        <Label>REPORT TYPE</Label>
         <FormControl fullWidth variant="outlined">
           <InputLabel>Report Type</InputLabel>
           <Select>
@@ -44,9 +31,7 @@ export function ReportType({ isMutable, reportType }: ReportTypeProps) {
       </Surface>
     ) : (
       <Surface>
-        <FormLabel color="secondary" className={classes.formLabel}>
-          REPORT TYPE
-        </FormLabel>
+        <Label>REPORT TYPE</Label>
         <Typography variant="h6">{reportType}</Typography>
       </Surface>
     )
