@@ -3,6 +3,7 @@ from typing import List
 import strawberry
 
 from app.core.reports.models import ExportObjectTypesEnum, Report
+from app.core.export.products.tasks import export_products_task
 
 
 @strawberry.input
@@ -29,4 +30,13 @@ async def mutate_export_products(root, input: ExportProductsInput, info):
     )
     db.add(report)
     await db.commit()
+    # TODO validate the input before passing it to the task
+    # Also, consider sending just export_info
+    # and access its attributes in the functions
+    export_products_task(
+        report.id,
+        input.export_info.scope,
+        input.export_info,
+        input.export_info.fileType,
+    )
     return report

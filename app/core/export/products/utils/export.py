@@ -113,7 +113,7 @@ async def fetch_products(ds, fetch_after_num, scope, export_fields, session):
 
     query = """
         query {
-            products (first:$first_object_num, channel: $channel, filter: {$filter}) {
+            products (first:$first_object_num, after:$fetch_after_num, channel: $channel, filter: {$filter}) {
                 edges {
                     node {
                         $fields
@@ -149,6 +149,7 @@ async def fetch_products(ds, fetch_after_num, scope, export_fields, session):
     required_fields = get_required_product_fields(export_fields)
     query_variables = {
         "first_object_num": first_object_num,
+        "fetch_after_num": fetch_after_num,
         "channel": channel,
         "filter": query_filter,
         "fields": required_fields,

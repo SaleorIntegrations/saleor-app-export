@@ -6,8 +6,8 @@ from tempfile import NamedTemporaryFile
 from typing import IO, Any, Dict, List, Union
 
 import petl as etl
-from saleor_app_base.database import get_db
-from sqlalchemy import update
+from db import get_db
+from sqlmodel import select
 
 from app.core.reports.models import ExportFile, FileTypesEnum
 
@@ -105,8 +105,7 @@ def save_csv_file_in_export_file(
     shutil.copy(temporary_file.name, file_path)
 
     db = get_db()
-    export_file = db.fetch_one(
-        query=update(ExportFile.__table__)
-        .where(ExportFile.id == export_file.get("id"))
-        .values(content_file=file_path)
-    )
+    export_file = select(ExportFile).where(ExportFile.id == export_file.id)
+    export_file.content_file = file_path
+    db.add(export_file)
+    db.commit()

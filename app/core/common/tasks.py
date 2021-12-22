@@ -1,4 +1,4 @@
-from saleor_app_base.database import get_db
+from db import get_db
 from sqlalchemy import update
 
 from app.core.reports.models import ExportFile, JobStatusesEnum

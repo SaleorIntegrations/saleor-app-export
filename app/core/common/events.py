@@ -1,7 +1,7 @@
 from typing import TYPE_CHECKING
 
 from app.core.reports.models import ExportEvent, ExportEventsEnum
-from main import get_db
+from db import get_db
 
 if TYPE_CHECKING:
     from app.core.reports.models import ExportFile

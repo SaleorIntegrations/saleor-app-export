@@ -96,7 +96,7 @@ async def get_object_headers(export_info: Dict[str, list]) -> List[list]:
     return attributes_headers, warehouses_headers, channels_headers
 
 
-def get_warehoses_headers(warehouses: List[str]) -> List[str]:
+def get_warehoses_headers(warehouses: List[dict]) -> List[str]:
     """Get headers for exported warehouses.
 
     Headers are build from slug. Example: "slug-value (warehouse quantity)"

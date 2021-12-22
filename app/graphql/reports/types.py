@@ -23,8 +23,9 @@ class ReportEdge:
 
 @strawberry.type
 class ReportConnection:
-    edges: List[ReportEdge]
-    totalCount: int
+    # FIXME is it dublication?
+    # edges: List[ReportEdge]
+    # totalCount: int
 
     @strawberry.field
     async def edges(self, info: Info) -> List[ReportEdge]:

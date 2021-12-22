@@ -1,7 +1,7 @@
 import structlog
 from databases import Database
 from fastapi import APIRouter, Depends
-from saleor_app_base.database import get_db
+from db import get_db
 from sqlalchemy import select
 from sqlalchemy.dialects.postgresql import insert
 
