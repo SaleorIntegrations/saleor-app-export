@@ -22,6 +22,7 @@ class ExportProductsInput:
 
 async def mutate_export_products(root, input: ExportProductsInput, info):
     db = info.context["db"]
+    print(f"SCOPE!: {input.export_info.scope}")
     report = Report(
         type=ExportObjectTypesEnum.PRODUCTS,
         scope=input.export_info.scope,

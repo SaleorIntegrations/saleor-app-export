@@ -38,7 +38,7 @@ async def db_session() -> AsyncSession:
 
 @pytest.fixture()
 def override_get_db(db_session: AsyncSession):
-    async def _override_get_db():
+    async def _override_get_db(get_db):
         yield db_session
 
     return _override_get_db

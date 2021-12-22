@@ -8,6 +8,7 @@ from typing import IO, Any, Dict, List, Union
 import petl as etl
 from db import get_db
 from sqlmodel import select
+from fastapi import Depends
 
 from app.core.reports.models import ExportFile, FileTypesEnum
 
@@ -104,7 +105,7 @@ def save_csv_file_in_export_file(
     file_path = os.path.join(os.getcwd(), file_name)
     shutil.copy(temporary_file.name, file_path)
 
-    db = get_db()
+    db = Depends(get_db)
     export_file = select(ExportFile).where(ExportFile.id == export_file.id)
     export_file.content_file = file_path
     db.add(export_file)
