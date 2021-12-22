@@ -4,7 +4,7 @@ import {
   FormControl,
   FormControlLabel,
   Radio,
-  RadioGroup
+  RadioGroup,
 } from '@material-ui/core'
 
 import Surface from '../Surface'

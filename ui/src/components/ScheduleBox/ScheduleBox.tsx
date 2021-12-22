@@ -9,7 +9,7 @@ import {
   MenuItem,
   Paper,
   Typography,
-  TextField
+  TextField,
 } from '@material-ui/core'
 import moment from 'moment'
 import { ToggleButtonGroup } from '@material-ui/lab'
@@ -39,7 +39,7 @@ export function ScheduleBox() {
           label="Email report periodically"
         />
       </FormControl>
-      {isExtended &&
+      {isExtended && (
         <>
           <FormControl fullWidth variant="outlined">
             <InputLabel>Export frequency</InputLabel>
@@ -56,12 +56,7 @@ export function ScheduleBox() {
             </Select>
           </FormControl>
           <FormControl>
-            <FormControlLabel
-              control={
-                <Checkbox />
-              }
-              label="Start today"
-            />
+            <FormControlLabel control={<Checkbox />} label="Start today" />
           </FormControl>
           <FormControl fullWidth>
             <Paper className={classes.zonePaper}>
@@ -69,21 +64,35 @@ export function ScheduleBox() {
                 style={{ width: '100%' }}
                 exclusive
                 value={zone}
-                onChange={(e, newZone) => { setZone(newZone) }}
+                onChange={(e, newZone) => {
+                  setZone(newZone)
+                }}
               >
-                <ZoneToggle className={classes.zoneToggle} value="local" aria-label="a">
+                <ZoneToggle
+                  className={classes.zoneToggle}
+                  value="local"
+                  aria-label="a"
+                >
                   <Box>
                     <Typography variant="button">Local</Typography>
                     <Typography variant="caption">UTC +4</Typography>
                   </Box>
                 </ZoneToggle>
-                <ZoneToggle className={classes.zoneToggle} value="channel" aria-label="b">
+                <ZoneToggle
+                  className={classes.zoneToggle}
+                  value="channel"
+                  aria-label="b"
+                >
                   <Box>
                     <Typography variant="button">Channel</Typography>
                     <Typography variant="caption">UTC +2</Typography>
                   </Box>
                 </ZoneToggle>
-                <ZoneToggle className={classes.zoneToggle} value="utc" aria-label="c">
+                <ZoneToggle
+                  className={classes.zoneToggle}
+                  value="utc"
+                  aria-label="c"
+                >
                   <Typography variant="button">UTC</Typography>
                 </ZoneToggle>
               </ToggleButtonGroup>
@@ -95,18 +104,22 @@ export function ScheduleBox() {
               type="date"
               label="Date"
               defaultValue={moment().format('yyyy-MM-DD')}
-              onChange={e => setSelectedDate(moment(new Date(e.currentTarget.value)))}
+              onChange={e =>
+                setSelectedDate(moment(new Date(e.currentTarget.value)))
+              }
             />
             <TextField
               className={classes.time}
               type="time"
               label="Time"
               defaultValue={moment().format('HH:mm')}
-              onChange={e => setSelectedTime(moment(new Date(e.currentTarget.value)))}
+              onChange={e =>
+                setSelectedTime(moment(new Date(e.currentTarget.value)))
+              }
             />
           </Box>
         </>
-      }
+      )}
     </Box>
   )
 }

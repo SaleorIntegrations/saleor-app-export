@@ -5,7 +5,7 @@ import { makeStyles } from '@saleor/macaw-ui'
 
 import SaleorAvatar from '../../assets/images/avatars/saleor.svg'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     padding: '1.6rem 2.4rem 1.6rem 2.4rem',
     boxSizing: 'border-box',
@@ -17,12 +17,12 @@ const useStyles = makeStyles((theme) => ({
   avatar: {
     width: theme.spacing(7),
     height: theme.spacing(7),
-    marginRight: theme.spacing(1)
+    marginRight: theme.spacing(1),
   },
   avatarBox: {
     display: 'flex',
-    alignItems: 'center'
-  }
+    alignItems: 'center',
+  },
 }))
 
 export function Header() {
@@ -37,8 +37,8 @@ export function Header() {
           <Typography variant="caption">BY SALEOR COMMERCE</Typography>
         </Box>
       </Box>
-      <IconButton aria-label='close-button'>
-        <CloseRounded  />
+      <IconButton aria-label="close-button">
+        <CloseRounded />
       </IconButton>
     </Paper>
   )

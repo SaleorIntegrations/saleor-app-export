@@ -6,7 +6,7 @@ export const ZoneToggle = withStyles({
   selected: {
     backgroundColor: '#06847B !important',
     color: '#FFFFFF !important',
-  }
+  },
 })(ToggleButton)
 
 export default ZoneToggle
