@@ -1,5 +1,5 @@
 from collections import ChainMap
-from typing import Dict, List, Tuple
+from typing import Dict, List, Tuple, TYPE_CHECKING
 
 from gql import Client
 from gql.dsl import DSLQuery, DSLSchema, dsl_gql
@@ -8,9 +8,13 @@ from app.core.common.utils.sdk.saleor import get_saleor_transport
 
 from .. import ProductExportFields
 
+if TYPE_CHECKING:
+    # flake8: noqa
+    from app.graphql.reports.mutations.products import ExportInfoInput
+
 
 async def get_export_fields_and_headers_info(
-    export_info: Dict[str, list]
+    export_info: "ExportInfoInput",
 ) -> Tuple[List[str], List[str], List[str]]:
     """Get export fields, all headers and headers mapping.
 
@@ -34,7 +38,7 @@ async def get_export_fields_and_headers_info(
 
 
 def get_product_export_fields_and_headers(
-    export_info: Dict[str, list]
+    export_info: "ExportInfoInput",
 ) -> Tuple[List[str], List[str]]:
     """Get export fields from export info and prepare headers mapping.
 
@@ -44,7 +48,7 @@ def get_product_export_fields_and_headers(
     export_fields = ["id"]
     file_headers = ["id"]
 
-    fields = export_info.get("fields")
+    fields = export_info.fields
     if not fields:
         return export_fields, file_headers
 
@@ -60,10 +64,12 @@ def get_product_export_fields_and_headers(
     return export_fields, file_headers
 
 
-async def get_object_headers(export_info: Dict[str, list]) -> List[list]:
-    attribute_ids = export_info.get("attributes")
-    warehouse_ids = export_info.get("warehouses")
-    channel_ids = export_info.get("channels")
+async def get_object_headers(
+    export_info: "ExportInfoInput",
+) -> Tuple[List[str], List[str], List[str]]:
+    attribute_ids = export_info.attributes
+    warehouse_ids = export_info.warehouses
+    channel_ids = export_info.channels
 
     # There is no reason to proceed if the ids weren't provided.
     if not attribute_ids and not warehouse_ids and not channel_ids:

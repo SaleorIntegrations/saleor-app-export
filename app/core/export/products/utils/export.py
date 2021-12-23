@@ -23,7 +23,7 @@ from .. import ProductExportFields
 if TYPE_CHECKING:
     # flake8: noqa
     from app.core.reports.models import ExportFile
-
+    from app.graphql.reports.mutations.products import ExportInfoInput
 
 BATCH_SIZE = 10000
 
@@ -34,7 +34,7 @@ logger = structlog.get_logger()
 async def export_products(
     export_file: "ExportFile",
     scope: Dict[str, Union[str, dict]],
-    export_info: Dict[str, list],
+    export_info: "ExportInfoInput",
     file_type: str,
     delimiter: str = ";",
 ):
@@ -173,16 +173,16 @@ async def fetch_products(ds, fetch_after_num, scope, export_fields, session):
 
 def export_products_in_batches(
     products: List[Dict[str, Any]],
-    export_info: Dict[str, list],
+    export_info: "ExportInfoInput",
     export_fields: Set[str],
     headers: List[str],
     delimiter: str,
     temporary_file: Any,
     file_type: str,
 ):
-    warehouses = export_info.get("warehouses")
-    attributes = export_info.get("attributes")
-    channels = export_info.get("channels")
+    warehouses = export_info.scope.warehouses
+    attributes = export_info.scope.attributes
+    channels = export_info.scope.channels
 
     for product_batch in get_list_batches(products):
 

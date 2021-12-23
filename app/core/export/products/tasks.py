@@ -1,28 +1,28 @@
-from typing import Dict, Union
+from typing import Dict, Union, TYPE_CHECKING
 import asyncio
 
-from fastapi import Depends
-
-from db import get_db
 from app.core.reports.models import ExportFile
 from app.core.common.tasks import on_task_failure, on_task_success
 from app.celery import app
 from .utils.export import export_products
 
+if TYPE_CHECKING:
+    from app.graphql.reports.mutations.products import ExportInfoInput
 
-@app.task(on_success=on_task_success, on_failure=on_task_failure)
+
+# @app.task(on_success=on_task_success, on_failure=on_task_failure)
 async def export_products_task(
+    db,
     report_id: int,
     scope: Dict[str, Union[str, dict]],
-    export_info: Dict[str, list],
+    export_info: "ExportInfoInput",
     file_type: str,
     delimiter: str = ";",
 ):
-    db = Depends(get_db)
-    export_file = ExportFile(report_id=report_id)
+    export_file = ExportFile(report_id=report_id, message="What is the message for?")
     db.add(export_file)
-    db.commit()
-
-    loop = asyncio.get_event_loop()
-    coroutine = export_products(export_file, scope, export_info, file_type, delimiter)
-    loop.run_until_complete(coroutine)
+    await db.commit()
+    await export_products(export_file, scope, export_info, file_type, delimiter)
+    # loop = asyncio.get_event_loop()
+    # coroutine = export_products(export_file, scope, export_info, file_type, delimiter)
+    # loop.run_until_complete(coroutine)

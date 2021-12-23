@@ -46,7 +46,7 @@ class ExportFile(SQLModel, table=True):
     updated_at: datetime = Field(default_factory=datetime.utcnow)
     status: JobStatusesEnum = Field(default=JobStatusesEnum.PENDING)
     message: constr(max_length=255)
-    content_file: constr(max_length=255)
+    content_file: constr(max_length=255) = Field(default="")
     report_id: int = Field(foreign_key="report.id")
 
 

@@ -1,43 +1,99 @@
-from typing import List
+from typing import List, Dict
+import enum
 
 import strawberry
+from pydantic import BaseModel, ValidationError, validator
 
 from app.core.reports.models import ExportObjectTypesEnum, Report
 from app.core.export.products.tasks import export_products_task
+from app.core.common.error_codes import ExportErrorCode
 
 
 @strawberry.input
-class ExportProductsInfo:
+class ExportInfoInput:
     fields: List[str]
-    fileType: str
+    attributes: List[str]
+    warehouses: List[str]
+    channels: List[str]
+
+
+class ExportProductsModel(BaseModel):
     scope: str
     filter: str
     ids: List[str]
+    export_info: ExportInfoInput
+    fileType: str
+
+    @validator("ids")
+    def ids_provided(cls, v, values, **kwargs):
+        if values["scope"].lower() == ExportScope.IDS.value and not v:
+            raise ValueError("You must provide at least one product id.")
+        return v
+
+    @validator("filter")
+    def filter_provided(cls, v, values, **kwargs):
+        if values["scope"].lower() == ExportScope.FILTER.value and not v:
+            raise ValueError("You must provide filter input.")
+        return v
 
 
-@strawberry.input
+@strawberry.experimental.pydantic.input(model=ExportProductsModel)
 class ExportProductsInput:
-    export_info: ExportProductsInfo
+    scope: strawberry.auto
+    filter: strawberry.auto
+    ids: strawberry.auto
+    export_info: strawberry.auto
+    fileType: strawberry.auto
+
+
+@strawberry.enum
+class ExportScope(enum.Enum):
+    ALL = "all"
+    IDS = "ids"
+    FILTER = "filter"
+
+    @property
+    def description(self):
+        # pylint: disable=no-member
+        description_mapping = {
+            ExportScope.ALL.name: "Export all products.",
+            ExportScope.IDS.name: "Export products with given ids.",
+            ExportScope.FILTER.name: "Export the filtered products.",
+        }
+        if self.name in description_mapping:
+            return description_mapping[self.name]
+        raise ValueError("Unsupported enum value: %s" % self.value)
+
+
+def get_scope(input):
+    scope = input.scope.lower()
+    if scope == ExportScope.IDS.value:  # type: ignore
+        return {"ids": input.ids}
+    elif scope == ExportScope.FILTER.value:  # type: ignore
+        return {"filter": filter}
+    return {"all": ""}
 
 
 async def mutate_export_products(root, input: ExportProductsInput, info):
+    scope = get_scope(input)
+    input.to_pydantic()
+
     db = info.context["db"]
-    print(f"SCOPE!: {input.export_info.scope}")
+
     report = Report(
         type=ExportObjectTypesEnum.PRODUCTS,
-        scope=input.export_info.scope,
-        filter_input=input.export_info.filter,
-        ids=input.export_info.ids,
+        scope=input.scope,
+        filter_input=input.filter,
+        ids=input.ids,
     )
     db.add(report)
     await db.commit()
-    # TODO validate the input before passing it to the task
-    # Also, consider sending just export_info
-    # and access its attributes in the functions
-    export_products_task(
+
+    await export_products_task(
+        db,
         report.id,
-        input.export_info.scope,
+        scope,
         input.export_info,
-        input.export_info.fileType,
+        input.fileType,
     )
     return report
