@@ -17,7 +17,16 @@ export const useStyles = makeStyles((theme) => ({
   },
   checkBox: {
     display: 'flex',
-    alignItems: 'center'
+    alignItems: 'center',
+    position: 'relative'
+  },
+  hiddenCell: {
+    visibility: 'hidden',
+  },
+  selectedText: {
+    position: 'absolute',
+    left: '100%',
+    width: 'max-content'
   }
 }))
 

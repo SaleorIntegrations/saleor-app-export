@@ -45,7 +45,7 @@ export function ReportTableHeader(props: ReportTableHeaderProps) {
   return (
     <TableHead className={clsx(numSelected > 0 && classes.selected)}>
       <TableRow>
-        <TableCell colSpan={numSelected > 0 ? 4 : undefined} padding="checkbox">
+        <TableCell padding="checkbox">
           <Box className={classes.checkBox}>
             <Checkbox
               disabled={rowCount === 0}
@@ -54,27 +54,29 @@ export function ReportTableHeader(props: ReportTableHeaderProps) {
               onChange={onSelectAllClick}
             />
             {numSelected > 0 && (
-              <Typography>{`Selected ${numSelected} reports`}</Typography>
+              <Typography className={classes.selectedText}>
+                {`Selected ${numSelected} reports`}
+              </Typography>
             )}
           </Box>
         </TableCell>
-        {(numSelected === 0 || rowCount === 0) &&
-          headCells.map(headCell => (
-            <TableCell
-              key={headCell.key}
-              align={headCell.numeric ? 'right' : 'left'}
-              padding="normal"
-              sortDirection={orderBy === headCell.key ? order : false}
+        {headCells.map(headCell => (
+          <TableCell
+            key={headCell.key}
+            align={headCell.numeric ? 'right' : 'left'}
+            padding="normal"
+            sortDirection={orderBy === headCell.key ? order : false}
+          >
+            <TableSortLabel
+              active={orderBy === headCell.key}
+              direction={orderBy === headCell.key ? order : 'asc'}
+              onClick={event => onSort(event, headCell.key)}
+              className={clsx(numSelected > 0 && classes.hiddenCell)}
             >
-              <TableSortLabel
-                active={orderBy === headCell.key}
-                direction={orderBy === headCell.key ? order : 'asc'}
-                onClick={event => onSort(event, headCell.key)}
-              >
-                {headCell.label}
-              </TableSortLabel>
-            </TableCell>
-          ))}
+              {headCell.label}
+            </TableSortLabel>
+          </TableCell>
+        ))}
         <TableCell align="center" padding="checkbox">
           {numSelected > 0 && (
             <IconButton onClick={onMultiDelete}>
