@@ -15,7 +15,7 @@ def on_task_failure(self, exc, task_id, args, kwargs, einfo):
     export_file = db.fetch_one(
         query=update(ExportFile.__table__)
         .where(ExportFile.id == export_file_id)
-        .values(content_file=None, status=JobStatusesEnum.FAILED.value())
+        .values(content_file=None, status=JobStatusesEnum.FAILED.value)
     )
 
     events.export_failed_event(
@@ -34,7 +34,7 @@ def on_task_success(self, retval, task_id, args, kwargs):
     export_file = db.fetch_one(
         query=update(ExportFile.__table__)
         .where(ExportFile.id == export_file_id)
-        .values(content_file=None, status=JobStatusesEnum.SUCCESS.value())
+        .values(content_file=None, status=JobStatusesEnum.SUCCESS.value)
     )
 
     events.export_success_event(

@@ -1,12 +1,11 @@
-from typing import List, Dict
+from typing import List
 import enum
 
 import strawberry
-from pydantic import BaseModel, ValidationError, validator
+from pydantic import BaseModel, validator
 
 from app.core.reports.models import ExportObjectTypesEnum, Report
 from app.core.export.products.tasks import export_products_task
-from app.core.common.error_codes import ExportErrorCode
 
 
 @strawberry.input
@@ -75,9 +74,9 @@ def get_scope(input):
 
 
 async def mutate_export_products(root, input: ExportProductsInput, info):
-    scope = get_scope(input)
     input.to_pydantic()
 
+    scope = get_scope(input)
     db = info.context["db"]
 
     report = Report(

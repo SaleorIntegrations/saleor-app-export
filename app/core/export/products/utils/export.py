@@ -95,7 +95,7 @@ async def get_products(
 
 def get_required_product_fields(export_fields):
     query_fields = []
-    fields = ProductExportFields.ALT_PRODUCT_FIELDS["fields"].values()
+    fields = ProductExportFields.ALT_PRODUCT_FIELDS["fields"].items()
     for name, field in fields:
         if name in export_fields:
             # TODO double check if there is a danger in using eval in this case.
@@ -111,16 +111,19 @@ async def fetch_products(ds, fetch_after_num, scope, export_fields, session):
     channel = "moto"
     first_object_num = 50
 
-    query = """
-        query {
-            products (first:$first_object_num, after:$fetch_after_num, channel: $channel, filter: {$filter}) {
-                edges {
-                    node {
-                        $fields
-                    }
-                }
-            }
-        }
+    required_fields = get_required_product_fields(export_fields)
+    fields = " ".join(required_fields)
+
+    query = f"""
+        query {{
+            products (first:$first_object_num, after:$fetch_after_num, channel: $channel, filter: $filter) {{
+                edges {{
+                    node {{
+                        {fields}
+                    }}
+                }}
+            }}
+        }}
     """
 
     if "ids" in scope:
@@ -130,7 +133,7 @@ async def fetch_products(ds, fetch_after_num, scope, export_fields, session):
         #     channel=channel,
         #     after=fetch_after_num,
         # )
-        query_filter = f"ids: ${scope['ids']}"
+        query_filter = f"ids: {scope.ids}"
     elif "filter" in scope:
         # FIXME Add a proper filter
         # query = ds.Query.products(
@@ -139,20 +142,18 @@ async def fetch_products(ds, fetch_after_num, scope, export_fields, session):
         #     channel=channel,
         #     after=fetch_after_num,
         # )
-        query_filter = parse_input(scope["filter"])
+        query_filter = parse_input(scope.filter)
     else:
         # query = ds.Query.products(
         #     first=first_object_num, channel=channel, after=fetch_after_num
         # )
-        query_filter = ""
+        query_filter = "{}"
 
-    required_fields = get_required_product_fields(export_fields)
     query_variables = {
         "first_object_num": first_object_num,
         "fetch_after_num": fetch_after_num,
         "channel": channel,
         "filter": query_filter,
-        "fields": required_fields,
     }
 
     # dsl_query = dsl_gql(
@@ -180,9 +181,9 @@ def export_products_in_batches(
     temporary_file: Any,
     file_type: str,
 ):
-    warehouses = export_info.scope.warehouses
-    attributes = export_info.scope.attributes
-    channels = export_info.scope.channels
+    warehouses = export_info.warehouses
+    attributes = export_info.attributes
+    channels = export_info.channels
 
     for product_batch in get_list_batches(products):
 
