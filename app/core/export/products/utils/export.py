@@ -1,8 +1,8 @@
 from typing import TYPE_CHECKING, Any, Dict, List, Set, Union
+from collections import ChainMap
 
 import structlog
 from gql import Client, gql
-from gql.dsl import DSLQuery, DSLSchema, dsl_gql
 from saleor_app_base.sdk.saleor import call_authorized
 
 from app.core.common.utils.export import (
@@ -45,7 +45,6 @@ async def export_products(
         file_headers,
         data_headers,
     ) = await get_export_fields_and_headers_info(export_info)
-
     products = await get_products(scope, export_fields)
 
     temporary_file = create_file_with_headers(file_headers, delimiter, file_type)
@@ -77,11 +76,8 @@ async def get_products(
     products = []
     continue_fetching = True
     fetch_after_num = ""
-    # async with client as session:
-    # ds = DSLSchema(client.schema)
     while continue_fetching:
         response = await fetch_products(client, fetch_after_num, scope, export_fields)
-        print(response)
         if response.get("products", []):
             edges = response["products"]["edges"]
             products += edges
@@ -93,14 +89,13 @@ async def get_products(
 
 
 def get_required_product_fields(export_fields):
+
     query_fields = []
-    fields = ProductExportFields.ALT_PRODUCT_FIELDS["fields"].items()
+    fields = dict(
+        ChainMap(*reversed(ProductExportFields.ALT_PRODUCT_FIELDS.values()))  # type: ignore
+    )
     for name, field in fields:
         if name in export_fields:
-            # TODO double check if there is a danger in using eval in this case.
-            # In theory it should be safe as we define the passed strings ourselves.
-            # And so far it seems the most convenient way of dealing with dynamic queries using DSL.
-            # query_fields.append(eval(field))
             query_fields.append(field)
     return query_fields
 
@@ -116,26 +111,10 @@ async def fetch_products(client, fetch_after_num, scope, export_fields):
     params_list = [f'channel: "{channel}"', f"first: {first_object_num}"]
 
     if "ids" in scope:
-        # query = ds.Query.products(
-        #     filter={"id": {"in": scope["ids"]}},
-        #     first=first_object_num,
-        #     channel=channel,
-        #     after=fetch_after_num,
-        # )
         query_filter = f"ids: {scope.ids}"
     elif "filter" in scope:
-        # FIXME Add a proper filter
-        # query = ds.Query.products(
-        #     filter=parse_input(scope["filter"]),
-        #     first=first_object_num,
-        #     channel=channel,
-        #     after=fetch_after_num,
-        # )
         query_filter = parse_input(scope.filter)
     else:
-        # query = ds.Query.products(
-        #     first=first_object_num, channel=channel, after=fetch_after_num
-        # )
         query_filter = None
 
     if query_filter:
@@ -143,7 +122,7 @@ async def fetch_products(client, fetch_after_num, scope, export_fields):
     if fetch_after_num:
         params_list.append(f'after: "{fetch_after_num}"')
     params = ", ".join(params_list)
-    print(f"params: {params}")
+
     query = f"""
         query {{
             products ({params}) {{
@@ -160,29 +139,9 @@ async def fetch_products(client, fetch_after_num, scope, export_fields):
         }}
     """
 
-    query_variables = {
-        "first_object_num": first_object_num,
-        "fetch_after_num": fetch_after_num,
-        "channel": channel,
-        "filter": query_filter,
-    }
-
-    # dsl_query = dsl_gql(
-    #     DSLQuery(
-    #         query.select(
-    #             ds.ProductCountableConnection.edges.select(
-    #                 ds.ProductCountableEdge.node.select(*required_fields)
-    #             )
-    #         )
-    #     )
-    # )
-
-    # response = await session.execute(dsl_query)
-
     query = gql(query)
     response = await client.execute_async(query)
 
-    # response = await call_authorized(query, query_variables)
     return response
 
 

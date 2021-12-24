@@ -51,19 +51,19 @@ def get_products_data(
     # )
 
     products_data = []
-    # TODO RETURN BACK AFTER TESTING
-    # for item in products:
-    #     extra_fields = {
-    #         "product_weight": str(item["node"]["weight"]["value"]) + " g"
-    #         if item["node"]["weight"]["value"]
-    #         else "",
-    #         "variant_weight": str(item["node"]["defaultVariant"]["weight"]) + " g"
-    #         if item["node"]["defaultVariant"]
-    #         and item["node"]["defaultVariant"]["weight"]
-    #         else "",
-    #     }
-    #     item["node"].update(extra_fields)
-    #     products_data.append(item)
+
+    for item in products:
+        extra_fields = {
+            "product_weight": str(item["node"]["weight"]["value"]) + " g"
+            if item["node"]["weight"]["value"]
+            else "",
+            "variant_weight": str(item["node"]["defaultVariant"]["weight"]) + " g"
+            if item["node"]["defaultVariant"]
+            and item["node"]["defaultVariant"]["weight"]
+            else "",
+        }
+        item["node"].update(extra_fields)
+        products_data.append(item)
 
     # TODO we do not need related fields for the MVP.
     # Return it back later.

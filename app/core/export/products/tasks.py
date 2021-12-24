@@ -20,7 +20,7 @@ async def export_products_task(
     delimiter: str = ";",
 ):
     db_generator = get_db()
-    db = db_generator.__anext__()
+    db = await db_generator.__anext__()
     export_file = ExportFile(report_id=report_id, message="What is the message for?")
     db.add(export_file)
     await db.commit()
