@@ -1,7 +1,5 @@
 from typing import TYPE_CHECKING
 
-from fastapi import Depends
-
 from app.core.reports.models import ExportEvent, ExportEventsEnum
 from db import get_db
 
@@ -10,7 +8,8 @@ if TYPE_CHECKING:
 
 
 def export_started_event(*, export_file: "ExportFile"):
-    db = Depends(get_db)
+    db_generator = get_db()
+    db = db_generator.__anext__()
     db.add(
         ExportEvent(
             export_file_id=export_file.id,
@@ -24,7 +23,8 @@ def export_success_event(
     *,
     export_file: "ExportFile",
 ):
-    db = Depends(get_db)
+    db_generator = get_db()
+    db = db_generator.__anext__()
     db.add(
         ExportEvent(
             export_file_id=export_file.id,
@@ -40,7 +40,8 @@ def export_failed_event(
     message: str,
     error_type: str,
 ):
-    db = Depends(get_db)
+    db_generator = get_db()
+    db = db_generator.__anext__()
     db.add(
         ExportEvent(
             export_file_id=export_file.id,
@@ -55,7 +56,8 @@ def export_deleted_event(
     *,
     export_file: "ExportFile",
 ):
-    db = Depends(get_db)
+    db_generator = get_db()
+    db = db_generator.__anext__()
     db.add(
         ExportEvent(export_file_id=export_file.id, type=ExportEventsEnum.EXPORT_DELETED)
     )
@@ -63,7 +65,8 @@ def export_deleted_event(
 
 
 def export_file_sent_event(*, export_file_id: int):
-    db = Depends(get_db)
+    db_generator = get_db()
+    db = db_generator.__anext__()
     db.add(
         ExportEvent(
             export_file_id=export_file_id,
@@ -74,7 +77,8 @@ def export_file_sent_event(*, export_file_id: int):
 
 
 def export_failed_info_sent_event(*, export_file_id: int, user_id: int):
-    db = Depends(get_db)
+    db_generator = get_db()
+    db = db_generator.__anext__()
     db.add(
         ExportEvent(
             export_file_id=export_file_id,

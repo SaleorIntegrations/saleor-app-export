@@ -89,7 +89,6 @@ async def mutate_export_products(root, input: ExportProductsInput, info):
     await db.commit()
 
     await export_products_task(
-        db,
         report.id,
         scope,
         input.export_info,

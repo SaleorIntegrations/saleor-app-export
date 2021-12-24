@@ -1,5 +1,4 @@
 from sqlalchemy import update
-from fastapi import Depends
 
 from app.core.reports.models import ExportFile, JobStatusesEnum
 from db import get_db
@@ -11,7 +10,8 @@ from .notifications import send_export_failed_info
 def on_task_failure(self, exc, task_id, args, kwargs, einfo):
     export_file_id = args[0]
 
-    db = Depends(get_db)
+    db_generator = get_db()
+    db = db_generator.__anext__()
     export_file = db.fetch_one(
         query=update(ExportFile.__table__)
         .where(ExportFile.id == export_file_id)
@@ -30,7 +30,8 @@ def on_task_failure(self, exc, task_id, args, kwargs, einfo):
 def on_task_success(self, retval, task_id, args, kwargs):
     export_file_id = args[0]
 
-    db = Depends(get_db)
+    db_generator = get_db()
+    db = db_generator.__anext__()
     export_file = db.fetch_one(
         query=update(ExportFile.__table__)
         .where(ExportFile.id == export_file_id)

@@ -99,14 +99,17 @@ def append_to_file(
         etl.io.xlsx.appendxlsx(table, temporary_file.name)
 
 
-def save_csv_file_in_export_file(
+async def save_csv_file_in_export_file(
     export_file: "ExportFile", temporary_file: IO[bytes], file_name: str
 ):
     file_path = os.path.join(os.getcwd(), file_name)
     shutil.copy(temporary_file.name, file_path)
 
-    db = Depends(get_db)
-    export_file = select(ExportFile).where(ExportFile.id == export_file.id)
+    db_generator = get_db()
+    db = await db_generator.__anext__()
+    statement = select(ExportFile).where(ExportFile.id == export_file.id)
+    result = await db.exec(statement)
+    export_file = result.first()
     export_file.content_file = file_path
     db.add(export_file)
-    db.commit()
+    await db.commit()

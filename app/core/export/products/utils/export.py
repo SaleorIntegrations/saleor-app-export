@@ -1,7 +1,7 @@
 from typing import TYPE_CHECKING, Any, Dict, List, Set, Union
 
 import structlog
-from gql import Client
+from gql import Client, gql
 from gql.dsl import DSLQuery, DSLSchema, dsl_gql
 from saleor_app_base.sdk.saleor import call_authorized
 
@@ -60,7 +60,7 @@ async def export_products(
         file_type,
     )
 
-    save_csv_file_in_export_file(export_file, temporary_file, file_name)
+    await save_csv_file_in_export_file(export_file, temporary_file, file_name)
     temporary_file.close()
 
     # TODO get back after the demo
@@ -76,19 +76,18 @@ async def get_products(
     client = Client(transport=transport, fetch_schema_from_transport=True)
     products = []
     continue_fetching = True
-    fetch_after_num = 0
-    async with client as session:
-        ds = DSLSchema(client.schema)
-        while continue_fetching:
-            response = await fetch_products(
-                ds, fetch_after_num, scope, export_fields, session
-            )
-            if response.get("products", []):
-                edges = response["products"]["edges"]
-                products += edges
-                fetch_after_num += len(edges)
-            else:
-                continue_fetching = False
+    fetch_after_num = ""
+    # async with client as session:
+    # ds = DSLSchema(client.schema)
+    while continue_fetching:
+        response = await fetch_products(client, fetch_after_num, scope, export_fields)
+        print(response)
+        if response.get("products", []):
+            edges = response["products"]["edges"]
+            products += edges
+            fetch_after_num = response["products"]["pageInfo"]["endCursor"]
+        if not response["products"]["pageInfo"]["hasNextPage"]:
+            continue_fetching = False
 
     return products
 
@@ -106,25 +105,15 @@ def get_required_product_fields(export_fields):
     return query_fields
 
 
-async def fetch_products(ds, fetch_after_num, scope, export_fields, session):
+async def fetch_products(client, fetch_after_num, scope, export_fields):
     # TODO fetch channels from the scope
+
     channel = "moto"
     first_object_num = 50
 
     required_fields = get_required_product_fields(export_fields)
     fields = " ".join(required_fields)
-
-    query = f"""
-        query {{
-            products (first:$first_object_num, after:$fetch_after_num, channel: $channel, filter: $filter) {{
-                edges {{
-                    node {{
-                        {fields}
-                    }}
-                }}
-            }}
-        }}
-    """
+    params_list = [f'channel: "{channel}"', f"first: {first_object_num}"]
 
     if "ids" in scope:
         # query = ds.Query.products(
@@ -147,7 +136,29 @@ async def fetch_products(ds, fetch_after_num, scope, export_fields, session):
         # query = ds.Query.products(
         #     first=first_object_num, channel=channel, after=fetch_after_num
         # )
-        query_filter = "{}"
+        query_filter = None
+
+    if query_filter:
+        params_list.append(f"filter: {query_filter}")
+    if fetch_after_num:
+        params_list.append(f'after: "{fetch_after_num}"')
+    params = ", ".join(params_list)
+    print(f"params: {params}")
+    query = f"""
+        query {{
+            products ({params}) {{
+                pageInfo {{
+                    endCursor
+                    hasNextPage
+                }}
+                edges {{
+                    node {{
+                        {fields}
+                    }}
+                }}
+            }}
+        }}
+    """
 
     query_variables = {
         "first_object_num": first_object_num,
@@ -168,7 +179,10 @@ async def fetch_products(ds, fetch_after_num, scope, export_fields, session):
 
     # response = await session.execute(dsl_query)
 
-    response = await call_authorized(query, query_variables)
+    query = gql(query)
+    response = await client.execute_async(query)
+
+    # response = await call_authorized(query, query_variables)
     return response
 
 

@@ -24,9 +24,7 @@ def get_products_data(
 
     products_with_variants_data = []
 
-    product_fields = set(
-        ProductExportFields.HEADERS_TO_FIELDS_MAPPING["fields"].values()
-    )
+    product_fields = set(ProductExportFields.ALT_PRODUCT_FIELDS["fields"].keys())
     product_export_fields = export_fields & product_fields
     product_export_fields.add("variants__id")
 
@@ -53,19 +51,19 @@ def get_products_data(
     # )
 
     products_data = []
-
-    for item in products:
-        extra_fields = {
-            "product_weight": str(item["node"]["weight"]["value"]) + " g"
-            if item["node"]["weight"]["value"]
-            else "",
-            "variant_weight": str(item["node"]["defaultVariant"]["weight"]) + " g"
-            if item["node"]["defaultVariant"]
-            and item["node"]["defaultVariant"]["weight"]
-            else "",
-        }
-        item["node"].update(extra_fields)
-        products_data.append(item)
+    # TODO RETURN BACK AFTER TESTING
+    # for item in products:
+    #     extra_fields = {
+    #         "product_weight": str(item["node"]["weight"]["value"]) + " g"
+    #         if item["node"]["weight"]["value"]
+    #         else "",
+    #         "variant_weight": str(item["node"]["defaultVariant"]["weight"]) + " g"
+    #         if item["node"]["defaultVariant"]
+    #         and item["node"]["defaultVariant"]["weight"]
+    #         else "",
+    #     }
+    #     item["node"].update(extra_fields)
+    #     products_data.append(item)
 
     # TODO we do not need related fields for the MVP.
     # Return it back later.
