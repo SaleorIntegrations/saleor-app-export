@@ -1,4 +1,5 @@
 import React from 'react'
+import { Provider as QLClientProvider } from 'urql'
 import { TenantProvider } from 'saleor-app-ui'
 import { ThemeProvider } from '@saleor/macaw-ui'
 
@@ -6,6 +7,7 @@ import Layout from './components/Layout'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import Content from './components/Content'
+import apiClient from './api/apiClient'
 import './App.css'
 
 // to remove
@@ -24,16 +26,18 @@ const options = (
 
 function App() {
   return (
-    <ThemeProvider>
-      {/* <TenantProvider> */}
-      {/* <Layout
-        header={<Header />}
-        content={<Content settings={<div>a</div>} options={options} />}
-        footer={<Footer />}
-      /> */}
-      <Layout header={<ReportList />} content={<div />} footer={<div />} />
-      {/* </TenantProvider> */}
-    </ThemeProvider>
+    <QLClientProvider value={apiClient}>
+      <ThemeProvider>
+        {/* <TenantProvider> */}
+        {/* <Layout
+          header={<Header />}
+          content={<Content settings={<div>a</div>} options={options} />}
+          footer={<Footer />}
+        /> */}
+        <Layout header={<ReportList />} content={<div />} footer={<div />} />
+        {/* </TenantProvider> */}
+      </ThemeProvider>
+    </QLClientProvider>
   )
 }
 

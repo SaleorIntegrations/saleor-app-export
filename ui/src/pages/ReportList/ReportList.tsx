@@ -3,6 +3,7 @@ import { Paper } from '@material-ui/core'
 
 import TableHeader from '../../components/TableHeader'
 import ReportTable from '../../components/ReportTable'
+import ReportsFilter from '../../components/ReportsFilter'
 
 export function ReportList() {
   const [reports, setReports] = useState(
@@ -12,6 +13,7 @@ export function ReportList() {
   return (
     <Paper>
       <TableHeader />
+      <ReportsFilter />
       <ReportTable reports={reports} setReports={setReports} />
     </Paper>
   )
