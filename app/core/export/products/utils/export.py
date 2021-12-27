@@ -62,7 +62,7 @@ async def export_products(
     await save_csv_file_in_export_file(export_file, temporary_file, file_name)
     temporary_file.close()
 
-    # TODO get back after the demo
+    # TODO implement notifications
     # send_export_download_link_notification(export_file)
 
 
@@ -76,6 +76,8 @@ async def get_products(
     products = []
     continue_fetching = True
     fetch_after_num = ""
+
+    # Continue fetching the products until we get all the required ones.
     while continue_fetching:
         response = await fetch_products(client, fetch_after_num, scope, export_fields)
         if response.get("products", []):
@@ -89,7 +91,14 @@ async def get_products(
 
 
 def get_required_product_fields(export_fields):
+    """
+    Get required product fields based on the predefined fields.
 
+    Takes into account only those, that were speicfied by the user.
+
+    If the user has specified some extra fields but they aren't included in
+    `ProductExportFields`, then they won't be exported.
+    """
     query_fields = []
     fields = dict(
         ChainMap(*reversed(ProductExportFields.ALT_PRODUCT_FIELDS.values()))  # type: ignore
@@ -101,8 +110,12 @@ def get_required_product_fields(export_fields):
 
 
 async def fetch_products(client, fetch_after_num, scope, export_fields):
+    """
+    Build the query for fetching products and perform the request.
+    """
     # TODO fetch channels from the scope
-
+    # Right now the product query allows to specify just one channel.
+    # It would be great to add the ability to specify multiple ones.
     channel = "moto"
     first_object_num = 50
 

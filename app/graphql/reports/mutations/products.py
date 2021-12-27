@@ -17,6 +17,12 @@ class ExportInfoInput:
 
 
 class ExportProductsModel(BaseModel):
+    """
+    A Pydantic model for the export info.
+
+    Is used for validation of the ExportProductsInput.
+    """
+
     scope: str
     filter: str
     ids: List[str]
@@ -38,6 +44,10 @@ class ExportProductsModel(BaseModel):
 
 @strawberry.experimental.pydantic.input(model=ExportProductsModel)
 class ExportProductsInput:
+    """
+    Fields in this inpute are automatically fetched from the ExportProductsModel.
+    """
+
     scope: strawberry.auto
     filter: strawberry.auto
     ids: strawberry.auto
@@ -74,6 +84,12 @@ def get_scope(input):
 
 
 async def mutate_export_products(root, input: ExportProductsInput, info):
+    """
+    Mutation for triggering the export process.
+    """
+
+    # This method triggers the validation of the input
+    # in the ExportProductsModel.
     input.to_pydantic()
 
     scope = get_scope(input)

@@ -18,8 +18,8 @@ def get_products_data(
 ) -> List[Dict[str, Union[str, bool]]]:
     """Create data list of products and their variants with fields values.
 
-    It return list with product and variant data which can be used as import to
-    csv writer and list of attribute and warehouse headers.
+    It returns a list with product and variant data which can be used as import to
+    csv writer and a list of attribute and warehouse headers.
     """
 
     products_with_variants_data = []
@@ -27,28 +27,6 @@ def get_products_data(
     product_fields = set(ProductExportFields.ALT_PRODUCT_FIELDS["fields"].keys())
     product_export_fields = export_fields & product_fields
     product_export_fields.add("variants__id")
-
-    # products_data = (
-    #     queryset.annotate(
-    #         product_weight=Case(
-    #             When(weight__isnull=False, then=Concat("weight", V(" g"))),
-    #             default=V(""),
-    #             output_field=CharField(),
-    #         ),
-    #         variant_weight=Case(
-    #             When(
-    #                 variants__weight__isnull=False,
-    #                 then=Concat("variants__weight", V(" g")),
-    #             ),
-    #             default=V(""),
-    #             output_field=CharField(),
-    #         ),
-    #         description_as_str=Cast("description", CharField()),
-    #     )
-    #     .order_by("pk", "variants__pk")
-    #     .values(*product_export_fields)
-    #     .distinct("pk", "variants__pk")
-    # )
 
     products_data = []
 
@@ -65,8 +43,9 @@ def get_products_data(
         item["node"].update(extra_fields)
         products_data.append(item)
 
-    # TODO we do not need related fields for the MVP.
-    # Return it back later.
+    # FIXME some of the data is already included/excluded in the query.
+    # Double check if we can just get rid of this code.
+
     # products_relations_data = get_products_relations_data(
     #     queryset, export_fields, attribute_ids, channel_ids
     # )
@@ -95,8 +74,8 @@ def get_products_data(
     return products_with_variants_data
 
 
-# TODO we do not need related fields for the MVP.
-# Return it back later.
+# TODO most likely we can get rid of some of the functions below
+# as we retrieve only required fields now (except a few cases)
 
 # def get_products_relations_data(
 #     queryset: List[Dict[str, Any]],

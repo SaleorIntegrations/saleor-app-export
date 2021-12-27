@@ -11,6 +11,10 @@ if TYPE_CHECKING:
     from app.graphql.reports.mutations.products import ExportInfoInput
 
 
+# TODO Do we need celery here at all?
+# Alternatively, we could make it a background task using fastapi.
+# In this case we don't need to worry about celery not supporting asyncio.
+
 # @app.task(on_success=on_task_success, on_failure=on_task_failure)
 async def export_products_task(
     report_id: int,
