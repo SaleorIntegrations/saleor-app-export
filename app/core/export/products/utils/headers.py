@@ -66,6 +66,8 @@ async def get_object_headers(
     warehouse_ids = export_info.warehouses
     channel_ids = export_info.channels
 
+    # FIXME: fetch the headers properly
+    return [], [], []
     # There is no reason to proceed if the ids weren't provided.
     if not attribute_ids and not warehouse_ids and not channel_ids:
         return [], [], []

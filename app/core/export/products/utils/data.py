@@ -33,10 +33,10 @@ def get_products_data(
     for item in products:
         extra_fields = {
             "product_weight": str(item["node"]["weight"]["value"]) + " g"
-            if item["node"]["weight"]["value"]
+            if item["node"].get("weight") and item["node"]["weight"]["value"]
             else "",
             "variant_weight": str(item["node"]["defaultVariant"]["weight"]) + " g"
-            if item["node"]["defaultVariant"]
+            if item["node"].get("defaultVariant")
             and item["node"]["defaultVariant"]["weight"]
             else "",
         }

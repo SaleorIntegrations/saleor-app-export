@@ -101,9 +101,9 @@ def get_required_product_fields(export_fields):
     """
     query_fields = []
     fields = dict(
-        ChainMap(*reversed(ProductExportFields.ALT_PRODUCT_FIELDS.values()))  # type: ignore
+        ChainMap(*reversed(ProductExportFields.PRODUCT_FIELDS.values()))  # type: ignore
     )
-    for name, field in fields:
+    for name, field in fields.items():
         if name in export_fields:
             query_fields.append(field)
     return query_fields
