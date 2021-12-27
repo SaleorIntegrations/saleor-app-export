@@ -3,27 +3,6 @@ class ProductExportFields:
 
     PRODUCT_FIELDS = {
         "fields": {
-            "id": "ds.Product.id",
-            "name": "ds.Product.name",
-            "description": "ds.Product.description",
-            "category": "ds.Product.category.select(ds.Category.slug)",
-            "product_type": "ds.Product.productType.select(ds.productType.name)",
-            "charge_taxes": "ds.Product.chargeTaxes",
-            "product_weight": "ds.Product.weight.select(ds.Weight.value)",
-            "variant_sku": "ds.Product.defaultVariant.select(ds.ProductVariant.sku)",
-            "variant_weight": "ds.Product.defaultVariant.select(ds.ProductVariant.weight.select(ds.Weight.value))",
-        },
-        "product_many_to_many": {
-            "collections": "ds.Product.collections.select(ds.Collection.slug)",
-            "product_media": "ds.Product.media.select(ds.ProductMedia.url)",
-        },
-        "variant_many_to_many": {
-            "variant_media": "ds.Product.variants.select(ds.ProductVariant.media.select(ds.ProductMedia.url))"
-        },
-    }
-
-    ALT_PRODUCT_FIELDS = {
-        "fields": {
             "id": "id",
             "name": "name",
             "description": "description",
@@ -41,6 +20,7 @@ class ProductExportFields:
         "variant_many_to_many": {"variant_media": "variants {media {url}}"},
     }
 
+    # TODO update using the same kind of values as in the PRODUCT_FIELDS
     PRODUCT_ATTRIBUTE_FIELDS = {
         "value": "attributes__values__slug",
         "file_url": "attributes__values__file_url",

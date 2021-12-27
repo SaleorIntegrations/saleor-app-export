@@ -24,7 +24,7 @@ def get_products_data(
 
     products_with_variants_data = []
 
-    product_fields = set(ProductExportFields.ALT_PRODUCT_FIELDS["fields"].keys())
+    product_fields = set(ProductExportFields.PRODUCT_FIELDS["fields"].keys())
     product_export_fields = export_fields & product_fields
     product_export_fields.add("variants__id")
 
