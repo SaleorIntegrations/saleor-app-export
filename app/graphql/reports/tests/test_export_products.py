@@ -25,7 +25,6 @@ async def test_export_products_schedules_task(m_task, graphql):
                 "fileType": "CSV",
                 "scope": "ALL",
                 "filter": "",
-                "ids": [],
             }
         }
     }

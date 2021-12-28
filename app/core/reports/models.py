@@ -26,7 +26,6 @@ class FileTypesEnum(str, enum.Enum):
 
 class ExportScopeEnum(str, enum.Enum):
     ALL = "ALL"
-    IDS = "IDS"
     FILTER = "FILTER"
 
 
@@ -37,7 +36,6 @@ class Report(SQLModel, table=True):
     scope: ExportScopeEnum
     type: ExportObjectTypesEnum
     filter_input: dict = Field(sa_column=Column(JSON), default_factory=dict)
-    ids: dict = Field(sa_column=Column(JSON), default_factory=dict)
 
 
 class ExportFile(SQLModel, table=True):
