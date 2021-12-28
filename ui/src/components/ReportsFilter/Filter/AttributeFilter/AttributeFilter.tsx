@@ -3,17 +3,17 @@ import { TextField } from '@material-ui/core'
 
 import { Filter, Option } from '../Filter'
 import useStyles from '../styles'
-import { Filter as FilterType } from '../../FilterButton'
+import { Filter as FilterType, ReducerAction } from '../../FilterButton/reducer'
 import { useSearchAttributeValuesQuery } from '../../../../api/attributesValues'
 
 export interface AttributeFilterProps {
   filter: FilterType
-  changeFilter: (filter: FilterType) => void
+  dispatch: (action: ReducerAction) => void
 }
 
 export function AttributeFilter(props: AttributeFilterProps) {
   const classes = useStyles()
-  const { filter, changeFilter } = props
+  const { filter, dispatch } = props
   const [searchedAttributeValues, fetchSearchedAttributeValues] =
     useSearchAttributeValuesQuery(filter.id, '', 10, '', { pause: true })
   const [search, setSearch] = useState('')
@@ -45,7 +45,7 @@ export function AttributeFilter(props: AttributeFilterProps) {
     <Filter
       fetchFilterOptions={fetchSearchedAttributeValues}
       filter={filter}
-      changeFilter={changeFilter}
+      dispatch={dispatch}
       searchInput={searchInput}
       filterOptions={filtredFilterOptions()}
       type="checkbox"

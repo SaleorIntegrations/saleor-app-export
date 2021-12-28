@@ -11,7 +11,7 @@ import {
 import { ExpandMore as ExpandMoreIcon } from '@material-ui/icons'
 
 import useStyles from './styles'
-import { Filter as FilterType } from '../FilterButton'
+import { Filter as FilterType, ReducerAction } from '../FilterButton/reducer'
 
 export interface Option {
   id: string
@@ -21,7 +21,7 @@ export interface Option {
 export interface FilterProps {
   fetchFilterOptions: any
   filter: FilterType
-  changeFilter: (filter: FilterType) => void
+  dispatch: (action: ReducerAction) => void
   searchInput: React.ReactNode
   filterOptions: Option[] | undefined
   type: 'checkbox' | 'radio'
@@ -30,7 +30,7 @@ export interface FilterProps {
 export function Filter({
   fetchFilterOptions,
   filter,
-  changeFilter,
+  dispatch,
   searchInput,
   filterOptions,
   type,
@@ -50,27 +50,35 @@ export function Filter({
     event: React.ChangeEvent<HTMLInputElement>,
     checked: boolean
   ) => {
-    changeFilter({ ...filter, checked: checked })
+    dispatch({ type: 'CHANGE_FILTER', filter: { ...filter, checked: checked } })
   }
 
-  const onFilterOptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (type === 'checkbox') {
-      if (filter.selected.includes(event.target.value)) {
-        changeFilter({
-          ...filter,
-          selected: filter.selected.filter(
-            select => select !== event.target.value
-          ),
-        })
-      } else {
-        changeFilter({
-          ...filter,
-          selected: [...filter.selected, event.target.value],
-        })
-      }
+  const onCheckboxFilterOptionChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    event.stopPropagation()
+    if (filter.selected.includes(event.target.value)) {
+      dispatch({
+        type: 'ADD_SELECTED',
+        id: filter.id,
+        selected: filter.selected.filter(
+          select => select !== event.target.value
+        ),
+      })
     } else {
-      changeFilter({ ...filter, selected: [event.target.value] })
+      dispatch({
+        type: 'ADD_SELECTED',
+        id: filter.id,
+        selected: [...filter.selected, event.target.value],
+      })
     }
+  }
+
+  const onRadioFilterOptionChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    event.stopPropagation()
+    dispatch({ type: 'ADD_SELECTED', selected: [event.target.value] })
   }
 
   const optionsFiltrBySearch = () => {
@@ -83,7 +91,7 @@ export function Filter({
             <Checkbox
               checked={filter.selected.includes(id)}
               value={id}
-              onChange={onFilterOptionChange}
+              onChange={onCheckboxFilterOptionChange}
             />
           ) : (
             <Radio
@@ -91,7 +99,7 @@ export function Filter({
               name={filter.name}
               checked={filter.selected.includes(id)}
               value={id}
-              onChange={onFilterOptionChange}
+              onChange={onRadioFilterOptionChange}
             />
           )
         }

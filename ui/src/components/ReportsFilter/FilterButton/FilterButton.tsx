@@ -1,21 +1,14 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback, useReducer } from 'react'
 import { Box, Button, Popover, Typography } from '@material-ui/core'
 
 import useStyles from '../styles'
 import AttributeFilter from '../Filter/AttributeFilter'
 import { useQueryGridAttributes } from '../../../api/gridAttributes'
-
-export interface Filter {
-  position: number
-  id: string
-  name: string
-  checked: boolean
-  selected: string[]
-}
+import { reducer, initFilters } from './reducer'
 
 export function FilterButton() {
+  const [filters, dispatch] = useReducer(reducer, initFilters)
   const [result] = useQueryGridAttributes([])
-  const [filters, setFilters] = useState<Filter[]>([])
   const [count, setCount] = useState(0)
   const [isOpen, setIsOpen] = useState(false)
   const [anchor, setAnchor] = useState<HTMLButtonElement | null>(null)
@@ -32,40 +25,27 @@ export function FilterButton() {
     submit()
   }
 
-  const changeFilter = (newFilter: Filter) => {
-    // set and disallow filter relocation
-    setFilters(
-      [...filters.filter(filter => filter.id !== newFilter.id), newFilter].sort(
-        (a, b) => b.position - a.position
-      )
-    )
-  }
-
   const submit = () => {
     console.log(filters.filter(filter => filter.checked === true))
   }
 
   const clearFilters = useCallback(() => {
-    setFilters(
-      filters.map(filter => ({ ...filter, checked: false, selected: [] }))
-    )
+    dispatch({ type: 'CLEAR' })
   }, [filters])
 
   useEffect(() => {
     if (result.data && filters.length === 0) {
       const newFilters = result.data.grid.edges
 
-      setFilters(
-        newFilters
-          .map(({ node: { id, name } }, index) => ({
-            position: index,
-            id: id,
-            name: name,
-            checked: false,
-            selected: [],
-          }))
-          .sort((a, b) => b.position - a.position)
-      )
+      dispatch({
+        type: 'SET_FILTERS',
+        filters: newFilters.map(({ node: { id, name } }) => ({
+          id: id,
+          name: name,
+          checked: false,
+          selected: [],
+        })),
+      })
     }
   }, [filters.length, result])
 
@@ -113,7 +93,7 @@ export function FilterButton() {
               <AttributeFilter
                 key={filter.id}
                 filter={filter}
-                changeFilter={changeFilter}
+                dispatch={dispatch}
               />
             ))}
           </Box>
