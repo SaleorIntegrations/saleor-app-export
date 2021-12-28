@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react'
 import { Box, Button, Popover, Typography } from '@material-ui/core'
 
 import useStyles from '../styles'
-import AttributeFilter from '../AttributeFilter'
+import AttributeFilter from '../Filter/AttributeFilter'
 import { useQueryGridAttributes } from '../../../api/gridAttributes'
 
 export interface Filter {
