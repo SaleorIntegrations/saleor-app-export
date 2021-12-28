@@ -2,16 +2,13 @@ import strawberry
 import uvicorn
 from fastapi import Depends
 from saleor_app_base.main import configure_application
-
 from strawberry.fastapi import GraphQLRouter
 
-# from app.core.export.products.api import router as products_router
 from app.graphql.mutations import Mutation
 from app.graphql.query import Query
 from db import get_db
 
 app = configure_application()
-# app.include_router(products_router)
 
 
 async def get_context(db=Depends(get_db)):

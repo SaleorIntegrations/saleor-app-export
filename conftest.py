@@ -8,8 +8,8 @@ from sqlmodel import SQLModel
 from sqlmodel.ext.asyncio.session import AsyncSession
 from testing.postgresql import Postgresql
 
+from db import async_session, get_db
 from main import app as fastapi_app
-from main import async_session, get_db
 from tests.fixtures import *  # noqa
 
 
