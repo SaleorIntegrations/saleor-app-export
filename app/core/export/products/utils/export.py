@@ -1,5 +1,5 @@
-from typing import TYPE_CHECKING, Any, Dict, List, Set, Union
 from collections import ChainMap
+from typing import TYPE_CHECKING, Any, Dict, List, Set, Union
 
 import structlog
 from gql import Client, gql
@@ -17,7 +17,6 @@ from app.core.common.utils.sdk.saleor import get_saleor_transport
 
 from ...products.utils.data import get_products_data
 from ...products.utils.headers import get_export_fields_and_headers_info
-
 from .. import ProductExportFields
 
 if TYPE_CHECKING:
@@ -33,10 +32,6 @@ logger = structlog.get_logger()
 
 async def export_products(
     export_file: "ExportFile",
-    scope: Dict[str, Union[str, dict]],
-    export_info: "ExportInfoInput",
-    file_type: str,
-    delimiter: str = ";",
 ):
     file_name = get_filename("product", file_type)
 

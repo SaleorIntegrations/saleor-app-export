@@ -1,3 +1,5 @@
+from unittest import mock
+
 import pytest
 
 from app.core.reports.models import ExportObjectTypesEnum
@@ -13,7 +15,8 @@ mutation ProductsExport($input: ExportProductsInput!) {
 
 
 @pytest.mark.asyncio
-async def test_export_products_schedules_task(graphql):
+@mock.patch("app.graphql.reports.mutations.products.export_products_task")
+async def test_export_products_schedules_task(m_task, graphql):
     # given
     variables = {
         "input": {
@@ -32,3 +35,4 @@ async def test_export_products_schedules_task(graphql):
     assert (
         result["data"]["exportProducts"]["type"] == ExportObjectTypesEnum.PRODUCTS.name
     )
+    assert m_task.call_count == 1
