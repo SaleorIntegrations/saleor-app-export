@@ -2,7 +2,7 @@ from typing import List
 
 import strawberry
 
-from app.core.export.products.tasks import export_products_task
+from app.core.export.products.tasks import init_export_for_report
 from app.core.reports.models import ExportObjectTypesEnum, ExportScopeEnum, Report
 
 
@@ -33,5 +33,14 @@ async def mutate_export_products(root, input: ExportProductsInput, info):
     db.add(report)
     await db.commit()
 
-    await export_products_task(report.id)
+    await perform_export(db, report.id)
     return report
+
+
+async def perform_export(db, report_id):
+    async def inner():
+        return await init_export_for_report(db, report_id)
+
+    # TODO: use async_to_sync in Celery
+    # async_to_sync(inner)()
+    await inner()

@@ -45,6 +45,7 @@ class ExportFile(SQLModel, table=True):
     status: JobStatusesEnum = Field(default=JobStatusesEnum.PENDING)
     message: constr(max_length=255)
     content_file: constr(max_length=255) = Field(default="")
+    cursor: constr(max_length=255) = Field(default="")
     report_id: int = Field(foreign_key="report.id")
 
 

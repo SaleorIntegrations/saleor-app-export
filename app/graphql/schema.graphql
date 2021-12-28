@@ -1,0 +1,51 @@
+enum ExportObjectTypesEnum {
+  PRODUCTS
+  ORDERS
+}
+
+input ExportOrdersInfo {
+  fields: [String!]!
+  fileType: String!
+  scope: String!
+  filter: String!
+  ids: [String!]!
+}
+
+input ExportOrdersInput {
+  exportInfo: ExportOrdersInfo!
+}
+
+input ExportProductsInfo {
+  fields: [String!]!
+  fileType: String!
+  scope: String!
+  filter: String!
+}
+
+input ExportProductsInput {
+  exportInfo: ExportProductsInfo!
+}
+
+type Mutation {
+  exportOrders(input: ExportOrdersInput!): Report!
+  exportProducts(input: ExportProductsInput!): Report!
+}
+
+type Query {
+  reports: ReportConnection!
+}
+
+type Report {
+  id: Int!
+  type: ExportObjectTypesEnum!
+}
+
+type ReportConnection {
+  edges: [ReportEdge!]!
+  totalCount: Int!
+}
+
+type ReportEdge {
+  node: Report!
+  cursor: String!
+}

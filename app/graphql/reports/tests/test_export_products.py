@@ -15,7 +15,7 @@ mutation ProductsExport($input: ExportProductsInput!) {
 
 
 @pytest.mark.asyncio
-@mock.patch("app.graphql.reports.mutations.products.export_products_task")
+@mock.patch("app.graphql.reports.mutations.products.init_export_for_report")
 async def test_export_products_schedules_task(m_task, graphql):
     # given
     variables = {
