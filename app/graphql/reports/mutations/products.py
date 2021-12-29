@@ -39,7 +39,12 @@ async def mutate_export_products(root, input: ExportProductsInput, info):
         type=ExportObjectTypesEnum.PRODUCTS,
         scope=ExportScopeEnum.FILTER,
         filter_input=input.filter.filter_str if input.filter else "",
-        selected_fields=input.columns,
+        columns={
+            "fields": [f.name for f in input.columns.fields],
+            "attributes": input.columns.attributes or [],
+            "channels": input.columns.channels or [],
+            "warehouses": input.columns.warehouses or [],
+        },
     )
     db.add(report)
     await db.commit()

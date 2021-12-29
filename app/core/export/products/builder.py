@@ -6,7 +6,7 @@ from app.core.export.products.fields import ProductFieldEnum
 
 async def build_variants_query(
     cursor: str,
-    selected_fields: List[ProductFieldEnum],
+    columns: List[ProductFieldEnum],
 ) -> str:
     """
     Build the query for fetching products

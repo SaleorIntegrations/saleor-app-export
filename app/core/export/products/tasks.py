@@ -15,6 +15,7 @@ async def init_export_for_report(
     report_id: int,
 ):
     """Initialize export for a report with given id."""
+    # report = await fetch_report_by_id(db, report_id)
     export_file = create_export_file(db, report_id)
 
     # Write report headers
@@ -29,6 +30,8 @@ async def continue_export(
     db: AsyncSession,
     export_id: int,
 ):
+    """Export a single batch of a report and schedule the next one."""
+    return
     export_file = await fetch_export_by_id(db, export_id)
     report = await fetch_report_by_id(db, export_file.report_id)
     response = await fetch_products_response(

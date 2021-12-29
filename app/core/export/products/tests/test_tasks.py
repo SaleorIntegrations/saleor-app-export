@@ -8,7 +8,7 @@ from app.core.reports.models import ExportFile
 
 
 @pytest.mark.asyncio
-async def test_init_export_for_report_creates_database_instance(db_session, report):
+async def test_init_export_for_report(db_session, report):
     # given
     # when
     await init_export_for_report(db_session, report.id)
@@ -21,3 +21,6 @@ async def test_init_export_for_report_creates_database_instance(db_session, repo
     assert export.cursor == ""
     assert export.content_file.startswith(f"media/{report.id}-")
     assert os.path.isfile(export.content_file)
+
+    with open(export.content_file) as f:
+        assert len(f.readlines()) == 2

@@ -17,7 +17,7 @@ input ExportOrdersInput {
 
 input ExportProductsInput {
   columns: ProductSelectedColumnsInfo!
-  filter: ProductFilterInfo
+  filter: ProductFilterInfo = null
 }
 
 type Mutation {
@@ -47,9 +47,9 @@ input ProductFilterInfo {
 
 input ProductSelectedColumnsInfo {
   fields: [ProductFieldEnum!]!
-  attributes: [ID!]
-  warehouses: [ID!]
-  channels: [ID!]
+  attributes: [ID!] = null
+  warehouses: [ID!] = null
+  channels: [ID!] = null
 }
 
 type Query {
