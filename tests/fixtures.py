@@ -1,13 +1,31 @@
+import json
+
 import pytest
 
+from app.core.export.products.fields import ProductFieldEnum, ProductSelectedColumnsInfo
 from app.core.reports.models import ExportObjectTypesEnum, ExportScopeEnum, Report
 
 
 @pytest.fixture
-async def report(db_session):
+async def product_column_info(db_session):
+    return ProductSelectedColumnsInfo(
+        fields=[
+            ProductFieldEnum.ID,
+            ProductFieldEnum.NAME,
+        ],
+        attributes=[],
+        channels=[],
+        warehouses=[],
+    )
+
+
+@pytest.fixture
+async def report(db_session, product_column_info):
+    columns = json.loads(product_column_info.json())
     instance = Report(
         scope=ExportScopeEnum.ALL,
-        type=ExportObjectTypesEnum.ORDERS,
+        type=ExportObjectTypesEnum.PRODUCTS,
+        columns=columns,
     )
     db_session.add(instance)
     await db_session.commit()

@@ -23,4 +23,4 @@ async def test_init_export_for_report(db_session, report):
     assert os.path.isfile(export.content_file)
 
     with open(export.content_file) as f:
-        assert len(f.readlines()) == 2
+        assert len(f.readlines()) == 1

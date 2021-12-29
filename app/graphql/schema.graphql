@@ -47,9 +47,9 @@ input ProductFilterInfo {
 
 input ProductSelectedColumnsInfo {
   fields: [ProductFieldEnum!]!
-  attributes: [ID!] = null
-  warehouses: [ID!] = null
-  channels: [ID!] = null
+  attributes: [String!] = null
+  warehouses: [String!] = null
+  channels: [String!] = null
 }
 
 type Query {

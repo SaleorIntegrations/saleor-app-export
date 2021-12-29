@@ -1,17 +1,27 @@
 from enum import Enum
+from typing import List, Optional
+
+from pydantic import BaseModel
 
 
 class ProductFieldEnum(Enum):
     ID = "ID"
-    NAME = "Name"
-    DESCRIPTION = "Description"
-    PRODUCT_TYPE = "Product type"
-    CATEGORY = "Category"
-    PRODUCT_WEIGHT = "Product weight"
-    COLLECTIONS = "Collections"
-    CHARGE_TAXES = "Charge taxes"
-    PRODUCT_MEDIA = "Product images"
-    VARIANT_ID = "Variant ID"
-    VARIANT_SKU = "Variant SKU"
-    VARIANT_WEIGHT = "Variant weight"
-    VARIANT_MEDIA = "Variant images"
+    NAME = "NAME"
+    DESCRIPTION = "DESCRIPTION"
+    PRODUCT_TYPE = "PRODUCT_TYPE"
+    CATEGORY = "CATEGORY"
+    PRODUCT_WEIGHT = "PRODUCT_WEIGHT"
+    COLLECTIONS = "COLLECTIONS"
+    CHARGE_TAXES = "CHARGE_TAXES"
+    PRODUCT_MEDIA = "PRODUCT_MEDIA"
+    VARIANT_ID = "VARIANT_ID"
+    VARIANT_SKU = "VARIANT_SKU"
+    VARIANT_WEIGHT = "VARIANT_WEIGHT"
+    VARIANT_MEDIA = "VARIANT_MEDIA"
+
+
+class ProductSelectedColumnsInfo(BaseModel):
+    fields: List[ProductFieldEnum]
+    attributes: Optional[List[str]] = None
+    warehouses: Optional[List[str]] = None
+    channels: Optional[List[str]] = None

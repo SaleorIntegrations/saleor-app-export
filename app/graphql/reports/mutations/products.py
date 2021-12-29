@@ -1,21 +1,22 @@
-from typing import List, Optional
+from typing import Optional
 
 import strawberry
-from strawberry import ID
 
 from app.core.export.products.fields import ProductFieldEnum as ProductFields
+from app.core.export.products.fields import (
+    ProductSelectedColumnsInfo as ProductSelectedColumnsInfoModel,
+)
 from app.core.export.products.tasks import init_export_for_report
 from app.core.reports.models import ExportObjectTypesEnum, ExportScopeEnum, Report
 
 ProductFieldEnum = strawberry.enum(ProductFields)
 
 
-@strawberry.input
+@strawberry.experimental.pydantic.input(
+    model=ProductSelectedColumnsInfoModel, all_fields=True
+)
 class ProductSelectedColumnsInfo:
-    fields: List[ProductFieldEnum]
-    attributes: Optional[List[ID]] = None
-    warehouses: Optional[List[ID]] = None
-    channels: Optional[List[ID]] = None
+    pass
 
 
 @strawberry.input
