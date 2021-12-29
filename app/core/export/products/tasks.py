@@ -22,8 +22,9 @@ async def init_export_for_report(
     column_info = fetch_product_columns_info(report)
 
     # Write report headers
-    with open(export_file.content_file, "w") as f:
-        print(";".join(get_headers(column_info)), file=f)
+    write_partial_result_to_file(
+        export_file.content_file, [get_headers(column_info)], reset=True
+    )
 
     await db.commit()
     await continue_export(db, export_file.id)
@@ -51,9 +52,9 @@ async def continue_export(
         column_info,
         export_file.cursor,
     )
-    cols, cursor = parse_variants_response(column_info, response)
+    result, cursor = parse_variants_response(column_info, response)
     # TODO: delimiter
-    write_partial_result_to_file(export_file.content_file, cols)
+    write_partial_result_to_file(export_file.content_file, result)
     update_export_cursor(db, export_file, cursor)
     await db.commit()
 

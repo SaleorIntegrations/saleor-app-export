@@ -14,10 +14,7 @@ from app.core.reports.models import (
 @pytest.fixture
 async def product_column_info(db_session):
     return ProductSelectedColumnsInfo(
-        fields=[
-            ProductFieldEnum.ID,
-            ProductFieldEnum.NAME,
-        ],
+        fields=list(ProductFieldEnum),
         attributes=[],
         channels=[],
         warehouses=[],
