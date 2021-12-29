@@ -1,0 +1,53 @@
+query {
+  productVariants(first: 100) {
+    edges {
+      node {
+        id
+        sku
+        media {
+          url
+        }
+        weight {
+          unit
+          value
+        }
+        product {
+          name
+          description
+          productType {
+            name
+          }
+          category {
+            name
+          }
+          weight {
+            unit
+            value
+          }
+          media {
+            url
+          }
+          collections {
+            name
+          }
+          chargeTaxes
+        }
+        channelListings {
+          channel {
+            id
+          }
+          price {
+            currency
+            amount
+          }
+        }
+        stocks {
+          warehouse {
+            id
+          }
+          quantity
+        }
+      }
+    }
+  }
+}

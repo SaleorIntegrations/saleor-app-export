@@ -1,8 +1,13 @@
-from uuid import uuid4
-
 from sqlmodel.ext.asyncio.session import AsyncSession
 
-from app.core.reports.models import ExportFile
+from app.core.export.products.fetch import (
+    fetch_export_by_id,
+    fetch_products_response,
+    fetch_report_by_id,
+)
+from app.core.export.products.files import write_partial_result_to_file
+from app.core.export.products.parse import parse_variants_response
+from app.core.export.products.persist import create_export_file, update_export_cursor
 
 
 async def init_export_for_report(
@@ -10,19 +15,29 @@ async def init_export_for_report(
     report_id: int,
 ):
     """Initialize export for a report with given id."""
-    # Create a temporary file to keep partial results
-    path = f"media/{report_id}-{uuid4()}.csv"  # TODO: use mounted volume
-    file = open(path, "w")
+    export_file = create_export_file(db, report_id)
+
     # Write report headers
-    print("headers", file=file)  # TODO: write actual headers
-    # Create an export instance with an empty cursor
-    export_file = ExportFile(
-        report_id=report_id,
-        message="",
-        cursor="",
-        content_file=path,
-    )
-    db.add(export_file)
+    with open(export_file.content_file, "w") as f:
+        print("headers", file=f)  # TODO: write actual headers
+
     await db.commit()
-    # await export_products(export_file)
-    file.close()
+    await continue_export(db, export_file.id)
+
+
+async def continue_export(
+    db: AsyncSession,
+    export_id: int,
+):
+    export_file = await fetch_export_by_id(db, export_id)
+    report = await fetch_report_by_id(db, export_file.report_id)
+    response = await fetch_products_response(
+        report.scope,
+        export_file.cursor,
+    )
+    cols, cursor = parse_variants_response(report.scope, response)
+    # TODO: delimiter
+    write_partial_result_to_file(export_file.content_file, cols)
+    update_export_cursor(db, export_file, cursor)
+    await db.commit()
+    await continue_export(db, export_file.id)
