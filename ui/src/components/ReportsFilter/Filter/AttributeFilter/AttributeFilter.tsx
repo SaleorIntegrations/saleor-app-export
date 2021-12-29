@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useEffect } from 'react'
 import { TextField } from '@material-ui/core'
 
 import { Filter, Option } from '../Filter'
@@ -14,40 +14,73 @@ export interface AttributeFilterProps {
 export function AttributeFilter(props: AttributeFilterProps) {
   const classes = useStyles()
   const { filter, dispatch } = props
+  const [canFetch, setCanFetch] = useState(false)
+  const [query, setQuery] = useState('')
+  const [navigation, setNavigation] = useState({ after: '', hasNext: false })
   const [searchedAttributeValues, fetchSearchedAttributeValues] =
-    useSearchAttributeValuesQuery(filter.id, '', 10, '', { pause: true })
-  const [search, setSearch] = useState('')
-  const attributeValues = searchedAttributeValues.data?.attribute.choices.edges
+    useSearchAttributeValuesQuery(filter.id, navigation.after, 1, query, {
+      pause: true,
+    })
+  const [options, setOptions] = useState<Option[]>([])
 
   const onSearchChange = (
     event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
   ) => {
-    setSearch(event.target.value)
+    setQuery(event.target.value)
+    setOptions([])
+    setNavigation({ after: '', hasNext: false })
   }
 
   const searchInput = (
     <TextField
       className={classes.searchInput}
-      value={search}
+      value={query}
       onChange={onSearchChange}
     />
   )
 
-  const filtredFilterOptions = useCallback((): Option[] | undefined => {
-    return attributeValues
-      ?.filter(value =>
-        value.node.slug.toLowerCase().includes(search.toLowerCase())
+  const unzipOptions = () => {
+    if (searchedAttributeValues.data) {
+      return searchedAttributeValues.data.attribute.choices.edges.map(
+        ({ node: { id, name } }) => ({ id, name })
       )
-      .map(({ node }) => ({ id: node.id, name: node.name }))
-  }, [filter, search, attributeValues])
+    }
+
+    return []
+  }
+
+  const fetch = () => {
+    console.log('fetched')
+    fetchSearchedAttributeValues()
+  }
+
+  useEffect(() => {
+    if (searchedAttributeValues.data && !searchedAttributeValues.fetching) {
+      setOptions([...options, ...unzipOptions()])
+      setNavigation({
+        hasNext:
+          searchedAttributeValues.data.attribute.choices.pageInfo.hasNextPage,
+        after:
+          searchedAttributeValues.data.attribute.choices.pageInfo.endCursor,
+      })
+    }
+  }, [searchedAttributeValues.data])
+
+  useEffect(() => {
+    if (canFetch === true) {
+      fetch()
+    }
+  }, [canFetch, query])
 
   return (
     <Filter
-      fetchFilterOptions={fetchSearchedAttributeValues}
+      loadMore={fetch}
+      setCanFetch={setCanFetch}
+      hasNext={navigation.hasNext}
       filter={filter}
       dispatch={dispatch}
       searchInput={searchInput}
-      filterOptions={filtredFilterOptions()}
+      filterOptions={options}
       type="checkbox"
     />
   )

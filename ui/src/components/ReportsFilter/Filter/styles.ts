@@ -38,6 +38,11 @@ export const useStyles = makeStyles((theme) => ({
   },
   checkOption: {
     display: 'block'
+  },
+  linkButton: {
+    '&.MuiLink-underlineHover:hover': {
+      cursor: 'pointer'
+    }
   }
 }))
 

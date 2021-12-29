@@ -7,6 +7,7 @@ import {
   AccordionDetails,
   Typography,
   Radio,
+  Link,
 } from '@material-ui/core'
 import { ExpandMore as ExpandMoreIcon } from '@material-ui/icons'
 
@@ -19,32 +20,27 @@ export interface Option {
 }
 
 export interface FilterProps {
-  fetchFilterOptions: any
   filter: FilterType
   dispatch: (action: ReducerAction) => void
-  searchInput: React.ReactNode
+  searchInput?: React.ReactNode
   filterOptions: Option[] | undefined
   type: 'checkbox' | 'radio'
+  hasNext: boolean
+  setCanFetch: (value: boolean) => void
+  loadMore: () => void
 }
 
 export function Filter({
-  fetchFilterOptions,
   filter,
   dispatch,
   searchInput,
   filterOptions,
   type,
+  hasNext,
+  setCanFetch,
+  loadMore,
 }: FilterProps) {
   const classes = useStyles()
-
-  const onAccordionChange = (
-    event: React.ChangeEvent<{}>,
-    expanded: boolean
-  ) => {
-    if (expanded) {
-      fetchFilterOptions()
-    }
-  }
 
   const onMainCheckChange = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -109,7 +105,7 @@ export function Filter({
   }
 
   return (
-    <Accordion className={classes.accordion} onChange={onAccordionChange}>
+    <Accordion className={classes.accordion} onChange={() => setCanFetch(true)}>
       <AccordionSummary
         className={classes.summary}
         expandIcon={<ExpandMoreIcon />}
@@ -125,7 +121,19 @@ export function Filter({
       <AccordionDetails className={classes.details}>
         {searchInput}
         {filterOptions && filterOptions.length > 0 ? (
-          optionsFiltrBySearch()
+          <>
+            {optionsFiltrBySearch()}
+            {hasNext && (
+              <Link
+                className={classes.linkButton}
+                type="button"
+                color="primary"
+                onClick={loadMore}
+              >
+                Show more
+              </Link>
+            )}
+          </>
         ) : (
           <Typography>No results</Typography>
         )}

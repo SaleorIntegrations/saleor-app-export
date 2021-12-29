@@ -3,12 +3,13 @@ import { Box, Button, Popover, Typography } from '@material-ui/core'
 
 import useStyles from '../styles'
 import AttributeFilter from '../Filter/AttributeFilter'
-import { useQueryGridAttributes } from '../../../api/gridAttributes'
-import { reducer, initFilters } from './reducer'
+import CategoriesFilter from '../Filter/CategoriesFilter'
+import { useQueryInitialProductFilterAttributes } from '../../../api'
+import { reducer, initFilters, Filter } from './reducer'
 
 export function FilterButton() {
   const [filters, dispatch] = useReducer(reducer, initFilters)
-  const [result] = useQueryGridAttributes([])
+  const [initialProductsFilters] = useQueryInitialProductFilterAttributes()
   const [count, setCount] = useState(0)
   const [isOpen, setIsOpen] = useState(false)
   const [anchor, setAnchor] = useState<HTMLButtonElement | null>(null)
@@ -33,21 +34,57 @@ export function FilterButton() {
     dispatch({ type: 'CLEAR' })
   }, [filters])
 
-  useEffect(() => {
-    if (result.data && filters.length === 0) {
-      const newFilters = result.data.grid.edges
+  const assignFilter = (filter: Filter) => {
+    switch (filter.filterType) {
+      case 'attribute':
+        return (
+          <AttributeFilter
+            key={filter.id}
+            filter={filter}
+            dispatch={dispatch}
+          />
+        )
+      case 'category':
+        return (
+          <CategoriesFilter
+            key={filter.id}
+            filter={filter}
+            dispatch={dispatch}
+          />
+        )
+      default:
+        return null
+    }
+  }
 
-      dispatch({
-        type: 'SET_FILTERS',
-        filters: newFilters.map(({ node: { id, name } }) => ({
+  useEffect(() => {
+    if (initialProductsFilters.data) {
+      const initialFilters = initialProductsFilters.data.attributes.edges
+
+      const settledInitialFilters = initialFilters.map<Filter>(
+        ({ node: { id, name } }) => ({
+          filterType: 'attribute',
           id: id,
           name: name,
           checked: false,
           selected: [],
-        })),
+        })
+      )
+
+      const sattledCategoryFilters: Filter = {
+        filterType: 'category',
+        id: 'category-id',
+        name: 'Categories',
+        checked: false,
+        selected: [],
+      }
+
+      dispatch({
+        type: 'SET_FILTERS',
+        filters: [...settledInitialFilters, sattledCategoryFilters],
       })
     }
-  }, [filters.length, result])
+  }, [initialProductsFilters])
 
   useEffect(() => {
     setCount(filters.filter(filter => filter.checked).length)
@@ -89,13 +126,7 @@ export function FilterButton() {
                 Done
               </Button>
             </Box>
-            {filters.map(filter => (
-              <AttributeFilter
-                key={filter.id}
-                filter={filter}
-                dispatch={dispatch}
-              />
-            ))}
+            {filters.map(filter => assignFilter(filter))}
           </Box>
         </form>
       </Popover>
