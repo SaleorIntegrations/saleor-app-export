@@ -34,14 +34,14 @@ async def continue_export(
     export_id: int,
 ):
     """Export a single batch of a report and schedule the next one."""
-    return
     export_file = await fetch_export_by_id(db, export_id)
     report = await fetch_report_by_id(db, export_file.report_id)
+    column_info = fetch_product_columns_info(report)
     response = await fetch_products_response(
-        report.scope,
+        column_info,
         export_file.cursor,
     )
-    cols, cursor = parse_variants_response(report.scope, response)
+    cols, cursor = parse_variants_response(column_info, response)
     # TODO: delimiter
     write_partial_result_to_file(export_file.content_file, cols)
     update_export_cursor(db, export_file, cursor)

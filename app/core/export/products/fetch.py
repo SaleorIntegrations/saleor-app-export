@@ -1,11 +1,9 @@
-from typing import List
-
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlmodel import select
 
 from app.core.export.executor import execute_query
 from app.core.export.products.builder import build_variants_query
-from app.core.export.products.fields import ProductFieldEnum, ProductSelectedColumnsInfo
+from app.core.export.products.fields import ProductSelectedColumnsInfo
 from app.core.reports.models import ExportFile, Report
 
 
@@ -25,10 +23,9 @@ def fetch_product_columns_info(report: Report) -> ProductSelectedColumnsInfo:
 
 
 async def fetch_products_response(
-    export_fields: List[ProductFieldEnum],
+    column_info: ProductSelectedColumnsInfo,
     cursor: str = "",
 ) -> dict:
-    cursor = ""
-    query = await build_variants_query(cursor, export_fields)
+    query = await build_variants_query(cursor, column_info.fields)
     response = await execute_query(query)
     return response
