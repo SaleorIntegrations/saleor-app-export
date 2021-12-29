@@ -15,26 +15,48 @@ export function AttributeFilter(props: AttributeFilterProps) {
   const classes = useStyles()
   const { filter, dispatch } = props
   const [canFetch, setCanFetch] = useState(false)
-  const [query, setQuery] = useState('')
-  const [navigation, setNavigation] = useState({ after: '', hasNext: false })
+  const [query, setQuery] = useState({
+    set: false,
+    value: '',
+  })
+  const [globalOptions, setGlobalOptions] = useState({
+    navigation: { after: '', hasNext: false },
+    options: [] as Option[],
+  })
+  const [searchedOptions, setSearchedOptions] = useState({
+    navigation: { after: '', hasNext: false },
+    options: [] as Option[],
+  })
   const [searchedAttributeValues, fetchSearchedAttributeValues] =
-    useSearchAttributeValuesQuery(filter.id, navigation.after, 1, query, {
-      pause: true,
-    })
-  const [options, setOptions] = useState<Option[]>([])
+    useSearchAttributeValuesQuery(
+      filter.id,
+      !query.value
+        ? globalOptions.navigation.after
+        : searchedOptions.navigation.after,
+      1,
+      query.value,
+      {
+        pause: true,
+      }
+    )
 
   const onSearchChange = (
     event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
   ) => {
-    setQuery(event.target.value)
-    setOptions([])
-    setNavigation({ after: '', hasNext: false })
+    setSearchedOptions({
+      options: [],
+      navigation: { after: '', hasNext: false },
+    })
+    setQuery({
+      value: event.target.value,
+      set: true,
+    })
   }
 
   const searchInput = (
     <TextField
       className={classes.searchInput}
-      value={query}
+      value={query.value}
       onChange={onSearchChange}
     />
   )
@@ -49,38 +71,62 @@ export function AttributeFilter(props: AttributeFilterProps) {
     return []
   }
 
-  const fetch = () => {
-    console.log('fetched')
-    fetchSearchedAttributeValues()
+  const fetch = (options?: any) => {
+    fetchSearchedAttributeValues(options)
   }
 
   useEffect(() => {
-    if (searchedAttributeValues.data && !searchedAttributeValues.fetching) {
-      setOptions([...options, ...unzipOptions()])
-      setNavigation({
-        hasNext:
-          searchedAttributeValues.data.attribute.choices.pageInfo.hasNextPage,
-        after:
-          searchedAttributeValues.data.attribute.choices.pageInfo.endCursor,
-      })
+    if (searchedAttributeValues.data) {
+      if (query.value) {
+        setSearchedOptions({
+          options: [...searchedOptions.options, ...unzipOptions()],
+          navigation: {
+            hasNext:
+              searchedAttributeValues.data.attribute.choices.pageInfo
+                .hasNextPage,
+            after:
+              searchedAttributeValues.data.attribute.choices.pageInfo.endCursor,
+          },
+        })
+      } else {
+        setGlobalOptions({
+          options: [...globalOptions.options, ...unzipOptions()],
+          navigation: {
+            hasNext:
+              searchedAttributeValues.data.attribute.choices.pageInfo
+                .hasNextPage,
+            after:
+              searchedAttributeValues.data.attribute.choices.pageInfo.endCursor,
+          },
+        })
+      }
     }
   }, [searchedAttributeValues.data])
 
   useEffect(() => {
     if (canFetch === true) {
-      fetch()
+      if (query.value !== '' && query.set)
+        fetch({ requestPolicy: 'network-only' })
+
+      if (!query.set) fetch()
     }
-  }, [canFetch, query])
+  }, [canFetch, query.value])
 
   return (
     <Filter
       loadMore={fetch}
       setCanFetch={setCanFetch}
-      hasNext={navigation.hasNext}
+      hasNext={
+        query.value
+          ? searchedOptions.navigation.hasNext
+          : globalOptions.navigation.hasNext
+      }
       filter={filter}
       dispatch={dispatch}
       searchInput={searchInput}
-      filterOptions={options}
+      filterOptions={
+        query.value ? searchedOptions.options : globalOptions.options
+      }
       type="checkbox"
     />
   )
