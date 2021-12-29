@@ -15,20 +15,41 @@ input ExportOrdersInput {
   exportInfo: ExportOrdersInfo!
 }
 
-input ExportProductsInfo {
-  fields: [String!]!
-  fileType: String!
-  scope: String!
-  filter: String!
-}
-
 input ExportProductsInput {
-  exportInfo: ExportProductsInfo!
+  columns: ProductSelectedColumnsInfo!
+  filter: ProductFilterInfo
 }
 
 type Mutation {
   exportOrders(input: ExportOrdersInput!): Report!
   exportProducts(input: ExportProductsInput!): Report!
+}
+
+enum ProductFieldEnum {
+  ID
+  NAME
+  DESCRIPTION
+  PRODUCT_TYPE
+  CATEGORY
+  PRODUCT_WEIGHT
+  COLLECTIONS
+  CHARGE_TAXES
+  PRODUCT_MEDIA
+  VARIANT_ID
+  VARIANT_SKU
+  VARIANT_WEIGHT
+  VARIANT_MEDIA
+}
+
+input ProductFilterInfo {
+  filterStr: String!
+}
+
+input ProductSelectedColumnsInfo {
+  fields: [ProductFieldEnum!]!
+  attributes: [ID!]
+  warehouses: [ID!]
+  channels: [ID!]
 }
 
 type Query {

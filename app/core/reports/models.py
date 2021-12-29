@@ -36,6 +36,7 @@ class Report(SQLModel, table=True):
     scope: ExportScopeEnum
     type: ExportObjectTypesEnum
     filter_input: dict = Field(sa_column=Column(JSON), default_factory=dict)
+    selected_fields: dict = Field(sa_column=Column(JSON), default_factory=dict)
 
 
 class ExportFile(SQLModel, table=True):

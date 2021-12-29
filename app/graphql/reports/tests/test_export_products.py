@@ -20,12 +20,9 @@ async def test_export_products_schedules_task(m_task, graphql):
     # given
     variables = {
         "input": {
-            "exportInfo": {
-                "fields": ["FIELD1", "FIELD2"],
-                "fileType": "CSV",
-                "scope": "ALL",
-                "filter": "",
-            }
+            "columns": {
+                "fields": ["ID", "VARIANT_ID"],
+            },
         }
     }
     # when
