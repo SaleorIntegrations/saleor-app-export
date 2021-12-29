@@ -15,7 +15,10 @@ from app.core.reports.models import (
 async def product_column_info(db_session):
     return ProductSelectedColumnsInfo(
         fields=list(ProductFieldEnum),
-        attributes=[],
+        attributes=[
+            "QXR0cmlidXRlOjE1",
+            "QXR0cmlidXRlOjEz",
+        ],
         channels=[
             "Q2hhbm5lbDoy",
         ],

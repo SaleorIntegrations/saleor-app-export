@@ -93,7 +93,16 @@ def parse_static_fields(fields: List[ProductFieldEnum], node: dict):
 
 
 def parse_attribute_fields(attribute_id: str, node: dict):
-    return []
+    attribute_values = []
+
+    for selected_attribute in node["attributes"]:
+        attribute = selected_attribute["attribute"]
+        values = selected_attribute["values"]
+        if attribute["id"] == attribute_id:
+            attribute_values = [value["slug"] for value in values]
+            break
+
+    return [m(attribute_values)]
 
 
 def parse_channel_fields(channel_id: str, node: dict):

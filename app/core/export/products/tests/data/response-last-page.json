@@ -19,6 +19,30 @@
               "unit": "KG",
               "value": 1
             },
+            "attributes": [
+              {
+                "attribute": {
+                  "id": "QXR0cmlidXRlOjI0",
+                  "slug": "shoe-size",
+                  "name": "Shoe size",
+                  "inputType": "DROPDOWN"
+                },
+                "values": [
+                  {
+                    "name": "41",
+                    "slug": "41",
+                    "value": "",
+                    "inputType": "DROPDOWN",
+                    "reference": null,
+                    "file": null,
+                    "richText": null,
+                    "boolean": null,
+                    "date": null,
+                    "dateTime": null
+                  }
+                ]
+              }
+            ],
             "product": {
               "name": "White Plimsolls",
               "description": "{\"blocks\": [{\"data\": {\"text\": \"PE at school wouldn\\u2019t have been such a drag with these on your feet. Slip on the style and stride tall with Saleor branded plimsolls. PE now stands for pretty elegant.\"}, \"type\": \"paragraph\"}]}",
@@ -107,6 +131,30 @@
               "unit": "KG",
               "value": 0
             },
+            "attributes": [
+              {
+                "attribute": {
+                  "id": "QXR0cmlidXRlOjEz",
+                  "slug": "size",
+                  "name": "Size",
+                  "inputType": "DROPDOWN"
+                },
+                "values": [
+                  {
+                    "name": "S",
+                    "slug": "s",
+                    "value": "",
+                    "inputType": "DROPDOWN",
+                    "reference": null,
+                    "file": null,
+                    "richText": null,
+                    "boolean": null,
+                    "date": null,
+                    "dateTime": null
+                  }
+                ]
+              }
+            ],
             "product": {
               "name": "Polo Shirt",
               "description": "{\"blocks\": [{\"data\": {\"text\": \"They say polo is the sport of kings. Or was that stamp collecting? Either way, this shirt is fit for a king of Saturday night.\"}, \"type\": \"paragraph\"}]}",
@@ -202,6 +250,7 @@
               "unit": "KG",
               "value": 0
             },
+            "attributes": [],
             "product": {
               "name": "Seaman Lager",
               "description": "{\"blocks\": [{\"data\": {\"text\": \"Find your sea legs and then lose the power to use them with extra strong seaman\\u2019s lager. Don\\u2019t drink and sail, me hearties!\"}, \"type\": \"paragraph\"}]}",
@@ -300,6 +349,7 @@
               "unit": "KG",
               "value": 0
             },
+            "attributes": [],
             "product": {
               "name": "Seaman Beer",
               "description": "{\"blocks\": [{\"data\": {\"text\": \"Best beer on the seven seas. A dark ale for when the dark clouds gather overhead. The nutty nautical taste that sailors love.\"}, \"type\": \"paragraph\"}]}",
@@ -384,6 +434,112 @@
         },
         {
           "node": {
+            "id": "UHJvZHVjdFZhcmlhbnQ6Mjkw",
+            "sku": "98653891",
+            "media": [
+              {
+                "url": "https://demo.saleor.io/media/products/saleordemoproduct_cl_boot06_1.png"
+              }
+            ],
+            "weight": {
+              "unit": "KG",
+              "value": 0
+            },
+            "attributes": [
+              {
+                "attribute": {
+                  "id": "QXR0cmlidXRlOjEz",
+                  "slug": "size",
+                  "name": "Size",
+                  "inputType": "DROPDOWN"
+                },
+                "values": [
+                  {
+                    "name": "XXL",
+                    "slug": "xxl",
+                    "value": "",
+                    "inputType": "DROPDOWN",
+                    "reference": null,
+                    "file": null,
+                    "richText": null,
+                    "boolean": null,
+                    "date": null,
+                    "dateTime": null
+                  }
+                ]
+              }
+            ],
+            "product": {
+              "name": "T-shirt",
+              "description": "{\"blocks\": [{\"data\": {\"text\": \"Want to look like you just fell out of bed? Sometimes style can be effortless. Throw it on get on with having a good day.\"}, \"type\": \"paragraph\"}]}",
+              "productType": {
+                "name": "Top (clothing)"
+              },
+              "category": {
+                "name": "T-shirts"
+              },
+              "weight": {
+                "unit": "KG",
+                "value": 0
+              },
+              "media": [
+                {
+                  "url": "https://demo.saleor.io/media/products/saleordemoproduct_cl_boot06_1.png"
+                },
+                {
+                  "url": "https://demo.saleor.io/media/products/saleordemoproduct_cl_boot06_2.png"
+                }
+              ],
+              "collections": [],
+              "chargeTaxes": true
+            },
+            "channelListings": [
+              {
+                "channel": {
+                  "id": "Q2hhbm5lbDoy"
+                },
+                "price": {
+                  "currency": "USD",
+                  "amount": 5
+                }
+              }
+            ],
+            "stocks": [
+              {
+                "warehouse": {
+                  "id": "V2FyZWhvdXNlOmFhYmViMjVkLWVjZDYtNDBhMS1hMzAzLTRlMTllYTkzYjE1Zg=="
+                },
+                "quantity": 288
+              },
+              {
+                "warehouse": {
+                  "id": "V2FyZWhvdXNlOjA4MDQ4YjVlLTkxZGQtNDQxMi05NTY0LWI4NDM4OTQ1ZTE0Mw=="
+                },
+                "quantity": 290
+              },
+              {
+                "warehouse": {
+                  "id": "V2FyZWhvdXNlOjZjNmM1MDdhLTIxZjYtNDY5OS1hM2QzLWUwZDYxNzM4YjI2Yw=="
+                },
+                "quantity": 288
+              },
+              {
+                "warehouse": {
+                  "id": "V2FyZWhvdXNlOmE3ZjBmYTk1LWY3NmMtNDUyYi1hNjg1LWZiNDE5ZTQ4OGMxMQ=="
+                },
+                "quantity": 288
+              },
+              {
+                "warehouse": {
+                  "id": "V2FyZWhvdXNlOjJjYzE5MmVlLTcyNWQtNGZjMC1iN2Y4LThkZmM0MDBjNzQ5NQ=="
+                },
+                "quantity": 288
+              }
+            ]
+          }
+        },
+        {
+          "node": {
             "id": "UHJvZHVjdFZhcmlhbnQ6MzIx",
             "sku": "waterfall-ballads-mp3",
             "media": [
@@ -395,6 +551,30 @@
               "unit": "KG",
               "value": 0
             },
+            "attributes": [
+              {
+                "attribute": {
+                  "id": "QXR0cmlidXRlOjE5",
+                  "slug": "medium",
+                  "name": "Medium",
+                  "inputType": "DROPDOWN"
+                },
+                "values": [
+                  {
+                    "name": "MP3",
+                    "slug": "mp3",
+                    "value": "",
+                    "inputType": "DROPDOWN",
+                    "reference": null,
+                    "file": null,
+                    "richText": null,
+                    "boolean": null,
+                    "date": null,
+                    "dateTime": null
+                  }
+                ]
+              }
+            ],
             "product": {
               "name": "Waterfall Ballads",
               "description": "{\"blocks\": [{\"data\": {\"text\": \"Waterfall Ballads by Digital Audio.\"}, \"type\": \"paragraph\"}]}",

@@ -19,6 +19,30 @@
               "unit": "KG",
               "value": 0
             },
+            "attributes": [
+              {
+                "attribute": {
+                  "id": "QXR0cmlidXRlOjEz",
+                  "slug": "size",
+                  "name": "Size",
+                  "inputType": "DROPDOWN"
+                },
+                "values": [
+                  {
+                    "name": "XL",
+                    "slug": "xl",
+                    "value": "",
+                    "inputType": "DROPDOWN",
+                    "reference": null,
+                    "file": null,
+                    "richText": null,
+                    "boolean": null,
+                    "date": null,
+                    "dateTime": null
+                  }
+                ]
+              }
+            ],
             "product": {
               "name": "White Hoodie",
               "description": "{\"blocks\": [{\"data\": {\"text\": \"Get your slouch on and be seen with a whiter than white hoodie straight from the streets. Relaxed stylin\\u2019 and profilin\\u2019 with flair.\"}, \"type\": \"paragraph\"}]}",
@@ -101,6 +125,30 @@
               "unit": "KG",
               "value": 0
             },
+            "attributes": [
+              {
+                "attribute": {
+                  "id": "QXR0cmlidXRlOjEz",
+                  "slug": "size",
+                  "name": "Size",
+                  "inputType": "DROPDOWN"
+                },
+                "values": [
+                  {
+                    "name": "L",
+                    "slug": "l",
+                    "value": "",
+                    "inputType": "DROPDOWN",
+                    "reference": null,
+                    "file": null,
+                    "richText": null,
+                    "boolean": null,
+                    "date": null,
+                    "dateTime": null
+                  }
+                ]
+              }
+            ],
             "product": {
               "name": "T-shirt",
               "description": "{\"blocks\": [{\"data\": {\"text\": \"One style fits all. Get a look that works even when you are taking it easy. Relaxed wear for the masses.\"}, \"type\": \"paragraph\"}]}",
@@ -186,6 +234,30 @@
               "unit": "KG",
               "value": 0
             },
+            "attributes": [
+              {
+                "attribute": {
+                  "id": "QXR0cmlidXRlOjEz",
+                  "slug": "size",
+                  "name": "Size",
+                  "inputType": "DROPDOWN"
+                },
+                "values": [
+                  {
+                    "name": "L",
+                    "slug": "l",
+                    "value": "",
+                    "inputType": "DROPDOWN",
+                    "reference": null,
+                    "file": null,
+                    "richText": null,
+                    "boolean": null,
+                    "date": null,
+                    "dateTime": null
+                  }
+                ]
+              }
+            ],
             "product": {
               "name": "Code Division T-shirt",
               "description": "{\"blocks\": [{\"data\": {\"text\": \"Pay homage to the music and art of a Joy Division and Peter Saville, but with a Mirumee twist. Perfect live transmission apparel for dead souls.\"}, \"type\": \"paragraph\"}]}",
@@ -277,6 +349,7 @@
               "unit": "KG",
               "value": 0
             },
+            "attributes": [],
             "product": {
               "name": "Red Wine",
               "description": "{\"blocks\": [{\"data\": {\"text\": \"A fine, mature red with a hint of blackberry, an undertone of the alkaline Burgundy soil, a delicate aftertaste of burnt garlic, and a whole lot of grapes.\"}, \"type\": \"paragraph\"}]}",
@@ -354,6 +427,86 @@
         },
         {
           "node": {
+            "id": "UHJvZHVjdFZhcmlhbnQ6MTk0",
+            "sku": "1231998121",
+            "media": [
+              {
+                "url": "https://demo.saleor.io/media/products/saleordemoproduct_wine-white.png"
+              }
+            ],
+            "weight": {
+              "unit": "KG",
+              "value": 0
+            },
+            "attributes": [],
+            "product": {
+              "name": "White Wine",
+              "description": "{\"blocks\": [{\"data\": {\"text\": \"Watch the slow setting sun of a wild summer evening sink into the horizon as you sip white wine that tastes like bittersweet memories of halcyon days.\"}, \"type\": \"paragraph\"}]}",
+              "productType": {
+                "name": "Wine"
+              },
+              "category": {
+                "name": "Alcohol"
+              },
+              "weight": {
+                "unit": "KG",
+                "value": 0
+              },
+              "media": [
+                {
+                  "url": "https://demo.saleor.io/media/products/saleordemoproduct_wine-white.png"
+                }
+              ],
+              "collections": [],
+              "chargeTaxes": true
+            },
+            "channelListings": [
+              {
+                "channel": {
+                  "id": "Q2hhbm5lbDoy"
+                },
+                "price": {
+                  "currency": "USD",
+                  "amount": 5
+                }
+              }
+            ],
+            "stocks": [
+              {
+                "warehouse": {
+                  "id": "V2FyZWhvdXNlOmFhYmViMjVkLWVjZDYtNDBhMS1hMzAzLTRlMTllYTkzYjE1Zg=="
+                },
+                "quantity": 262
+              },
+              {
+                "warehouse": {
+                  "id": "V2FyZWhvdXNlOjJjYzE5MmVlLTcyNWQtNGZjMC1iN2Y4LThkZmM0MDBjNzQ5NQ=="
+                },
+                "quantity": 262
+              },
+              {
+                "warehouse": {
+                  "id": "V2FyZWhvdXNlOjZjNmM1MDdhLTIxZjYtNDY5OS1hM2QzLWUwZDYxNzM4YjI2Yw=="
+                },
+                "quantity": 262
+              },
+              {
+                "warehouse": {
+                  "id": "V2FyZWhvdXNlOjA4MDQ4YjVlLTkxZGQtNDQxMi05NTY0LWI4NDM4OTQ1ZTE0Mw=="
+                },
+                "quantity": 262
+              },
+              {
+                "warehouse": {
+                  "id": "V2FyZWhvdXNlOmE3ZjBmYTk1LWY3NmMtNDUyYi1hNjg1LWZiNDE5ZTQ4OGMxMQ=="
+                },
+                "quantity": 262
+              }
+            ]
+          }
+        },
+        {
+          "node": {
             "id": "UHJvZHVjdFZhcmlhbnQ6MjE4",
             "sku": "94044081",
             "media": [
@@ -365,6 +518,30 @@
               "unit": "KG",
               "value": 1
             },
+            "attributes": [
+              {
+                "attribute": {
+                  "id": "QXR0cmlidXRlOjE1",
+                  "slug": "bottle-size",
+                  "name": "Bottle Size",
+                  "inputType": "DROPDOWN"
+                },
+                "values": [
+                  {
+                    "name": "1l",
+                    "slug": "1l",
+                    "value": "",
+                    "inputType": "DROPDOWN",
+                    "reference": null,
+                    "file": null,
+                    "richText": null,
+                    "boolean": null,
+                    "date": null,
+                    "dateTime": null
+                  }
+                ]
+              }
+            ],
             "product": {
               "name": "Power Juice",
               "description": "{\"blocks\": [{\"data\": {\"text\": \"Is it a bird? Is a plane? No! It\\u2019s some jacked dude who just sucked down a bottle of our brand new power juice! Look at him go!\"}, \"type\": \"paragraph\"}]}",
