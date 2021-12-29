@@ -3,7 +3,12 @@ import json
 import pytest
 
 from app.core.export.products.fields import ProductFieldEnum, ProductSelectedColumnsInfo
-from app.core.reports.models import ExportObjectTypesEnum, ExportScopeEnum, Report
+from app.core.reports.models import (
+    ExportFile,
+    ExportObjectTypesEnum,
+    ExportScopeEnum,
+    Report,
+)
 
 
 @pytest.fixture
@@ -47,3 +52,15 @@ def reports_factory(db_session):
         return instances
 
     return factory
+
+
+@pytest.fixture
+async def export(db_session, report):
+    instance = ExportFile(
+        report_id=report.id,
+        content_file="media/test-export.csv",
+        cursor="",
+    )
+    db_session.add(instance)
+    await db_session.commit()
+    return instance

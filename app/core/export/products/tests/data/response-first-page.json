@@ -1,0 +1,446 @@
+{
+  "data": {
+    "productVariants": {
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "W251bGwsICI5NDA0NDA4MSJd"
+      },
+      "edges": [
+        {
+          "node": {
+            "id": "UHJvZHVjdFZhcmlhbnQ6MzE0",
+            "sku": "10404946",
+            "media": [
+              {
+                "url": "https://demo.saleor.io/media/products/saleordemoproduct_cl_bogo04_1.png"
+              }
+            ],
+            "weight": {
+              "unit": "KG",
+              "value": 0
+            },
+            "product": {
+              "name": "White Hoodie",
+              "description": "{\"blocks\": [{\"data\": {\"text\": \"Get your slouch on and be seen with a whiter than white hoodie straight from the streets. Relaxed stylin\\u2019 and profilin\\u2019 with flair.\"}, \"type\": \"paragraph\"}]}",
+              "productType": {
+                "name": "Top (clothing)"
+              },
+              "category": {
+                "name": "Hoodies"
+              },
+              "weight": {
+                "unit": "KG",
+                "value": 0
+              },
+              "media": [
+                {
+                  "url": "https://demo.saleor.io/media/products/saleordemoproduct_cl_bogo04_1.png"
+                },
+                {
+                  "url": "https://demo.saleor.io/media/products/saleordemoproduct_cl_bogo04_2.png"
+                }
+              ],
+              "collections": [],
+              "chargeTaxes": true
+            },
+            "channelListings": [
+              {
+                "channel": {
+                  "id": "Q2hhbm5lbDoy"
+                },
+                "price": {
+                  "currency": "USD",
+                  "amount": 5
+                }
+              }
+            ],
+            "stocks": [
+              {
+                "warehouse": {
+                  "id": "V2FyZWhvdXNlOjZjNmM1MDdhLTIxZjYtNDY5OS1hM2QzLWUwZDYxNzM4YjI2Yw=="
+                },
+                "quantity": 215
+              },
+              {
+                "warehouse": {
+                  "id": "V2FyZWhvdXNlOmFhYmViMjVkLWVjZDYtNDBhMS1hMzAzLTRlMTllYTkzYjE1Zg=="
+                },
+                "quantity": 215
+              },
+              {
+                "warehouse": {
+                  "id": "V2FyZWhvdXNlOjJjYzE5MmVlLTcyNWQtNGZjMC1iN2Y4LThkZmM0MDBjNzQ5NQ=="
+                },
+                "quantity": 215
+              },
+              {
+                "warehouse": {
+                  "id": "V2FyZWhvdXNlOjA4MDQ4YjVlLTkxZGQtNDQxMi05NTY0LWI4NDM4OTQ1ZTE0Mw=="
+                },
+                "quantity": 215
+              },
+              {
+                "warehouse": {
+                  "id": "V2FyZWhvdXNlOmE3ZjBmYTk1LWY3NmMtNDUyYi1hNjg1LWZiNDE5ZTQ4OGMxMQ=="
+                },
+                "quantity": 215
+              }
+            ]
+          }
+        },
+        {
+          "node": {
+            "id": "UHJvZHVjdFZhcmlhbnQ6Mjc4",
+            "sku": "11511539",
+            "media": [
+              {
+                "url": "https://demo.saleor.io/media/products/saleordemoproduct_cl_boot01_1.png"
+              }
+            ],
+            "weight": {
+              "unit": "KG",
+              "value": 0
+            },
+            "product": {
+              "name": "T-shirt",
+              "description": "{\"blocks\": [{\"data\": {\"text\": \"One style fits all. Get a look that works even when you are taking it easy. Relaxed wear for the masses.\"}, \"type\": \"paragraph\"}]}",
+              "productType": {
+                "name": "Top (clothing)"
+              },
+              "category": {
+                "name": "T-shirts"
+              },
+              "weight": {
+                "unit": "KG",
+                "value": 0
+              },
+              "media": [
+                {
+                  "url": "https://demo.saleor.io/media/products/saleordemoproduct_cl_boot01_1.png"
+                },
+                {
+                  "url": "https://demo.saleor.io/media/products/saleordemoproduct_cl_boot01_2.png"
+                },
+                {
+                  "url": "https://demo.saleor.io/media/products/saleordemoproduct_cl_boot01_3.png"
+                }
+              ],
+              "collections": [],
+              "chargeTaxes": true
+            },
+            "channelListings": [
+              {
+                "channel": {
+                  "id": "Q2hhbm5lbDoy"
+                },
+                "price": {
+                  "currency": "USD",
+                  "amount": 5
+                }
+              }
+            ],
+            "stocks": [
+              {
+                "warehouse": {
+                  "id": "V2FyZWhvdXNlOjA4MDQ4YjVlLTkxZGQtNDQxMi05NTY0LWI4NDM4OTQ1ZTE0Mw=="
+                },
+                "quantity": 406
+              },
+              {
+                "warehouse": {
+                  "id": "V2FyZWhvdXNlOmFhYmViMjVkLWVjZDYtNDBhMS1hMzAzLTRlMTllYTkzYjE1Zg=="
+                },
+                "quantity": 406
+              },
+              {
+                "warehouse": {
+                  "id": "V2FyZWhvdXNlOmE3ZjBmYTk1LWY3NmMtNDUyYi1hNjg1LWZiNDE5ZTQ4OGMxMQ=="
+                },
+                "quantity": 406
+              },
+              {
+                "warehouse": {
+                  "id": "V2FyZWhvdXNlOjZjNmM1MDdhLTIxZjYtNDY5OS1hM2QzLWUwZDYxNzM4YjI2Yw=="
+                },
+                "quantity": 406
+              },
+              {
+                "warehouse": {
+                  "id": "V2FyZWhvdXNlOjJjYzE5MmVlLTcyNWQtNGZjMC1iN2Y4LThkZmM0MDBjNzQ5NQ=="
+                },
+                "quantity": 406
+              }
+            ]
+          }
+        },
+        {
+          "node": {
+            "id": "UHJvZHVjdFZhcmlhbnQ6MjUz",
+            "sku": "118223591",
+            "media": [
+              {
+                "url": "https://demo.saleor.io/media/products/saleordemoproduct_cl_boot07_1.png"
+              }
+            ],
+            "weight": {
+              "unit": "KG",
+              "value": 0
+            },
+            "product": {
+              "name": "Code Division T-shirt",
+              "description": "{\"blocks\": [{\"data\": {\"text\": \"Pay homage to the music and art of a Joy Division and Peter Saville, but with a Mirumee twist. Perfect live transmission apparel for dead souls.\"}, \"type\": \"paragraph\"}]}",
+              "productType": {
+                "name": "Top (clothing)"
+              },
+              "category": {
+                "name": "T-shirts"
+              },
+              "weight": {
+                "unit": "KG",
+                "value": 0
+              },
+              "media": [
+                {
+                  "url": "https://demo.saleor.io/media/products/saleordemoproduct_cl_boot07_1.png"
+                },
+                {
+                  "url": "https://demo.saleor.io/media/products/saleordemoproduct_cl_boot07_2.png"
+                }
+              ],
+              "collections": [],
+              "chargeTaxes": true
+            },
+            "channelListings": [
+              {
+                "channel": {
+                  "id": "Q2hhbm5lbDoy"
+                },
+                "price": {
+                  "currency": "USD",
+                  "amount": 5
+                }
+              },
+              {
+                "channel": {
+                  "id": "Q2hhbm5lbDoz"
+                },
+                "price": {
+                  "currency": "PLN",
+                  "amount": 20
+                }
+              }
+            ],
+            "stocks": [
+              {
+                "warehouse": {
+                  "id": "V2FyZWhvdXNlOjA4MDQ4YjVlLTkxZGQtNDQxMi05NTY0LWI4NDM4OTQ1ZTE0Mw=="
+                },
+                "quantity": 368
+              },
+              {
+                "warehouse": {
+                  "id": "V2FyZWhvdXNlOmFhYmViMjVkLWVjZDYtNDBhMS1hMzAzLTRlMTllYTkzYjE1Zg=="
+                },
+                "quantity": 368
+              },
+              {
+                "warehouse": {
+                  "id": "V2FyZWhvdXNlOmE3ZjBmYTk1LWY3NmMtNDUyYi1hNjg1LWZiNDE5ZTQ4OGMxMQ=="
+                },
+                "quantity": 368
+              },
+              {
+                "warehouse": {
+                  "id": "V2FyZWhvdXNlOjJjYzE5MmVlLTcyNWQtNGZjMC1iN2Y4LThkZmM0MDBjNzQ5NQ=="
+                },
+                "quantity": 368
+              },
+              {
+                "warehouse": {
+                  "id": "V2FyZWhvdXNlOjZjNmM1MDdhLTIxZjYtNDY5OS1hM2QzLWUwZDYxNzM4YjI2Yw=="
+                },
+                "quantity": 368
+              }
+            ]
+          }
+        },
+        {
+          "node": {
+            "id": "UHJvZHVjdFZhcmlhbnQ6MTkz",
+            "sku": "12312312321",
+            "media": [
+              {
+                "url": "https://demo.saleor.io/media/products/saleordemoproduct_wine-red.png"
+              }
+            ],
+            "weight": {
+              "unit": "KG",
+              "value": 0
+            },
+            "product": {
+              "name": "Red Wine",
+              "description": "{\"blocks\": [{\"data\": {\"text\": \"A fine, mature red with a hint of blackberry, an undertone of the alkaline Burgundy soil, a delicate aftertaste of burnt garlic, and a whole lot of grapes.\"}, \"type\": \"paragraph\"}]}",
+              "productType": {
+                "name": "Wine"
+              },
+              "category": {
+                "name": "Alcohol"
+              },
+              "weight": {
+                "unit": "KG",
+                "value": 0
+              },
+              "media": [
+                {
+                  "url": "https://demo.saleor.io/media/products/saleordemoproduct_wine-red.png"
+                }
+              ],
+              "collections": [],
+              "chargeTaxes": true
+            },
+            "channelListings": [
+              {
+                "channel": {
+                  "id": "Q2hhbm5lbDoy"
+                },
+                "price": {
+                  "currency": "USD",
+                  "amount": 5
+                }
+              },
+              {
+                "channel": {
+                  "id": "Q2hhbm5lbDoz"
+                },
+                "price": {
+                  "currency": "PLN",
+                  "amount": 20
+                }
+              }
+            ],
+            "stocks": [
+              {
+                "warehouse": {
+                  "id": "V2FyZWhvdXNlOjA4MDQ4YjVlLTkxZGQtNDQxMi05NTY0LWI4NDM4OTQ1ZTE0Mw=="
+                },
+                "quantity": 482
+              },
+              {
+                "warehouse": {
+                  "id": "V2FyZWhvdXNlOjZjNmM1MDdhLTIxZjYtNDY5OS1hM2QzLWUwZDYxNzM4YjI2Yw=="
+                },
+                "quantity": 482
+              },
+              {
+                "warehouse": {
+                  "id": "V2FyZWhvdXNlOmFhYmViMjVkLWVjZDYtNDBhMS1hMzAzLTRlMTllYTkzYjE1Zg=="
+                },
+                "quantity": 482
+              },
+              {
+                "warehouse": {
+                  "id": "V2FyZWhvdXNlOmE3ZjBmYTk1LWY3NmMtNDUyYi1hNjg1LWZiNDE5ZTQ4OGMxMQ=="
+                },
+                "quantity": 482
+              },
+              {
+                "warehouse": {
+                  "id": "V2FyZWhvdXNlOjJjYzE5MmVlLTcyNWQtNGZjMC1iN2Y4LThkZmM0MDBjNzQ5NQ=="
+                },
+                "quantity": 482
+              }
+            ]
+          }
+        },
+        {
+          "node": {
+            "id": "UHJvZHVjdFZhcmlhbnQ6MjE4",
+            "sku": "94044081",
+            "media": [
+              {
+                "url": "https://demo.saleor.io/media/products/saleordemoproduct_fd_juice_03.png"
+              }
+            ],
+            "weight": {
+              "unit": "KG",
+              "value": 1
+            },
+            "product": {
+              "name": "Power Juice",
+              "description": "{\"blocks\": [{\"data\": {\"text\": \"Is it a bird? Is a plane? No! It\\u2019s some jacked dude who just sucked down a bottle of our brand new power juice! Look at him go!\"}, \"type\": \"paragraph\"}]}",
+              "productType": {
+                "name": "Juice"
+              },
+              "category": {
+                "name": "Juices"
+              },
+              "weight": {
+                "unit": "KG",
+                "value": 1
+              },
+              "media": [
+                {
+                  "url": "https://demo.saleor.io/media/products/saleordemoproduct_fd_juice_03.png"
+                }
+              ],
+              "collections": [],
+              "chargeTaxes": true
+            },
+            "channelListings": [
+              {
+                "channel": {
+                  "id": "Q2hhbm5lbDoy"
+                },
+                "price": {
+                  "currency": "USD",
+                  "amount": 5
+                }
+              },
+              {
+                "channel": {
+                  "id": "Q2hhbm5lbDoz"
+                },
+                "price": {
+                  "currency": "PLN",
+                  "amount": 20
+                }
+              }
+            ],
+            "stocks": [
+              {
+                "warehouse": {
+                  "id": "V2FyZWhvdXNlOjA4MDQ4YjVlLTkxZGQtNDQxMi05NTY0LWI4NDM4OTQ1ZTE0Mw=="
+                },
+                "quantity": 381
+              },
+              {
+                "warehouse": {
+                  "id": "V2FyZWhvdXNlOjJjYzE5MmVlLTcyNWQtNGZjMC1iN2Y4LThkZmM0MDBjNzQ5NQ=="
+                },
+                "quantity": 381
+              },
+              {
+                "warehouse": {
+                  "id": "V2FyZWhvdXNlOjZjNmM1MDdhLTIxZjYtNDY5OS1hM2QzLWUwZDYxNzM4YjI2Yw=="
+                },
+                "quantity": 381
+              },
+              {
+                "warehouse": {
+                  "id": "V2FyZWhvdXNlOmE3ZjBmYTk1LWY3NmMtNDUyYi1hNjg1LWZiNDE5ZTQ4OGMxMQ=="
+                },
+                "quantity": 381
+              },
+              {
+                "warehouse": {
+                  "id": "V2FyZWhvdXNlOmFhYmViMjVkLWVjZDYtNDBhMS1hMzAzLTRlMTllYTkzYjE1Zg=="
+                },
+                "quantity": 381
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

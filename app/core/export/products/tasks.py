@@ -29,14 +29,24 @@ async def init_export_for_report(
     await continue_export(db, export_file.id)
 
 
+async def _continue_export(
+    db: AsyncSession,
+    export_id: int,
+):
+    await continue_export(db, export_id)
+
+
 async def continue_export(
     db: AsyncSession,
     export_id: int,
 ):
     """Export a single batch of a report and schedule the next one."""
+    # Fetch database object and parse column info
     export_file = await fetch_export_by_id(db, export_id)
     report = await fetch_report_by_id(db, export_file.report_id)
     column_info = fetch_product_columns_info(report)
+
+    # Continue export from the last cursor
     response = await fetch_products_response(
         column_info,
         export_file.cursor,
@@ -46,4 +56,7 @@ async def continue_export(
     write_partial_result_to_file(export_file.content_file, cols)
     update_export_cursor(db, export_file, cursor)
     await db.commit()
-    await continue_export(db, export_file.id)
+
+    # If next page exists, continue export
+    if cursor:
+        await _continue_export(db, export_id)

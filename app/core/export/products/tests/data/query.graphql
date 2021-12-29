@@ -1,5 +1,9 @@
 query {
   productVariants(first: 100) {
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
     edges {
       node {
         id
