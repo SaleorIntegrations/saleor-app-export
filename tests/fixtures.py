@@ -16,8 +16,10 @@ async def product_column_info(db_session):
     return ProductSelectedColumnsInfo(
         fields=list(ProductFieldEnum),
         attributes=[],
-        channels=[],
-        warehouses=[],
+        channels=[
+            "Q2hhbm5lbDoy",
+        ],
+        warehouses=["V2FyZWhvdXNlOjJjYzE5MmVlLTcyNWQtNGZjMC1iN2Y4LThkZmM0MDBjNzQ5NQ=="],
     )
 
 

@@ -92,13 +92,27 @@ def parse_static_fields(fields: List[ProductFieldEnum], node: dict):
     return row
 
 
-def parse_attribute_fields(attribute: str, node: dict):
+def parse_attribute_fields(attribute_id: str, node: dict):
     return []
 
 
-def parse_channel_fields(channel: str, node: dict):
-    return []
+def parse_channel_fields(channel_id: str, node: dict):
+    currency = ""
+    amount = ""
+    for listing in node["channelListings"]:
+        if listing["channel"]["id"] == channel_id:
+            currency = listing["price"]["currency"]
+            amount = listing["price"]["amount"]
+            break
+
+    return [currency, amount]
 
 
-def parse_warehouse_fields(warehouse: str, node: dict):
-    return []
+def parse_warehouse_fields(warehouse_id: str, node: dict):
+    quantity = ""
+    for stock in node["stocks"]:
+        if stock["warehouse"]["id"] == warehouse_id:
+            quantity = stock["quantity"]
+            break
+
+    return [quantity]
