@@ -8,6 +8,7 @@ import ChannelsFilter from '../Filters/ChannelsFilter'
 import ReleaseFilter from '../Filters/ReleaseFilter'
 import SignedFilter from '../Filters/SignedFilter'
 import StockFilter from '../Filters/StockFilter'
+import ProductTypesFilter from '../Filters/ProductTypesFilter'
 import { useQueryInitialProductFilterAttributes } from '../../../api'
 import { reducer, initFilters, Filter } from './reducer'
 
@@ -72,12 +73,20 @@ export function FilterButton() {
         return (
           <StockFilter key={filter.id} filter={filter} dispatch={dispatch} />
         )
+      case 'product-types':
+        return (
+          <ProductTypesFilter
+            key={filter.id}
+            filter={filter}
+            dispatch={dispatch}
+          />
+        )
       default:
         return null
     }
   }
 
-  const evaluateFilterType = (name: string) => {
+  const evaluateAttributeFilterType = (name: string) => {
     switch (name) {
       case 'Release Date':
         return 'release'
@@ -94,7 +103,7 @@ export function FilterButton() {
 
       const settledInitialFilters = initialFilters.map<Filter>(
         ({ node: { id, name } }) => ({
-          filterType: evaluateFilterType(name),
+          filterType: evaluateAttributeFilterType(name),
           id: id,
           name: name,
           checked: false,
@@ -126,6 +135,14 @@ export function FilterButton() {
         selected: [],
       }
 
+      const sattledProductTypesFilter: Filter = {
+        filterType: 'product-types',
+        id: 'product-types-id',
+        name: 'Product Types',
+        checked: false,
+        selected: [],
+      }
+
       dispatch({
         type: 'SET_FILTERS',
         filters: [
@@ -133,6 +150,7 @@ export function FilterButton() {
           sattledCategoryFilter,
           sattledChannelFilter,
           sattledStockQuantityFilter,
+          sattledProductTypesFilter,
         ],
       })
     }
