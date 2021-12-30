@@ -74,7 +74,11 @@ export function Filter({
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     event.stopPropagation()
-    dispatch({ type: 'ADD_SELECTED', selected: [event.target.value] })
+    dispatch({
+      type: 'ADD_SELECTED',
+      id: filter.id,
+      selected: [event.target.value],
+    })
   }
 
   const optionsFiltrBySearch = () => {

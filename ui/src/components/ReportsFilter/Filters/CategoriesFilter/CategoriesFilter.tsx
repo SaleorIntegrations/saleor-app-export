@@ -1,17 +1,18 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react'
 import { TextField } from '@material-ui/core'
 
 import { Filter, Option } from '../Filter'
 import useStyles from '../styles'
 import { Filter as FilterType, ReducerAction } from '../../FilterButton/reducer'
-import { useSearchAttributeValuesQuery } from '../../../../api/attributesValues'
+import { useQuerySearchCategories } from '../../../../api'
 
-export interface AttributeFilterProps {
+export interface CategoriesFilterProps {
   filter: FilterType
   dispatch: (action: ReducerAction) => void
 }
 
-export function AttributeFilter(props: AttributeFilterProps) {
+export function CategoriesFilter(props: CategoriesFilterProps) {
   const classes = useStyles()
   const { filter, dispatch } = props
   const [canFetch, setCanFetch] = useState(false)
@@ -27,14 +28,15 @@ export function AttributeFilter(props: AttributeFilterProps) {
     navigation: { after: '', hasNext: false },
     options: [] as Option[],
   })
-  const [searchedAttributeValues, fetchSearchedAttributeValues] =
-    useSearchAttributeValuesQuery(
-      filter.id,
-      !query.value
-        ? globalOptions.navigation.after
-        : searchedOptions.navigation.after,
-      1,
-      query.value,
+  const [searchedCategoriesValues, fetchSearchedCaregoriesValues] =
+    useQuerySearchCategories(
+      {
+        after: !query.value
+          ? globalOptions.navigation.after
+          : searchedOptions.navigation.after,
+        first: 10,
+        query: query.value,
+      },
       {
         pause: true,
       }
@@ -62,8 +64,8 @@ export function AttributeFilter(props: AttributeFilterProps) {
   )
 
   const unzipOptions = () => {
-    if (searchedAttributeValues.data) {
-      return searchedAttributeValues.data.attribute.choices.edges.map(
+    if (searchedCategoriesValues.data) {
+      return searchedCategoriesValues.data.search.edges.map(
         ({ node: { id, name } }) => ({ id, name })
       )
     }
@@ -72,36 +74,30 @@ export function AttributeFilter(props: AttributeFilterProps) {
   }
 
   const fetch = (options?: any) => {
-    fetchSearchedAttributeValues(options)
+    fetchSearchedCaregoriesValues(options)
   }
 
   useEffect(() => {
-    if (searchedAttributeValues.data) {
+    if (searchedCategoriesValues.data) {
       if (query.value) {
         setSearchedOptions({
           options: [...searchedOptions.options, ...unzipOptions()],
           navigation: {
-            hasNext:
-              searchedAttributeValues.data.attribute.choices.pageInfo
-                .hasNextPage,
-            after:
-              searchedAttributeValues.data.attribute.choices.pageInfo.endCursor,
+            hasNext: searchedCategoriesValues.data.search.pageInfo.hasNextPage,
+            after: searchedCategoriesValues.data.search.pageInfo.endCursor,
           },
         })
       } else {
         setGlobalOptions({
           options: [...globalOptions.options, ...unzipOptions()],
           navigation: {
-            hasNext:
-              searchedAttributeValues.data.attribute.choices.pageInfo
-                .hasNextPage,
-            after:
-              searchedAttributeValues.data.attribute.choices.pageInfo.endCursor,
+            hasNext: searchedCategoriesValues.data.search.pageInfo.hasNextPage,
+            after: searchedCategoriesValues.data.search.pageInfo.endCursor,
           },
         })
       }
     }
-  }, [searchedAttributeValues.data])
+  }, [searchedCategoriesValues.data])
 
   useEffect(() => {
     if (canFetch === true) {
@@ -132,4 +128,4 @@ export function AttributeFilter(props: AttributeFilterProps) {
   )
 }
 
-export default AttributeFilter
+export default CategoriesFilter

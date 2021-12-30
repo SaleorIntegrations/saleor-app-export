@@ -1,7 +1,7 @@
 import { sortAlphabetically } from '../../../utils/sortAlphabetically'
 
 export interface Filter {
-  filterType: 'attribute' | 'category' | 'release' | 'price'
+  filterType: 'attribute' | 'category' | 'release' | 'price' | 'channel'
   id: string
   name: string
   checked: boolean

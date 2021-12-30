@@ -2,8 +2,9 @@ import React, { useState, useEffect, useCallback, useReducer } from 'react'
 import { Box, Button, Popover, Typography } from '@material-ui/core'
 
 import useStyles from '../styles'
-import AttributeFilter from '../Filter/AttributeFilter'
-import CategoriesFilter from '../Filter/CategoriesFilter'
+import AttributeFilter from '../Filters/AttributeFilter'
+import CategoriesFilter from '../Filters/CategoriesFilter'
+import ChannelsFilter from '../Filters/ChannelsFilter'
 import { useQueryInitialProductFilterAttributes } from '../../../api'
 import { reducer, initFilters, Filter } from './reducer'
 
@@ -30,9 +31,9 @@ export function FilterButton() {
     console.log(filters.filter(filter => filter.checked === true))
   }
 
-  const clearFilters = useCallback(() => {
+  const clearFilters = () => {
     dispatch({ type: 'CLEAR' })
-  }, [filters])
+  }
 
   const assignFilter = (filter: Filter) => {
     switch (filter.filterType) {
@@ -51,6 +52,10 @@ export function FilterButton() {
             filter={filter}
             dispatch={dispatch}
           />
+        )
+      case 'channel':
+        return (
+          <ChannelsFilter key={filter.id} filter={filter} dispatch={dispatch} />
         )
       default:
         return null
@@ -71,7 +76,7 @@ export function FilterButton() {
         })
       )
 
-      const sattledCategoryFilters: Filter = {
+      const sattledCategoryFilter: Filter = {
         filterType: 'category',
         id: 'category-id',
         name: 'Categories',
@@ -79,9 +84,21 @@ export function FilterButton() {
         selected: [],
       }
 
+      const sattledChannelFilter: Filter = {
+        filterType: 'channel',
+        id: 'channel-id',
+        name: 'Channel',
+        checked: false,
+        selected: [],
+      }
+
       dispatch({
         type: 'SET_FILTERS',
-        filters: [...settledInitialFilters, sattledCategoryFilters],
+        filters: [
+          ...settledInitialFilters,
+          sattledCategoryFilter,
+          sattledChannelFilter,
+        ],
       })
     }
   }, [initialProductsFilters])
