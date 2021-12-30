@@ -34,7 +34,7 @@ export function ProductTypesFilter(props: ProductTypesFilterProps) {
         after: !query.value
           ? globalOptions.navigation.after
           : searchedOptions.navigation.after,
-        first: 2,
+        first: 10,
         query: query.value,
       },
       {

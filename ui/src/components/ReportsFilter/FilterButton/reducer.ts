@@ -1,5 +1,10 @@
 import { sortAlphabetically } from '../../../utils/sortAlphabetically'
 
+export interface Price {
+  from: string
+  to: string | null
+}
+
 export interface DateTime {
   date: string
   time: string
@@ -16,12 +21,12 @@ export interface Filter {
   name: string
   checked: boolean
   selected: string[]
-  query?: string
+  price?: Price
   period?: Period | DateTime
 }
 
 export interface ReducerAction extends Partial<Filter> {
-  type: 'CHANGE_FILTER' | 'SET_FILTERS' | 'CLEAR' | 'ADD_SELECTED' | 'SET_PERIOD'
+  type: 'CHANGE_FILTER' | 'SET_FILTERS' | 'CLEAR' | 'ADD_SELECTED' | 'SET_PERIOD' | 'SET_PRICE'
   filters?: Filter[]
   filter?: Filter
 }
@@ -63,6 +68,17 @@ export const reducer = (state: Filter[], action: ReducerAction) => {
         ? [
             ...state.filter(filter => action.id !== filter.id),
             { ...periodFilter, period: action.period },
+          ].sort((a, b) => sortAlphabetically(a.name, b.name))
+        : state
+    case 'SET_PRICE':
+      if (!action.price || !action.id)
+        throw new Error('Error: add period or id to the reducer')
+      const priceFilter = state.find(filter => filter.id === action.id)
+
+      return priceFilter
+        ? [
+            ...state.filter(filter => action.id !== filter.id),
+            { ...priceFilter, price: action.price },
           ].sort((a, b) => sortAlphabetically(a.name, b.name))
         : state
     default:

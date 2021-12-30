@@ -108,7 +108,7 @@ export function ReleaseFilter(props: ReleaseFilterProps) {
     setType(event.target.value as string)
   }
 
-  const EqualQuery = () => (
+  const EqualQuery = (
     <Grid container direction="row" spacing={1} alignItems="center">
       <Grid item xs={1}>
         <SubdirectoryArrowRightIcon />
@@ -124,7 +124,7 @@ export function ReleaseFilter(props: ReleaseFilterProps) {
     </Grid>
   )
 
-  const BetweenQuery = () => (
+  const BetweenQuery = (
     <Grid container direction="row" spacing={1}>
       <Grid item xs={1}>
         <SubdirectoryArrowRightIcon style={{ marginTop: '2rem' }} />
@@ -179,8 +179,8 @@ export function ReleaseFilter(props: ReleaseFilterProps) {
           <MenuItem value="equal">equal to</MenuItem>
           <MenuItem value="between">between</MenuItem>
         </Select>
-        {type === 'equal' && <EqualQuery />}
-        {type === 'between' && <BetweenQuery />}
+        {type === 'equal' && EqualQuery}
+        {type === 'between' && BetweenQuery}
       </AccordionDetails>
     </Accordion>
   )
