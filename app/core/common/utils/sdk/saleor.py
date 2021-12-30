@@ -10,18 +10,11 @@ async def get_saleor_transport():
     tc = tenant_context()
     domain = tc.immutable.saleor_domain
     token = tc.immutable.saleor_api_token
-    headers = None
-
-    if token:
-        headers = {
-            "Authorization": f"Bearer {token}",
-        }
-
-    # TODO pass the domain somewhere as an env var
-    domain = "devkawapl.eu.saleor.cloud"
+    headers = {
+        "Authorization": f"Bearer {token}",
+    }
     transport = AIOHTTPTransport(
         url=f"{SALEOR_PROTOCOL}://{domain}/graphql/",
         headers=headers,
     )
-
     return transport

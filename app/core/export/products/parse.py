@@ -10,8 +10,7 @@ def parse_variants_response(
     """Get headers for both static and dynamic fields"""
     # Prepare cursor information
     rows = []
-    data = response["data"]
-    variants = data["productVariants"]
+    variants = response["productVariants"]
     page_info = variants["pageInfo"]
     cursor = ""
     if page_info["hasNextPage"]:
@@ -42,6 +41,14 @@ def m(values: List[str]) -> str:
     return "\n".join(values)
 
 
+def _parse_weight(weight: dict):
+    if not weight:
+        return ""
+    value = weight["value"]
+    unit = weight["unit"].lower()
+    return f"{value}{unit}"
+
+
 def parse_static_fields(fields: List[ProductFieldEnum], node: dict):
     row = []
     product = node["product"]
@@ -62,9 +69,7 @@ def parse_static_fields(fields: List[ProductFieldEnum], node: dict):
         row.append(product["category"]["name"])
 
     if ProductFieldEnum.PRODUCT_WEIGHT in fields:
-        value = product["weight"]["value"]
-        unit = product["weight"]["unit"]
-        row.append(f"{value}{unit}")
+        row.append(_parse_weight(product["weight"]))
 
     if ProductFieldEnum.COLLECTIONS in fields:
         row.append(m([col["name"] for col in product["collections"]]))
@@ -82,9 +87,7 @@ def parse_static_fields(fields: List[ProductFieldEnum], node: dict):
         row.append(node["sku"])
 
     if ProductFieldEnum.VARIANT_WEIGHT in fields:
-        value = node["weight"]["value"]
-        unit = node["weight"]["unit"]
-        row.append(f"{value}{unit}")
+        row.append(_parse_weight(node["weight"]))
 
     if ProductFieldEnum.VARIANT_MEDIA in fields:
         row.append(m([img["url"] for img in node["media"]]))

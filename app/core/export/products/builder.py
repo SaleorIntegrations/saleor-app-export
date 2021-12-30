@@ -28,6 +28,28 @@ async def build_variants_query(
           unit
           value
         }
+        attributes {
+          attribute {
+            id
+            slug
+            name
+            inputType
+          }
+          values {
+            name
+            slug
+            value
+            inputType
+            reference
+            file {
+              url
+            }
+            richText
+            boolean
+            date
+            dateTime
+          }
+        }
         product {
           name
           description

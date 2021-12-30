@@ -1,8 +1,8 @@
 """Init
 
-Revision ID: 727196644035
+Revision ID: 35c27e44887c
 Revises:
-Create Date: 2021-12-16 20:00:28.284323
+Create Date: 2021-12-30 12:33:20.397479
 
 """
 import sqlalchemy as sa
@@ -11,7 +11,7 @@ import sqlmodel.sql.sqltypes
 from alembic import op
 
 # revision identifiers, used by Alembic.
-revision = "727196644035"
+revision = "35c27e44887c"
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -22,7 +22,7 @@ def upgrade():
     op.create_table(
         "report",
         sa.Column("filter_input", sa.JSON(), nullable=True),
-        sa.Column("ids", sa.JSON(), nullable=True),
+        sa.Column("columns", sa.JSON(), nullable=True),
         sa.Column("id", sa.Integer(), nullable=True),
         sa.Column("created_at", sa.DateTime(), nullable=True),
         sa.Column("updated_at", sa.DateTime(), nullable=True),
@@ -45,8 +45,8 @@ def upgrade():
         sa.Column("created_at", sa.DateTime(), nullable=True),
         sa.Column("updated_at", sa.DateTime(), nullable=True),
         sa.Column("status", sqlmodel.sql.sqltypes.AutoString(), nullable=True),
-        sa.Column("message", sqlmodel.sql.sqltypes.AutoString(), nullable=False),
-        sa.Column("content_file", sqlmodel.sql.sqltypes.AutoString(), nullable=False),
+        sa.Column("content_file", sqlmodel.sql.sqltypes.AutoString(), nullable=True),
+        sa.Column("cursor", sqlmodel.sql.sqltypes.AutoString(), nullable=True),
         sa.Column("report_id", sa.Integer(), nullable=False),
         sa.ForeignKeyConstraint(
             ["report_id"],
@@ -60,10 +60,10 @@ def upgrade():
     op.create_index(
         op.f("ix_exportfile_created_at"), "exportfile", ["created_at"], unique=False
     )
-    op.create_index(op.f("ix_exportfile_id"), "exportfile", ["id"], unique=False)
     op.create_index(
-        op.f("ix_exportfile_message"), "exportfile", ["message"], unique=False
+        op.f("ix_exportfile_cursor"), "exportfile", ["cursor"], unique=False
     )
+    op.create_index(op.f("ix_exportfile_id"), "exportfile", ["id"], unique=False)
     op.create_index(
         op.f("ix_exportfile_report_id"), "exportfile", ["report_id"], unique=False
     )
@@ -108,8 +108,8 @@ def downgrade():
     op.drop_index(op.f("ix_exportfile_updated_at"), table_name="exportfile")
     op.drop_index(op.f("ix_exportfile_status"), table_name="exportfile")
     op.drop_index(op.f("ix_exportfile_report_id"), table_name="exportfile")
-    op.drop_index(op.f("ix_exportfile_message"), table_name="exportfile")
     op.drop_index(op.f("ix_exportfile_id"), table_name="exportfile")
+    op.drop_index(op.f("ix_exportfile_cursor"), table_name="exportfile")
     op.drop_index(op.f("ix_exportfile_created_at"), table_name="exportfile")
     op.drop_index(op.f("ix_exportfile_content_file"), table_name="exportfile")
     op.drop_table("exportfile")
