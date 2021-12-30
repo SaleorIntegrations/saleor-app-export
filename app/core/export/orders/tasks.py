@@ -1,22 +1,21 @@
 from sqlmodel.ext.asyncio.session import AsyncSession
 
-from app.core.reports.models import ExportFile
+from app.core.export.orders.fetch import fetch_order_columns_info, fetch_orders_response
+from app.core.export.orders.headers import get_headers
+from app.core.export.orders.parse import parse_orders_response
+from app.core.export.tasks import generic_init_export_for_report
 
 
-async def export_orders(
+async def init_export_for_report(
     db: AsyncSession,
-    export_file_id: int,
+    report_id: int,
 ):
-    # Fetch export file
-    export_file = await db.get(ExportFile, export_file_id)
-    # Fetch report
-    ...
-    # Export batch
-    await export_batch(db, export_file)
-
-
-async def export_batch(
-    db: AsyncSession,
-    export_file: ExportFile,
-):
-    pass
+    """Initialize export for a report with given id."""
+    await generic_init_export_for_report(
+        db,
+        report_id,
+        fetch_order_columns_info,
+        get_headers,
+        fetch_orders_response,
+        parse_orders_response,
+    )

@@ -1,13 +1,10 @@
 import dataclasses
 from typing import Dict
 
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlmodel import select
-
 from app.core.export.executor import execute_query
 from app.core.export.products.builder import build_headers_query, build_variants_query
 from app.core.export.products.fields import ProductSelectedColumnsInfo
-from app.core.reports.models import ExportFile, Report
+from app.core.reports.models import Report
 
 
 @dataclasses.dataclass
@@ -17,21 +14,11 @@ class NameByIdMapping:
     warehouses: Dict[str, str]
 
 
-async def fetch_report_by_id(db: AsyncSession, pk: int) -> Report:
-    result = await db.exec(select(Report).where(Report.id == pk))
-    return result.one()
-
-
-async def fetch_export_by_id(db: AsyncSession, pk: int) -> ExportFile:
-    result = await db.exec(select(ExportFile).where(ExportFile.id == pk))
-    return result.one()
-
-
 def fetch_product_columns_info(report: Report) -> ProductSelectedColumnsInfo:
     return ProductSelectedColumnsInfo(**report.columns)
 
 
-async def fetch_products_response(
+async def fetch_variants_response(
     column_info: ProductSelectedColumnsInfo,
     cursor: str = "",
 ) -> dict:

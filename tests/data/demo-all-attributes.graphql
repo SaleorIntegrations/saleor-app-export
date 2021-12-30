@@ -1,0 +1,57 @@
+mutation {
+  exportProducts(input: {
+    columns: {
+    	fields:[
+        ID,
+        NAME,
+        DESCRIPTION,
+        PRODUCT_TYPE,
+        CATEGORY,
+        PRODUCT_WEIGHT,
+        COLLECTIONS,
+        CHARGE_TAXES,
+        PRODUCT_MEDIA,
+        VARIANT_ID,
+        VARIANT_SKU,
+        VARIANT_WEIGHT,
+        VARIANT_MEDIA,
+      ],
+      attributes: [
+        "QXR0cmlidXRlOjIx",
+        "QXR0cmlidXRlOjI3",
+        "QXR0cmlidXRlOjE1",
+        "QXR0cmlidXRlOjE4",
+        "QXR0cmlidXRlOjE0",
+        "QXR0cmlidXRlOjIy",
+        "QXR0cmlidXRlOjMw",
+        "QXR0cmlidXRlOjI1",
+        "QXR0cmlidXRlOjE2",
+        "QXR0cmlidXRlOjMy",
+        "QXR0cmlidXRlOjIz",
+        "QXR0cmlidXRlOjE5",
+        "QXR0cmlidXRlOjI2",
+        "QXR0cmlidXRlOjMx",
+        "QXR0cmlidXRlOjI0",
+        "QXR0cmlidXRlOjEz",
+        "QXR0cmlidXRlOjI5",
+        "QXR0cmlidXRlOjIw",
+        "QXR0cmlidXRlOjMz"
+
+      ],
+      channels: [
+        "Q2hhbm5lbDoy",
+      ],
+      warehouses:["V2FyZWhvdXNlOjJjYzE5MmVlLTcyNWQtNGZjMC1iN2Y4LThkZmM0MDBjNzQ5NQ=="]
+    }
+  }) {
+    __typename,
+    ... on Report {
+      id
+    }
+    ... on  ExportProductsErrorResponse {
+      code
+      message
+      field
+    }
+  }
+}

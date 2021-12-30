@@ -1,32 +1,60 @@
-from typing import List
+from typing import Optional
 
 import strawberry
 
-from app.core.reports.models import ExportObjectTypesEnum, Report
+from app.core.export.orders.fields import OrderFieldEnum as OrderFields
+from app.core.export.orders.fields import (
+    OrderSelectedColumnsInfo as OrderSelectedColumnsInfoModel,
+)
+from app.core.export.orders.tasks import init_export_for_report
+from app.core.reports.models import ExportObjectTypesEnum, ExportScopeEnum, Report
+from app.graphql.reports import types
+
+OrderFieldEnum = strawberry.enum(OrderFields)
+
+
+@strawberry.experimental.pydantic.input(
+    model=OrderSelectedColumnsInfoModel, all_fields=True
+)
+class OrderSelectedColumnsInfo:
+    pass
 
 
 @strawberry.input
-class ExportOrdersInfo:
-    fields: List[str]
-    fileType: str
-    scope: str
-    filter: str
-    ids: List[str]
+class OrderFilterInfo:
+    filter_str: str
 
 
 @strawberry.input
 class ExportOrdersInput:
-    export_info: ExportOrdersInfo
+    columns: OrderSelectedColumnsInfo
+    filter: Optional[OrderFilterInfo] = None
 
 
 async def mutate_export_orders(root, input: ExportOrdersInput, info):
+    """Mutation for triggering the orders export process."""
     db = info.context["db"]
     report = Report(
         type=ExportObjectTypesEnum.ORDERS,
-        scope=input.export_info.scope,
-        filter_input=input.export_info.filter,
-        ids=input.export_info.ids,
+        scope=ExportScopeEnum.FILTER,
+        filter_input=input.filter.filter_str if input.filter else "",
+        columns={
+            "fields": [f.name for f in input.columns.fields],
+        },
     )
     db.add(report)
     await db.commit()
-    return report
+    await perform_export(db, report.id)
+    return types.Report(
+        id=report.id,
+        type=report.type,
+    )
+
+
+async def perform_export(db, report_id):
+    async def inner():
+        return await init_export_for_report(db, report_id)
+
+    # TODO: use async_to_sync in Celery
+    # async_to_sync(inner)()
+    await inner()

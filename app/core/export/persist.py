@@ -8,7 +8,8 @@ from app.core.reports.models import ExportFile
 def create_export_file(
     db: AsyncSession,
     report_id: int,
-):
+) -> ExportFile:
+    """Create export file and create a temporary result file"""
     # Create a temporary file to keep partial results
     path = f"media/{report_id}-{uuid4()}.csv"  # TODO: use mounted volume
     # Create an export instance with an empty cursor
@@ -27,5 +28,6 @@ def update_export_cursor(
     export_file: ExportFile,
     cursor: str,
 ):
+    """Update cursor of the provided export job"""
     export_file.cursor = cursor
     db.add(export_file)

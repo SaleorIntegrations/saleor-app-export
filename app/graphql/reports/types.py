@@ -1,3 +1,4 @@
+from enum import Enum
 from typing import List
 
 import strawberry
@@ -7,6 +8,18 @@ from app.core.reports.models import ExportObjectTypesEnum
 from app.graphql.reports.resolvers import resolve_reports, resolve_reports_count
 
 ReportTypes = strawberry.enum(ExportObjectTypesEnum)
+
+
+@strawberry.enum
+class ExportError(Enum):
+    LIMIT_EXCEEDED = "limit_exceeded"
+
+
+@strawberry.type
+class ExportErrorResponse:
+    code: ExportError
+    message: str
+    field: str
 
 
 @strawberry.type
@@ -31,3 +44,6 @@ class ReportConnection:
     @strawberry.field
     async def totalCount(self, info: Info) -> int:
         return await resolve_reports_count(info.context["db"])
+
+
+ExportResponse = strawberry.union("ExportResponse", [Report, ExportErrorResponse])

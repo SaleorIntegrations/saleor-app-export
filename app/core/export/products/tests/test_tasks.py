@@ -4,7 +4,7 @@ from unittest import mock
 import pytest
 from sqlmodel import select
 
-from app.core.export.products.tasks import continue_export, init_export_for_report
+from app.core.export.products.tasks import init_export_for_report
 from app.core.reports.models import ExportFile
 
 

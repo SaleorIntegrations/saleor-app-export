@@ -5,8 +5,16 @@ from app.core.reports.models import ExportObjectTypesEnum
 MUTATION_EXPORT_ORDERS = """
 mutation OrdersExport($input: ExportOrdersInput!) {
     exportOrders (input: $input) {
-        id
-        type
+        __typename
+        ...  on Report {
+            id
+            type
+        }
+        ... on  ExportErrorResponse{
+            code
+            message
+            field
+        }
     }
 }
 """

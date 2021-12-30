@@ -2,7 +2,7 @@ from unittest import mock
 
 import pytest
 
-from app.core.export.products.fetch import fetch_report_by_id
+from app.core.export.fetch import fetch_report_by_id
 from app.core.reports.models import ExportObjectTypesEnum
 
 MUTATION_EXPORT_ORDERS = """
@@ -13,7 +13,7 @@ mutation ProductsExport($input: ExportProductsInput!) {
             id
             type
         }
-        ... on  ExportProductsErrorResponse{
+        ... on  ExportErrorResponse{
             code
             message
             field
@@ -110,8 +110,6 @@ async def test_export_products_exceeds_column_limit(m_task, graphql, input_field
     # when
     result = await graphql.execute(MUTATION_EXPORT_ORDERS, variables)
     # then
-    assert (
-        result["data"]["exportProducts"]["__typename"] == "ExportProductsErrorResponse"
-    )
+    assert result["data"]["exportProducts"]["__typename"] == "ExportErrorResponse"
     assert result["data"]["exportProducts"]["field"] == input_field
     assert result["data"]["exportProducts"]["code"] == "LIMIT_EXCEEDED"
