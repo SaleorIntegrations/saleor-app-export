@@ -8,6 +8,7 @@ import ChannelsFilter from '../Filters/ChannelsFilter'
 import ReleaseFilter from '../Filters/ReleaseFilter'
 import SignedFilter from '../Filters/SignedFilter'
 import StockFilter from '../Filters/StockFilter'
+import CollectionsFilter from '../Filters/CollectionsFilter'
 import ProductTypesFilter from '../Filters/ProductTypesFilter'
 import { useQueryInitialProductFilterAttributes } from '../../../api'
 import { reducer, initFilters, Filter } from './reducer'
@@ -81,6 +82,14 @@ export function FilterButton() {
             dispatch={dispatch}
           />
         )
+      case 'collection':
+        return (
+          <CollectionsFilter
+            key={filter.id}
+            filter={filter}
+            dispatch={dispatch}
+          />
+        )
       default:
         return null
     }
@@ -143,6 +152,14 @@ export function FilterButton() {
         selected: [],
       }
 
+      const sattledCollectionsFilter: Filter = {
+        filterType: 'collection',
+        id: 'collection-id',
+        name: 'Collections',
+        checked: false,
+        selected: [],
+      }
+
       dispatch({
         type: 'SET_FILTERS',
         filters: [
@@ -151,6 +168,7 @@ export function FilterButton() {
           sattledChannelFilter,
           sattledStockQuantityFilter,
           sattledProductTypesFilter,
+          sattledCollectionsFilter,
         ],
       })
     }

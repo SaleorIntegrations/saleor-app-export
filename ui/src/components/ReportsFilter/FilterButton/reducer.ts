@@ -11,7 +11,7 @@ export interface Period {
 }
 
 export interface Filter {
-  filterType: 'attribute' | 'category' | 'release' | 'price' | 'channel' | 'signed' | 'stock' | 'product-types'
+  filterType: 'attribute' | 'category' | 'release' | 'price' | 'channel' | 'signed' | 'stock' | 'product-types' | 'collection'
   id: string
   name: string
   checked: boolean
