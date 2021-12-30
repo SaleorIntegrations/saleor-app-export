@@ -9,7 +9,6 @@ import {
   MenuItem,
   Paper,
   Typography,
-  TextField,
 } from '@material-ui/core'
 import moment from 'moment'
 import { ToggleButtonGroup } from '@material-ui/lab'
@@ -17,13 +16,14 @@ import { ToggleButtonGroup } from '@material-ui/lab'
 import Label from '../Label'
 import useStyle from './style'
 import ZoneToggle from './ZoneToggle'
+import DateField, { Format } from '../DateField'
 
 export function ScheduleBox() {
   const classes = useStyle()
   const [isExtended, setIsExtended] = useState(false)
   const [zone, setZone] = useState('utc')
-  const [selectedDate, setSelectedDate] = useState(moment())
-  const [selectedTime, setSelectedTime] = useState(moment())
+  const [selectedDate, setSelectedDate] = useState(moment().format(Format.date))
+  const [selectedTime, setSelectedTime] = useState(moment().format(Format.time))
 
   return (
     <Box>
@@ -98,26 +98,12 @@ export function ScheduleBox() {
               </ToggleButtonGroup>
             </Paper>
           </FormControl>
-          <Box className={classes.dateBox}>
-            <TextField
-              className={classes.date}
-              type="date"
-              label="Date"
-              defaultValue={moment().format('yyyy-MM-DD')}
-              onChange={e =>
-                setSelectedDate(moment(new Date(e.currentTarget.value)))
-              }
-            />
-            <TextField
-              className={classes.time}
-              type="time"
-              label="Time"
-              defaultValue={moment().format('HH:mm')}
-              onChange={e =>
-                setSelectedTime(moment(new Date(e.currentTarget.value)))
-              }
-            />
-          </Box>
+          <DateField
+            date={selectedDate}
+            time={selectedTime}
+            setDate={setSelectedDate}
+            setTime={setSelectedTime}
+          />
         </>
       )}
     </Box>

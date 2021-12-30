@@ -1,10 +1,11 @@
-import React, { useState, useEffect, useCallback, useReducer } from 'react'
+import React, { useState, useEffect, useReducer } from 'react'
 import { Box, Button, Popover, Typography } from '@material-ui/core'
 
 import useStyles from '../styles'
 import AttributeFilter from '../Filters/AttributeFilter'
 import CategoriesFilter from '../Filters/CategoriesFilter'
 import ChannelsFilter from '../Filters/ChannelsFilter'
+import ReleaseFilter from '../Filters/ReleaseFilter'
 import { useQueryInitialProductFilterAttributes } from '../../../api'
 import { reducer, initFilters, Filter } from './reducer'
 
@@ -57,6 +58,10 @@ export function FilterButton() {
         return (
           <ChannelsFilter key={filter.id} filter={filter} dispatch={dispatch} />
         )
+      case 'release':
+        return (
+          <ReleaseFilter key={filter.id} filter={filter} dispatch={dispatch} />
+        )
       default:
         return null
     }
@@ -68,7 +73,7 @@ export function FilterButton() {
 
       const settledInitialFilters = initialFilters.map<Filter>(
         ({ node: { id, name } }) => ({
-          filterType: 'attribute',
+          filterType: name !== 'Release Date' ? 'attribute' : 'release',
           id: id,
           name: name,
           checked: false,

@@ -43,6 +43,12 @@ export const useStyles = makeStyles((theme) => ({
     '&.MuiLink-underlineHover:hover': {
       cursor: 'pointer'
     }
+  },
+  search: {
+    flexGrow: 1,
+    '& .MuiOutlinedInput-input': {
+      padding: '9px 12px'
+    }
   }
 }))
 
