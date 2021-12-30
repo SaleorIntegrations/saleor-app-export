@@ -60,14 +60,20 @@ async def test_get_warehouse_headers():
 
 
 @pytest.mark.asyncio
+@mock.patch("app.core.export.products.fetch.execute_query")
 @mock.patch("app.core.export.products.headers.get_warehouse_headers")
 @mock.patch("app.core.export.products.headers.get_channel_headers")
 @mock.patch("app.core.export.products.headers.get_attribute_headers")
 @mock.patch("app.core.export.products.headers.get_static_headers")
 async def test_get_headers(
-    m_static, m_attribute, m_channel, m_warehouse, product_column_info
+    m_static, m_attribute, m_channel, m_warehouse, m_execute, product_column_info
 ):
     # given
+    m_execute.return_value = {
+        "attributes": {"edges": []},
+        "channels": [],
+        "warehouses": {"edges": []},
+    }
     product_column_info.warehouses = ["1", "2"]
     product_column_info.channels = ["3", "4"]
     product_column_info.attributes = ["5", "6"]

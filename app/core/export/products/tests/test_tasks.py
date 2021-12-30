@@ -10,9 +10,10 @@ from app.core.reports.models import ExportFile
 
 @pytest.mark.asyncio
 @mock.patch("app.core.export.products.tasks.continue_export")
-async def test_init_export_for_report(m_continue, db_session, report):
+@mock.patch("app.core.export.products.tasks.get_headers")
+async def test_init_export_for_report(m_headers, m_continue, db_session, report):
     # given
-
+    m_headers.return_value = ["a", "b", "c"]
     # when
     await init_export_for_report(db_session, report.id)
 
