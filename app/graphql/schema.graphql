@@ -15,6 +15,16 @@ input ExportOrdersInput {
   exportInfo: ExportOrdersInfo!
 }
 
+enum ExportProductsError {
+  LIMIT_EXCEEDED
+}
+
+type ExportProductsErrorResponse {
+  code: ExportProductsError!
+  message: String!
+  fields: [String!]!
+}
+
 input ExportProductsInput {
   columns: ProductSelectedColumnsInfo!
   filter: ProductFilterInfo = null
@@ -22,7 +32,7 @@ input ExportProductsInput {
 
 type Mutation {
   exportOrders(input: ExportOrdersInput!): Report!
-  exportProducts(input: ExportProductsInput!): Report!
+  exportProducts(input: ExportProductsInput!): ReportExportProductsErrorResponse!
 }
 
 enum ProductFieldEnum {
@@ -70,3 +80,5 @@ type ReportEdge {
   node: Report!
   cursor: String!
 }
+
+union ReportExportProductsErrorResponse = Report | ExportProductsErrorResponse

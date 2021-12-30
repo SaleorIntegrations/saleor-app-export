@@ -8,8 +8,16 @@ from app.core.reports.models import ExportObjectTypesEnum
 MUTATION_EXPORT_ORDERS = """
 mutation ProductsExport($input: ExportProductsInput!) {
     exportProducts (input: $input) {
-        id
-        type
+        __typename
+        ...  on Report {
+            id
+            type
+        }
+        ... on  ExportProductsErrorResponse{
+            code
+            message
+            field
+        }
     }
 }
 """
@@ -84,3 +92,26 @@ async def test_export_products_wit_related_columns(m_task, db_session, graphql):
     assert report.columns["attributes"] == attribute_ids
     assert report.columns["warehouses"] == warehouse_ids
     assert report.columns["channels"] == channel_ids
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("input_field", ["attributes", "warehouses"])
+@mock.patch("app.graphql.reports.mutations.products.init_export_for_report")
+async def test_export_products_exceeds_column_limit(m_task, graphql, input_field):
+    # given
+    variables = {
+        "input": {
+            "columns": {
+                "fields": ["ID", "VARIANT_ID"],
+                input_field: [str(i) for i in range(101)],
+            },
+        }
+    }
+    # when
+    result = await graphql.execute(MUTATION_EXPORT_ORDERS, variables)
+    # then
+    assert (
+        result["data"]["exportProducts"]["__typename"] == "ExportProductsErrorResponse"
+    )
+    assert result["data"]["exportProducts"]["field"] == input_field
+    assert result["data"]["exportProducts"]["code"] == "LIMIT_EXCEEDED"
