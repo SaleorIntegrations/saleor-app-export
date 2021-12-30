@@ -1,5 +1,6 @@
 from typing import List
 
+from app.core.export.products.fetch import fetch_header_mappings
 from app.core.export.products.fields import ProductFieldEnum, ProductSelectedColumnsInfo
 
 FIELD_ENUM_TO_HEADER_MAP = {
@@ -19,18 +20,19 @@ FIELD_ENUM_TO_HEADER_MAP = {
 }
 
 
-def get_headers(column_info: ProductSelectedColumnsInfo) -> List[str]:
+async def get_headers(column_info: ProductSelectedColumnsInfo) -> List[str]:
     """Get headers for both static and dynamic fields"""
+    mapping = await fetch_header_mappings(column_info)
     headers = get_static_headers(column_info.fields)
 
     for attribute in column_info.attributes:
-        headers.extend(get_attribute_headers(attribute))
+        headers.extend(get_attribute_headers(mapping.attributes[attribute]))
 
     for channel in column_info.channels:
-        headers.extend(get_channel_headers(channel))
+        headers.extend(get_channel_headers(mapping.channels[channel]))
 
     for warehouse in column_info.warehouses:
-        headers.extend(get_warehouse_headers(warehouse))
+        headers.extend(get_warehouse_headers(mapping.warehouses[warehouse]))
 
     return headers
 

@@ -83,7 +83,7 @@ async def test_get_headers(
     g = ["g"]
     m_warehouse.side_effect = [f, g]
     # when
-    headers = get_headers(product_column_info)
+    headers = await get_headers(product_column_info)
     # then
     assert len(headers) == 7
     assert headers == ["a", "b", "c", "d", "e", "f", "g"]

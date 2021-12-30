@@ -23,7 +23,7 @@ async def init_export_for_report(
 
     # Write report headers
     write_partial_result_to_file(
-        export_file.content_file, [get_headers(column_info)], reset=True
+        export_file.content_file, [await get_headers(column_info)], reset=True
     )
 
     await db.commit()
