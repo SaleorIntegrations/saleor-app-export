@@ -40,7 +40,7 @@ async def test_export_products_schedules_task(m_task, graphql):
     assert (
         result["data"]["exportProducts"]["type"] == ExportObjectTypesEnum.PRODUCTS.name
     )
-    assert m_task.call_count == 1
+    assert m_task.apply.call_count == 1
 
 
 @pytest.mark.asyncio

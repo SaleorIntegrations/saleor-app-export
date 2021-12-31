@@ -31,4 +31,4 @@ async def test_export_orders_schedules_task(m_task, graphql):
     result = await graphql.execute(MUTATION_EXPORT_ORDERS, variables)
     # then
     assert result["data"]["exportOrders"]["type"] == ExportObjectTypesEnum.ORDERS.name
-    assert m_task.call_count == 1
+    assert m_task.apply.call_count == 1

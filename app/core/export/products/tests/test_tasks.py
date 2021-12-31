@@ -19,7 +19,7 @@ async def test_init_export_for_report(
     m_headers.return_value = ["a", "b", "c"]
 
     # when
-    await init_export_for_report(db_session, products_report.id, ProductExportMethods)
+    await init_export_for_report(db_session, products_report.id)
 
     # then
     export = (
@@ -32,7 +32,7 @@ async def test_init_export_for_report(
     assert os.path.isfile(export.content_file)
     with open(export.content_file) as f:
         assert len(f.readlines()) == 1
-    m_continue.assert_awaited_once_with(mock.ANY, export.id, ProductExportMethods)
+    m_continue.assert_awaited_once_with(mock.ANY, export.id)
 
 
 @pytest.mark.asyncio
@@ -49,7 +49,7 @@ async def test_continue_export_with_empty_cursor(
     m_fetch_response.return_value = dummy_variants_response_has_no_next
 
     # when
-    await continue_export(db_session, products_export.id, ProductExportMethods)
+    await continue_export(db_session, products_export.id)
 
     # then
     assert m_continue.call_count == 0
@@ -69,7 +69,7 @@ async def test_continue_export_with_next_page(
     m_fetch_response.return_value = dummy_variants_response_has_next
 
     # when
-    await continue_export(db_session, products_export.id, ProductExportMethods)
+    await continue_export(db_session, products_export.id)
 
     # then
     refreshed_export = (

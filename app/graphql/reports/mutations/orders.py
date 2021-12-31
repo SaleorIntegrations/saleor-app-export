@@ -6,7 +6,6 @@ from app.core.export.orders.fields import OrderFieldEnum as OrderFields
 from app.core.export.orders.fields import (
     OrderSelectedColumnsInfo as OrderSelectedColumnsInfoModel,
 )
-from app.core.export.orders.tasks import OrderExportMethods
 from app.core.export.tasks import init_export_for_report
 from app.core.reports.models import ExportObjectTypesEnum, ExportScopeEnum, Report
 from app.graphql.reports import types
@@ -45,17 +44,8 @@ async def mutate_export_orders(root, input: ExportOrdersInput, info):
     )
     db.add(report)
     await db.commit()
-    await perform_export(db, report.id)
+    init_export_for_report.apply_async([report.id])
     return types.Report(
         id=report.id,
         type=report.type,
     )
-
-
-async def perform_export(db, report_id):
-    async def inner():
-        return await init_export_for_report(db, report_id, OrderExportMethods)
-
-    # TODO: use async_to_sync in Celery
-    # async_to_sync(inner)()
-    await inner()
