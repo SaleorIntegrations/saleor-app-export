@@ -21,47 +21,60 @@ async def build_orders_query(
     fields = """
         id
         number
-        isShippingRequired
-        total {
-          currency
-          net {
-            amount
-          }
-          gross {
-            amount
-          }
-          tax {
-            amount
-          }
+        created
+        channel {slug}
+        languageCodeEnum
+        shippingMethodName
+        total {...taxedMoney}
+        subtotal {...taxedMoney}
+        shippingPrice {...taxedMoney}
+        userEmail
+        shippingAddress {...address}
+        billingAddress {...address}
+        lines {productSku}
+        paymentStatus
+        payments {
+          gateway
+          paymentMethodType
         }
-        subtotal {
-          currency
-          net {
-            amount
-          }
-          gross {
-            amount
-          }
-          tax {
-            amount
-          }
-        }
-        shippingPrice {
-          currency
-          net {
-            amount
-          }
-          gross {
-            amount
-          }
-          tax {
-            amount
-          }
+        totalBalance {amount}
+        totalCaptured {amount}
+        totalAuthorized {amount}
+        status
+        fulfillments {
+          trackingNumber
         }
     """
 
     # Build query arguments
     return f"""
+        fragment taxedMoney on TaxedMoney {{
+          gross {{
+            amount
+          }}
+          net {{
+            amount
+          }}
+          tax {{
+            amount
+          }}
+          currency
+        }}
+
+        fragment address on Address {{
+          firstName
+          lastName
+          companyName
+          streetAddress1
+          streetAddress2
+          city
+          cityArea
+          postalCode
+          country {{code}}
+          countryArea
+          phone
+        }}
+
         query {{
             orders ({params}) {{
                 pageInfo {{

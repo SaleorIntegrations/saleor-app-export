@@ -1,0 +1,41 @@
+mutation {
+  exportOrders(input: {
+    columns: {
+      fields: [
+        ID
+        NUMBER
+        CREATED
+        CHANNEL
+        LANGUAGE_CODE
+        SHIPPING_METHOD
+        CURRENCY
+        TOTAL
+        SUBTOTAL
+        SHIPPING_PRICE
+        USER_EMAIL
+        SHIPPING_ADDRESS
+        BILLING_ADDRESS
+        LINES_SKU
+        PAYMENT_STATUS
+        GATEWAY
+        PAYMENT_METHOD_TYPE
+        TOTAL_BALANCE
+        TOTAL_CAPTURED
+        TOTAL_AUTHORIZED
+        STATUS
+        TRACKING_NUMBER
+      ]
+    }
+  }) {
+    __typename
+    ... on Report {
+      id
+      type
+    }
+    ... on ExportErrorResponse {
+      code
+      message
+      field
+    }
+  }
+}

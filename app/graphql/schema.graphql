@@ -1,0 +1,110 @@
+enum ExportError {
+  LIMIT_EXCEEDED
+}
+
+type ExportErrorResponse {
+  code: ExportError!
+  message: String!
+  field: String!
+}
+
+enum ExportObjectTypesEnum {
+  PRODUCTS
+  ORDERS
+}
+
+input ExportOrdersInput {
+  columns: OrderSelectedColumnsInfo!
+  filter: OrderFilterInfo = null
+}
+
+input ExportProductsInput {
+  columns: ProductSelectedColumnsInfo!
+  filter: ProductFilterInfo = null
+}
+
+union ExportResponse = Report | ExportErrorResponse
+
+type Mutation {
+  exportOrders(input: ExportOrdersInput!): ExportResponse!
+  exportProducts(input: ExportProductsInput!): ExportResponse!
+}
+
+enum OrderFieldEnum {
+  ID
+  NUMBER
+  CREATED
+  CHANNEL
+  LANGUAGE_CODE
+  SHIPPING_METHOD
+  CURRENCY
+  TOTAL
+  SUBTOTAL
+  SHIPPING_PRICE
+  USER_EMAIL
+  SHIPPING_ADDRESS
+  BILLING_ADDRESS
+  LINES_SKU
+  PAYMENT_STATUS
+  GATEWAY
+  PAYMENT_METHOD_TYPE
+  TOTAL_BALANCE
+  TOTAL_CAPTURED
+  TOTAL_AUTHORIZED
+  STATUS
+  TRACKING_NUMBER
+}
+
+input OrderFilterInfo {
+  filterStr: String!
+}
+
+input OrderSelectedColumnsInfo {
+  fields: [OrderFieldEnum!]!
+}
+
+enum ProductFieldEnum {
+  ID
+  NAME
+  DESCRIPTION
+  PRODUCT_TYPE
+  CATEGORY
+  PRODUCT_WEIGHT
+  COLLECTIONS
+  CHARGE_TAXES
+  PRODUCT_MEDIA
+  VARIANT_ID
+  VARIANT_SKU
+  VARIANT_WEIGHT
+  VARIANT_MEDIA
+}
+
+input ProductFilterInfo {
+  filterStr: String!
+}
+
+input ProductSelectedColumnsInfo {
+  fields: [ProductFieldEnum!]!
+  attributes: [String!] = null
+  warehouses: [String!] = null
+  channels: [String!] = null
+}
+
+type Query {
+  reports: ReportConnection!
+}
+
+type Report {
+  id: Int!
+  type: ExportObjectTypesEnum!
+}
+
+type ReportConnection {
+  edges: [ReportEdge!]!
+  totalCount: Int!
+}
+
+type ReportEdge {
+  node: Report!
+  cursor: String!
+}

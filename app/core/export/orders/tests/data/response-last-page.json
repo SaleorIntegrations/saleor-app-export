@@ -1,0 +1,354 @@
+{
+  "data": {
+    "orders": {
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "WyI2OTQyIl0="
+      },
+      "edges": [
+        {
+          "node": {
+            "id": "T3JkZXI6Njk0NA==",
+            "number": "6944",
+            "created": "2021-06-15T15:36:13.965086+00:00",
+            "channel": {
+              "slug": "default-channel"
+            },
+            "languageCodeEnum": "EN",
+            "shippingMethodName": "fastway couriers",
+            "total": {
+              "gross": {
+                "amount": 66.65
+              },
+              "net": {
+                "amount": 66.65
+              },
+              "tax": {
+                "amount": 0
+              },
+              "currency": "USD"
+            },
+            "subtotal": {
+              "gross": {
+                "amount": 26
+              },
+              "net": {
+                "amount": 26
+              },
+              "tax": {
+                "amount": 0
+              },
+              "currency": "USD"
+            },
+            "shippingPrice": {
+              "gross": {
+                "amount": 40.65
+              },
+              "net": {
+                "amount": 40.65
+              },
+              "tax": {
+                "amount": 0
+              },
+              "currency": "USD"
+            },
+            "userEmail": "susan.wright@example.com",
+            "shippingAddress": {
+              "firstName": "Susan",
+              "lastName": "Wright",
+              "companyName": "",
+              "streetAddress1": "45561 Bishop Turnpike",
+              "streetAddress2": "",
+              "city": "Lake Kenneth",
+              "cityArea": "",
+              "postalCode": "13786",
+              "country": {
+                "code": "US"
+              },
+              "countryArea": "NY",
+              "phone": ""
+            },
+            "billingAddress": {
+              "firstName": "Susan",
+              "lastName": "Wright",
+              "companyName": "",
+              "streetAddress1": "45561 Bishop Turnpike",
+              "streetAddress2": "",
+              "city": "Lake Kenneth",
+              "cityArea": "",
+              "postalCode": "13786",
+              "country": {
+                "code": "US"
+              },
+              "countryArea": "NY",
+              "phone": ""
+            },
+            "lines": [
+              {
+                "productSku": "70058446"
+              },
+              {
+                "productSku": "21522631"
+              },
+              {
+                "productSku": "84192227"
+              },
+              {
+                "productSku": "50269944"
+              }
+            ],
+            "paymentStatus": "NOT_CHARGED",
+            "payments": [
+              {
+                "gateway": "mirumee.payments.dummy",
+                "paymentMethodType": "card"
+              }
+            ],
+            "totalBalance": {
+              "amount": -66.65
+            },
+            "totalCaptured": {
+              "amount": 0
+            },
+            "totalAuthorized": {
+              "amount": 66.65
+            },
+            "status": "PARTIALLY_FULFILLED",
+            "fulfillments": [
+              {
+                "trackingNumber": ""
+              }
+            ]
+          }
+        },
+        {
+          "node": {
+            "id": "T3JkZXI6Njk0Mw==",
+            "number": "6943",
+            "created": "2021-06-15T15:36:13.693612+00:00",
+            "channel": {
+              "slug": "default-channel"
+            },
+            "languageCodeEnum": "EN",
+            "shippingMethodName": "Aramex",
+            "total": {
+              "gross": {
+                "amount": 169.8
+              },
+              "net": {
+                "amount": 169.8
+              },
+              "tax": {
+                "amount": 0
+              },
+              "currency": "USD"
+            },
+            "subtotal": {
+              "gross": {
+                "amount": 99.19
+              },
+              "net": {
+                "amount": 99.19
+              },
+              "tax": {
+                "amount": 0
+              },
+              "currency": "USD"
+            },
+            "shippingPrice": {
+              "gross": {
+                "amount": 70.61
+              },
+              "net": {
+                "amount": 70.61
+              },
+              "tax": {
+                "amount": 0
+              },
+              "currency": "USD"
+            },
+            "userEmail": "jade.underwood@example.com",
+            "shippingAddress": {
+              "firstName": "Jade",
+              "lastName": "Underwood",
+              "companyName": "",
+              "streetAddress1": "0305 Matthew Mill Apt. 452",
+              "streetAddress2": "",
+              "city": "Andreshire",
+              "cityArea": "",
+              "postalCode": "72892",
+              "country": {
+                "code": "US"
+              },
+              "countryArea": "AR",
+              "phone": ""
+            },
+            "billingAddress": {
+              "firstName": "Jade",
+              "lastName": "Underwood",
+              "companyName": "",
+              "streetAddress1": "0305 Matthew Mill Apt. 452",
+              "streetAddress2": "",
+              "city": "Andreshire",
+              "cityArea": "",
+              "postalCode": "72892",
+              "country": {
+                "code": "US"
+              },
+              "countryArea": "AR",
+              "phone": ""
+            },
+            "lines": [
+              {
+                "productSku": "62426105"
+              },
+              {
+                "productSku": "50269944"
+              },
+              {
+                "productSku": "sea-lullabies-mp3"
+              },
+              {
+                "productSku": "546451999"
+              }
+            ],
+            "paymentStatus": "FULLY_CHARGED",
+            "payments": [
+              {
+                "gateway": "mirumee.payments.dummy",
+                "paymentMethodType": "card"
+              }
+            ],
+            "totalBalance": {
+              "amount": 0
+            },
+            "totalCaptured": {
+              "amount": 169.8
+            },
+            "totalAuthorized": {
+              "amount": 0
+            },
+            "status": "PARTIALLY_FULFILLED",
+            "fulfillments": [
+              {
+                "trackingNumber": ""
+              }
+            ]
+          }
+        },
+        {
+          "node": {
+            "id": "T3JkZXI6Njk0Mg==",
+            "number": "6942",
+            "created": "2021-06-15T15:36:13.436925+00:00",
+            "channel": {
+              "slug": "default-channel"
+            },
+            "languageCodeEnum": "EN",
+            "shippingMethodName": "EMS",
+            "total": {
+              "gross": {
+                "amount": 75.93
+              },
+              "net": {
+                "amount": 75.93
+              },
+              "tax": {
+                "amount": 0
+              },
+              "currency": "USD"
+            },
+            "subtotal": {
+              "gross": {
+                "amount": 44
+              },
+              "net": {
+                "amount": 44
+              },
+              "tax": {
+                "amount": 0
+              },
+              "currency": "USD"
+            },
+            "shippingPrice": {
+              "gross": {
+                "amount": 31.93
+              },
+              "net": {
+                "amount": 31.93
+              },
+              "tax": {
+                "amount": 0
+              },
+              "currency": "USD"
+            },
+            "userEmail": "katherine.moon@example.com",
+            "shippingAddress": {
+              "firstName": "Katherine",
+              "lastName": "Moon",
+              "companyName": "",
+              "streetAddress1": "49082 Bruce Corner Suite 548",
+              "streetAddress2": "",
+              "city": "Paulview",
+              "cityArea": "",
+              "postalCode": "25347",
+              "country": {
+                "code": "US"
+              },
+              "countryArea": "WV",
+              "phone": ""
+            },
+            "billingAddress": {
+              "firstName": "Katherine",
+              "lastName": "Moon",
+              "companyName": "",
+              "streetAddress1": "49082 Bruce Corner Suite 548",
+              "streetAddress2": "",
+              "city": "Paulview",
+              "cityArea": "",
+              "postalCode": "25347",
+              "country": {
+                "code": "US"
+              },
+              "countryArea": "WV",
+              "phone": ""
+            },
+            "lines": [
+              {
+                "productSku": "3128223583"
+              },
+              {
+                "productSku": "998223583"
+              },
+              {
+                "productSku": "66594736"
+              }
+            ],
+            "paymentStatus": "NOT_CHARGED",
+            "payments": [
+              {
+                "gateway": "mirumee.payments.dummy",
+                "paymentMethodType": "card"
+              }
+            ],
+            "totalBalance": {
+              "amount": -75.93
+            },
+            "totalCaptured": {
+              "amount": 0
+            },
+            "totalAuthorized": {
+              "amount": 0
+            },
+            "status": "PARTIALLY_FULFILLED",
+            "fulfillments": [
+              {
+                "trackingNumber": ""
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

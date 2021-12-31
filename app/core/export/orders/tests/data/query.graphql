@@ -1,0 +1,70 @@
+fragment taxedMoney on TaxedMoney {
+  gross {
+    amount
+  }
+  net {
+    amount
+  }
+  tax {
+    amount
+  }
+  currency
+}
+
+fragment address on Address {
+  firstName
+  lastName
+  companyName
+  streetAddress1
+  streetAddress2
+  city
+  cityArea
+  postalCode
+  country {code}
+  countryArea
+  phone
+}
+
+query {
+  orders(first: 100) {
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+    edges {
+      node {
+        # Basic information
+        id
+        number
+        created
+        channel {slug}
+        languageCodeEnum
+        shippingMethodName
+        # Financial information
+        total {...taxedMoney}
+        subtotal {...taxedMoney}
+        shippingPrice {...taxedMoney}
+        # Customer information
+        userEmail
+        shippingAddress {...address}
+        billingAddress {...address}
+        # Lines
+        lines {productSku}
+        # Payment information
+        paymentStatus
+        payments {
+          gateway
+          paymentMethodType
+        }
+        totalBalance {amount}
+        totalCaptured {amount}
+        totalAuthorized {amount}
+        # Fulfillment information
+      	status
+        fulfillments {
+          trackingNumber
+        }
+      }
+    }
+  }
+}

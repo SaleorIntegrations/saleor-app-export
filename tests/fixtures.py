@@ -2,6 +2,7 @@ import json
 
 import pytest
 
+from app.core.export.orders.fields import OrderFieldEnum, OrderSelectedColumnsInfo
 from app.core.export.products.fields import ProductFieldEnum, ProductSelectedColumnsInfo
 from app.core.reports.models import (
     ExportFile,
@@ -12,7 +13,7 @@ from app.core.reports.models import (
 
 
 @pytest.fixture
-async def product_column_info(db_session):
+async def product_column_info():
     return ProductSelectedColumnsInfo(
         fields=list(ProductFieldEnum),
         attributes=[
@@ -27,11 +28,31 @@ async def product_column_info(db_session):
 
 
 @pytest.fixture
-async def report(db_session, product_column_info):
+async def order_column_info():
+    return OrderSelectedColumnsInfo(
+        fields=list(OrderFieldEnum),
+    )
+
+
+@pytest.fixture
+async def products_report(db_session, product_column_info):
     columns = json.loads(product_column_info.json())
     instance = Report(
         scope=ExportScopeEnum.ALL,
         type=ExportObjectTypesEnum.PRODUCTS,
+        columns=columns,
+    )
+    db_session.add(instance)
+    await db_session.commit()
+    return instance
+
+
+@pytest.fixture
+async def orders_report(db_session, order_column_info):
+    columns = json.loads(order_column_info.json())
+    instance = Report(
+        scope=ExportScopeEnum.ALL,
+        type=ExportObjectTypesEnum.ORDERS,
         columns=columns,
     )
     db_session.add(instance)
@@ -57,10 +78,22 @@ def reports_factory(db_session):
 
 
 @pytest.fixture
-async def export(db_session, report):
+async def products_export(db_session, products_report):
     instance = ExportFile(
-        report_id=report.id,
-        content_file="media/test-export.csv",
+        report_id=products_report.id,
+        content_file="media/test-product-export.csv",
+        cursor="",
+    )
+    db_session.add(instance)
+    await db_session.commit()
+    return instance
+
+
+@pytest.fixture
+async def orders_export(db_session, orders_report):
+    instance = ExportFile(
+        report_id=orders_report.id,
+        content_file="media/test-order-export.csv",
         cursor="",
     )
     db_session.add(instance)

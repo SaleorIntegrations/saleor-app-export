@@ -1,0 +1,575 @@
+{
+  "data": {
+    "orders": {
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "WyI2OTQ3Il0="
+      },
+      "edges": [
+        {
+          "node": {
+            "id": "T3JkZXI6Njk1OQ==",
+            "number": "6959",
+            "created": "2021-06-15T15:36:17.107062+00:00",
+            "channel": {
+              "slug": "default-channel"
+            },
+            "languageCodeEnum": "EN",
+            "shippingMethodName": "FedEx",
+            "total": {
+              "gross": {
+                "amount": 73.42
+              },
+              "net": {
+                "amount": 73.42
+              },
+              "tax": {
+                "amount": 0
+              },
+              "currency": "USD"
+            },
+            "subtotal": {
+              "gross": {
+                "amount": 10
+              },
+              "net": {
+                "amount": 10
+              },
+              "tax": {
+                "amount": 0
+              },
+              "currency": "USD"
+            },
+            "shippingPrice": {
+              "gross": {
+                "amount": 63.42
+              },
+              "net": {
+                "amount": 63.42
+              },
+              "tax": {
+                "amount": 0
+              },
+              "currency": "USD"
+            },
+            "userEmail": "jim.miller@example.com",
+            "shippingAddress": {
+              "firstName": "Jim",
+              "lastName": "Miller",
+              "companyName": "",
+              "streetAddress1": "0239 Salazar Squares",
+              "streetAddress2": "",
+              "city": "Kelseystad",
+              "cityArea": "",
+              "postalCode": "03086",
+              "country": {
+                "code": "US"
+              },
+              "countryArea": "NH",
+              "phone": ""
+            },
+            "billingAddress": {
+              "firstName": "Jim",
+              "lastName": "Miller",
+              "companyName": "",
+              "streetAddress1": "0239 Salazar Squares",
+              "streetAddress2": "",
+              "city": "Kelseystad",
+              "cityArea": "",
+              "postalCode": "03086",
+              "country": {
+                "code": "US"
+              },
+              "countryArea": "NH",
+              "phone": ""
+            },
+            "lines": [
+              {
+                "productSku": "398323585"
+              }
+            ],
+            "paymentStatus": "NOT_CHARGED",
+            "payments": [
+              {
+                "gateway": "mirumee.payments.dummy",
+                "paymentMethodType": "card"
+              }
+            ],
+            "totalBalance": {
+              "amount": -73.42
+            },
+            "totalCaptured": {
+              "amount": 0
+            },
+            "totalAuthorized": {
+              "amount": 0
+            },
+            "status": "PARTIALLY_FULFILLED",
+            "fulfillments": [
+              {
+                "trackingNumber": ""
+              }
+            ]
+          }
+        },
+        {
+          "node": {
+            "id": "T3JkZXI6Njk1Ng==",
+            "number": "6956",
+            "created": "2021-06-15T15:36:16.542027+00:00",
+            "channel": {
+              "slug": "default-channel"
+            },
+            "languageCodeEnum": "EN",
+            "shippingMethodName": "Post Office",
+            "total": {
+              "gross": {
+                "amount": 120.12
+              },
+              "net": {
+                "amount": 120.12
+              },
+              "tax": {
+                "amount": 0
+              },
+              "currency": "USD"
+            },
+            "subtotal": {
+              "gross": {
+                "amount": 57.99
+              },
+              "net": {
+                "amount": 57.99
+              },
+              "tax": {
+                "amount": 0
+              },
+              "currency": "USD"
+            },
+            "shippingPrice": {
+              "gross": {
+                "amount": 62.13
+              },
+              "net": {
+                "amount": 62.13
+              },
+              "tax": {
+                "amount": 0
+              },
+              "currency": "USD"
+            },
+            "userEmail": "stefanie.butler@example.com",
+            "shippingAddress": {
+              "firstName": "Stefanie",
+              "lastName": "Butler",
+              "companyName": "",
+              "streetAddress1": "00891 David Run",
+              "streetAddress2": "",
+              "city": "Port Kevin",
+              "cityArea": "",
+              "postalCode": "96726",
+              "country": {
+                "code": "US"
+              },
+              "countryArea": "HI",
+              "phone": ""
+            },
+            "billingAddress": {
+              "firstName": "Stefanie",
+              "lastName": "Butler",
+              "companyName": "",
+              "streetAddress1": "00891 David Run",
+              "streetAddress2": "",
+              "city": "Port Kevin",
+              "cityArea": "",
+              "postalCode": "96726",
+              "country": {
+                "code": "US"
+              },
+              "countryArea": "HI",
+              "phone": ""
+            },
+            "lines": [
+              {
+                "productSku": "29716755"
+              },
+              {
+                "productSku": "98653891"
+              },
+              {
+                "productSku": "66846240"
+              },
+              {
+                "productSku": "bathroom-songs-mp3"
+              }
+            ],
+            "paymentStatus": "FULLY_CHARGED",
+            "payments": [
+              {
+                "gateway": "mirumee.payments.dummy",
+                "paymentMethodType": "card"
+              }
+            ],
+            "totalBalance": {
+              "amount": 0
+            },
+            "totalCaptured": {
+              "amount": 120.12
+            },
+            "totalAuthorized": {
+              "amount": 0
+            },
+            "status": "PARTIALLY_FULFILLED",
+            "fulfillments": [
+              {
+                "trackingNumber": ""
+              }
+            ]
+          }
+        },
+        {
+          "node": {
+            "id": "T3JkZXI6Njk1MQ==",
+            "number": "6951",
+            "created": "2021-06-15T15:36:15.497667+00:00",
+            "channel": {
+              "slug": "pln-channel"
+            },
+            "languageCodeEnum": "EN",
+            "shippingMethodName": "fastway couriers",
+            "total": {
+              "gross": {
+                "amount": 248.28
+              },
+              "net": {
+                "amount": 248.28
+              },
+              "tax": {
+                "amount": 0
+              },
+              "currency": "PLN"
+            },
+            "subtotal": {
+              "gross": {
+                "amount": 176
+              },
+              "net": {
+                "amount": 176
+              },
+              "tax": {
+                "amount": 0
+              },
+              "currency": "PLN"
+            },
+            "shippingPrice": {
+              "gross": {
+                "amount": 72.28
+              },
+              "net": {
+                "amount": 72.28
+              },
+              "tax": {
+                "amount": 0
+              },
+              "currency": "PLN"
+            },
+            "userEmail": "anthony.randolph@example.com",
+            "shippingAddress": {
+              "firstName": "Anthony",
+              "lastName": "Randolph",
+              "companyName": "",
+              "streetAddress1": "1542 Young Knolls",
+              "streetAddress2": "",
+              "city": "Lake Karen",
+              "cityArea": "",
+              "postalCode": "42019",
+              "country": {
+                "code": "US"
+              },
+              "countryArea": "KY",
+              "phone": ""
+            },
+            "billingAddress": {
+              "firstName": "Anthony",
+              "lastName": "Randolph",
+              "companyName": "",
+              "streetAddress1": "1542 Young Knolls",
+              "streetAddress2": "",
+              "city": "Lake Karen",
+              "cityArea": "",
+              "postalCode": "42019",
+              "country": {
+                "code": "US"
+              },
+              "countryArea": "KY",
+              "phone": ""
+            },
+            "lines": [
+              {
+                "productSku": "98616712"
+              },
+              {
+                "productSku": "84725784"
+              },
+              {
+                "productSku": "93855755"
+              },
+              {
+                "productSku": "89820261"
+              }
+            ],
+            "paymentStatus": "FULLY_CHARGED",
+            "payments": [
+              {
+                "gateway": "mirumee.payments.dummy",
+                "paymentMethodType": "card"
+              }
+            ],
+            "totalBalance": {
+              "amount": 0
+            },
+            "totalCaptured": {
+              "amount": 248.28
+            },
+            "totalAuthorized": {
+              "amount": 0
+            },
+            "status": "PARTIALLY_FULFILLED",
+            "fulfillments": [
+              {
+                "trackingNumber": ""
+              }
+            ]
+          }
+        },
+        {
+          "node": {
+            "id": "T3JkZXI6Njk1MA==",
+            "number": "6950",
+            "created": "2021-06-15T15:36:15.226032+00:00",
+            "channel": {
+              "slug": "pln-channel"
+            },
+            "languageCodeEnum": "EN",
+            "shippingMethodName": "TNT",
+            "total": {
+              "gross": {
+                "amount": 128.6
+              },
+              "net": {
+                "amount": 128.6
+              },
+              "tax": {
+                "amount": 0
+              },
+              "currency": "PLN"
+            },
+            "subtotal": {
+              "gross": {
+                "amount": 86
+              },
+              "net": {
+                "amount": 86
+              },
+              "tax": {
+                "amount": 0
+              },
+              "currency": "PLN"
+            },
+            "shippingPrice": {
+              "gross": {
+                "amount": 42.6
+              },
+              "net": {
+                "amount": 42.6
+              },
+              "tax": {
+                "amount": 0
+              },
+              "currency": "PLN"
+            },
+            "userEmail": "julia.massey@example.com",
+            "shippingAddress": {
+              "firstName": "Julia",
+              "lastName": "Massey",
+              "companyName": "",
+              "streetAddress1": "169 Christine Mount",
+              "streetAddress2": "",
+              "city": "New Carolyn",
+              "cityArea": "",
+              "postalCode": "02651",
+              "country": {
+                "code": "US"
+              },
+              "countryArea": "MA",
+              "phone": ""
+            },
+            "billingAddress": {
+              "firstName": "Julia",
+              "lastName": "Massey",
+              "companyName": "",
+              "streetAddress1": "169 Christine Mount",
+              "streetAddress2": "",
+              "city": "New Carolyn",
+              "cityArea": "",
+              "postalCode": "02651",
+              "country": {
+                "code": "US"
+              },
+              "countryArea": "MA",
+              "phone": ""
+            },
+            "lines": [
+              {
+                "productSku": "15744278"
+              },
+              {
+                "productSku": "65363253"
+              },
+              {
+                "productSku": "98616712"
+              }
+            ],
+            "paymentStatus": "FULLY_CHARGED",
+            "payments": [
+              {
+                "gateway": "mirumee.payments.dummy",
+                "paymentMethodType": "card"
+              }
+            ],
+            "totalBalance": {
+              "amount": 0
+            },
+            "totalCaptured": {
+              "amount": 128.6
+            },
+            "totalAuthorized": {
+              "amount": 0
+            },
+            "status": "PARTIALLY_FULFILLED",
+            "fulfillments": [
+              {
+                "trackingNumber": ""
+              }
+            ]
+          }
+        },
+        {
+          "node": {
+            "id": "T3JkZXI6Njk0Nw==",
+            "number": "6947",
+            "created": "2021-06-15T15:36:14.573902+00:00",
+            "channel": {
+              "slug": "pln-channel"
+            },
+            "languageCodeEnum": "EN",
+            "shippingMethodName": "China Post",
+            "total": {
+              "gross": {
+                "amount": 167.87
+              },
+              "net": {
+                "amount": 167.87
+              },
+              "tax": {
+                "amount": 0
+              },
+              "currency": "PLN"
+            },
+            "subtotal": {
+              "gross": {
+                "amount": 158
+              },
+              "net": {
+                "amount": 158
+              },
+              "tax": {
+                "amount": 0
+              },
+              "currency": "PLN"
+            },
+            "shippingPrice": {
+              "gross": {
+                "amount": 9.87
+              },
+              "net": {
+                "amount": 9.87
+              },
+              "tax": {
+                "amount": 0
+              },
+              "currency": "PLN"
+            },
+            "userEmail": "jamie.nichols@example.com",
+            "shippingAddress": {
+              "firstName": "Jamie",
+              "lastName": "Nichols",
+              "companyName": "",
+              "streetAddress1": "6993 Diane Alley Apt. 489",
+              "streetAddress2": "",
+              "city": "Marvinfort",
+              "cityArea": "",
+              "postalCode": "67933",
+              "country": {
+                "code": "US"
+              },
+              "countryArea": "KS",
+              "phone": ""
+            },
+            "billingAddress": {
+              "firstName": "Jamie",
+              "lastName": "Nichols",
+              "companyName": "",
+              "streetAddress1": "6993 Diane Alley Apt. 489",
+              "streetAddress2": "",
+              "city": "Marvinfort",
+              "cityArea": "",
+              "postalCode": "67933",
+              "country": {
+                "code": "US"
+              },
+              "countryArea": "KS",
+              "phone": ""
+            },
+            "lines": [
+              {
+                "productSku": "43200242"
+              },
+              {
+                "productSku": "21599567"
+              },
+              {
+                "productSku": "27512590"
+              },
+              {
+                "productSku": "988323583"
+              }
+            ],
+            "paymentStatus": "NOT_CHARGED",
+            "payments": [
+              {
+                "gateway": "mirumee.payments.dummy",
+                "paymentMethodType": "card"
+              }
+            ],
+            "totalBalance": {
+              "amount": -167.87
+            },
+            "totalCaptured": {
+              "amount": 0
+            },
+            "totalAuthorized": {
+              "amount": 0
+            },
+            "status": "PARTIALLY_FULFILLED",
+            "fulfillments": [
+              {
+                "trackingNumber": ""
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}
