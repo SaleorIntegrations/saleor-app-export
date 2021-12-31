@@ -6,7 +6,8 @@ from app.core.export.products.fields import ProductFieldEnum as ProductFields
 from app.core.export.products.fields import (
     ProductSelectedColumnsInfo as ProductSelectedColumnsInfoModel,
 )
-from app.core.export.products.tasks import init_export_for_report
+from app.core.export.products.tasks import ProductExportMethods
+from app.core.export.tasks import init_export_for_report
 from app.core.reports.models import ExportObjectTypesEnum, ExportScopeEnum, Report
 from app.graphql.reports import types
 from app.graphql.reports.types import ExportError, ExportErrorResponse, ExportResponse
@@ -81,7 +82,7 @@ async def mutate_export_products(
 
 async def perform_export(db, report_id):
     async def inner():
-        return await init_export_for_report(db, report_id)
+        return await init_export_for_report(db, report_id, ProductExportMethods)
 
     # TODO: use async_to_sync in Celery
     # async_to_sync(inner)()

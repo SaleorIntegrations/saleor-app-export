@@ -1,3 +1,5 @@
+from unittest import mock
+
 import pytest
 
 from app.core.reports.models import ExportObjectTypesEnum
@@ -21,20 +23,12 @@ mutation OrdersExport($input: ExportOrdersInput!) {
 
 
 @pytest.mark.asyncio
-async def test_export_orders_schedules_task(graphql):
+@mock.patch("app.graphql.reports.mutations.orders.init_export_for_report")
+async def test_export_orders_schedules_task(m_task, graphql):
     # given
-    variables = {
-        "input": {
-            "exportInfo": {
-                "fields": ["FIELD1", "FIELD2"],
-                "fileType": "CSV",
-                "scope": "ALL",
-                "filter": "",
-                "ids": [],
-            }
-        }
-    }
+    variables = {"input": {"columns": {"fields": ["ID", "NUMBER"]}}}
     # when
     result = await graphql.execute(MUTATION_EXPORT_ORDERS, variables)
     # then
     assert result["data"]["exportOrders"]["type"] == ExportObjectTypesEnum.ORDERS.name
+    assert m_task.call_count == 1
