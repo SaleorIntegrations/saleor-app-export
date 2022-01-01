@@ -11,7 +11,8 @@ def fetch_order_columns_info(report: Report) -> OrderSelectedColumnsInfo:
 async def fetch_orders_response(
     column_info: OrderSelectedColumnsInfo,
     cursor: str = "",
+    filter: dict = None,
 ) -> dict:
-    query = await build_orders_query(cursor, column_info.fields)
-    response = await execute_query(query)
+    query, vars = await build_orders_query(cursor, column_info.fields, filter)
+    response = await execute_query(query, vars)
     return response

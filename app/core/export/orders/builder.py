@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional, Tuple
 
 from app.core.export.builder import MAX_PAGE_SIZE
 from app.core.export.orders.fields import OrderFieldEnum
@@ -7,14 +7,22 @@ from app.core.export.orders.fields import OrderFieldEnum
 async def build_orders_query(
     cursor: str,
     columns: List[OrderFieldEnum],
-) -> str:
+    filter: dict,
+) -> Tuple[str, Optional[dict]]:
     """
     Build the query for fetching products
     """
     # Build query arguments
-    params_list = [f"first: {MAX_PAGE_SIZE}"]
+    params_list = [
+        f"first: {MAX_PAGE_SIZE}",
+        "filter: $filter",
+    ]
     if cursor:
         params_list.append(f'after: "{cursor}"')
+    if filter:
+        vars = {"filter": filter}
+    else:
+        vars = {"filter": None}
     params = ", ".join(params_list)
 
     # Build query fields
@@ -47,7 +55,8 @@ async def build_orders_query(
     """
 
     # Build query arguments
-    return f"""
+    return (
+        f"""
         fragment taxedMoney on TaxedMoney {{
           gross {{
             amount
@@ -75,7 +84,7 @@ async def build_orders_query(
           phone
         }}
 
-        query {{
+        query FetchOrders($filter: OrderFilterInput) {{
             orders ({params}) {{
                 pageInfo {{
                     endCursor
@@ -88,4 +97,6 @@ async def build_orders_query(
                 }}
             }}
         }}
-    """
+    """,
+        vars,
+    )

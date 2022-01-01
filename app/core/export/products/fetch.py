@@ -21,9 +21,10 @@ def fetch_product_columns_info(report: Report) -> ProductSelectedColumnsInfo:
 async def fetch_variants_response(
     column_info: ProductSelectedColumnsInfo,
     cursor: str = "",
+    filter: dict = None,
 ) -> dict:
-    query = await build_variants_query(cursor, column_info.fields)
-    response = await execute_query(query)
+    query, vars = await build_variants_query(cursor, column_info, filter)
+    response = await execute_query(query, vars)
     return response
 
 

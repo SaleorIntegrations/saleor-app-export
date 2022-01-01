@@ -1,7 +1,7 @@
-from typing import List
+from typing import Optional, Tuple
 
 from app.core.export.builder import MAX_PAGE_SIZE
-from app.core.export.products.fields import ProductFieldEnum, ProductSelectedColumnsInfo
+from app.core.export.products.fields import ProductSelectedColumnsInfo
 
 
 async def build_headers_query(column_info: ProductSelectedColumnsInfo) -> str:
@@ -45,15 +45,24 @@ async def build_headers_query(column_info: ProductSelectedColumnsInfo) -> str:
 
 async def build_variants_query(
     cursor: str,
-    columns: List[ProductFieldEnum],
-) -> str:
+    column_info: ProductSelectedColumnsInfo,
+    filter: dict,
+) -> Tuple[str, Optional[dict]]:
     """
     Build the query for fetching products
     """
     # Build query arguments
-    params_list = [f"first: {MAX_PAGE_SIZE}"]
+    params_list = [
+        f"first: {MAX_PAGE_SIZE}",
+        "filter: $filter",
+    ]
     if cursor:
         params_list.append(f'after: "{cursor}"')
+    if filter:
+        vars = {"filter": filter}
+    else:
+        vars = {"filter": None}
+
     params = ", ".join(params_list)
 
     # Build query fields
@@ -128,8 +137,9 @@ async def build_variants_query(
     """
 
     # Build query arguments
-    return f"""
-        query {{
+    return (
+        f"""
+        query FetchVariants($filter: ProductVariantFilterInput) {{
             productVariants ({params}) {{
                 pageInfo {{
                     endCursor
@@ -142,4 +152,6 @@ async def build_variants_query(
                 }}
             }}
         }}
-    """
+    """,
+        vars,
+    )

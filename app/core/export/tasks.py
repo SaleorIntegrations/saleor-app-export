@@ -14,7 +14,7 @@ from app.core.reports.models import ExportObjectTypesEnum, Report
 class ExportMethods:
     fetch_column_info: Callable[[Report], Any]
     get_headers: Callable[[Any], Awaitable[List[str]]]
-    fetch_response: Callable[[Any, str], Awaitable[dict]]
+    fetch_response: Callable[[Any, str, dict], Awaitable[dict]]
     parse_response: Callable[[Any, dict], Tuple[List[List[str]], str]]
 
 
@@ -71,6 +71,7 @@ async def continue_export(
     response = await methods.fetch_response(
         column_info,
         export_file.cursor,
+        report.filter_input,
     )
     result, cursor = methods.parse_response(column_info, response)
     write_partial_result_to_file(export_file.content_file, result)

@@ -1,3 +1,4 @@
+import json
 from typing import Optional
 
 import strawberry
@@ -62,7 +63,7 @@ async def mutate_export_products(
     report = Report(
         type=ExportObjectTypesEnum.PRODUCTS,
         scope=ExportScopeEnum.FILTER,
-        filter_input=input.filter.filter_str if input.filter else "",
+        filter_input=json.loads(input.filter.filter_str) if input.filter else "",
         columns={
             "fields": [f.name for f in input.columns.fields],
             "attributes": attributes,
