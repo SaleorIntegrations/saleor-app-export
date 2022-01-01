@@ -1,8 +1,11 @@
 import json
+from json import JSONDecodeError
 from typing import Optional
 
 import strawberry
+from gql.transport.exceptions import TransportQueryError
 
+from app.core.export.products.fetch import fetch_products_response
 from app.core.export.products.fields import ProductFieldEnum as ProductFields
 from app.core.export.products.fields import (
     ProductSelectedColumnsInfo as ProductSelectedColumnsInfoModel,
@@ -40,8 +43,6 @@ async def mutate_export_products(
     root, input: ExportProductsInput, info
 ) -> ExportResponse:
     """Mutation for triggering the products export process."""
-    db = info.context["db"]
-
     attributes = input.columns.attributes or []
     if len(attributes) > MAX_DYNAMIC_COLUMNS:
         return ExportErrorResponse(
@@ -49,8 +50,6 @@ async def mutate_export_products(
             message=f"Too many attributes requested. Max limit: {MAX_DYNAMIC_COLUMNS}",
             field="attributes",
         )
-
-    channels = input.columns.channels or []
 
     warehouses = input.columns.warehouses or []
     if len(warehouses) > MAX_DYNAMIC_COLUMNS:
@@ -60,16 +59,34 @@ async def mutate_export_products(
             field="warehouses",
         )
 
+    filter_input = {}
+    if input.filter:
+        try:
+            filter_input = json.loads(input.filter.filter_str)
+        except JSONDecodeError:
+            return ExportErrorResponse(
+                code=ExportError.INVALID_FILTER,
+                message="Provided `filterStr` contains invalid JSON.",
+                field="filterStr",
+            )
+
+    column_info = input.columns.to_pydantic()
+    if filter_input:
+        try:
+            await fetch_products_response(column_info, "", filter_input)
+        except TransportQueryError as e:
+            return ExportErrorResponse(
+                code=ExportError.INVALID_FILTER,
+                message=str(e),
+                field="filterStr",
+            )
+
+    db = info.context["db"]
     report = Report(
         type=ExportObjectTypesEnum.PRODUCTS,
         scope=ExportScopeEnum.FILTER,
-        filter_input=json.loads(input.filter.filter_str) if input.filter else "",
-        columns={
-            "fields": [f.name for f in input.columns.fields],
-            "attributes": attributes,
-            "channels": channels,
-            "warehouses": warehouses,
-        },
+        filter_input=filter_input,
+        columns=json.loads(column_info.json()),
     )
     db.add(report)
     await db.commit()
