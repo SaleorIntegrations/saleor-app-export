@@ -37,3 +37,11 @@ repos:
       - id: pydocstyle
         files: ^saleor/
         exclude: tests/
+
+  - repo: local
+    hooks:
+      - id: gql-schema-check
+        language: system
+        name: Check GraphQL schema is up to date.
+        entry: sh -c "strawberry export-schema main:schema | diff app/graphql/schema.graphql -"
+        stages: [commit]
