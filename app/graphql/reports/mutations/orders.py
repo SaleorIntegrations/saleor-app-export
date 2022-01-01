@@ -49,25 +49,23 @@ async def mutate_export_orders(root, input: ExportOrdersInput, info):
                 field="filterStr",
             )
 
-    columns = {
-        "fields": [f.name for f in input.columns.fields],
-    }
-
-    try:
-        await fetch_orders_response(OrderSelectedColumnsInfo(columns), "", filter_input)
-    except TransportQueryError as e:
-        return ExportErrorResponse(
-            code=ExportError.INVALID_FILTER,
-            message=str(e),
-            field="filterStr",
-        )
+    column_info = input.columns.to_pydantic()
+    if filter_input:
+        try:
+            await fetch_orders_response(column_info, "", filter_input)
+        except TransportQueryError as e:
+            return ExportErrorResponse(
+                code=ExportError.INVALID_FILTER,
+                message=str(e),
+                field="filterStr",
+            )
 
     db = info.context["db"]
     report = Report(
         type=ExportObjectTypesEnum.ORDERS,
         scope=ExportScopeEnum.FILTER,
         filter_input=filter_input,
-        columns=columns,
+        columns=json.loads(column_info.json()),
     )
     db.add(report)
     await db.commit()
