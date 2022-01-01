@@ -3,7 +3,7 @@ from typing import Any, Awaitable, Callable, List, Tuple
 
 from sqlmodel.ext.asyncio.session import AsyncSession
 
-from app.celery import celery
+from app.celery import database_task
 from app.core.export.fetch import fetch_export_by_id, fetch_report_by_id
 from app.core.export.files import write_partial_result_to_file
 from app.core.export.persist import create_export_file, update_export_cursor
@@ -28,17 +28,16 @@ def get_methods(report: Report) -> ExportMethods:
     }.get(report.type)
 
 
-@celery.task(typing=False)
+@database_task
 async def init_export_for_report(
     db: AsyncSession,
     report_id: int,
 ):
-    init_export_for_report.apply_async([report_id], countdown=5)
     """Initialize export for a report with given id."""
     report = await fetch_report_by_id(db, report_id)
     methods = get_methods(report)
     export_file = create_export_file(db, report_id)
-    column_info = methods.fetch_column_infqo(report)
+    column_info = methods.fetch_column_info(report)
 
     # Write report headers
     write_partial_result_to_file(
@@ -50,14 +49,13 @@ async def init_export_for_report(
 
 
 async def _continue_export(
-    db: AsyncSession,
     export_id: int,
 ):
     """Use to unit test recursive function"""
     continue_export.delay(export_id)
 
 
-@celery.task(typing=False)
+@database_task
 async def continue_export(
     db: AsyncSession,
     export_id: int,
@@ -81,4 +79,4 @@ async def continue_export(
 
     # If next page exists, continue export
     if cursor:
-        await _continue_export(db, export_id)
+        await _continue_export(export_id)

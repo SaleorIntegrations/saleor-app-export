@@ -72,7 +72,7 @@ async def mutate_export_products(
     )
     db.add(report)
     await db.commit()
-    init_export_for_report.delay(report.id)
+    print(init_export_for_report.delay(report.id))
     return types.Report(
         id=report.id,
         type=report.type,
