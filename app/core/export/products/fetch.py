@@ -23,8 +23,11 @@ async def fetch_variants_response(
     cursor: str = "",
     filter: dict = None,
 ) -> dict:
-    query, vars = await build_variants_query(cursor, column_info, filter)
-    response = await execute_query(query, vars)
+    prepared_query = build_variants_query(cursor, column_info, filter)
+    response = await execute_query(
+        prepared_query.query_str,
+        prepared_query.variable_values,
+    )
     return response
 
 

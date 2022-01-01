@@ -13,6 +13,9 @@ async def fetch_orders_response(
     cursor: str = "",
     filter: dict = None,
 ) -> dict:
-    query, vars = await build_orders_query(cursor, column_info.fields, filter)
-    response = await execute_query(query, vars)
+    prepared_query = build_orders_query(cursor, column_info.fields, filter)
+    response = await execute_query(
+        prepared_query.query_str,
+        prepared_query.variable_values,
+    )
     return response
