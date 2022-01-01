@@ -35,12 +35,17 @@ You also need to specify at least these two variables:
 - `SQLALCHEMY_DB_URI` (e.g. `postgresql+asyncpg://<host>/<database_name>`)
 - `SITE_URL` (this is the URL of the app)
 
+Actual exports are processed as Celery tasks, in order launch a worker run:
+```
+celery -A app worker
+```
+
 ## Known problems
 
 ### Dependencies
 
 Dependencies are specified in the `pyproject.toml` file and installed by poetry.
 
-Some of them, however, have conflicts with some dependencies in the `saleor_app_base`. 
+Some of them, however, have conflicts with some dependencies in the `saleor_app_base`.
 
 To fix that, we need to update the conflicting dependencies there. As a temporary solution, required dependencies can be installed via `pip`
