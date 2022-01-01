@@ -48,7 +48,7 @@ mutation {
     ... on Report {
       id
     }
-    ... on  ExportProductsErrorResponse {
+    ... on  ExportErrorResponse {
       code
       message
       field

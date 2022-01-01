@@ -3,35 +3,36 @@ from typing import List, Tuple
 from app.core.export.products.fields import ProductFieldEnum, ProductSelectedColumnsInfo
 
 
-def parse_variants_response(
+def parse_products_response(
     column_info: ProductSelectedColumnsInfo,
     response: dict,
 ) -> Tuple[List[List[str]], str]:
     """Get headers for both static and dynamic fields"""
     # Prepare cursor information
     rows = []
-    variants = response["productVariants"]
-    page_info = variants["pageInfo"]
+    products = response["products"]
+    page_info = products["pageInfo"]
     cursor = ""
     if page_info["hasNextPage"]:
         cursor = page_info["endCursor"]
 
-    # Prepare data
-    for edge in variants["edges"]:
-        node = edge["node"]
+    # Prepare data for each variant
+    for edge in products["edges"]:
+        product = edge["node"]
 
-        row = parse_static_fields(column_info.fields, node)
+        for variant in product["variants"]:
+            row = parse_static_fields(column_info.fields, product, variant)
 
-        for attribute in column_info.attributes:
-            row.extend(parse_attribute_fields(attribute, node))
+            for attribute in column_info.attributes:
+                row.extend(parse_attribute_fields(attribute, product, variant))
 
-        for channel in column_info.channels:
-            row.extend(parse_channel_fields(channel, node))
+            for channel in column_info.channels:
+                row.extend(parse_channel_fields(channel, product, variant))
 
-        for warehouse in column_info.warehouses:
-            row.extend(parse_warehouse_fields(warehouse, node))
+            for warehouse in column_info.warehouses:
+                row.extend(parse_warehouse_fields(warehouse, product, variant))
 
-        rows.append(row)
+            rows.append(row)
 
     return rows, cursor
 
@@ -49,12 +50,11 @@ def _parse_weight(weight: dict):
     return f"{value}{unit}"
 
 
-def parse_static_fields(fields: List[ProductFieldEnum], node: dict):
+def parse_static_fields(fields: List[ProductFieldEnum], product: dict, variant: dict):
     row = []
-    product = node["product"]
 
     if ProductFieldEnum.ID in fields:
-        row.append(node["id"])
+        row.append(variant["id"])
 
     if ProductFieldEnum.NAME in fields:
         row.append(product["name"])
@@ -81,24 +81,24 @@ def parse_static_fields(fields: List[ProductFieldEnum], node: dict):
         row.append(m([img["url"] for img in product["media"]]))
 
     if ProductFieldEnum.VARIANT_ID in fields:
-        row.append(node["id"])
+        row.append(variant["id"])
 
     if ProductFieldEnum.VARIANT_SKU in fields:
-        row.append(node["sku"])
+        row.append(variant["sku"])
 
     if ProductFieldEnum.VARIANT_WEIGHT in fields:
-        row.append(_parse_weight(node["weight"]))
+        row.append(_parse_weight(variant["weight"]))
 
     if ProductFieldEnum.VARIANT_MEDIA in fields:
-        row.append(m([img["url"] for img in node["media"]]))
+        row.append(m([img["url"] for img in variant["media"]]))
 
     return row
 
 
-def parse_attribute_fields(attribute_id: str, node: dict):
+def parse_attribute_fields(attribute_id: str, product: dict, variant: dict):
     attribute_values = []
 
-    for selected_attribute in node["attributes"]:
+    for selected_attribute in variant["attributes"]:
         attribute = selected_attribute["attribute"]
         values = selected_attribute["values"]
         if attribute["id"] == attribute_id:
@@ -108,10 +108,10 @@ def parse_attribute_fields(attribute_id: str, node: dict):
     return [m(attribute_values)]
 
 
-def parse_channel_fields(channel_id: str, node: dict):
+def parse_channel_fields(channel_id: str, product: dict, variant: dict):
     currency = ""
     amount = ""
-    for listing in node["channelListings"]:
+    for listing in variant["channelListings"]:
         if listing["channel"]["id"] == channel_id:
             currency = listing["price"]["currency"]
             amount = listing["price"]["amount"]
@@ -120,9 +120,9 @@ def parse_channel_fields(channel_id: str, node: dict):
     return [currency, amount]
 
 
-def parse_warehouse_fields(warehouse_id: str, node: dict):
+def parse_warehouse_fields(warehouse_id: str, product: dict, variant: dict):
     quantity = ""
-    for stock in node["stocks"]:
+    for stock in variant["stocks"]:
         if stock["warehouse"]["id"] == warehouse_id:
             quantity = stock["quantity"]
             break

@@ -33,8 +33,8 @@ def build_query_base(
     return PreparedQuery(
         query_str=f"""
             {fragments}
-            query {name} ($filter: {filter_type}) {{
-                orders ({params}) {{
+            query PerformExport ($filter: {filter_type}) {{
+                {name} ({params}) {{
                     pageInfo {{
                         endCursor
                         hasNextPage

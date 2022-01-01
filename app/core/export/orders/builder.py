@@ -68,5 +68,5 @@ def build_orders_query(
 ):
     """Build the query for fetching orders"""
     return build_query_base(
-        ORDER_FRAGMENTS, "FetchOrders", "OrderFilterInput", ORDER_FIELDS, cursor, filter
+        ORDER_FRAGMENTS, "orders", "OrderFilterInput", ORDER_FIELDS, cursor, filter
     )

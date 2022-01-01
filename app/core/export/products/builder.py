@@ -41,83 +41,74 @@ async def build_headers_query(column_info: ProductSelectedColumnsInfo) -> str:
     """
 
 
-VARIANT_FIELDS = """
+PRODUCT_FIELDS = """
     id
-    sku
-    media {
-      url
-    }
+    name
+    description
+    productType {name}
+    category {name}
     weight {
       unit
       value
     }
-    attributes {
-      attribute {
-        id
-        slug
-        name
-        inputType
-      }
-      values {
-        name
-        slug
-        value
-        inputType
-        reference
-        file {
-          url
-        }
-        richText
-        boolean
-        date
-        dateTime
-      }
-    }
-    product {
-      name
-      description
-      productType {
-        name
-      }
-      category {
-        name
-      }
+    media {url}
+    collections {name}
+    chargeTaxes
+    variants {
+      id
+      sku
+      media {url}
       weight {
         unit
         value
       }
-      media {
-        url
+      attributes {
+        attribute {
+          id
+          slug
+          name
+          inputType
+        }
+        values {
+          name
+          slug
+          value
+          inputType
+          reference
+          file {
+            url
+          }
+          richText
+          boolean
+          date
+          dateTime
+        }
       }
-      collections {
-        name
+      channelListings {
+        channel {
+          id
+        }
+        price {
+          currency
+          amount
+        }
       }
-      chargeTaxes
-    }
-    channelListings {
-      channel {
-        id
+      stocks {
+        warehouse {
+          id
+        }
+        quantity
       }
-      price {
-        currency
-        amount
-      }
-    }
-    stocks {
-      warehouse {
-        id
-      }
-      quantity
     }
 """
 
 
-def build_variants_query(
+def build_products_query(
     cursor: str,
     column_info: ProductSelectedColumnsInfo,
     filter: dict,
 ):
     """Build the query for fetching products"""
     return build_query_base(
-        "", "FetchVariants", "ProductVariantFilterInput", VARIANT_FIELDS, cursor, filter
+        "", "products", "ProductFilterInput", PRODUCT_FIELDS, cursor, filter
     )

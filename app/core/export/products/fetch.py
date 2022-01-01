@@ -2,7 +2,7 @@ import dataclasses
 from typing import Dict
 
 from app.core.export.executor import execute_query
-from app.core.export.products.builder import build_headers_query, build_variants_query
+from app.core.export.products.builder import build_headers_query, build_products_query
 from app.core.export.products.fields import ProductSelectedColumnsInfo
 from app.core.reports.models import Report
 
@@ -18,12 +18,12 @@ def fetch_product_columns_info(report: Report) -> ProductSelectedColumnsInfo:
     return ProductSelectedColumnsInfo(**report.columns)
 
 
-async def fetch_variants_response(
+async def fetch_products_response(
     column_info: ProductSelectedColumnsInfo,
     cursor: str = "",
     filter: dict = None,
 ) -> dict:
-    prepared_query = build_variants_query(cursor, column_info, filter)
+    prepared_query = build_products_query(cursor, column_info, filter)
     response = await execute_query(
         prepared_query.query_str,
         prepared_query.variable_values,
