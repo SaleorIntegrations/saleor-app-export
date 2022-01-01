@@ -12,6 +12,7 @@ ReportTypes = strawberry.enum(ExportObjectTypesEnum)
 
 @strawberry.enum
 class ExportError(Enum):
+    INVALID_FILTER = "invalid_filter"
     LIMIT_EXCEEDED = "limit_exceeded"
 
 
