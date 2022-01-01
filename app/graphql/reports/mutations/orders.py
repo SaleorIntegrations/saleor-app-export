@@ -44,7 +44,7 @@ async def mutate_export_orders(root, input: ExportOrdersInput, info):
     )
     db.add(report)
     await db.commit()
-    init_export_for_report.apply_async([report.id])
+    init_export_for_report.delay(report.id)
     return types.Report(
         id=report.id,
         type=report.type,

@@ -18,7 +18,7 @@ celery.conf.result_backend = "redis://localhost:6379/0"
 class ContextTask(celery.Task):
     def __call__(self, *args, db=Depends(get_db), **kwargs):
         context.init(environment_tenant_context())
-        result = async_to_sync(self.run, force_new_loop=True)(*args, **kwargs)
+        result = async_to_sync(self.run)(*args, **kwargs)
         return result
 
 
@@ -26,13 +26,14 @@ celery.Task = ContextTask
 
 
 def database_task(task_fun):
-    @celery.task(typing=False)
+    @celery.task()
     @functools.wraps(task_fun)
     async def task(*args, **kwargs):
         async with async_session() as db:
             res = await task_fun(db, *args, **kwargs)
         return res
 
+    task.inner = task_fun
     return task
 
 
