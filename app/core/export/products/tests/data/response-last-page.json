@@ -1,642 +1,1834 @@
 {
   "data": {
-    "productVariants": {
+    "products": {
       "pageInfo": {
         "hasNextPage": false,
-        "endCursor": "W251bGwsICJ3YXRlcmZhbGwtYmFsbGFkcy1tcDMiXQ=="
+        "endCursor": "WyJjb2xvcmVkLXBhcnJvdC1jdXNoaW9uIl0="
       },
       "edges": [
         {
           "node": {
-            "id": "UHJvZHVjdFZhcmlhbnQ6MjQ4",
-            "sku": "978223582",
+            "id": "UHJvZHVjdDoxMTY=",
+            "name": "Blue Hoodie",
+            "description": "{\"blocks\": [{\"data\": {\"text\": \"Special offer. Buy a superhero blue sweater and get a free hood attached. Ideal for when you are out saving the world.\"}, \"type\": \"paragraph\"}]}",
+            "productType": {
+              "name": "Top (clothing)"
+            },
+            "category": {
+              "name": "Hoodies"
+            },
+            "weight": {
+              "unit": "KG",
+              "value": 0
+            },
             "media": [
               {
-                "url": "https://demo.saleor.io/media/products/saleordemoproduct_sneakers_02_1.png"
+                "url": "https://demo.saleor.io/media/products/saleordemoproduct_cl_bogo02_1.png"
               }
             ],
+            "collections": [],
+            "chargeTaxes": true,
+            "variants": [
+              {
+                "id": "UHJvZHVjdFZhcmlhbnQ6MzAx",
+                "sku": "15744278",
+                "media": [
+                  {
+                    "url": "https://demo.saleor.io/media/products/saleordemoproduct_cl_bogo02_1.png"
+                  }
+                ],
+                "weight": {
+                  "unit": "KG",
+                  "value": 0
+                },
+                "attributes": [
+                  {
+                    "attribute": {
+                      "id": "QXR0cmlidXRlOjEz",
+                      "slug": "size",
+                      "name": "Size",
+                      "inputType": "DROPDOWN"
+                    },
+                    "values": [
+                      {
+                        "name": "S",
+                        "slug": "s",
+                        "value": "",
+                        "inputType": "DROPDOWN",
+                        "reference": null,
+                        "file": null,
+                        "richText": null,
+                        "boolean": null,
+                        "date": null,
+                        "dateTime": null
+                      }
+                    ]
+                  }
+                ],
+                "channelListings": [
+                  {
+                    "channel": {
+                      "id": "Q2hhbm5lbDoy"
+                    },
+                    "price": {
+                      "currency": "USD",
+                      "amount": 5
+                    }
+                  },
+                  {
+                    "channel": {
+                      "id": "Q2hhbm5lbDoz"
+                    },
+                    "price": {
+                      "currency": "PLN",
+                      "amount": 20
+                    }
+                  }
+                ],
+                "stocks": [
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOjJjYzE5MmVlLTcyNWQtNGZjMC1iN2Y4LThkZmM0MDBjNzQ5NQ=="
+                    },
+                    "quantity": 281
+                  },
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOjZjNmM1MDdhLTIxZjYtNDY5OS1hM2QzLWUwZDYxNzM4YjI2Yw=="
+                    },
+                    "quantity": 281
+                  },
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOjA4MDQ4YjVlLTkxZGQtNDQxMi05NTY0LWI4NDM4OTQ1ZTE0Mw=="
+                    },
+                    "quantity": 283
+                  },
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOmFhYmViMjVkLWVjZDYtNDBhMS1hMzAzLTRlMTllYTkzYjE1Zg=="
+                    },
+                    "quantity": 281
+                  },
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOmE3ZjBmYTk1LWY3NmMtNDUyYi1hNjg1LWZiNDE5ZTQ4OGMxMQ=="
+                    },
+                    "quantity": 282
+                  }
+                ]
+              },
+              {
+                "id": "UHJvZHVjdFZhcmlhbnQ6MzAy",
+                "sku": "21599567",
+                "media": [
+                  {
+                    "url": "https://demo.saleor.io/media/products/saleordemoproduct_cl_bogo02_1.png"
+                  }
+                ],
+                "weight": {
+                  "unit": "KG",
+                  "value": 0
+                },
+                "attributes": [
+                  {
+                    "attribute": {
+                      "id": "QXR0cmlidXRlOjEz",
+                      "slug": "size",
+                      "name": "Size",
+                      "inputType": "DROPDOWN"
+                    },
+                    "values": [
+                      {
+                        "name": "M",
+                        "slug": "m",
+                        "value": "",
+                        "inputType": "DROPDOWN",
+                        "reference": null,
+                        "file": null,
+                        "richText": null,
+                        "boolean": null,
+                        "date": null,
+                        "dateTime": null
+                      }
+                    ]
+                  }
+                ],
+                "channelListings": [
+                  {
+                    "channel": {
+                      "id": "Q2hhbm5lbDoy"
+                    },
+                    "price": {
+                      "currency": "USD",
+                      "amount": 5
+                    }
+                  },
+                  {
+                    "channel": {
+                      "id": "Q2hhbm5lbDoz"
+                    },
+                    "price": {
+                      "currency": "PLN",
+                      "amount": 20
+                    }
+                  }
+                ],
+                "stocks": [
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOjJjYzE5MmVlLTcyNWQtNGZjMC1iN2Y4LThkZmM0MDBjNzQ5NQ=="
+                    },
+                    "quantity": 266
+                  },
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOmE3ZjBmYTk1LWY3NmMtNDUyYi1hNjg1LWZiNDE5ZTQ4OGMxMQ=="
+                    },
+                    "quantity": 268
+                  },
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOmFhYmViMjVkLWVjZDYtNDBhMS1hMzAzLTRlMTllYTkzYjE1Zg=="
+                    },
+                    "quantity": 266
+                  },
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOjZjNmM1MDdhLTIxZjYtNDY5OS1hM2QzLWUwZDYxNzM4YjI2Yw=="
+                    },
+                    "quantity": 266
+                  },
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOjA4MDQ4YjVlLTkxZGQtNDQxMi05NTY0LWI4NDM4OTQ1ZTE0Mw=="
+                    },
+                    "quantity": 266
+                  }
+                ]
+              },
+              {
+                "id": "UHJvZHVjdFZhcmlhbnQ6MzA1",
+                "sku": "43313080",
+                "media": [
+                  {
+                    "url": "https://demo.saleor.io/media/products/saleordemoproduct_cl_bogo02_1.png"
+                  }
+                ],
+                "weight": {
+                  "unit": "KG",
+                  "value": 0
+                },
+                "attributes": [
+                  {
+                    "attribute": {
+                      "id": "QXR0cmlidXRlOjEz",
+                      "slug": "size",
+                      "name": "Size",
+                      "inputType": "DROPDOWN"
+                    },
+                    "values": [
+                      {
+                        "name": "XXL",
+                        "slug": "xxl",
+                        "value": "",
+                        "inputType": "DROPDOWN",
+                        "reference": null,
+                        "file": null,
+                        "richText": null,
+                        "boolean": null,
+                        "date": null,
+                        "dateTime": null
+                      }
+                    ]
+                  }
+                ],
+                "channelListings": [
+                  {
+                    "channel": {
+                      "id": "Q2hhbm5lbDoy"
+                    },
+                    "price": {
+                      "currency": "USD",
+                      "amount": 5
+                    }
+                  },
+                  {
+                    "channel": {
+                      "id": "Q2hhbm5lbDoz"
+                    },
+                    "price": {
+                      "currency": "PLN",
+                      "amount": 20
+                    }
+                  }
+                ],
+                "stocks": [
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOjJjYzE5MmVlLTcyNWQtNGZjMC1iN2Y4LThkZmM0MDBjNzQ5NQ=="
+                    },
+                    "quantity": 114
+                  },
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOmFhYmViMjVkLWVjZDYtNDBhMS1hMzAzLTRlMTllYTkzYjE1Zg=="
+                    },
+                    "quantity": 114
+                  },
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOmE3ZjBmYTk1LWY3NmMtNDUyYi1hNjg1LWZiNDE5ZTQ4OGMxMQ=="
+                    },
+                    "quantity": 114
+                  },
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOjZjNmM1MDdhLTIxZjYtNDY5OS1hM2QzLWUwZDYxNzM4YjI2Yw=="
+                    },
+                    "quantity": 114
+                  },
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOjA4MDQ4YjVlLTkxZGQtNDQxMi05NTY0LWI4NDM4OTQ1ZTE0Mw=="
+                    },
+                    "quantity": 114
+                  }
+                ]
+              },
+              {
+                "id": "UHJvZHVjdFZhcmlhbnQ6MzA0",
+                "sku": "51987722",
+                "media": [
+                  {
+                    "url": "https://demo.saleor.io/media/products/saleordemoproduct_cl_bogo02_1.png"
+                  }
+                ],
+                "weight": {
+                  "unit": "KG",
+                  "value": 0
+                },
+                "attributes": [
+                  {
+                    "attribute": {
+                      "id": "QXR0cmlidXRlOjEz",
+                      "slug": "size",
+                      "name": "Size",
+                      "inputType": "DROPDOWN"
+                    },
+                    "values": [
+                      {
+                        "name": "XL",
+                        "slug": "xl",
+                        "value": "",
+                        "inputType": "DROPDOWN",
+                        "reference": null,
+                        "file": null,
+                        "richText": null,
+                        "boolean": null,
+                        "date": null,
+                        "dateTime": null
+                      }
+                    ]
+                  }
+                ],
+                "channelListings": [
+                  {
+                    "channel": {
+                      "id": "Q2hhbm5lbDoy"
+                    },
+                    "price": {
+                      "currency": "USD",
+                      "amount": 5
+                    }
+                  },
+                  {
+                    "channel": {
+                      "id": "Q2hhbm5lbDoz"
+                    },
+                    "price": {
+                      "currency": "PLN",
+                      "amount": 20
+                    }
+                  }
+                ],
+                "stocks": [
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOjZjNmM1MDdhLTIxZjYtNDY5OS1hM2QzLWUwZDYxNzM4YjI2Yw=="
+                    },
+                    "quantity": 321
+                  },
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOmE3ZjBmYTk1LWY3NmMtNDUyYi1hNjg1LWZiNDE5ZTQ4OGMxMQ=="
+                    },
+                    "quantity": 321
+                  },
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOjA4MDQ4YjVlLTkxZGQtNDQxMi05NTY0LWI4NDM4OTQ1ZTE0Mw=="
+                    },
+                    "quantity": 321
+                  },
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOjJjYzE5MmVlLTcyNWQtNGZjMC1iN2Y4LThkZmM0MDBjNzQ5NQ=="
+                    },
+                    "quantity": 321
+                  },
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOmFhYmViMjVkLWVjZDYtNDBhMS1hMzAzLTRlMTllYTkzYjE1Zg=="
+                    },
+                    "quantity": 321
+                  }
+                ]
+              },
+              {
+                "id": "UHJvZHVjdFZhcmlhbnQ6MzAz",
+                "sku": "65363253",
+                "media": [
+                  {
+                    "url": "https://demo.saleor.io/media/products/saleordemoproduct_cl_bogo02_1.png"
+                  }
+                ],
+                "weight": {
+                  "unit": "KG",
+                  "value": 0
+                },
+                "attributes": [
+                  {
+                    "attribute": {
+                      "id": "QXR0cmlidXRlOjEz",
+                      "slug": "size",
+                      "name": "Size",
+                      "inputType": "DROPDOWN"
+                    },
+                    "values": [
+                      {
+                        "name": "L",
+                        "slug": "l",
+                        "value": "",
+                        "inputType": "DROPDOWN",
+                        "reference": null,
+                        "file": null,
+                        "richText": null,
+                        "boolean": null,
+                        "date": null,
+                        "dateTime": null
+                      }
+                    ]
+                  }
+                ],
+                "channelListings": [
+                  {
+                    "channel": {
+                      "id": "Q2hhbm5lbDoy"
+                    },
+                    "price": {
+                      "currency": "USD",
+                      "amount": 5
+                    }
+                  },
+                  {
+                    "channel": {
+                      "id": "Q2hhbm5lbDoz"
+                    },
+                    "price": {
+                      "currency": "PLN",
+                      "amount": 20
+                    }
+                  }
+                ],
+                "stocks": [
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOmE3ZjBmYTk1LWY3NmMtNDUyYi1hNjg1LWZiNDE5ZTQ4OGMxMQ=="
+                    },
+                    "quantity": 202
+                  },
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOjZjNmM1MDdhLTIxZjYtNDY5OS1hM2QzLWUwZDYxNzM4YjI2Yw=="
+                    },
+                    "quantity": 198
+                  },
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOjA4MDQ4YjVlLTkxZGQtNDQxMi05NTY0LWI4NDM4OTQ1ZTE0Mw=="
+                    },
+                    "quantity": 198
+                  },
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOjJjYzE5MmVlLTcyNWQtNGZjMC1iN2Y4LThkZmM0MDBjNzQ5NQ=="
+                    },
+                    "quantity": 198
+                  },
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOmFhYmViMjVkLWVjZDYtNDBhMS1hMzAzLTRlMTllYTkzYjE1Zg=="
+                    },
+                    "quantity": 198
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "node": {
+            "id": "UHJvZHVjdDo3Mw==",
+            "name": "Carrot Juice",
+            "description": "{\"blocks\": [{\"data\": {\"text\": \"Improve your eyesight the natural way with 100% pure, squeezed carrot juice. The sweet, orange nectar of Mother Earth.\"}, \"type\": \"paragraph\"}]}",
+            "productType": {
+              "name": "Juice"
+            },
+            "category": {
+              "name": "Juices"
+            },
             "weight": {
               "unit": "KG",
               "value": 1
             },
-            "attributes": [
+            "media": [
               {
-                "attribute": {
-                  "id": "QXR0cmlidXRlOjI0",
-                  "slug": "shoe-size",
-                  "name": "Shoe size",
-                  "inputType": "DROPDOWN"
-                },
-                "values": [
+                "url": "https://demo.saleor.io/media/products/saleordemoproduct_fd_juice_05.png"
+              }
+            ],
+            "collections": [
+              {
+                "name": "Summer collection"
+              }
+            ],
+            "chargeTaxes": true,
+            "variants": [
+              {
+                "id": "UHJvZHVjdFZhcmlhbnQ6MjA2",
+                "sku": "14925419",
+                "media": [
                   {
-                    "name": "41",
-                    "slug": "41",
-                    "value": "",
-                    "inputType": "DROPDOWN",
-                    "reference": null,
-                    "file": null,
-                    "richText": null,
-                    "boolean": null,
-                    "date": null,
-                    "dateTime": null
+                    "url": "https://demo.saleor.io/media/products/saleordemoproduct_fd_juice_05.png"
+                  }
+                ],
+                "weight": {
+                  "unit": "KG",
+                  "value": 1
+                },
+                "attributes": [
+                  {
+                    "attribute": {
+                      "id": "QXR0cmlidXRlOjE1",
+                      "slug": "bottle-size",
+                      "name": "Bottle Size",
+                      "inputType": "DROPDOWN"
+                    },
+                    "values": [
+                      {
+                        "name": "1l",
+                        "slug": "1l",
+                        "value": "",
+                        "inputType": "DROPDOWN",
+                        "reference": null,
+                        "file": null,
+                        "richText": null,
+                        "boolean": null,
+                        "date": null,
+                        "dateTime": null
+                      }
+                    ]
+                  }
+                ],
+                "channelListings": [
+                  {
+                    "channel": {
+                      "id": "Q2hhbm5lbDoy"
+                    },
+                    "price": {
+                      "currency": "USD",
+                      "amount": 5
+                    }
+                  },
+                  {
+                    "channel": {
+                      "id": "Q2hhbm5lbDoz"
+                    },
+                    "price": {
+                      "currency": "PLN",
+                      "amount": 20
+                    }
+                  }
+                ],
+                "stocks": [
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOmE3ZjBmYTk1LWY3NmMtNDUyYi1hNjg1LWZiNDE5ZTQ4OGMxMQ=="
+                    },
+                    "quantity": 320
+                  },
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOmFhYmViMjVkLWVjZDYtNDBhMS1hMzAzLTRlMTllYTkzYjE1Zg=="
+                    },
+                    "quantity": 320
+                  },
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOjA4MDQ4YjVlLTkxZGQtNDQxMi05NTY0LWI4NDM4OTQ1ZTE0Mw=="
+                    },
+                    "quantity": 320
+                  },
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOjZjNmM1MDdhLTIxZjYtNDY5OS1hM2QzLWUwZDYxNzM4YjI2Yw=="
+                    },
+                    "quantity": 320
+                  },
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOjJjYzE5MmVlLTcyNWQtNGZjMC1iN2Y4LThkZmM0MDBjNzQ5NQ=="
+                    },
+                    "quantity": 320
+                  }
+                ]
+              },
+              {
+                "id": "UHJvZHVjdFZhcmlhbnQ6MjA3",
+                "sku": "62426105",
+                "media": [
+                  {
+                    "url": "https://demo.saleor.io/media/products/saleordemoproduct_fd_juice_05.png"
+                  }
+                ],
+                "weight": {
+                  "unit": "KG",
+                  "value": 2
+                },
+                "attributes": [
+                  {
+                    "attribute": {
+                      "id": "QXR0cmlidXRlOjE1",
+                      "slug": "bottle-size",
+                      "name": "Bottle Size",
+                      "inputType": "DROPDOWN"
+                    },
+                    "values": [
+                      {
+                        "name": "2l",
+                        "slug": "2l",
+                        "value": "",
+                        "inputType": "DROPDOWN",
+                        "reference": null,
+                        "file": null,
+                        "richText": null,
+                        "boolean": null,
+                        "date": null,
+                        "dateTime": null
+                      }
+                    ]
+                  }
+                ],
+                "channelListings": [
+                  {
+                    "channel": {
+                      "id": "Q2hhbm5lbDoy"
+                    },
+                    "price": {
+                      "currency": "USD",
+                      "amount": 7
+                    }
+                  },
+                  {
+                    "channel": {
+                      "id": "Q2hhbm5lbDoz"
+                    },
+                    "price": {
+                      "currency": "PLN",
+                      "amount": 28
+                    }
+                  }
+                ],
+                "stocks": [
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOmFhYmViMjVkLWVjZDYtNDBhMS1hMzAzLTRlMTllYTkzYjE1Zg=="
+                    },
+                    "quantity": 276
+                  },
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOjA4MDQ4YjVlLTkxZGQtNDQxMi05NTY0LWI4NDM4OTQ1ZTE0Mw=="
+                    },
+                    "quantity": 276
+                  },
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOjZjNmM1MDdhLTIxZjYtNDY5OS1hM2QzLWUwZDYxNzM4YjI2Yw=="
+                    },
+                    "quantity": 276
+                  },
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOjJjYzE5MmVlLTcyNWQtNGZjMC1iN2Y4LThkZmM0MDBjNzQ5NQ=="
+                    },
+                    "quantity": 276
+                  },
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOmE3ZjBmYTk1LWY3NmMtNDUyYi1hNjg1LWZiNDE5ZTQ4OGMxMQ=="
+                    },
+                    "quantity": 280
+                  }
+                ]
+              },
+              {
+                "id": "UHJvZHVjdFZhcmlhbnQ6MjA1",
+                "sku": "67882967",
+                "media": [
+                  {
+                    "url": "https://demo.saleor.io/media/products/saleordemoproduct_fd_juice_05.png"
+                  }
+                ],
+                "weight": {
+                  "unit": "KG",
+                  "value": 1
+                },
+                "attributes": [
+                  {
+                    "attribute": {
+                      "id": "QXR0cmlidXRlOjE1",
+                      "slug": "bottle-size",
+                      "name": "Bottle Size",
+                      "inputType": "DROPDOWN"
+                    },
+                    "values": [
+                      {
+                        "name": "500ml",
+                        "slug": "500ml",
+                        "value": "",
+                        "inputType": "DROPDOWN",
+                        "reference": null,
+                        "file": null,
+                        "richText": null,
+                        "boolean": null,
+                        "date": null,
+                        "dateTime": null
+                      }
+                    ]
+                  }
+                ],
+                "channelListings": [
+                  {
+                    "channel": {
+                      "id": "Q2hhbm5lbDoy"
+                    },
+                    "price": {
+                      "currency": "USD",
+                      "amount": 5
+                    }
+                  },
+                  {
+                    "channel": {
+                      "id": "Q2hhbm5lbDoz"
+                    },
+                    "price": {
+                      "currency": "PLN",
+                      "amount": 20
+                    }
+                  }
+                ],
+                "stocks": [
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOjJjYzE5MmVlLTcyNWQtNGZjMC1iN2Y4LThkZmM0MDBjNzQ5NQ=="
+                    },
+                    "quantity": 280
+                  },
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOmFhYmViMjVkLWVjZDYtNDBhMS1hMzAzLTRlMTllYTkzYjE1Zg=="
+                    },
+                    "quantity": 280
+                  },
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOmE3ZjBmYTk1LWY3NmMtNDUyYi1hNjg1LWZiNDE5ZTQ4OGMxMQ=="
+                    },
+                    "quantity": 280
+                  },
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOjZjNmM1MDdhLTIxZjYtNDY5OS1hM2QzLWUwZDYxNzM4YjI2Yw=="
+                    },
+                    "quantity": 280
+                  },
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOjA4MDQ4YjVlLTkxZGQtNDQxMi05NTY0LWI4NDM4OTQ1ZTE0Mw=="
+                    },
+                    "quantity": 280
                   }
                 ]
               }
-            ],
-            "product": {
-              "name": "White Plimsolls",
-              "description": "{\"blocks\": [{\"data\": {\"text\": \"PE at school wouldn\\u2019t have been such a drag with these on your feet. Slip on the style and stride tall with Saleor branded plimsolls. PE now stands for pretty elegant.\"}, \"type\": \"paragraph\"}]}",
-              "productType": {
-                "name": "Shoe"
-              },
-              "category": {
-                "name": "Footwear"
-              },
-              "weight": {
-                "unit": "KG",
-                "value": 1
-              },
-              "media": [
-                {
-                  "url": "https://demo.saleor.io/media/products/saleordemoproduct_sneakers_02_1.png"
-                },
-                {
-                  "url": "https://demo.saleor.io/media/products/saleordemoproduct_sneakers_02_2.png"
-                },
-                {
-                  "url": "https://demo.saleor.io/media/products/saleordemoproduct_sneakers_02_3.png"
-                },
-                {
-                  "url": "https://demo.saleor.io/media/products/saleordemoproduct_sneakers_02_4.png"
-                }
-              ],
-              "collections": [],
-              "chargeTaxes": true
-            },
-            "channelListings": [
-              {
-                "channel": {
-                  "id": "Q2hhbm5lbDoy"
-                },
-                "price": {
-                  "currency": "USD",
-                  "amount": 5
-                }
-              }
-            ],
-            "stocks": [
-              {
-                "warehouse": {
-                  "id": "V2FyZWhvdXNlOmFhYmViMjVkLWVjZDYtNDBhMS1hMzAzLTRlMTllYTkzYjE1Zg=="
-                },
-                "quantity": 413
-              },
-              {
-                "warehouse": {
-                  "id": "V2FyZWhvdXNlOjA4MDQ4YjVlLTkxZGQtNDQxMi05NTY0LWI4NDM4OTQ1ZTE0Mw=="
-                },
-                "quantity": 413
-              },
-              {
-                "warehouse": {
-                  "id": "V2FyZWhvdXNlOmE3ZjBmYTk1LWY3NmMtNDUyYi1hNjg1LWZiNDE5ZTQ4OGMxMQ=="
-                },
-                "quantity": 413
-              },
-              {
-                "warehouse": {
-                  "id": "V2FyZWhvdXNlOjZjNmM1MDdhLTIxZjYtNDY5OS1hM2QzLWUwZDYxNzM4YjI2Yw=="
-                },
-                "quantity": 413
-              },
-              {
-                "warehouse": {
-                  "id": "V2FyZWhvdXNlOjJjYzE5MmVlLTcyNWQtNGZjMC1iN2Y4LThkZmM0MDBjNzQ5NQ=="
-                },
-                "quantity": 413
-              }
             ]
           }
         },
         {
           "node": {
-            "id": "UHJvZHVjdFZhcmlhbnQ6Mjcx",
-            "sku": "98530976",
-            "media": [
-              {
-                "url": "https://demo.saleor.io/media/products/saleordemoproduct_cl_polo04-woman.png"
-              }
-            ],
+            "id": "UHJvZHVjdDo3Ng==",
+            "name": "Coconut Juice",
+            "description": "{\"blocks\": [{\"data\": {\"text\": \"Did you know falling coconuts kill 150 people a year? But did you know that coconut juice is the new superfood? You win some, you lose some.\"}, \"type\": \"paragraph\"}]}",
+            "productType": {
+              "name": "Juice"
+            },
+            "category": {
+              "name": "Juices"
+            },
             "weight": {
               "unit": "KG",
-              "value": 0
+              "value": 1
             },
-            "attributes": [
+            "media": [
               {
-                "attribute": {
-                  "id": "QXR0cmlidXRlOjEz",
-                  "slug": "size",
-                  "name": "Size",
-                  "inputType": "DROPDOWN"
-                },
-                "values": [
+                "url": "https://demo.saleor.io/media/products/saleordemoproduct_fd_juice_02.png"
+              }
+            ],
+            "collections": [],
+            "chargeTaxes": true,
+            "variants": [
+              {
+                "id": "UHJvZHVjdFZhcmlhbnQ6MjE0",
+                "sku": "3944859",
+                "media": [
                   {
-                    "name": "S",
-                    "slug": "s",
-                    "value": "",
-                    "inputType": "DROPDOWN",
-                    "reference": null,
-                    "file": null,
-                    "richText": null,
-                    "boolean": null,
-                    "date": null,
-                    "dateTime": null
+                    "url": "https://demo.saleor.io/media/products/saleordemoproduct_fd_juice_02.png"
+                  }
+                ],
+                "weight": {
+                  "unit": "KG",
+                  "value": 1
+                },
+                "attributes": [
+                  {
+                    "attribute": {
+                      "id": "QXR0cmlidXRlOjE1",
+                      "slug": "bottle-size",
+                      "name": "Bottle Size",
+                      "inputType": "DROPDOWN"
+                    },
+                    "values": [
+                      {
+                        "name": "500ml",
+                        "slug": "500ml",
+                        "value": "",
+                        "inputType": "DROPDOWN",
+                        "reference": null,
+                        "file": null,
+                        "richText": null,
+                        "boolean": null,
+                        "date": null,
+                        "dateTime": null
+                      }
+                    ]
+                  }
+                ],
+                "channelListings": [
+                  {
+                    "channel": {
+                      "id": "Q2hhbm5lbDoy"
+                    },
+                    "price": {
+                      "currency": "USD",
+                      "amount": 5
+                    }
+                  },
+                  {
+                    "channel": {
+                      "id": "Q2hhbm5lbDoz"
+                    },
+                    "price": {
+                      "currency": "PLN",
+                      "amount": 20
+                    }
+                  }
+                ],
+                "stocks": [
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOmE3ZjBmYTk1LWY3NmMtNDUyYi1hNjg1LWZiNDE5ZTQ4OGMxMQ=="
+                    },
+                    "quantity": 440
+                  },
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOjA4MDQ4YjVlLTkxZGQtNDQxMi05NTY0LWI4NDM4OTQ1ZTE0Mw=="
+                    },
+                    "quantity": 440
+                  },
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOjJjYzE5MmVlLTcyNWQtNGZjMC1iN2Y4LThkZmM0MDBjNzQ5NQ=="
+                    },
+                    "quantity": 440
+                  },
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOjZjNmM1MDdhLTIxZjYtNDY5OS1hM2QzLWUwZDYxNzM4YjI2Yw=="
+                    },
+                    "quantity": 440
+                  },
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOmFhYmViMjVkLWVjZDYtNDBhMS1hMzAzLTRlMTllYTkzYjE1Zg=="
+                    },
+                    "quantity": 440
+                  }
+                ]
+              },
+              {
+                "id": "UHJvZHVjdFZhcmlhbnQ6MjE1",
+                "sku": "5829405",
+                "media": [
+                  {
+                    "url": "https://demo.saleor.io/media/products/saleordemoproduct_fd_juice_02.png"
+                  }
+                ],
+                "weight": {
+                  "unit": "KG",
+                  "value": 1
+                },
+                "attributes": [
+                  {
+                    "attribute": {
+                      "id": "QXR0cmlidXRlOjE1",
+                      "slug": "bottle-size",
+                      "name": "Bottle Size",
+                      "inputType": "DROPDOWN"
+                    },
+                    "values": [
+                      {
+                        "name": "1l",
+                        "slug": "1l",
+                        "value": "",
+                        "inputType": "DROPDOWN",
+                        "reference": null,
+                        "file": null,
+                        "richText": null,
+                        "boolean": null,
+                        "date": null,
+                        "dateTime": null
+                      }
+                    ]
+                  }
+                ],
+                "channelListings": [
+                  {
+                    "channel": {
+                      "id": "Q2hhbm5lbDoy"
+                    },
+                    "price": {
+                      "currency": "USD",
+                      "amount": 5
+                    }
+                  },
+                  {
+                    "channel": {
+                      "id": "Q2hhbm5lbDoz"
+                    },
+                    "price": {
+                      "currency": "PLN",
+                      "amount": 20
+                    }
+                  }
+                ],
+                "stocks": [
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOmFhYmViMjVkLWVjZDYtNDBhMS1hMzAzLTRlMTllYTkzYjE1Zg=="
+                    },
+                    "quantity": 421
+                  },
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOmE3ZjBmYTk1LWY3NmMtNDUyYi1hNjg1LWZiNDE5ZTQ4OGMxMQ=="
+                    },
+                    "quantity": 421
+                  },
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOjJjYzE5MmVlLTcyNWQtNGZjMC1iN2Y4LThkZmM0MDBjNzQ5NQ=="
+                    },
+                    "quantity": 421
+                  },
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOjZjNmM1MDdhLTIxZjYtNDY5OS1hM2QzLWUwZDYxNzM4YjI2Yw=="
+                    },
+                    "quantity": 421
+                  },
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOjA4MDQ4YjVlLTkxZGQtNDQxMi05NTY0LWI4NDM4OTQ1ZTE0Mw=="
+                    },
+                    "quantity": 421
+                  }
+                ]
+              },
+              {
+                "id": "UHJvZHVjdFZhcmlhbnQ6MjE2",
+                "sku": "84725784",
+                "media": [
+                  {
+                    "url": "https://demo.saleor.io/media/products/saleordemoproduct_fd_juice_02.png"
+                  }
+                ],
+                "weight": {
+                  "unit": "KG",
+                  "value": 2
+                },
+                "attributes": [
+                  {
+                    "attribute": {
+                      "id": "QXR0cmlidXRlOjE1",
+                      "slug": "bottle-size",
+                      "name": "Bottle Size",
+                      "inputType": "DROPDOWN"
+                    },
+                    "values": [
+                      {
+                        "name": "2l",
+                        "slug": "2l",
+                        "value": "",
+                        "inputType": "DROPDOWN",
+                        "reference": null,
+                        "file": null,
+                        "richText": null,
+                        "boolean": null,
+                        "date": null,
+                        "dateTime": null
+                      }
+                    ]
+                  }
+                ],
+                "channelListings": [
+                  {
+                    "channel": {
+                      "id": "Q2hhbm5lbDoy"
+                    },
+                    "price": {
+                      "currency": "USD",
+                      "amount": 7
+                    }
+                  },
+                  {
+                    "channel": {
+                      "id": "Q2hhbm5lbDoz"
+                    },
+                    "price": {
+                      "currency": "PLN",
+                      "amount": 28
+                    }
+                  }
+                ],
+                "stocks": [
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOjZjNmM1MDdhLTIxZjYtNDY5OS1hM2QzLWUwZDYxNzM4YjI2Yw=="
+                    },
+                    "quantity": 277
+                  },
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOmE3ZjBmYTk1LWY3NmMtNDUyYi1hNjg1LWZiNDE5ZTQ4OGMxMQ=="
+                    },
+                    "quantity": 277
+                  },
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOmFhYmViMjVkLWVjZDYtNDBhMS1hMzAzLTRlMTllYTkzYjE1Zg=="
+                    },
+                    "quantity": 277
+                  },
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOjA4MDQ4YjVlLTkxZGQtNDQxMi05NTY0LWI4NDM4OTQ1ZTE0Mw=="
+                    },
+                    "quantity": 278
+                  },
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOjJjYzE5MmVlLTcyNWQtNGZjMC1iN2Y4LThkZmM0MDBjNzQ5NQ=="
+                    },
+                    "quantity": 277
                   }
                 ]
               }
-            ],
-            "product": {
-              "name": "Polo Shirt",
-              "description": "{\"blocks\": [{\"data\": {\"text\": \"They say polo is the sport of kings. Or was that stamp collecting? Either way, this shirt is fit for a king of Saturday night.\"}, \"type\": \"paragraph\"}]}",
-              "productType": {
-                "name": "Top (clothing)"
-              },
-              "category": {
-                "name": "Polo Shirts"
-              },
-              "weight": {
-                "unit": "KG",
-                "value": 0
-              },
-              "media": [
-                {
-                  "url": "https://demo.saleor.io/media/products/saleordemoproduct_cl_polo04-woman.png"
-                }
-              ],
-              "collections": [
-                {
-                  "name": "Summer collection"
-                },
-                {
-                  "name": "Featured Products"
-                }
-              ],
-              "chargeTaxes": true
-            },
-            "channelListings": [
-              {
-                "channel": {
-                  "id": "Q2hhbm5lbDoy"
-                },
-                "price": {
-                  "currency": "USD",
-                  "amount": 5
-                }
-              },
-              {
-                "channel": {
-                  "id": "Q2hhbm5lbDoz"
-                },
-                "price": {
-                  "currency": "PLN",
-                  "amount": 20
-                }
-              }
-            ],
-            "stocks": [
-              {
-                "warehouse": {
-                  "id": "V2FyZWhvdXNlOmFhYmViMjVkLWVjZDYtNDBhMS1hMzAzLTRlMTllYTkzYjE1Zg=="
-                },
-                "quantity": 137
-              },
-              {
-                "warehouse": {
-                  "id": "V2FyZWhvdXNlOmE3ZjBmYTk1LWY3NmMtNDUyYi1hNjg1LWZiNDE5ZTQ4OGMxMQ=="
-                },
-                "quantity": 137
-              },
-              {
-                "warehouse": {
-                  "id": "V2FyZWhvdXNlOjJjYzE5MmVlLTcyNWQtNGZjMC1iN2Y4LThkZmM0MDBjNzQ5NQ=="
-                },
-                "quantity": 137
-              },
-              {
-                "warehouse": {
-                  "id": "V2FyZWhvdXNlOjZjNmM1MDdhLTIxZjYtNDY5OS1hM2QzLWUwZDYxNzM4YjI2Yw=="
-                },
-                "quantity": 137
-              },
-              {
-                "warehouse": {
-                  "id": "V2FyZWhvdXNlOjA4MDQ4YjVlLTkxZGQtNDQxMi05NTY0LWI4NDM4OTQ1ZTE0Mw=="
-                },
-                "quantity": 137
-              }
             ]
           }
         },
         {
           "node": {
-            "id": "UHJvZHVjdFZhcmlhbnQ6MTk1",
-            "sku": "98616712",
-            "media": [
-              {
-                "url": "https://demo.saleor.io/media/products/saleordemoproduct_beer-02_1.png"
-              }
-            ],
+            "id": "UHJvZHVjdDo4OQ==",
+            "name": "Code Division T-shirt",
+            "description": "{\"blocks\": [{\"data\": {\"text\": \"Pay homage to the music and art of a Joy Division and Peter Saville, but with a Mirumee twist. Perfect live transmission apparel for dead souls.\"}, \"type\": \"paragraph\"}]}",
+            "productType": {
+              "name": "Top (clothing)"
+            },
+            "category": {
+              "name": "T-shirts"
+            },
             "weight": {
               "unit": "KG",
               "value": 0
             },
-            "attributes": [],
-            "product": {
-              "name": "Seaman Lager",
-              "description": "{\"blocks\": [{\"data\": {\"text\": \"Find your sea legs and then lose the power to use them with extra strong seaman\\u2019s lager. Don\\u2019t drink and sail, me hearties!\"}, \"type\": \"paragraph\"}]}",
-              "productType": {
-                "name": "Beer"
-              },
-              "category": {
-                "name": "Alcohol"
-              },
-              "weight": {
-                "unit": "KG",
-                "value": 1
-              },
-              "media": [
-                {
-                  "url": "https://demo.saleor.io/media/products/saleordemoproduct_beer-02_1.png"
-                },
-                {
-                  "url": "https://demo.saleor.io/media/products/saleordemoproduct_beer-02_2.png"
-                }
-              ],
-              "collections": [
-                {
-                  "name": "Summer collection"
-                },
-                {
-                  "name": "Featured Products"
-                }
-              ],
-              "chargeTaxes": true
-            },
-            "channelListings": [
-              {
-                "channel": {
-                  "id": "Q2hhbm5lbDoy"
-                },
-                "price": {
-                  "currency": "USD",
-                  "amount": 5
-                }
-              },
-              {
-                "channel": {
-                  "id": "Q2hhbm5lbDoz"
-                },
-                "price": {
-                  "currency": "PLN",
-                  "amount": 20
-                }
-              }
-            ],
-            "stocks": [
-              {
-                "warehouse": {
-                  "id": "V2FyZWhvdXNlOjZjNmM1MDdhLTIxZjYtNDY5OS1hM2QzLWUwZDYxNzM4YjI2Yw=="
-                },
-                "quantity": 341
-              },
-              {
-                "warehouse": {
-                  "id": "V2FyZWhvdXNlOmFhYmViMjVkLWVjZDYtNDBhMS1hMzAzLTRlMTllYTkzYjE1Zg=="
-                },
-                "quantity": 341
-              },
-              {
-                "warehouse": {
-                  "id": "V2FyZWhvdXNlOjA4MDQ4YjVlLTkxZGQtNDQxMi05NTY0LWI4NDM4OTQ1ZTE0Mw=="
-                },
-                "quantity": 343
-              },
-              {
-                "warehouse": {
-                  "id": "V2FyZWhvdXNlOjJjYzE5MmVlLTcyNWQtNGZjMC1iN2Y4LThkZmM0MDBjNzQ5NQ=="
-                },
-                "quantity": 341
-              },
-              {
-                "warehouse": {
-                  "id": "V2FyZWhvdXNlOmE3ZjBmYTk1LWY3NmMtNDUyYi1hNjg1LWZiNDE5ZTQ4OGMxMQ=="
-                },
-                "quantity": 343
-              }
-            ]
-          }
-        },
-        {
-          "node": {
-            "id": "UHJvZHVjdFZhcmlhbnQ6MTk2",
-            "sku": "98616713",
             "media": [
               {
-                "url": "https://demo.saleor.io/media/products/saleordemoproduct_beer-01_1.png"
+                "url": "https://demo.saleor.io/media/products/saleordemoproduct_cl_boot07_1.png"
+              },
+              {
+                "url": "https://demo.saleor.io/media/products/saleordemoproduct_cl_boot07_2.png"
               }
             ],
-            "weight": {
-              "unit": "KG",
-              "value": 0
-            },
-            "attributes": [],
-            "product": {
-              "name": "Seaman Beer",
-              "description": "{\"blocks\": [{\"data\": {\"text\": \"Best beer on the seven seas. A dark ale for when the dark clouds gather overhead. The nutty nautical taste that sailors love.\"}, \"type\": \"paragraph\"}]}",
-              "productType": {
-                "name": "Beer"
-              },
-              "category": {
-                "name": "Alcohol"
-              },
-              "weight": {
-                "unit": "KG",
-                "value": 1
-              },
-              "media": [
-                {
-                  "url": "https://demo.saleor.io/media/products/saleordemoproduct_beer-01_1.png"
-                },
-                {
-                  "url": "https://demo.saleor.io/media/products/saleordemoproduct_beer-01_2.png"
-                }
-              ],
-              "collections": [
-                {
-                  "name": "Featured Products"
-                }
-              ],
-              "chargeTaxes": true
-            },
-            "channelListings": [
+            "collections": [],
+            "chargeTaxes": true,
+            "variants": [
               {
-                "channel": {
-                  "id": "Q2hhbm5lbDoy"
-                },
-                "price": {
-                  "currency": "USD",
-                  "amount": 5
-                }
-              },
-              {
-                "channel": {
-                  "id": "Q2hhbm5lbDoz"
-                },
-                "price": {
-                  "currency": "PLN",
-                  "amount": 20
-                }
-              }
-            ],
-            "stocks": [
-              {
-                "warehouse": {
-                  "id": "V2FyZWhvdXNlOjA4MDQ4YjVlLTkxZGQtNDQxMi05NTY0LWI4NDM4OTQ1ZTE0Mw=="
-                },
-                "quantity": 144
-              },
-              {
-                "warehouse": {
-                  "id": "V2FyZWhvdXNlOmFhYmViMjVkLWVjZDYtNDBhMS1hMzAzLTRlMTllYTkzYjE1Zg=="
-                },
-                "quantity": 144
-              },
-              {
-                "warehouse": {
-                  "id": "V2FyZWhvdXNlOjZjNmM1MDdhLTIxZjYtNDY5OS1hM2QzLWUwZDYxNzM4YjI2Yw=="
-                },
-                "quantity": 144
-              },
-              {
-                "warehouse": {
-                  "id": "V2FyZWhvdXNlOjJjYzE5MmVlLTcyNWQtNGZjMC1iN2Y4LThkZmM0MDBjNzQ5NQ=="
-                },
-                "quantity": 144
-              },
-              {
-                "warehouse": {
-                  "id": "V2FyZWhvdXNlOmE3ZjBmYTk1LWY3NmMtNDUyYi1hNjg1LWZiNDE5ZTQ4OGMxMQ=="
-                },
-                "quantity": 144
-              }
-            ]
-          }
-        },
-        {
-          "node": {
-            "id": "UHJvZHVjdFZhcmlhbnQ6Mjkw",
-            "sku": "98653891",
-            "media": [
-              {
-                "url": "https://demo.saleor.io/media/products/saleordemoproduct_cl_boot06_1.png"
-              }
-            ],
-            "weight": {
-              "unit": "KG",
-              "value": 0
-            },
-            "attributes": [
-              {
-                "attribute": {
-                  "id": "QXR0cmlidXRlOjEz",
-                  "slug": "size",
-                  "name": "Size",
-                  "inputType": "DROPDOWN"
-                },
-                "values": [
+                "id": "UHJvZHVjdFZhcmlhbnQ6MjUz",
+                "sku": "118223591",
+                "media": [
                   {
-                    "name": "XXL",
-                    "slug": "xxl",
-                    "value": "",
-                    "inputType": "DROPDOWN",
-                    "reference": null,
-                    "file": null,
-                    "richText": null,
-                    "boolean": null,
-                    "date": null,
-                    "dateTime": null
+                    "url": "https://demo.saleor.io/media/products/saleordemoproduct_cl_boot07_1.png"
+                  }
+                ],
+                "weight": {
+                  "unit": "KG",
+                  "value": 0
+                },
+                "attributes": [
+                  {
+                    "attribute": {
+                      "id": "QXR0cmlidXRlOjEz",
+                      "slug": "size",
+                      "name": "Size",
+                      "inputType": "DROPDOWN"
+                    },
+                    "values": [
+                      {
+                        "name": "L",
+                        "slug": "l",
+                        "value": "",
+                        "inputType": "DROPDOWN",
+                        "reference": null,
+                        "file": null,
+                        "richText": null,
+                        "boolean": null,
+                        "date": null,
+                        "dateTime": null
+                      }
+                    ]
+                  }
+                ],
+                "channelListings": [
+                  {
+                    "channel": {
+                      "id": "Q2hhbm5lbDoy"
+                    },
+                    "price": {
+                      "currency": "USD",
+                      "amount": 5
+                    }
+                  },
+                  {
+                    "channel": {
+                      "id": "Q2hhbm5lbDoz"
+                    },
+                    "price": {
+                      "currency": "PLN",
+                      "amount": 20
+                    }
+                  }
+                ],
+                "stocks": [
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOmFhYmViMjVkLWVjZDYtNDBhMS1hMzAzLTRlMTllYTkzYjE1Zg=="
+                    },
+                    "quantity": 368
+                  },
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOjJjYzE5MmVlLTcyNWQtNGZjMC1iN2Y4LThkZmM0MDBjNzQ5NQ=="
+                    },
+                    "quantity": 368
+                  },
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOmE3ZjBmYTk1LWY3NmMtNDUyYi1hNjg1LWZiNDE5ZTQ4OGMxMQ=="
+                    },
+                    "quantity": 368
+                  },
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOjZjNmM1MDdhLTIxZjYtNDY5OS1hM2QzLWUwZDYxNzM4YjI2Yw=="
+                    },
+                    "quantity": 368
+                  },
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOjA4MDQ4YjVlLTkxZGQtNDQxMi05NTY0LWI4NDM4OTQ1ZTE0Mw=="
+                    },
+                    "quantity": 368
+                  }
+                ]
+              },
+              {
+                "id": "UHJvZHVjdFZhcmlhbnQ6MjU1",
+                "sku": "3128223583",
+                "media": [
+                  {
+                    "url": "https://demo.saleor.io/media/products/saleordemoproduct_cl_boot07_1.png"
+                  }
+                ],
+                "weight": {
+                  "unit": "KG",
+                  "value": 0
+                },
+                "attributes": [
+                  {
+                    "attribute": {
+                      "id": "QXR0cmlidXRlOjEz",
+                      "slug": "size",
+                      "name": "Size",
+                      "inputType": "DROPDOWN"
+                    },
+                    "values": [
+                      {
+                        "name": "XXL",
+                        "slug": "xxl",
+                        "value": "",
+                        "inputType": "DROPDOWN",
+                        "reference": null,
+                        "file": null,
+                        "richText": null,
+                        "boolean": null,
+                        "date": null,
+                        "dateTime": null
+                      }
+                    ]
+                  }
+                ],
+                "channelListings": [
+                  {
+                    "channel": {
+                      "id": "Q2hhbm5lbDoy"
+                    },
+                    "price": {
+                      "currency": "USD",
+                      "amount": 5
+                    }
+                  },
+                  {
+                    "channel": {
+                      "id": "Q2hhbm5lbDoz"
+                    },
+                    "price": {
+                      "currency": "PLN",
+                      "amount": 20
+                    }
+                  }
+                ],
+                "stocks": [
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOmE3ZjBmYTk1LWY3NmMtNDUyYi1hNjg1LWZiNDE5ZTQ4OGMxMQ=="
+                    },
+                    "quantity": 209
+                  },
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOjJjYzE5MmVlLTcyNWQtNGZjMC1iN2Y4LThkZmM0MDBjNzQ5NQ=="
+                    },
+                    "quantity": 213
+                  },
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOjZjNmM1MDdhLTIxZjYtNDY5OS1hM2QzLWUwZDYxNzM4YjI2Yw=="
+                    },
+                    "quantity": 209
+                  },
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOjA4MDQ4YjVlLTkxZGQtNDQxMi05NTY0LWI4NDM4OTQ1ZTE0Mw=="
+                    },
+                    "quantity": 209
+                  },
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOmFhYmViMjVkLWVjZDYtNDBhMS1hMzAzLTRlMTllYTkzYjE1Zg=="
+                    },
+                    "quantity": 209
+                  }
+                ]
+              },
+              {
+                "id": "UHJvZHVjdFZhcmlhbnQ6MjUy",
+                "sku": "338223582",
+                "media": [
+                  {
+                    "url": "https://demo.saleor.io/media/products/saleordemoproduct_cl_boot07_1.png"
+                  }
+                ],
+                "weight": {
+                  "unit": "KG",
+                  "value": 0
+                },
+                "attributes": [
+                  {
+                    "attribute": {
+                      "id": "QXR0cmlidXRlOjEz",
+                      "slug": "size",
+                      "name": "Size",
+                      "inputType": "DROPDOWN"
+                    },
+                    "values": [
+                      {
+                        "name": "M",
+                        "slug": "m",
+                        "value": "",
+                        "inputType": "DROPDOWN",
+                        "reference": null,
+                        "file": null,
+                        "richText": null,
+                        "boolean": null,
+                        "date": null,
+                        "dateTime": null
+                      }
+                    ]
+                  }
+                ],
+                "channelListings": [
+                  {
+                    "channel": {
+                      "id": "Q2hhbm5lbDoy"
+                    },
+                    "price": {
+                      "currency": "USD",
+                      "amount": 5
+                    }
+                  },
+                  {
+                    "channel": {
+                      "id": "Q2hhbm5lbDoz"
+                    },
+                    "price": {
+                      "currency": "PLN",
+                      "amount": 20
+                    }
+                  }
+                ],
+                "stocks": [
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOjJjYzE5MmVlLTcyNWQtNGZjMC1iN2Y4LThkZmM0MDBjNzQ5NQ=="
+                    },
+                    "quantity": 397
+                  },
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOmFhYmViMjVkLWVjZDYtNDBhMS1hMzAzLTRlMTllYTkzYjE1Zg=="
+                    },
+                    "quantity": 397
+                  },
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOjZjNmM1MDdhLTIxZjYtNDY5OS1hM2QzLWUwZDYxNzM4YjI2Yw=="
+                    },
+                    "quantity": 397
+                  },
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOmE3ZjBmYTk1LWY3NmMtNDUyYi1hNjg1LWZiNDE5ZTQ4OGMxMQ=="
+                    },
+                    "quantity": 397
+                  },
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOjA4MDQ4YjVlLTkxZGQtNDQxMi05NTY0LWI4NDM4OTQ1ZTE0Mw=="
+                    },
+                    "quantity": 397
+                  }
+                ]
+              },
+              {
+                "id": "UHJvZHVjdFZhcmlhbnQ6MjU0",
+                "sku": "448323583",
+                "media": [
+                  {
+                    "url": "https://demo.saleor.io/media/products/saleordemoproduct_cl_boot07_1.png"
+                  }
+                ],
+                "weight": {
+                  "unit": "KG",
+                  "value": 0
+                },
+                "attributes": [
+                  {
+                    "attribute": {
+                      "id": "QXR0cmlidXRlOjEz",
+                      "slug": "size",
+                      "name": "Size",
+                      "inputType": "DROPDOWN"
+                    },
+                    "values": [
+                      {
+                        "name": "XL",
+                        "slug": "xl",
+                        "value": "",
+                        "inputType": "DROPDOWN",
+                        "reference": null,
+                        "file": null,
+                        "richText": null,
+                        "boolean": null,
+                        "date": null,
+                        "dateTime": null
+                      }
+                    ]
+                  }
+                ],
+                "channelListings": [
+                  {
+                    "channel": {
+                      "id": "Q2hhbm5lbDoy"
+                    },
+                    "price": {
+                      "currency": "USD",
+                      "amount": 5
+                    }
+                  },
+                  {
+                    "channel": {
+                      "id": "Q2hhbm5lbDoz"
+                    },
+                    "price": {
+                      "currency": "PLN",
+                      "amount": 20
+                    }
+                  }
+                ],
+                "stocks": [
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOjJjYzE5MmVlLTcyNWQtNGZjMC1iN2Y4LThkZmM0MDBjNzQ5NQ=="
+                    },
+                    "quantity": 390
+                  },
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOjA4MDQ4YjVlLTkxZGQtNDQxMi05NTY0LWI4NDM4OTQ1ZTE0Mw=="
+                    },
+                    "quantity": 390
+                  },
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOmE3ZjBmYTk1LWY3NmMtNDUyYi1hNjg1LWZiNDE5ZTQ4OGMxMQ=="
+                    },
+                    "quantity": 390
+                  },
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOjZjNmM1MDdhLTIxZjYtNDY5OS1hM2QzLWUwZDYxNzM4YjI2Yw=="
+                    },
+                    "quantity": 390
+                  },
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOmFhYmViMjVkLWVjZDYtNDBhMS1hMzAzLTRlMTllYTkzYjE1Zg=="
+                    },
+                    "quantity": 390
+                  }
+                ]
+              },
+              {
+                "id": "UHJvZHVjdFZhcmlhbnQ6MjUx",
+                "sku": "988323583",
+                "media": [
+                  {
+                    "url": "https://demo.saleor.io/media/products/saleordemoproduct_cl_boot07_1.png"
+                  }
+                ],
+                "weight": {
+                  "unit": "KG",
+                  "value": 0
+                },
+                "attributes": [
+                  {
+                    "attribute": {
+                      "id": "QXR0cmlidXRlOjEz",
+                      "slug": "size",
+                      "name": "Size",
+                      "inputType": "DROPDOWN"
+                    },
+                    "values": [
+                      {
+                        "name": "S",
+                        "slug": "s",
+                        "value": "",
+                        "inputType": "DROPDOWN",
+                        "reference": null,
+                        "file": null,
+                        "richText": null,
+                        "boolean": null,
+                        "date": null,
+                        "dateTime": null
+                      }
+                    ]
+                  }
+                ],
+                "channelListings": [
+                  {
+                    "channel": {
+                      "id": "Q2hhbm5lbDoy"
+                    },
+                    "price": {
+                      "currency": "USD",
+                      "amount": 5
+                    }
+                  },
+                  {
+                    "channel": {
+                      "id": "Q2hhbm5lbDoz"
+                    },
+                    "price": {
+                      "currency": "PLN",
+                      "amount": 20
+                    }
+                  }
+                ],
+                "stocks": [
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOmE3ZjBmYTk1LWY3NmMtNDUyYi1hNjg1LWZiNDE5ZTQ4OGMxMQ=="
+                    },
+                    "quantity": 327
+                  },
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOjJjYzE5MmVlLTcyNWQtNGZjMC1iN2Y4LThkZmM0MDBjNzQ5NQ=="
+                    },
+                    "quantity": 323
+                  },
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOjZjNmM1MDdhLTIxZjYtNDY5OS1hM2QzLWUwZDYxNzM4YjI2Yw=="
+                    },
+                    "quantity": 323
+                  },
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOmFhYmViMjVkLWVjZDYtNDBhMS1hMzAzLTRlMTllYTkzYjE1Zg=="
+                    },
+                    "quantity": 323
+                  },
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOjA4MDQ4YjVlLTkxZGQtNDQxMi05NTY0LWI4NDM4OTQ1ZTE0Mw=="
+                    },
+                    "quantity": 323
                   }
                 ]
               }
-            ],
-            "product": {
-              "name": "T-shirt",
-              "description": "{\"blocks\": [{\"data\": {\"text\": \"Want to look like you just fell out of bed? Sometimes style can be effortless. Throw it on get on with having a good day.\"}, \"type\": \"paragraph\"}]}",
-              "productType": {
-                "name": "Top (clothing)"
-              },
-              "category": {
-                "name": "T-shirts"
-              },
-              "weight": {
-                "unit": "KG",
-                "value": 0
-              },
-              "media": [
-                {
-                  "url": "https://demo.saleor.io/media/products/saleordemoproduct_cl_boot06_1.png"
-                },
-                {
-                  "url": "https://demo.saleor.io/media/products/saleordemoproduct_cl_boot06_2.png"
-                }
-              ],
-              "collections": [],
-              "chargeTaxes": true
-            },
-            "channelListings": [
-              {
-                "channel": {
-                  "id": "Q2hhbm5lbDoy"
-                },
-                "price": {
-                  "currency": "USD",
-                  "amount": 5
-                }
-              }
-            ],
-            "stocks": [
-              {
-                "warehouse": {
-                  "id": "V2FyZWhvdXNlOmFhYmViMjVkLWVjZDYtNDBhMS1hMzAzLTRlMTllYTkzYjE1Zg=="
-                },
-                "quantity": 288
-              },
-              {
-                "warehouse": {
-                  "id": "V2FyZWhvdXNlOjA4MDQ4YjVlLTkxZGQtNDQxMi05NTY0LWI4NDM4OTQ1ZTE0Mw=="
-                },
-                "quantity": 290
-              },
-              {
-                "warehouse": {
-                  "id": "V2FyZWhvdXNlOjZjNmM1MDdhLTIxZjYtNDY5OS1hM2QzLWUwZDYxNzM4YjI2Yw=="
-                },
-                "quantity": 288
-              },
-              {
-                "warehouse": {
-                  "id": "V2FyZWhvdXNlOmE3ZjBmYTk1LWY3NmMtNDUyYi1hNjg1LWZiNDE5ZTQ4OGMxMQ=="
-                },
-                "quantity": 288
-              },
-              {
-                "warehouse": {
-                  "id": "V2FyZWhvdXNlOjJjYzE5MmVlLTcyNWQtNGZjMC1iN2Y4LThkZmM0MDBjNzQ5NQ=="
-                },
-                "quantity": 288
-              }
             ]
           }
         },
         {
           "node": {
-            "id": "UHJvZHVjdFZhcmlhbnQ6MzIx",
-            "sku": "waterfall-ballads-mp3",
-            "media": [
-              {
-                "url": "https://demo.saleor.io/media/products/saleor-digital-03_6.png"
-              }
-            ],
+            "id": "UHJvZHVjdDo4NQ==",
+            "name": "Colored Parrot Cushion",
+            "description": "{\"blocks\": [{\"data\": {\"text\": \"Add a little color to your life with a Saleor parrot cushion. Turns any old sofa into a rainbow of classy interior design.\"}, \"type\": \"paragraph\"}]}",
+            "productType": {
+              "name": "Cushion"
+            },
+            "category": {
+              "name": "Homewares"
+            },
             "weight": {
               "unit": "KG",
               "value": 0
             },
-            "attributes": [
+            "media": [
               {
-                "attribute": {
-                  "id": "QXR0cmlidXRlOjE5",
-                  "slug": "medium",
-                  "name": "Medium",
-                  "inputType": "DROPDOWN"
-                },
-                "values": [
+                "url": "https://demo.saleor.io/media/products/saleordemoproduct_cuschion01.png"
+              }
+            ],
+            "collections": [],
+            "chargeTaxes": true,
+            "variants": [
+              {
+                "id": "UHJvZHVjdFZhcmlhbnQ6MTk4",
+                "sku": "698223581",
+                "media": [
                   {
-                    "name": "MP3",
-                    "slug": "mp3",
-                    "value": "",
-                    "inputType": "DROPDOWN",
-                    "reference": null,
-                    "file": null,
-                    "richText": null,
-                    "boolean": null,
-                    "date": null,
-                    "dateTime": null
+                    "url": "https://demo.saleor.io/media/products/saleordemoproduct_cuschion01.png"
+                  }
+                ],
+                "weight": {
+                  "unit": "KG",
+                  "value": 0
+                },
+                "attributes": [
+                  {
+                    "attribute": {
+                      "id": "QXR0cmlidXRlOjIy",
+                      "slug": "cushion-size",
+                      "name": "Cushion Size",
+                      "inputType": "DROPDOWN"
+                    },
+                    "values": [
+                      {
+                        "name": "55cm x 55cm",
+                        "slug": "55cm-x-55cm",
+                        "value": "",
+                        "inputType": "DROPDOWN",
+                        "reference": null,
+                        "file": null,
+                        "richText": null,
+                        "boolean": null,
+                        "date": null,
+                        "dateTime": null
+                      }
+                    ]
+                  },
+                  {
+                    "attribute": {
+                      "id": "QXR0cmlidXRlOjMy",
+                      "slug": "length",
+                      "name": "Length",
+                      "inputType": "NUMERIC"
+                    },
+                    "values": [
+                      {
+                        "name": "55",
+                        "slug": "55",
+                        "value": "",
+                        "inputType": "NUMERIC",
+                        "reference": null,
+                        "file": null,
+                        "richText": null,
+                        "boolean": null,
+                        "date": null,
+                        "dateTime": null
+                      }
+                    ]
+                  },
+                  {
+                    "attribute": {
+                      "id": "QXR0cmlidXRlOjMz",
+                      "slug": "width",
+                      "name": "Width",
+                      "inputType": "NUMERIC"
+                    },
+                    "values": [
+                      {
+                        "name": "55",
+                        "slug": "55",
+                        "value": "",
+                        "inputType": "NUMERIC",
+                        "reference": null,
+                        "file": null,
+                        "richText": null,
+                        "boolean": null,
+                        "date": null,
+                        "dateTime": null
+                      }
+                    ]
+                  }
+                ],
+                "channelListings": [
+                  {
+                    "channel": {
+                      "id": "Q2hhbm5lbDoy"
+                    },
+                    "price": {
+                      "currency": "USD",
+                      "amount": 5
+                    }
+                  },
+                  {
+                    "channel": {
+                      "id": "Q2hhbm5lbDoz"
+                    },
+                    "price": {
+                      "currency": "PLN",
+                      "amount": 20
+                    }
+                  }
+                ],
+                "stocks": [
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOmFhYmViMjVkLWVjZDYtNDBhMS1hMzAzLTRlMTllYTkzYjE1Zg=="
+                    },
+                    "quantity": 118
+                  },
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOmE3ZjBmYTk1LWY3NmMtNDUyYi1hNjg1LWZiNDE5ZTQ4OGMxMQ=="
+                    },
+                    "quantity": 118
+                  },
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOjZjNmM1MDdhLTIxZjYtNDY5OS1hM2QzLWUwZDYxNzM4YjI2Yw=="
+                    },
+                    "quantity": 118
+                  },
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOjJjYzE5MmVlLTcyNWQtNGZjMC1iN2Y4LThkZmM0MDBjNzQ5NQ=="
+                    },
+                    "quantity": 118
+                  },
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOjA4MDQ4YjVlLTkxZGQtNDQxMi05NTY0LWI4NDM4OTQ1ZTE0Mw=="
+                    },
+                    "quantity": 119
                   }
                 ]
-              }
-            ],
-            "product": {
-              "name": "Waterfall Ballads",
-              "description": "{\"blocks\": [{\"data\": {\"text\": \"Waterfall Ballads by Digital Audio.\"}, \"type\": \"paragraph\"}]}",
-              "productType": {
-                "name": "Audiobook"
-              },
-              "category": {
-                "name": "Audiobooks"
-              },
-              "weight": {
-                "unit": "KG",
-                "value": 0
-              },
-              "media": [
-                {
-                  "url": "https://demo.saleor.io/media/products/saleor-digital-03_6.png"
-                }
-              ],
-              "collections": [],
-              "chargeTaxes": false
-            },
-            "channelListings": [
-              {
-                "channel": {
-                  "id": "Q2hhbm5lbDoy"
-                },
-                "price": {
-                  "currency": "USD",
-                  "amount": 9.99
-                }
-              }
-            ],
-            "stocks": [
-              {
-                "warehouse": {
-                  "id": "V2FyZWhvdXNlOjJjYzE5MmVlLTcyNWQtNGZjMC1iN2Y4LThkZmM0MDBjNzQ5NQ=="
-                },
-                "quantity": 338
               },
               {
-                "warehouse": {
-                  "id": "V2FyZWhvdXNlOmE3ZjBmYTk1LWY3NmMtNDUyYi1hNjg1LWZiNDE5ZTQ4OGMxMQ=="
+                "id": "UHJvZHVjdFZhcmlhbnQ6MTk3",
+                "sku": "698223582",
+                "media": [
+                  {
+                    "url": "https://demo.saleor.io/media/products/saleordemoproduct_cuschion01.png"
+                  }
+                ],
+                "weight": {
+                  "unit": "KG",
+                  "value": 0
                 },
-                "quantity": 334
-              },
-              {
-                "warehouse": {
-                  "id": "V2FyZWhvdXNlOjA4MDQ4YjVlLTkxZGQtNDQxMi05NTY0LWI4NDM4OTQ1ZTE0Mw=="
-                },
-                "quantity": 334
-              },
-              {
-                "warehouse": {
-                  "id": "V2FyZWhvdXNlOjZjNmM1MDdhLTIxZjYtNDY5OS1hM2QzLWUwZDYxNzM4YjI2Yw=="
-                },
-                "quantity": 334
-              },
-              {
-                "warehouse": {
-                  "id": "V2FyZWhvdXNlOmFhYmViMjVkLWVjZDYtNDBhMS1hMzAzLTRlMTllYTkzYjE1Zg=="
-                },
-                "quantity": 334
+                "attributes": [
+                  {
+                    "attribute": {
+                      "id": "QXR0cmlidXRlOjIy",
+                      "slug": "cushion-size",
+                      "name": "Cushion Size",
+                      "inputType": "DROPDOWN"
+                    },
+                    "values": [
+                      {
+                        "name": "45cm x 45cm",
+                        "slug": "45cm-x-45cm",
+                        "value": "",
+                        "inputType": "DROPDOWN",
+                        "reference": null,
+                        "file": null,
+                        "richText": null,
+                        "boolean": null,
+                        "date": null,
+                        "dateTime": null
+                      }
+                    ]
+                  },
+                  {
+                    "attribute": {
+                      "id": "QXR0cmlidXRlOjMy",
+                      "slug": "length",
+                      "name": "Length",
+                      "inputType": "NUMERIC"
+                    },
+                    "values": [
+                      {
+                        "name": "45",
+                        "slug": "45",
+                        "value": "",
+                        "inputType": "NUMERIC",
+                        "reference": null,
+                        "file": null,
+                        "richText": null,
+                        "boolean": null,
+                        "date": null,
+                        "dateTime": null
+                      }
+                    ]
+                  },
+                  {
+                    "attribute": {
+                      "id": "QXR0cmlidXRlOjMz",
+                      "slug": "width",
+                      "name": "Width",
+                      "inputType": "NUMERIC"
+                    },
+                    "values": [
+                      {
+                        "name": "45",
+                        "slug": "45",
+                        "value": "",
+                        "inputType": "NUMERIC",
+                        "reference": null,
+                        "file": null,
+                        "richText": null,
+                        "boolean": null,
+                        "date": null,
+                        "dateTime": null
+                      }
+                    ]
+                  }
+                ],
+                "channelListings": [
+                  {
+                    "channel": {
+                      "id": "Q2hhbm5lbDoy"
+                    },
+                    "price": {
+                      "currency": "USD",
+                      "amount": 20
+                    }
+                  },
+                  {
+                    "channel": {
+                      "id": "Q2hhbm5lbDoz"
+                    },
+                    "price": {
+                      "currency": "PLN",
+                      "amount": 80
+                    }
+                  }
+                ],
+                "stocks": [
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOjJjYzE5MmVlLTcyNWQtNGZjMC1iN2Y4LThkZmM0MDBjNzQ5NQ=="
+                    },
+                    "quantity": 371
+                  },
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOmFhYmViMjVkLWVjZDYtNDBhMS1hMzAzLTRlMTllYTkzYjE1Zg=="
+                    },
+                    "quantity": 371
+                  },
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOjZjNmM1MDdhLTIxZjYtNDY5OS1hM2QzLWUwZDYxNzM4YjI2Yw=="
+                    },
+                    "quantity": 371
+                  },
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOjA4MDQ4YjVlLTkxZGQtNDQxMi05NTY0LWI4NDM4OTQ1ZTE0Mw=="
+                    },
+                    "quantity": 371
+                  },
+                  {
+                    "warehouse": {
+                      "id": "V2FyZWhvdXNlOmE3ZjBmYTk1LWY3NmMtNDUyYi1hNjg1LWZiNDE5ZTQ4OGMxMQ=="
+                    },
+                    "quantity": 371
+                  }
+                ]
               }
             ]
           }

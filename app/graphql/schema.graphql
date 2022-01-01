@@ -1,4 +1,5 @@
 enum ExportError {
+  INVALID_FILTER
   LIMIT_EXCEEDED
 }
 
@@ -85,9 +86,9 @@ input ProductFilterInfo {
 
 input ProductSelectedColumnsInfo {
   fields: [ProductFieldEnum!]!
-  attributes: [String!] = null
-  warehouses: [String!] = null
-  channels: [String!] = null
+  attributes: [String!] = []
+  warehouses: [String!] = []
+  channels: [String!] = []
 }
 
 type Query {

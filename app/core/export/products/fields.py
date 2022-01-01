@@ -1,7 +1,7 @@
 from enum import Enum
 from typing import List, Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class ProductFieldEnum(Enum):
@@ -22,6 +22,6 @@ class ProductFieldEnum(Enum):
 
 class ProductSelectedColumnsInfo(BaseModel):
     fields: List[ProductFieldEnum]
-    attributes: Optional[List[str]] = None
-    warehouses: Optional[List[str]] = None
-    channels: Optional[List[str]] = None
+    attributes: Optional[List[str]] = Field(default_factory=list)
+    warehouses: Optional[List[str]] = Field(default_factory=list)
+    channels: Optional[List[str]] = Field(default_factory=list)
