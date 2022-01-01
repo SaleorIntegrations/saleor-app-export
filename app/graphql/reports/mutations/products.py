@@ -1,18 +1,14 @@
-import json
-from json import JSONDecodeError
 from typing import Optional
 
 import strawberry
-from gql.transport.exceptions import TransportQueryError
 
 from app.core.export.products.fetch import fetch_products_response
 from app.core.export.products.fields import ProductFieldEnum as ProductFields
 from app.core.export.products.fields import (
     ProductSelectedColumnsInfo as ProductSelectedColumnsInfoModel,
 )
-from app.core.export.tasks import init_export_for_report
-from app.core.reports.models import ExportObjectTypesEnum, ExportScopeEnum, Report
-from app.graphql.reports import types
+from app.core.reports.models import ExportObjectTypesEnum
+from app.graphql.reports.mutations.base import mutate_export_base
 from app.graphql.reports.types import ExportError, ExportErrorResponse, ExportResponse
 
 ProductFieldEnum = strawberry.enum(ProductFields)
@@ -59,39 +55,10 @@ async def mutate_export_products(
             field="warehouses",
         )
 
-    filter_input = {}
-    if input.filter:
-        try:
-            filter_input = json.loads(input.filter.filter_str)
-        except JSONDecodeError:
-            return ExportErrorResponse(
-                code=ExportError.INVALID_FILTER,
-                message="Provided `filterStr` contains invalid JSON.",
-                field="filterStr",
-            )
-
-    column_info = input.columns.to_pydantic()
-    if filter_input:
-        try:
-            await fetch_products_response(column_info, "", filter_input)
-        except TransportQueryError as e:
-            return ExportErrorResponse(
-                code=ExportError.INVALID_FILTER,
-                message=str(e),
-                field="filterStr",
-            )
-
-    db = info.context["db"]
-    report = Report(
-        type=ExportObjectTypesEnum.PRODUCTS,
-        scope=ExportScopeEnum.FILTER,
-        filter_input=filter_input,
-        columns=json.loads(column_info.json()),
-    )
-    db.add(report)
-    await db.commit()
-    init_export_for_report.delay(report.id)
-    return types.Report(
-        id=report.id,
-        type=report.type,
+    return await mutate_export_base(
+        root,
+        input,
+        info,
+        fetch_products_response,
+        ExportObjectTypesEnum.PRODUCTS,
     )

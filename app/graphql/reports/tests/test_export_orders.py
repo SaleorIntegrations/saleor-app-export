@@ -24,7 +24,7 @@ mutation OrdersExport($input: ExportOrdersInput!) {
 
 
 @pytest.mark.asyncio
-@mock.patch("app.graphql.reports.mutations.orders.init_export_for_report")
+@mock.patch("app.graphql.reports.mutations.base.init_export_for_report")
 async def test_export_orders_schedules_task(m_task, graphql):
     # given
     variables = {"input": {"columns": {"fields": ["ID", "NUMBER"]}}}
@@ -36,7 +36,7 @@ async def test_export_orders_schedules_task(m_task, graphql):
 
 
 @pytest.mark.asyncio
-@mock.patch("app.graphql.reports.mutations.orders.init_export_for_report")
+@mock.patch("app.graphql.reports.mutations.base.init_export_for_report")
 async def test_export_orders_invalid_filter_json(m_task, graphql):
     # given
     variables = {
@@ -54,7 +54,7 @@ async def test_export_orders_invalid_filter_json(m_task, graphql):
 
 @pytest.mark.asyncio
 @mock.patch("app.graphql.reports.mutations.orders.fetch_orders_response")
-@mock.patch("app.graphql.reports.mutations.orders.init_export_for_report")
+@mock.patch("app.graphql.reports.mutations.base.init_export_for_report")
 async def test_export_orders_remote_graphql_error(m_task, m_fetch, graphql):
     # given
     msg = "remote error"

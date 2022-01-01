@@ -25,7 +25,7 @@ mutation ProductsExport($input: ExportProductsInput!) {
 
 
 @pytest.mark.asyncio
-@mock.patch("app.graphql.reports.mutations.products.init_export_for_report")
+@mock.patch("app.graphql.reports.mutations.base.init_export_for_report")
 async def test_export_products_schedules_task(m_task, graphql):
     # given
     variables = {
@@ -45,7 +45,7 @@ async def test_export_products_schedules_task(m_task, graphql):
 
 
 @pytest.mark.asyncio
-@mock.patch("app.graphql.reports.mutations.products.init_export_for_report")
+@mock.patch("app.graphql.reports.mutations.base.init_export_for_report")
 async def test_export_products_without_optional_columns(m_task, db_session, graphql):
     # given
     variables = {
@@ -67,7 +67,7 @@ async def test_export_products_without_optional_columns(m_task, db_session, grap
 
 
 @pytest.mark.asyncio
-@mock.patch("app.graphql.reports.mutations.products.init_export_for_report")
+@mock.patch("app.graphql.reports.mutations.base.init_export_for_report")
 async def test_export_products_wit_related_columns(m_task, db_session, graphql):
     # given
     fields = ["ID", "VARIANT_ID"]
@@ -97,7 +97,7 @@ async def test_export_products_wit_related_columns(m_task, db_session, graphql):
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("input_field", ["attributes", "warehouses"])
-@mock.patch("app.graphql.reports.mutations.products.init_export_for_report")
+@mock.patch("app.graphql.reports.mutations.base.init_export_for_report")
 async def test_export_products_exceeds_column_limit(m_task, graphql, input_field):
     # given
     variables = {
@@ -117,7 +117,7 @@ async def test_export_products_exceeds_column_limit(m_task, graphql, input_field
 
 
 @pytest.mark.asyncio
-@mock.patch("app.graphql.reports.mutations.products.init_export_for_report")
+@mock.patch("app.graphql.reports.mutations.base.init_export_for_report")
 async def test_export_products_invalid_filter_json(m_task, graphql):
     # given
     variables = {
@@ -135,7 +135,7 @@ async def test_export_products_invalid_filter_json(m_task, graphql):
 
 @pytest.mark.asyncio
 @mock.patch("app.graphql.reports.mutations.products.fetch_products_response")
-@mock.patch("app.graphql.reports.mutations.products.init_export_for_report")
+@mock.patch("app.graphql.reports.mutations.base.init_export_for_report")
 async def test_export_products_remote_graphql_error(m_task, m_fetch, graphql):
     # given
     msg = "remote error"
