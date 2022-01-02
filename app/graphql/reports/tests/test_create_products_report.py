@@ -134,7 +134,7 @@ async def test_export_products_invalid_filter_json(graphql):
 
     # then
     error = result["data"]["createProductsReport"]["errors"][0]
-    error["code"] == "INVALID_FILTER"
+    assert error["code"] == "INVALID_FILTER"
 
 
 @pytest.mark.asyncio
