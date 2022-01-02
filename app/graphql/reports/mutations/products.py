@@ -51,7 +51,7 @@ async def mutate_create_products_report(
                     code=ReportErrorCode.LIMIT_EXCEEDED,
                     message=(
                         f"Too many attributes requested. "
-                        f"Max limit: {MAX_DYNAMIC_COLUMNS}",
+                        f"Max limit: {MAX_DYNAMIC_COLUMNS}"
                     ),
                     field="attributes",
                 )
