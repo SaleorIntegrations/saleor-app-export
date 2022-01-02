@@ -21,7 +21,7 @@ mutation RunReport($reportId: Int!) {
 
 @pytest.mark.asyncio
 @mock.patch("app.graphql.reports.mutations.job.start_job_for_report")
-async def test_run_report_creates_report(m_task, db_session, graphql, orders_report):
+async def test_run_report_creates_job(m_task, db_session, graphql, orders_report):
     # given
     variables = {"reportId": orders_report.id}
 

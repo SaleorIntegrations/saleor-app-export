@@ -12,19 +12,17 @@ from app.core.reports.models import Job
 @pytest.mark.asyncio
 @mock.patch("app.core.export.tasks.continue_job")
 @mock.patch.object(OrderExportMethods, "get_headers")
-async def test_start_job_for_report(m_headers, m_continue, db_session, orders_report):
+async def test_start_job_for_report(
+    m_headers, m_continue, db_session, export_orders_job
+):
     # given
+    job = export_orders_job
     m_headers.return_value = ["a", "b", "c"]
 
     # when
-    await start_job_for_report.inner(db_session, orders_report.id)
+    await start_job_for_report.inner(db_session, job.id)
 
     # then
-    job = (
-        await db_session.exec(select(Job).where(Job.report_id == orders_report.id))
-    ).one()
-    assert job.cursor == ""
-    assert job.content_file.startswith(f"media/{orders_report.id}-")
     assert os.path.isfile(job.content_file)
     with open(job.content_file) as f:
         assert len(f.readlines()) == 1

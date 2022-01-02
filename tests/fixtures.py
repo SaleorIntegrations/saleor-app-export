@@ -73,7 +73,7 @@ def reports_factory(db_session):
 
 
 @pytest.fixture
-async def export_products_jobs(db_session, products_report):
+async def export_products_job(db_session, products_report):
     instance = Job(
         report_id=products_report.id,
         content_file="media/test-product-export.csv",
