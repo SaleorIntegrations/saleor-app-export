@@ -8,6 +8,8 @@ from app.graphql.reports.types import Job, Report
 
 @strawberry.enum
 class ReportErrorCode(Enum):
+    NOT_FOUND = "not_found"
+    INVALID_TYPE = "invalid_type"
     INVALID_FILTER = "invalid_filter"
     LIMIT_EXCEEDED = "limit_exceeded"
 
@@ -20,7 +22,7 @@ class ReportError:
 
 
 @strawberry.type
-class CreateReportResponse:
+class ReportResponse:
     report: Optional[Report] = None
     errors: List[ReportError] = strawberry.field(default_factory=list)
 

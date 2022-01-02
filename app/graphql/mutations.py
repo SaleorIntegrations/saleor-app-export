@@ -1,17 +1,29 @@
 import strawberry
 
 from .reports.mutations.job import mutate_run_report
-from .reports.mutations.orders import mutate_create_orders_report
-from .reports.mutations.products import mutate_create_products_report
-from .reports.responses import CreateReportResponse, RunReportResponse
+from .reports.mutations.orders import (
+    mutate_create_orders_report,
+    mutate_update_orders_report,
+)
+from .reports.mutations.products import (
+    mutate_create_products_report,
+    mutate_update_products_report,
+)
+from .reports.responses import ReportResponse, RunReportResponse
 
 
 @strawberry.type
 class Mutation:
-    create_orders_report: CreateReportResponse = strawberry.mutation(
+    create_orders_report: ReportResponse = strawberry.mutation(
         mutate_create_orders_report
     )
-    create_products_report: CreateReportResponse = strawberry.mutation(
+    update_orders_report: ReportResponse = strawberry.mutation(
+        mutate_update_orders_report
+    )
+    create_products_report: ReportResponse = strawberry.mutation(
         mutate_create_products_report
+    )
+    update_products_report: ReportResponse = strawberry.mutation(
+        mutate_update_products_report
     )
     run_report: RunReportResponse = strawberry.mutation(mutate_run_report)

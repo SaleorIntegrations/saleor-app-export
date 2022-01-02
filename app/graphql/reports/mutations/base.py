@@ -1,33 +1,59 @@
 import json
 from json import JSONDecodeError
-from typing import Any, Awaitable, Callable
+from typing import Any, Awaitable, Callable, Optional
 
 from gql.transport.exceptions import TransportQueryError
+from sqlalchemy.exc import NoResultFound
 
-from app.core.export.tasks import start_job_for_report
+from app.core.export.fetch import fetch_report_by_id
 from app.core.reports.models import ExportObjectTypesEnum, ExportScopeEnum, Report
-from app.graphql.reports.responses import (
-    CreateReportResponse,
-    ReportError,
-    ReportErrorCode,
-)
+from app.graphql.reports.responses import ReportError, ReportErrorCode, ReportResponse
 
 
-async def mutate_export_base(
+async def mutate_report_base(
     root,
     input,
     info,
     fetch_response: Callable[[Any, str, dict], Awaitable],
     type: ExportObjectTypesEnum,
+    report_id: Optional[int] = None,
 ):
-    """Mutation for triggering the orders export process."""
+    """Common base for creating and updating reports."""
+
+    db = info.context["db"]
+    if report_id:
+        try:
+            report = await fetch_report_by_id(db, report_id)
+        except NoResultFound:
+            return ReportResponse(
+                errors=[
+                    ReportError(
+                        code=ReportErrorCode.NOT_FOUND,
+                        message="Report with given id not found",
+                        field="reportId",
+                    )
+                ]
+            )
+
+        if report.type != type:
+            return ReportResponse(
+                errors=[
+                    ReportError(
+                        code=ReportErrorCode.INVALID_TYPE,
+                        message=(
+                            "This mutation cannot be used for reports of this type."
+                        ),
+                        field="reportId",
+                    )
+                ]
+            )
 
     filter_input = {}
     if input.filter:
         try:
             filter_input = json.loads(input.filter.filter_str)
         except JSONDecodeError:
-            return CreateReportResponse(
+            return ReportResponse(
                 errors=[
                     ReportError(
                         code=ReportErrorCode.INVALID_FILTER,
@@ -42,7 +68,7 @@ async def mutate_export_base(
         try:
             await fetch_response(column_info, "", filter_input)
         except TransportQueryError as e:
-            return CreateReportResponse(
+            return ReportResponse(
                 errors=[
                     ReportError(
                         code=ReportErrorCode.INVALID_FILTER,
@@ -52,14 +78,17 @@ async def mutate_export_base(
                 ]
             )
 
-    db = info.context["db"]
-    report = Report(
-        type=type,
-        scope=ExportScopeEnum.FILTER,
-        filter_input=filter_input,
-        columns=json.loads(column_info.json()),
-    )
+    columns = json.loads(column_info.json())
+    if report_id:
+        report.filter_input = filter_input
+        report.columns = columns
+    else:
+        report = Report(
+            type=type,
+            scope=ExportScopeEnum.FILTER,
+            filter_input=filter_input,
+            columns=columns,
+        )
     db.add(report)
     await db.commit()
-    start_job_for_report.delay(report.id)
-    return CreateReportResponse(report=report)
+    return ReportResponse(report=report)

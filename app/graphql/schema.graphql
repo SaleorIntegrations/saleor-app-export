@@ -1,8 +1,3 @@
-type CreateReportResponse {
-  report: Report
-  errors: [ReportError!]!
-}
-
 """Date with time (isoformat)"""
 scalar DateTime
 
@@ -28,8 +23,10 @@ type Job {
 }
 
 type Mutation {
-  createOrdersReport(input: ExportOrdersInput!): CreateReportResponse!
-  createProductsReport(input: ExportProductsInput!): CreateReportResponse!
+  createOrdersReport(input: ExportOrdersInput!): ReportResponse!
+  updateOrdersReport(reportId: Int!, input: ExportOrdersInput!): ReportResponse!
+  createProductsReport(input: ExportProductsInput!): ReportResponse!
+  updateProductsReport(reportId: Int!, input: ExportProductsInput!): ReportResponse!
   runReport(reportId: Int!): RunReportResponse!
 }
 
@@ -134,8 +131,15 @@ type ReportError {
 }
 
 enum ReportErrorCode {
+  NOT_FOUND
+  INVALID_TYPE
   INVALID_FILTER
   LIMIT_EXCEEDED
+}
+
+type ReportResponse {
+  report: Report
+  errors: [ReportError!]!
 }
 
 type RunReportResponse {
