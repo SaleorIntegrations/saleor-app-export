@@ -1,32 +1,29 @@
 import pytest
 
-QUERY_REPORTS = """
-query {
-    reports {
-        edges {
-            node {
-                id
-            }
-        }
-        totalCount
-    }
+QUERY_REPORT = """
+query Report($id: Int!) {
+  report (id: $id) {
+    id
+    type
+  }
 }
 """
 
 
 @pytest.mark.asyncio
-async def test_get_report(graphql, products_report):
+async def test_get_report(graphql, orders_report):
     # when
-    result = await graphql.execute(QUERY_REPORTS)
+    result = await graphql.execute(QUERY_REPORT, {"id": orders_report.id})
+
     # then
-    assert result["data"]["reports"]["edges"][0]["node"]["id"] == products_report.id
+    assert result["data"]["report"]["id"] == orders_report.id
+    assert result["data"]["report"]["type"] == orders_report.type.name
 
 
 @pytest.mark.asyncio
-async def test_get_reports(graphql, reports_factory):
-    # given
-    await reports_factory(5)
+async def test_get_report_does_not_exist(graphql, orders_report):
     # when
-    result = await graphql.execute(QUERY_REPORTS)
+    result = await graphql.execute(QUERY_REPORT, {"id": -1})
+
     # then
-    assert result["data"]["reports"]["totalCount"] == 5
+    assert result["data"]["report"] is None

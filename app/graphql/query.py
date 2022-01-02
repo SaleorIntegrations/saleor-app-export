@@ -1,3 +1,5 @@
+from typing import Optional
+
 import strawberry
 from strawberry.types import Info
 
@@ -11,7 +13,7 @@ class empty:
 
 @strawberry.type
 class Query:
-    report: Report = strawberry.field(resolve_report)
+    report: Optional[Report] = strawberry.field(resolve_report)
 
     @strawberry.field
     async def reports(self, info: Info) -> ReportConnection:
