@@ -32,6 +32,7 @@ class ProductFilterInfo:
 @strawberry.input
 class ExportProductsInput:
     columns: ProductSelectedColumnsInput
+    name: Optional[str] = ""
     filter: Optional[ProductFilterInfo] = None
 
 

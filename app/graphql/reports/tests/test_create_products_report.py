@@ -11,6 +11,7 @@ mutation ProductsExport($input: ExportProductsInput!) {
     createProductsReport (input: $input) {
         report {
             id
+            name
             type
         }
         errors {
@@ -26,11 +27,13 @@ mutation ProductsExport($input: ExportProductsInput!) {
 @pytest.mark.asyncio
 async def test_create_products_report(graphql):
     # given
+    name = "My report 12"
     variables = {
         "input": {
             "columns": {
                 "fields": ["ID", "VARIANT_ID"],
             },
+            "name": name,
         }
     }
 
@@ -38,10 +41,9 @@ async def test_create_products_report(graphql):
     result = await graphql.execute(MUTATION_EXPORT_PRODUCTS, variables)
 
     # then
-    assert (
-        result["data"]["createProductsReport"]["report"]["type"]
-        == ExportObjectTypesEnum.PRODUCTS.name
-    )
+    report = result["data"]["createProductsReport"]["report"]
+    assert report["type"] == ExportObjectTypesEnum.PRODUCTS.name
+    assert report["name"] == name
 
 
 @pytest.mark.asyncio

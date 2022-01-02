@@ -10,6 +10,7 @@ mutation OrdersExport($input: ExportOrdersInput!, $reportId: Int!) {
     updateOrdersReport (input: $input, reportId: $reportId) {
         report {
             id
+            name
             type
             filter
             columns {
@@ -34,6 +35,7 @@ async def test_update_orders_report(m_fetch, graphql, orders_report, db_session)
     # given
     fields = ["LINES_SKU"]
     filter = {"ids": "1234"}
+    name = "Copy report 12"
     filter_str = json.dumps(filter)
     print(filter_str)
 
@@ -46,6 +48,7 @@ async def test_update_orders_report(m_fetch, graphql, orders_report, db_session)
             "filter": {
                 "filterStr": filter_str,
             },
+            "name": name,
         },
     }
 
@@ -53,8 +56,10 @@ async def test_update_orders_report(m_fetch, graphql, orders_report, db_session)
     result = await graphql.execute(MUTATION_UPDATE_ORDERS_REPORT, variables)
 
     # then
-    assert result["data"]["updateOrdersReport"]["report"]["columns"]["fields"] == fields
-    assert result["data"]["updateOrdersReport"]["report"]["filter"] == filter_str
+    report = result["data"]["updateOrdersReport"]["report"]
+    assert report["columns"]["fields"] == fields
+    assert report["filter"] == filter_str
+    assert report["name"] == name
     refreshed_report = await fetch_report_by_id(db_session, orders_report.id)
     assert refreshed_report.filter_input == filter
     assert refreshed_report.columns["fields"] == fields

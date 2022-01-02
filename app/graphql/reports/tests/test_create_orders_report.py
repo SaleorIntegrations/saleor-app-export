@@ -10,6 +10,7 @@ mutation OrdersExport($input: ExportOrdersInput!) {
     createOrdersReport (input: $input) {
         report {
             id
+            name
             type
         }
         errors {
@@ -25,12 +26,21 @@ mutation OrdersExport($input: ExportOrdersInput!) {
 @pytest.mark.asyncio
 async def test_crete_orders_report(graphql):
     # given
-    variables = {"input": {"columns": {"fields": ["ID", "NUMBER"]}}}
+    name = "My report 12"
+    variables = {
+        "input": {
+            "columns": {"fields": ["ID", "NUMBER"]},
+            "name": name,
+        }
+    }
+
     # when
     result = await graphql.execute(MUTATION_EXPORT_ORDERS, variables)
+
     # then
     report = result["data"]["createOrdersReport"]["report"]
     assert report["type"] == ExportObjectTypesEnum.ORDERS.name
+    assert report["name"] == name
 
 
 @pytest.mark.asyncio
@@ -42,8 +52,10 @@ async def test_export_orders_invalid_filter_json(graphql):
             "filter": {"filterStr": "{not a real json}"},
         },
     }
+
     # when
     result = await graphql.execute(MUTATION_EXPORT_ORDERS, variables)
+
     # then
     error = result["data"]["createOrdersReport"]["errors"][0]
     assert error["code"] == "INVALID_FILTER"
@@ -61,8 +73,10 @@ async def test_export_orders_remote_graphql_error(m_fetch, graphql):
             "filter": {"filterStr": '{"notReal": "but json"}'},
         },
     }
+
     # when
     result = await graphql.execute(MUTATION_EXPORT_ORDERS, variables)
+
     # then
     error = result["data"]["createOrdersReport"]["errors"][0]
     assert error["code"] == "INVALID_FILTER"

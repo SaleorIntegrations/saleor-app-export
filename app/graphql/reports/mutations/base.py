@@ -80,11 +80,13 @@ async def mutate_report_base(
 
     columns = json.loads(column_info.json())
     if report_id:
+        report.name = input.name
         report.filter_input = filter_input
         report.columns = columns
     else:
         report = Report(
             type=type,
+            name=input.name,
             scope=ExportScopeEnum.FILTER,
             filter_input=filter_input,
             columns=columns,

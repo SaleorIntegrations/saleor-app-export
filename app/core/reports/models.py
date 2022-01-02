@@ -33,6 +33,7 @@ class Report(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     created_at: datetime = Field(default_factory=datetime.utcnow)
     updated_at: datetime = Field(default_factory=datetime.utcnow)
+    name: constr(max_length=255) = Field(default="")
     scope: ExportScopeEnum
     type: ExportObjectTypesEnum
     filter_input: dict = Field(sa_column=Column(JSON), default_factory=dict)

@@ -8,11 +8,13 @@ enum ExportObjectTypesEnum {
 
 input ExportOrdersInput {
   columns: OrderSelectedColumnsInput!
+  name: String = ""
   filter: OrderFilterInfo = null
 }
 
 input ExportProductsInput {
   columns: ProductSelectedColumnsInput!
+  name: String = ""
   filter: ProductFilterInfo = null
 }
 
@@ -109,6 +111,7 @@ type Query {
 
 type Report {
   id: Int!
+  name: String!
   type: ExportObjectTypesEnum!
   filter: String
   columns: SelectedColumnsInfo!

@@ -28,6 +28,7 @@ class OrderFilterInfo:
 @strawberry.input
 class ExportOrdersInput:
     columns: OrderSelectedColumnsInput
+    name: Optional[str] = ""
     filter: Optional[OrderFilterInfo] = None
 
 

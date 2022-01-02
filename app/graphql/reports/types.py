@@ -48,6 +48,7 @@ SelectedColumnsInfo = strawberry.union(
 @strawberry.type
 class Report:
     id: int
+    name: str
     type: ReportTypes
     filter: Optional[str] = strawberry.field(resolve_report_filter)
     columns: SelectedColumnsInfo = strawberry.field(resolve_report_columns)
