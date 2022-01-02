@@ -9,8 +9,11 @@ from app.core.export.products.fields import (
 )
 from app.core.reports.models import ExportObjectTypesEnum
 from app.graphql.reports.mutations.base import mutate_export_base
-from app.graphql.reports.responses import ExportResponse
-from app.graphql.reports.types import ExportError, ExportErrorResponse
+from app.graphql.reports.responses import (
+    CreateReportResponse,
+    ReportError,
+    ReportErrorCode,
+)
 
 ProductFieldEnum = strawberry.enum(ProductFields)
 
@@ -36,24 +39,38 @@ class ExportProductsInput:
     filter: Optional[ProductFilterInfo] = None
 
 
-async def mutate_export_products(
+async def mutate_create_products_report(
     root, input: ExportProductsInput, info
-) -> ExportResponse:
+) -> CreateReportResponse:
     """Mutation for triggering the products export process."""
     attributes = input.columns.attributes or []
     if len(attributes) > MAX_DYNAMIC_COLUMNS:
-        return ExportErrorResponse(
-            code=ExportError.LIMIT_EXCEEDED,
-            message=f"Too many attributes requested. Max limit: {MAX_DYNAMIC_COLUMNS}",
-            field="attributes",
+        return CreateReportResponse(
+            errors=[
+                ReportError(
+                    code=ReportErrorCode.LIMIT_EXCEEDED,
+                    message=(
+                        f"Too many attributes requested. "
+                        f"Max limit: {MAX_DYNAMIC_COLUMNS}",
+                    ),
+                    field="attributes",
+                )
+            ]
         )
 
     warehouses = input.columns.warehouses or []
     if len(warehouses) > MAX_DYNAMIC_COLUMNS:
-        return ExportErrorResponse(
-            code=ExportError.LIMIT_EXCEEDED,
-            message=f"Too many warehouses requested. Max limit: {MAX_DYNAMIC_COLUMNS}",
-            field="warehouses",
+        return CreateReportResponse(
+            errors=[
+                ReportError(
+                    code=ReportErrorCode.LIMIT_EXCEEDED,
+                    message=(
+                        f"Too many warehouses requested. "
+                        f"Max limit: {MAX_DYNAMIC_COLUMNS}"
+                    ),
+                    field="warehouses",
+                )
+            ]
         )
 
     return await mutate_export_base(

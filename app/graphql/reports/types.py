@@ -1,5 +1,4 @@
 from datetime import datetime
-from enum import Enum
 from typing import List, Optional
 
 import strawberry
@@ -21,19 +20,6 @@ from app.graphql.reports.resolvers import (
 )
 
 ReportTypes = strawberry.enum(ExportObjectTypesEnum)
-
-
-@strawberry.enum
-class ExportError(Enum):
-    INVALID_FILTER = "invalid_filter"
-    LIMIT_EXCEEDED = "limit_exceeded"
-
-
-@strawberry.type
-class ExportErrorResponse:
-    code: ExportError
-    message: str
-    field: str
 
 
 @strawberry.experimental.pydantic.type(

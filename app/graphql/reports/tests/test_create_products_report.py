@@ -8,13 +8,12 @@ from app.core.reports.models import ExportObjectTypesEnum
 
 MUTATION_EXPORT_PRODUCTS = """
 mutation ProductsExport($input: ExportProductsInput!) {
-    exportProducts (input: $input) {
-        __typename
-        ...  on Report {
+    createProductsReport (input: $input) {
+        report {
             id
             type
         }
-        ... on  ExportErrorResponse{
+        errors {
             code
             message
             field
@@ -35,11 +34,14 @@ async def test_export_products_schedules_task(m_task, graphql):
             },
         }
     }
+
     # when
     result = await graphql.execute(MUTATION_EXPORT_PRODUCTS, variables)
+
     # then
     assert (
-        result["data"]["exportProducts"]["type"] == ExportObjectTypesEnum.PRODUCTS.name
+        result["data"]["createProductsReport"]["report"]["type"]
+        == ExportObjectTypesEnum.PRODUCTS.name
     )
     assert m_task.delay.call_count == 1
 
@@ -55,10 +57,12 @@ async def test_export_products_without_optional_columns(m_task, db_session, grap
             },
         }
     }
+
     # when
     result = await graphql.execute(MUTATION_EXPORT_PRODUCTS, variables)
+
     # then
-    report_id = result["data"]["exportProducts"]["id"]
+    report_id = result["data"]["createProductsReport"]["report"]["id"]
     report = await fetch_report_by_id(db_session, report_id)
     assert len(report.columns["fields"]) == 2
     assert len(report.columns["attributes"]) == 0
@@ -84,10 +88,12 @@ async def test_export_products_wit_related_columns(m_task, db_session, graphql):
             },
         }
     }
+
     # when
     result = await graphql.execute(MUTATION_EXPORT_PRODUCTS, variables)
+
     # then
-    report_id = result["data"]["exportProducts"]["id"]
+    report_id = result["data"]["createProductsReport"]["report"]["id"]
     report = await fetch_report_by_id(db_session, report_id)
     assert report.columns["fields"] == fields
     assert report.columns["attributes"] == attribute_ids
@@ -108,12 +114,14 @@ async def test_export_products_exceeds_column_limit(m_task, graphql, input_field
             },
         }
     }
+
     # when
     result = await graphql.execute(MUTATION_EXPORT_PRODUCTS, variables)
+
     # then
-    assert result["data"]["exportProducts"]["__typename"] == "ExportErrorResponse"
-    assert result["data"]["exportProducts"]["field"] == input_field
-    assert result["data"]["exportProducts"]["code"] == "LIMIT_EXCEEDED"
+    error = result["data"]["createProductsReport"]["errors"][0]
+    assert error["field"] == input_field
+    assert error["code"] == "LIMIT_EXCEEDED"
 
 
 @pytest.mark.asyncio
@@ -126,10 +134,13 @@ async def test_export_products_invalid_filter_json(m_task, graphql):
             "filter": {"filterStr": "{not a real json}"},
         },
     }
+
     # when
     result = await graphql.execute(MUTATION_EXPORT_PRODUCTS, variables)
+
     # then
-    assert result["data"]["exportProducts"]["code"] == "INVALID_FILTER"
+    error = result["data"]["createProductsReport"]["errors"][0]
+    error["code"] == "INVALID_FILTER"
     assert m_task.delay.call_count == 0
 
 
@@ -146,9 +157,12 @@ async def test_export_products_remote_graphql_error(m_task, m_fetch, graphql):
             "filter": {"filterStr": '{"notReal": "but json"}'},
         },
     }
+
     # when
     result = await graphql.execute(MUTATION_EXPORT_PRODUCTS, variables)
+
     # then
-    assert result["data"]["exportProducts"]["code"] == "INVALID_FILTER"
-    assert result["data"]["exportProducts"]["message"] == msg
+    error = result["data"]["createProductsReport"]["errors"][0]
+    assert error["code"] == "INVALID_FILTER"
+    assert error["message"] == msg
     assert m_task.delay.call_count == 0

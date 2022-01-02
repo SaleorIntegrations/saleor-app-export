@@ -6,8 +6,11 @@ from gql.transport.exceptions import TransportQueryError
 
 from app.core.export.tasks import start_job_for_report
 from app.core.reports.models import ExportObjectTypesEnum, ExportScopeEnum, Report
-from app.graphql.reports import types
-from app.graphql.reports.types import ExportError, ExportErrorResponse
+from app.graphql.reports.responses import (
+    CreateReportResponse,
+    ReportError,
+    ReportErrorCode,
+)
 
 
 async def mutate_export_base(
@@ -24,10 +27,14 @@ async def mutate_export_base(
         try:
             filter_input = json.loads(input.filter.filter_str)
         except JSONDecodeError:
-            return ExportErrorResponse(
-                code=ExportError.INVALID_FILTER,
-                message="Provided `filterStr` contains invalid JSON.",
-                field="filterStr",
+            return CreateReportResponse(
+                errors=[
+                    ReportError(
+                        code=ReportErrorCode.INVALID_FILTER,
+                        message="Provided `filterStr` contains invalid JSON.",
+                        field="filterStr",
+                    )
+                ]
             )
 
     column_info = input.columns.to_pydantic()
@@ -35,10 +42,14 @@ async def mutate_export_base(
         try:
             await fetch_response(column_info, "", filter_input)
         except TransportQueryError as e:
-            return ExportErrorResponse(
-                code=ExportError.INVALID_FILTER,
-                message=str(e),
-                field="filterStr",
+            return CreateReportResponse(
+                errors=[
+                    ReportError(
+                        code=ReportErrorCode.INVALID_FILTER,
+                        message=str(e),
+                        field="filterStr",
+                    )
+                ]
             )
 
     db = info.context["db"]
@@ -51,7 +62,4 @@ async def mutate_export_base(
     db.add(report)
     await db.commit()
     start_job_for_report.delay(report.id)
-    return types.Report(
-        id=report.id,
-        type=report.type,
-    )
+    return CreateReportResponse(report=report)

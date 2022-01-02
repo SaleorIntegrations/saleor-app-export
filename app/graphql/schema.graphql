@@ -1,16 +1,10 @@
+type CreateReportResponse {
+  report: Report
+  errors: [ReportError!]!
+}
+
 """Date with time (isoformat)"""
 scalar DateTime
-
-enum ExportError {
-  INVALID_FILTER
-  LIMIT_EXCEEDED
-}
-
-type ExportErrorResponse {
-  code: ExportError!
-  message: String!
-  field: String!
-}
 
 enum ExportObjectTypesEnum {
   PRODUCTS
@@ -27,8 +21,6 @@ input ExportProductsInput {
   filter: ProductFilterInfo = null
 }
 
-union ExportResponse = Report | ExportErrorResponse
-
 type Job {
   id: Int!
   createdAt: DateTime!
@@ -36,8 +28,8 @@ type Job {
 }
 
 type Mutation {
-  exportOrders(input: ExportOrdersInput!): ExportResponse!
-  exportProducts(input: ExportProductsInput!): ExportResponse!
+  createOrdersReport(input: ExportOrdersInput!): CreateReportResponse!
+  createProductsReport(input: ExportProductsInput!): CreateReportResponse!
   runReport(reportId: Int!): RunReportResponse!
 }
 
@@ -133,6 +125,17 @@ type ReportConnection {
 type ReportEdge {
   node: Report!
   cursor: String!
+}
+
+type ReportError {
+  code: ReportErrorCode!
+  message: String!
+  field: String!
+}
+
+enum ReportErrorCode {
+  INVALID_FILTER
+  LIMIT_EXCEEDED
 }
 
 type RunReportResponse {

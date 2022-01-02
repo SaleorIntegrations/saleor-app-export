@@ -31,7 +31,7 @@ class ExportOrdersInput:
     filter: Optional[OrderFilterInfo] = None
 
 
-async def mutate_export_orders(root, input: ExportOrdersInput, info):
+async def mutate_create_orders_report(root, input: ExportOrdersInput, info):
     """Mutation for triggering the orders export process."""
     return await mutate_export_base(
         root,

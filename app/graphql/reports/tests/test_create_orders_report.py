@@ -7,13 +7,12 @@ from app.core.reports.models import ExportObjectTypesEnum
 
 MUTATION_EXPORT_ORDERS = """
 mutation OrdersExport($input: ExportOrdersInput!) {
-    exportOrders (input: $input) {
-        __typename
-        ...  on Report {
+    createOrdersReport (input: $input) {
+        report {
             id
             type
         }
-        ... on  ExportErrorResponse{
+        errors {
             code
             message
             field
@@ -31,7 +30,8 @@ async def test_export_orders_schedules_task(m_task, graphql):
     # when
     result = await graphql.execute(MUTATION_EXPORT_ORDERS, variables)
     # then
-    assert result["data"]["exportOrders"]["type"] == ExportObjectTypesEnum.ORDERS.name
+    report = result["data"]["createOrdersReport"]["report"]
+    assert report["type"] == ExportObjectTypesEnum.ORDERS.name
     assert m_task.delay.call_count == 1
 
 
@@ -48,7 +48,8 @@ async def test_export_orders_invalid_filter_json(m_task, graphql):
     # when
     result = await graphql.execute(MUTATION_EXPORT_ORDERS, variables)
     # then
-    assert result["data"]["exportOrders"]["code"] == "INVALID_FILTER"
+    error = result["data"]["createOrdersReport"]["errors"][0]
+    assert error["code"] == "INVALID_FILTER"
     assert m_task.delay.call_count == 0
 
 
@@ -68,6 +69,7 @@ async def test_export_orders_remote_graphql_error(m_task, m_fetch, graphql):
     # when
     result = await graphql.execute(MUTATION_EXPORT_ORDERS, variables)
     # then
-    assert result["data"]["exportOrders"]["code"] == "INVALID_FILTER"
-    assert result["data"]["exportOrders"]["message"] == msg
+    error = result["data"]["createOrdersReport"]["errors"][0]
+    assert error["code"] == "INVALID_FILTER"
+    assert error["message"] == msg
     assert m_task.delay.call_count == 0

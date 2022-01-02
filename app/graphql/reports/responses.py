@@ -1,10 +1,28 @@
-from typing import Optional
+from enum import Enum
+from typing import List, Optional
 
 import strawberry
 
-from app.graphql.reports.types import ExportErrorResponse, Job, Report
+from app.graphql.reports.types import Job, Report
 
-ExportResponse = strawberry.union("ExportResponse", [Report, ExportErrorResponse])
+
+@strawberry.enum
+class ReportErrorCode(Enum):
+    INVALID_FILTER = "invalid_filter"
+    LIMIT_EXCEEDED = "limit_exceeded"
+
+
+@strawberry.type
+class ReportError:
+    code: ReportErrorCode
+    message: str
+    field: str
+
+
+@strawberry.type
+class CreateReportResponse:
+    report: Optional[Report] = None
+    errors: List[ReportError] = strawberry.field(default_factory=list)
 
 
 @strawberry.type
