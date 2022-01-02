@@ -75,8 +75,7 @@ async def continue_job(
     )
     result, cursor = methods.parse_response(column_info, response)
     write_partial_result_to_file(job.content_file, result)
-    update_job_cursor(db, job, cursor)
-    await db.commit()
+    await update_job_cursor(db, job, cursor)
 
     # If next page exists, continue export
     if cursor:

@@ -24,7 +24,7 @@ async def create_job(
     return job
 
 
-def update_job_cursor(
+async def update_job_cursor(
     db: AsyncSession,
     job: Job,
     cursor: str,
@@ -32,3 +32,4 @@ def update_job_cursor(
     """Update cursor of the provided export job"""
     job.cursor = cursor
     db.add(job)
+    await db.commit()
