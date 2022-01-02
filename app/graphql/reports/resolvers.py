@@ -1,14 +1,15 @@
 import json
+from typing import Optional
 
 from sqlalchemy import func
 from sqlalchemy.exc import NoResultFound
 from sqlmodel import select
-from sqlmodel.ext.asyncio.session import AsyncSession
 
 from app.core.export.fetch import fetch_job_by_id, fetch_report_by_id
 from app.core.export.orders.fetch import fetch_order_columns_info
 from app.core.export.products.fetch import fetch_product_columns_info
 from app.core.reports.models import ExportObjectTypesEnum, Job, Report
+from app.graphql.pagination import ConnectionContext, Edge, PageInfo
 
 
 async def resolve_report(root, info, id: int):
@@ -44,10 +45,27 @@ async def resolve_job_report(root: Job, info):
     return await fetch_report_by_id(db, root.report_id)
 
 
-async def resolve_reports(db: AsyncSession):
-    return await db.exec(select(Report))
+async def resolve_reports(root, info, first: int, after: Optional[str] = None):
+    db = info.context["db"]
+    query = select(Report).order_by(Report.id).limit(first + 1)
+    if after:
+        query = query.filter(Report.id > ConnectionContext.decode_cursor(after))
+    edges = list(await db.exec(query))
+    return ConnectionContext(first=first, after=after, edges=edges)
 
 
-async def resolve_reports_count(db: AsyncSession):
+async def resolve_report_edges(root: ConnectionContext, info):
+    return [Edge(report) for report in root.edges[: root.first]]
+
+
+async def resolve_report_page_info(root: ConnectionContext, info):
+    return PageInfo(
+        has_next=root.has_next(),
+        end_cursor=root.end_cursor(),
+    )
+
+
+async def resolve_reports_count(root: ConnectionContext, info):
+    db = info.context["db"]
     scalar = await db.exec(select(func.count(Report.id)))
     return scalar.first()

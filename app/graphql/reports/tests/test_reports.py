@@ -2,7 +2,7 @@ import pytest
 
 QUERY_REPORTS = """
 query {
-    reports {
+    reports(first: 100) {
         edges {
             node {
                 id

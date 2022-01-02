@@ -69,6 +69,11 @@ input OrderSelectedColumnsInput {
   fields: [OrderFieldEnum!]!
 }
 
+type PageInfo {
+  hasNext: Boolean!
+  endCursor: String!
+}
+
 enum ProductFieldEnum {
   ID
   NAME
@@ -106,7 +111,7 @@ input ProductSelectedColumnsInput {
 type Query {
   report(id: Int!): Report
   job(id: Int!): Job
-  reports: ReportConnection!
+  reports(first: Int!, after: String = null): ReportConnection!
 }
 
 type Report {
@@ -119,12 +124,12 @@ type Report {
 
 type ReportConnection {
   edges: [ReportEdge!]!
+  pageInfo: PageInfo!
   totalCount: Int!
 }
 
 type ReportEdge {
   node: Report!
-  cursor: String!
 }
 
 type ReportError {

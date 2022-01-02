@@ -2,7 +2,6 @@ from datetime import datetime
 from typing import List, Optional
 
 import strawberry
-from strawberry.types import Info
 
 from app.core.export.orders.fields import (
     OrderSelectedColumnsInfo as OrderSelectedColumnsInfoModel,
@@ -14,8 +13,9 @@ from app.core.reports.models import ExportObjectTypesEnum
 from app.graphql.reports.resolvers import (
     resolve_job_report,
     resolve_report_columns,
+    resolve_report_edges,
     resolve_report_filter,
-    resolve_reports,
+    resolve_report_page_info,
     resolve_reports_count,
 )
 
@@ -64,16 +64,16 @@ class Job:
 @strawberry.type
 class ReportEdge:
     node: Report
-    cursor: str
+
+
+@strawberry.type
+class PageInfo:
+    has_next: bool
+    end_cursor: str
 
 
 @strawberry.type
 class ReportConnection:
-    @strawberry.field
-    async def edges(self, info: Info) -> List[ReportEdge]:
-        reports = await resolve_reports(info.context["db"])
-        return [ReportEdge(node=r, cursor=r.id) for r in reports]
-
-    @strawberry.field
-    async def totalCount(self, info: Info) -> int:
-        return await resolve_reports_count(info.context["db"])
+    edges: List[ReportEdge] = strawberry.field(resolve_report_edges)
+    page_info: PageInfo = strawberry.field(resolve_report_page_info)
+    total_count: int = strawberry.field(resolve_reports_count)
