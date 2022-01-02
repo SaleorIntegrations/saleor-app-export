@@ -6,7 +6,7 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 from app.celery import database_task
 from app.core.export.fetch import fetch_job_by_id, fetch_report_by_id
 from app.core.export.files import write_partial_result_to_file
-from app.core.export.persist import create_job, update_job_cursor
+from app.core.export.persist import update_job_cursor
 from app.core.reports.models import ExportObjectTypesEnum, Report
 
 
@@ -34,9 +34,9 @@ async def start_job_for_report(
     job_id: int,
 ):
     """Initialize export for a report with given id."""
-    report = await fetch_report_by_id(db, job_id)
+    job = await fetch_job_by_id(db, job_id)
+    report = await fetch_report_by_id(db, job.report_id)
     methods = get_methods(report)
-    job = create_job(db, job_id)
     column_info = methods.fetch_column_info(report)
 
     # Write report headers

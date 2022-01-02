@@ -1,3 +1,6 @@
+"""Date with time (isoformat)"""
+scalar DateTime
+
 enum ExportError {
   INVALID_FILTER
   LIMIT_EXCEEDED
@@ -26,9 +29,16 @@ input ExportProductsInput {
 
 union ExportResponse = Report | ExportErrorResponse
 
+type Job {
+  id: Int!
+  createdAt: DateTime!
+  report: Report!
+}
+
 type Mutation {
   exportOrders(input: ExportOrdersInput!): ExportResponse!
   exportProducts(input: ExportProductsInput!): ExportResponse!
+  runReport(reportId: Int!): RunReportResponse!
 }
 
 enum OrderFieldEnum {
@@ -104,6 +114,7 @@ input ProductSelectedColumnsInput {
 
 type Query {
   report(id: Int!): Report
+  job(id: Int!): Job
   reports: ReportConnection!
 }
 
@@ -122,6 +133,10 @@ type ReportConnection {
 type ReportEdge {
   node: Report!
   cursor: String!
+}
+
+type RunReportResponse {
+  job: Job
 }
 
 union SelectedColumnsInfo = ProductSelectedColumnsInfo | OrderSelectedColumnsInfo

@@ -5,7 +5,7 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 from app.core.reports.models import Job
 
 
-def create_job(
+async def create_job(
     db: AsyncSession,
     report_id: int,
 ) -> Job:
@@ -20,6 +20,7 @@ def create_job(
         content_file=path,
     )
     db.add(job)
+    await db.commit()
     return job
 
 

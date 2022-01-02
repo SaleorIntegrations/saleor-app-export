@@ -9,7 +9,8 @@ from app.core.export.products.fields import (
 )
 from app.core.reports.models import ExportObjectTypesEnum
 from app.graphql.reports.mutations.base import mutate_export_base
-from app.graphql.reports.types import ExportError, ExportErrorResponse, ExportResponse
+from app.graphql.reports.responses import ExportResponse
+from app.graphql.reports.types import ExportError, ExportErrorResponse
 
 ProductFieldEnum = strawberry.enum(ProductFields)
 

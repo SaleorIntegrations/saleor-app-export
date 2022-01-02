@@ -1,3 +1,4 @@
+from datetime import datetime
 from enum import Enum
 from typing import List, Optional
 
@@ -12,6 +13,7 @@ from app.core.export.products.fields import (
 )
 from app.core.reports.models import ExportObjectTypesEnum
 from app.graphql.reports.resolvers import (
+    resolve_job_report,
     resolve_report_columns,
     resolve_report_filter,
     resolve_reports,
@@ -66,6 +68,13 @@ class Report:
 
 
 @strawberry.type
+class Job:
+    id: int
+    created_at: datetime
+    report: Report = strawberry.field(resolve_job_report)
+
+
+@strawberry.type
 class ReportEdge:
     node: Report
     cursor: str
@@ -81,6 +90,3 @@ class ReportConnection:
     @strawberry.field
     async def totalCount(self, info: Info) -> int:
         return await resolve_reports_count(info.context["db"])
-
-
-ExportResponse = strawberry.union("ExportResponse", [Report, ExportErrorResponse])
