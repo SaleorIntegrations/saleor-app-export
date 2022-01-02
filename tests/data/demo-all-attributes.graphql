@@ -1,5 +1,5 @@
 mutation {
-  exportProducts(input: {
+  createProductsReport(input: {
     columns: {
     	fields:[
         ID,
@@ -45,10 +45,10 @@ mutation {
     }
   }) {
     __typename,
-    ... on Report {
+    report {
       id
     }
-    ... on  ExportErrorResponse {
+    errors {
       code
       message
       field
