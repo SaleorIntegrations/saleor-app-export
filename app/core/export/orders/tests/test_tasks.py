@@ -20,15 +20,15 @@ async def test_start_job_for_report(m_headers, m_continue, db_session, orders_re
     await start_job_for_report.inner(db_session, orders_report.id)
 
     # then
-    export = (
+    job = (
         await db_session.exec(select(Job).where(Job.report_id == orders_report.id))
     ).one()
-    assert export.cursor == ""
-    assert export.content_file.startswith(f"media/{orders_report.id}-")
-    assert os.path.isfile(export.content_file)
-    with open(export.content_file) as f:
+    assert job.cursor == ""
+    assert job.content_file.startswith(f"media/{orders_report.id}-")
+    assert os.path.isfile(job.content_file)
+    with open(job.content_file) as f:
         assert len(f.readlines()) == 1
-    m_continue.delay.assert_called_once_with(export.id)
+    m_continue.delay.assert_called_once_with(job.id)
 
 
 @pytest.mark.asyncio
@@ -68,8 +68,8 @@ async def test_continue_job_with_next_page(
     await continue_job.inner(db_session, export_orders_job.id)
 
     # then
-    refreshed_export = (
+    refreshed_job = (
         await db_session.exec(select(Job).where(Job.id == export_orders_job.id))
     ).one()
     assert m_continue.call_count == 1
-    assert refreshed_export.cursor != ""
+    assert refreshed_job.cursor != ""

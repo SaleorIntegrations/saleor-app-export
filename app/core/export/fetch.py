@@ -9,6 +9,6 @@ async def fetch_report_by_id(db: AsyncSession, pk: int) -> Report:
     return result.one()
 
 
-async def fetch_export_by_id(db: AsyncSession, pk: int) -> Job:
+async def fetch_job_by_id(db: AsyncSession, pk: int) -> Job:
     result = await db.exec(select(Job).where(Job.id == pk))
     return result.one()

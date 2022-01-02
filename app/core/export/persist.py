@@ -5,7 +5,7 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 from app.core.reports.models import Job
 
 
-def create_export_file(
+def create_job(
     db: AsyncSession,
     report_id: int,
 ) -> Job:
@@ -13,21 +13,21 @@ def create_export_file(
     # Create a temporary file to keep partial results
     path = f"media/{report_id}-{uuid4()}.csv"  # TODO: use mounted volume
     # Create an export instance with an empty cursor
-    export_file = Job(
+    job = Job(
         report_id=report_id,
         message="",
         cursor="",
         content_file=path,
     )
-    db.add(export_file)
-    return export_file
+    db.add(job)
+    return job
 
 
-def update_export_cursor(
+def update_job_cursor(
     db: AsyncSession,
-    export_file: Job,
+    job: Job,
     cursor: str,
 ):
     """Update cursor of the provided export job"""
-    export_file.cursor = cursor
-    db.add(export_file)
+    job.cursor = cursor
+    db.add(job)
