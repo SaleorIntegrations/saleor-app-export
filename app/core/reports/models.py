@@ -39,7 +39,7 @@ class Report(SQLModel, table=True):
     columns: dict = Field(sa_column=Column(JSON), default_factory=dict)
 
 
-class ExportFile(SQLModel, table=True):
+class Job(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     created_at: datetime = Field(default_factory=datetime.utcnow)
     updated_at: datetime = Field(default_factory=datetime.utcnow)
@@ -65,4 +65,4 @@ class ExportEvent(SQLModel, table=True):
     date: datetime = Field(default_factory=datetime.utcnow)
     type: ExportEventsEnum
     parameters: dict = Field(sa_column=Column(JSON), default_factory=dict)
-    export_file_id: int = Field(foreign_key="exportfile.id")
+    export_file_id: int = Field(foreign_key="job.id")

@@ -29,7 +29,7 @@ def get_methods(report: Report) -> ExportMethods:
 
 
 @database_task
-async def init_export_for_report(
+async def start_job_for_report(
     db: AsyncSession,
     report_id: int,
 ):
@@ -45,18 +45,18 @@ async def init_export_for_report(
     )
 
     await db.commit()
-    continue_export.delay(export_file.id)
+    continue_job.delay(export_file.id)
 
 
-async def _continue_export(
+async def _continue_job(
     export_id: int,
 ):
     """Use to unit test recursive function"""
-    continue_export.delay(export_id)
+    continue_job.delay(export_id)
 
 
 @database_task
-async def continue_export(
+async def continue_job(
     db: AsyncSession,
     export_id: int,
 ):
@@ -80,4 +80,4 @@ async def continue_export(
 
     # If next page exists, continue export
     if cursor:
-        await _continue_export(export_id)
+        await _continue_job(export_id)

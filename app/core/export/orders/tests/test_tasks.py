@@ -5,25 +5,23 @@ import pytest
 from sqlmodel import select
 
 from app.core.export.orders.tasks import OrderExportMethods
-from app.core.export.tasks import continue_export, init_export_for_report
-from app.core.reports.models import ExportFile
+from app.core.export.tasks import continue_job, start_job_for_report
+from app.core.reports.models import Job
 
 
 @pytest.mark.asyncio
-@mock.patch("app.core.export.tasks.continue_export")
+@mock.patch("app.core.export.tasks.continue_job")
 @mock.patch.object(OrderExportMethods, "get_headers")
-async def test_init_export_for_report(m_headers, m_continue, db_session, orders_report):
+async def test_start_job_for_report(m_headers, m_continue, db_session, orders_report):
     # given
     m_headers.return_value = ["a", "b", "c"]
 
     # when
-    await init_export_for_report.inner(db_session, orders_report.id)
+    await start_job_for_report.inner(db_session, orders_report.id)
 
     # then
     export = (
-        await db_session.exec(
-            select(ExportFile).where(ExportFile.report_id == orders_report.id)
-        )
+        await db_session.exec(select(Job).where(Job.report_id == orders_report.id))
     ).one()
     assert export.cursor == ""
     assert export.content_file.startswith(f"media/{orders_report.id}-")
@@ -35,19 +33,19 @@ async def test_init_export_for_report(m_headers, m_continue, db_session, orders_
 
 @pytest.mark.asyncio
 @mock.patch.object(OrderExportMethods, "fetch_response")
-@mock.patch("app.core.export.tasks._continue_export")
-async def test_continue_export_with_empty_cursor(
+@mock.patch("app.core.export.tasks._continue_job")
+async def test_continue_job_with_empty_cursor(
     m_continue,
     m_fetch_response,
     dummy_orders_response_has_no_next,
     db_session,
-    orders_export,
+    export_orders_job,
 ):
     # given
     m_fetch_response.return_value = dummy_orders_response_has_no_next
 
     # when
-    await continue_export.inner(db_session, orders_export.id)
+    await continue_job.inner(db_session, export_orders_job.id)
 
     # then
     assert m_continue.call_count == 0
@@ -55,25 +53,23 @@ async def test_continue_export_with_empty_cursor(
 
 @pytest.mark.asyncio
 @mock.patch.object(OrderExportMethods, "fetch_response")
-@mock.patch("app.core.export.tasks._continue_export")
-async def test_continue_export_with_next_page(
+@mock.patch("app.core.export.tasks._continue_job")
+async def test_continue_job_with_next_page(
     m_continue,
     m_fetch_response,
     dummy_orders_response_has_next,
     db_session,
-    orders_export,
+    export_orders_job,
 ):
     # given
     m_fetch_response.return_value = dummy_orders_response_has_next
 
     # when
-    await continue_export.inner(db_session, orders_export.id)
+    await continue_job.inner(db_session, export_orders_job.id)
 
     # then
     refreshed_export = (
-        await db_session.exec(
-            select(ExportFile).where(ExportFile.id == orders_export.id)
-        )
+        await db_session.exec(select(Job).where(Job.id == export_orders_job.id))
     ).one()
     assert m_continue.call_count == 1
     assert refreshed_export.cursor != ""

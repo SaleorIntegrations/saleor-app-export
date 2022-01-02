@@ -40,7 +40,7 @@ def upgrade():
         op.f("ix_report_updated_at"), "report", ["updated_at"], unique=False
     )
     op.create_table(
-        "exportfile",
+        "Job",
         sa.Column("id", sa.Integer(), nullable=True),
         sa.Column("created_at", sa.DateTime(), nullable=True),
         sa.Column("updated_at", sa.DateTime(), nullable=True),
@@ -54,25 +54,13 @@ def upgrade():
         ),
         sa.PrimaryKeyConstraint("id"),
     )
-    op.create_index(
-        op.f("ix_exportfile_content_file"), "exportfile", ["content_file"], unique=False
-    )
-    op.create_index(
-        op.f("ix_exportfile_created_at"), "exportfile", ["created_at"], unique=False
-    )
-    op.create_index(
-        op.f("ix_exportfile_cursor"), "exportfile", ["cursor"], unique=False
-    )
-    op.create_index(op.f("ix_exportfile_id"), "exportfile", ["id"], unique=False)
-    op.create_index(
-        op.f("ix_exportfile_report_id"), "exportfile", ["report_id"], unique=False
-    )
-    op.create_index(
-        op.f("ix_exportfile_status"), "exportfile", ["status"], unique=False
-    )
-    op.create_index(
-        op.f("ix_exportfile_updated_at"), "exportfile", ["updated_at"], unique=False
-    )
+    op.create_index(op.f("ix_Job_content_file"), "Job", ["content_file"], unique=False)
+    op.create_index(op.f("ix_Job_created_at"), "Job", ["created_at"], unique=False)
+    op.create_index(op.f("ix_Job_cursor"), "Job", ["cursor"], unique=False)
+    op.create_index(op.f("ix_Job_id"), "Job", ["id"], unique=False)
+    op.create_index(op.f("ix_Job_report_id"), "Job", ["report_id"], unique=False)
+    op.create_index(op.f("ix_Job_status"), "Job", ["status"], unique=False)
+    op.create_index(op.f("ix_Job_updated_at"), "Job", ["updated_at"], unique=False)
     op.create_table(
         "exportevent",
         sa.Column("parameters", sa.JSON(), nullable=True),
@@ -82,7 +70,7 @@ def upgrade():
         sa.Column("export_file_id", sa.Integer(), nullable=False),
         sa.ForeignKeyConstraint(
             ["export_file_id"],
-            ["exportfile.id"],
+            ["Job.id"],
         ),
         sa.PrimaryKeyConstraint("id"),
     )
@@ -105,14 +93,14 @@ def downgrade():
     op.drop_index(op.f("ix_exportevent_export_file_id"), table_name="exportevent")
     op.drop_index(op.f("ix_exportevent_date"), table_name="exportevent")
     op.drop_table("exportevent")
-    op.drop_index(op.f("ix_exportfile_updated_at"), table_name="exportfile")
-    op.drop_index(op.f("ix_exportfile_status"), table_name="exportfile")
-    op.drop_index(op.f("ix_exportfile_report_id"), table_name="exportfile")
-    op.drop_index(op.f("ix_exportfile_id"), table_name="exportfile")
-    op.drop_index(op.f("ix_exportfile_cursor"), table_name="exportfile")
-    op.drop_index(op.f("ix_exportfile_created_at"), table_name="exportfile")
-    op.drop_index(op.f("ix_exportfile_content_file"), table_name="exportfile")
-    op.drop_table("exportfile")
+    op.drop_index(op.f("ix_Job_updated_at"), table_name="Job")
+    op.drop_index(op.f("ix_Job_status"), table_name="Job")
+    op.drop_index(op.f("ix_Job_report_id"), table_name="Job")
+    op.drop_index(op.f("ix_Job_id"), table_name="Job")
+    op.drop_index(op.f("ix_Job_cursor"), table_name="Job")
+    op.drop_index(op.f("ix_Job_created_at"), table_name="Job")
+    op.drop_index(op.f("ix_Job_content_file"), table_name="Job")
+    op.drop_table("Job")
     op.drop_index(op.f("ix_report_updated_at"), table_name="report")
     op.drop_index(op.f("ix_report_type"), table_name="report")
     op.drop_index(op.f("ix_report_scope"), table_name="report")

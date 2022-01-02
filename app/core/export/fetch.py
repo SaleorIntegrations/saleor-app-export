@@ -1,7 +1,7 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlmodel import select
 
-from app.core.reports.models import ExportFile, Report
+from app.core.reports.models import Job, Report
 
 
 async def fetch_report_by_id(db: AsyncSession, pk: int) -> Report:
@@ -9,6 +9,6 @@ async def fetch_report_by_id(db: AsyncSession, pk: int) -> Report:
     return result.one()
 
 
-async def fetch_export_by_id(db: AsyncSession, pk: int) -> ExportFile:
-    result = await db.exec(select(ExportFile).where(ExportFile.id == pk))
+async def fetch_export_by_id(db: AsyncSession, pk: int) -> Job:
+    result = await db.exec(select(Job).where(Job.id == pk))
     return result.one()

@@ -4,7 +4,7 @@ from typing import Any, Awaitable, Callable
 
 from gql.transport.exceptions import TransportQueryError
 
-from app.core.export.tasks import init_export_for_report
+from app.core.export.tasks import start_job_for_report
 from app.core.reports.models import ExportObjectTypesEnum, ExportScopeEnum, Report
 from app.graphql.reports import types
 from app.graphql.reports.types import ExportError, ExportErrorResponse
@@ -50,7 +50,7 @@ async def mutate_export_base(
     )
     db.add(report)
     await db.commit()
-    init_export_for_report.delay(report.id)
+    start_job_for_report.delay(report.id)
     return types.Report(
         id=report.id,
         type=report.type,

@@ -4,12 +4,7 @@ import pytest
 
 from app.core.export.orders.fields import OrderFieldEnum, OrderSelectedColumnsInfo
 from app.core.export.products.fields import ProductFieldEnum, ProductSelectedColumnsInfo
-from app.core.reports.models import (
-    ExportFile,
-    ExportObjectTypesEnum,
-    ExportScopeEnum,
-    Report,
-)
+from app.core.reports.models import ExportObjectTypesEnum, ExportScopeEnum, Job, Report
 
 
 @pytest.fixture
@@ -78,8 +73,8 @@ def reports_factory(db_session):
 
 
 @pytest.fixture
-async def products_export(db_session, products_report):
-    instance = ExportFile(
+async def export_products_jobs(db_session, products_report):
+    instance = Job(
         report_id=products_report.id,
         content_file="media/test-product-export.csv",
         cursor="",
@@ -90,8 +85,8 @@ async def products_export(db_session, products_report):
 
 
 @pytest.fixture
-async def orders_export(db_session, orders_report):
-    instance = ExportFile(
+async def export_orders_job(db_session, orders_report):
+    instance = Job(
         report_id=orders_report.id,
         content_file="media/test-order-export.csv",
         cursor="",
