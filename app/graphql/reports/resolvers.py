@@ -9,7 +9,7 @@ from app.core.export.fetch import fetch_job_by_id, fetch_report_by_id
 from app.core.export.orders.fetch import fetch_order_columns_info
 from app.core.export.products.fetch import fetch_product_columns_info
 from app.core.reports.models import ExportObjectTypesEnum, Job, Report
-from app.graphql.pagination import ConnectionContext, Edge, PageInfo
+from app.graphql.pagination import MAX_PAGE_SIZE, ConnectionContext, Edge, PageInfo
 
 
 async def resolve_report(root, info, id: int):
@@ -47,6 +47,8 @@ async def resolve_job_report(root: Job, info):
 
 async def resolve_reports(root, info, first: int, after: Optional[str] = None):
     db = info.context["db"]
+    if first > MAX_PAGE_SIZE:
+        raise ValueError(f"Max page size is {MAX_PAGE_SIZE}. Provided: {first}.")
     query = select(Report).order_by(Report.id).limit(first + 1)
     if after:
         query = query.filter(Report.id > ConnectionContext.decode_cursor(after))

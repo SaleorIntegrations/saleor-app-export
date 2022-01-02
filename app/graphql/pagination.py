@@ -3,6 +3,8 @@ import dataclasses
 import json
 from typing import Any, List, Optional
 
+MAX_PAGE_SIZE = 100
+
 
 @dataclasses.dataclass
 class ConnectionContext:
