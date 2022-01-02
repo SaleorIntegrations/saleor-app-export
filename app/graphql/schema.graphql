@@ -15,12 +15,12 @@ enum ExportObjectTypesEnum {
 }
 
 input ExportOrdersInput {
-  columns: OrderSelectedColumnsInfo!
+  columns: OrderSelectedColumnsInput!
   filter: OrderFilterInfo = null
 }
 
 input ExportProductsInput {
-  columns: ProductSelectedColumnsInfo!
+  columns: ProductSelectedColumnsInput!
   filter: ProductFilterInfo = null
 }
 
@@ -60,7 +60,11 @@ input OrderFilterInfo {
   filterStr: String!
 }
 
-input OrderSelectedColumnsInfo {
+type OrderSelectedColumnsInfo {
+  fields: [OrderFieldEnum!]!
+}
+
+input OrderSelectedColumnsInput {
   fields: [OrderFieldEnum!]!
 }
 
@@ -84,7 +88,14 @@ input ProductFilterInfo {
   filterStr: String!
 }
 
-input ProductSelectedColumnsInfo {
+type ProductSelectedColumnsInfo {
+  fields: [ProductFieldEnum!]!
+  attributes: [String!]
+  warehouses: [String!]
+  channels: [String!]
+}
+
+input ProductSelectedColumnsInput {
   fields: [ProductFieldEnum!]!
   attributes: [String!] = []
   warehouses: [String!] = []
@@ -99,6 +110,8 @@ type Query {
 type Report {
   id: Int!
   type: ExportObjectTypesEnum!
+  filter: String
+  columns: SelectedColumnsInfo!
 }
 
 type ReportConnection {
@@ -110,3 +123,5 @@ type ReportEdge {
   node: Report!
   cursor: String!
 }
+
+union SelectedColumnsInfo = ProductSelectedColumnsInfo | OrderSelectedColumnsInfo

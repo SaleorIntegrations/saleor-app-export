@@ -1,11 +1,22 @@
 from enum import Enum
-from typing import List
+from typing import List, Optional
 
 import strawberry
 from strawberry.types import Info
 
+from app.core.export.orders.fields import (
+    OrderSelectedColumnsInfo as OrderSelectedColumnsInfoModel,
+)
+from app.core.export.products.fields import (
+    ProductSelectedColumnsInfo as ProductSelectedColumnsInfoModel,
+)
 from app.core.reports.models import ExportObjectTypesEnum
-from app.graphql.reports.resolvers import resolve_reports, resolve_reports_count
+from app.graphql.reports.resolvers import (
+    resolve_report_columns,
+    resolve_report_filter,
+    resolve_reports,
+    resolve_reports_count,
+)
 
 ReportTypes = strawberry.enum(ExportObjectTypesEnum)
 
@@ -23,10 +34,35 @@ class ExportErrorResponse:
     field: str
 
 
+@strawberry.experimental.pydantic.type(
+    model=ProductSelectedColumnsInfoModel, all_fields=True
+)
+class ProductSelectedColumnsInfo:
+    pass
+
+
+@strawberry.experimental.pydantic.type(
+    model=OrderSelectedColumnsInfoModel, all_fields=True
+)
+class OrderSelectedColumnsInfo:
+    pass
+
+
+SelectedColumnsInfo = strawberry.union(
+    "SelectedColumnsInfo",
+    [
+        ProductSelectedColumnsInfo,
+        OrderSelectedColumnsInfo,
+    ],
+)
+
+
 @strawberry.type
 class Report:
     id: int
     type: ReportTypes
+    filter: Optional[str] = strawberry.field(resolve_report_filter)
+    columns: SelectedColumnsInfo = strawberry.field(resolve_report_columns)
 
 
 @strawberry.type

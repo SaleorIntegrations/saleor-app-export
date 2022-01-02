@@ -20,7 +20,7 @@ MAX_DYNAMIC_COLUMNS = 100
 @strawberry.experimental.pydantic.input(
     model=ProductSelectedColumnsInfoModel, all_fields=True
 )
-class ProductSelectedColumnsInfo:
+class ProductSelectedColumnsInput:
     pass
 
 
@@ -31,7 +31,7 @@ class ProductFilterInfo:
 
 @strawberry.input
 class ExportProductsInput:
-    columns: ProductSelectedColumnsInfo
+    columns: ProductSelectedColumnsInput
     filter: Optional[ProductFilterInfo] = None
 
 

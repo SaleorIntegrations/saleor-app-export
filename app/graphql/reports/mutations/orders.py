@@ -16,7 +16,7 @@ OrderFieldEnum = strawberry.enum(OrderFields)
 @strawberry.experimental.pydantic.input(
     model=OrderSelectedColumnsInfoModel, all_fields=True
 )
-class OrderSelectedColumnsInfo:
+class OrderSelectedColumnsInput:
     pass
 
 
@@ -27,7 +27,7 @@ class OrderFilterInfo:
 
 @strawberry.input
 class ExportOrdersInput:
-    columns: OrderSelectedColumnsInfo
+    columns: OrderSelectedColumnsInput
     filter: Optional[OrderFilterInfo] = None
 
 

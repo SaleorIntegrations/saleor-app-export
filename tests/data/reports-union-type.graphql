@@ -1,0 +1,23 @@
+query {
+  reports {
+    edges {
+      node {
+        id
+        type
+        filter
+        columns {
+          __typename
+          ... on ProductSelectedColumnsInfo {
+            productFields: fields
+            warehouses
+            attributes
+            channels
+          }
+          ... on OrderSelectedColumnsInfo {
+            orderFields: fields
+          }
+        }
+      }
+    }
+  }
+}
