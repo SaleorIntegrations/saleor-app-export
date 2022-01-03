@@ -7,12 +7,12 @@ import useStyles from '../styles'
 import { Filter as FilterType, ReducerAction } from '../../FilterButton/reducer'
 import { useQueryBaseChannels } from '../../../../api'
 
-export interface AttributeFilterProps {
+export interface ChannelFilterProps {
   filter: FilterType
   dispatch: (action: ReducerAction) => void
 }
 
-export function AttributeFilter(props: AttributeFilterProps) {
+export function ChannelFilter(props: ChannelFilterProps) {
   const classes = useStyles()
   const { filter, dispatch } = props
   const [canFetch, setCanFetch] = useState(false)
@@ -76,4 +76,4 @@ export function AttributeFilter(props: AttributeFilterProps) {
   )
 }
 
-export default AttributeFilter
+export default ChannelFilter

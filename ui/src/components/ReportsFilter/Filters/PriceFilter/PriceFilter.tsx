@@ -25,7 +25,7 @@ export interface PriceFilterProps {
   dispatch: (action: ReducerAction) => void
 }
 
-export function ReleaseFilter(props: PriceFilterProps) {
+export function PriceFilter(props: PriceFilterProps) {
   const classes = useStyles()
   const { filter, dispatch } = props
   const [type, setType] = useState('equal')
@@ -128,4 +128,4 @@ export function ReleaseFilter(props: PriceFilterProps) {
   )
 }
 
-export default ReleaseFilter
+export default PriceFilter
