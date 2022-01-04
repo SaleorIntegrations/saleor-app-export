@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { TextField } from '@material-ui/core'
 
 import Layout from '../../components/Layout'
 import Header from '../../components/Header'
@@ -8,6 +9,8 @@ import ReportType from '../../components/ReportType'
 import ExportPicker from '../../components/ExportPicker'
 import ActionsContainer from '../../components/ActionsContainer'
 import GeneralInformation from '../../components/GeneralInformation'
+import ModalSelect from '../../components/ModalSelect'
+import ChannelSettingModal from '../../components/ModalSetting/ChannelSettingModal'
 
 const options = (
   <>
@@ -19,12 +22,26 @@ const options = (
 
 export function ExportSetting() {
   const [reportName, setReportName] = useState('')
+  const [channels, setChannels] = useState<string[]>([])
 
   const content = (
-    <GeneralInformation
-      value={reportName}
-      onChange={e => setReportName(e.target.value)}
-    />
+    <>
+      <GeneralInformation
+        value={reportName}
+        onChange={e => setReportName(e.target.value)}
+      />
+      <ModalSelect
+        title="Channels"
+        description="selected 2"
+        render={setIsOpen => (
+          <ChannelSettingModal
+            channels={channels}
+            setChannels={setChannels}
+            setIsOpen={setIsOpen}
+          />
+        )}
+      />
+    </>
   )
 
   return (
