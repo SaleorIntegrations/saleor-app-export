@@ -2,18 +2,20 @@ import React from 'react'
 import { Paper } from '@material-ui/core'
 import { makeStyles } from '@saleor/macaw-ui'
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    padding: theme.spacing(2),
-  },
-}))
+const useStyles = (padding: number) =>
+  makeStyles(theme => ({
+    root: {
+      padding: theme.spacing(padding),
+    },
+  }))()
 
 interface SurfaceProps {
   children: React.ReactNode
+  padding?: number
 }
 
-export function Surface({ children }: SurfaceProps) {
-  const classes = useStyles()
+export function Surface({ children, padding }: SurfaceProps) {
+  const classes = useStyles(padding !== undefined ? padding : 3)
 
   return <Paper className={classes.root}>{children}</Paper>
 }

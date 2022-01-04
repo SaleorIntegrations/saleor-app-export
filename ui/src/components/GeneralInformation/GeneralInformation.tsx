@@ -4,16 +4,17 @@ import { Typography, TextField } from '@material-ui/core'
 import Surface from '../Surface'
 import useStyles from './styles'
 
-export interface GeneralInformation {
+export interface GeneralInformationProps {
   value: string
   onChange: (
     _event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
   ) => void
 }
 
-export function GeneralInformation(props: GeneralInformation) {
+export function GeneralInformation(props: GeneralInformationProps) {
   const { value, onChange } = props
   const classes = useStyles()
+
   return (
     <Surface>
       <Typography variant="h6">General Information</Typography>

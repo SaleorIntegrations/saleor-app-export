@@ -3,17 +3,15 @@ import produce from 'immer'
 
 import ModalSetting, { Action, ModalOption } from '../ModalSetting'
 import SearchInput from '../../SearchInput'
-import { useQueryBaseChannels } from '../../../api/channels'
 
-interface ChannelSettingModalProps {
-  channels: string[]
-  setChannels: (newChannels: string[]) => void
+interface FieldSettingModalProps {
+  fields: string[]
+  setFields: (newFields: string[]) => void
   setIsOpen: (newIsOpen: boolean) => void
 }
 
-export function ChannelSettingModal(props: ChannelSettingModalProps) {
-  const { channels, setChannels, setIsOpen } = props
-  const [fetchedChannels] = useQueryBaseChannels()
+export function FieldSettingModal(props: FieldSettingModalProps) {
+  const { fields, setFields, setIsOpen } = props
   const [options, setOptions] = useState<ModalOption[]>([])
   const [query, setQuery] = useState('')
 
@@ -56,7 +54,7 @@ export function ChannelSettingModal(props: ChannelSettingModalProps) {
   }
 
   const onSubmit = () => {
-    setChannels(
+    setFields(
       options.filter(option => option.checked).map(option => option.value)
     )
     setIsOpen(false)
@@ -71,26 +69,38 @@ export function ChannelSettingModal(props: ChannelSettingModalProps) {
   const search = <SearchInput onChange={onSearch} value={query} />
 
   useEffect(() => {
-    if (fetchedChannels.data) {
-      setOptions(
-        fetchedChannels.data.channels.map(channel => ({
-          id: channel.id,
-          name: channel.name,
-          slug: channel.slug,
-          checked: channels.includes(channel.id),
-          value: channel.id,
-        }))
-      )
-    }
-  }, [fetchedChannels.data])
+    setOptions([
+      {
+        id: 'CATEGORY_ID',
+        name: 'Category',
+        slug: 'category_slug',
+        checked: fields.includes('CATEGORY'),
+        value: 'CATEGORY',
+      },
+      {
+        id: 'COLLECTIONS_ID',
+        name: 'Collections',
+        slug: 'Collections_slug',
+        checked: fields.includes('COLLECTIONS'),
+        value: 'COLLECTIONS',
+      },
+      {
+        id: 'PRODUCT_TYPE_ID',
+        name: 'Type',
+        slug: 'Product_type_slug',
+        checked: fields.includes('PRODUCT_TYPE'),
+        value: 'PRODUCT_TYPE',
+      },
+    ])
+  }, [])
 
   return (
     <ModalSetting
       search={search}
-      title="Select channels"
-      subtitle="Select the channels you want to export information for"
-      checkboxTitle="Select all channels"
-      checkboxSubtitle="Make all variants available on all currently created channels."
+      title="Select Product Organization"
+      subtitle="Select the product organizations you want to export information for"
+      checkboxTitle="Select all product organizations"
+      checkboxSubtitle="Make all variants available on all currently created product organizations."
       options={options}
       filteredOptions={options.filter(option =>
         option.name.toLowerCase().includes(query.toLowerCase())
@@ -103,4 +113,4 @@ export function ChannelSettingModal(props: ChannelSettingModalProps) {
   )
 }
 
-export default ChannelSettingModal
+export default FieldSettingModal

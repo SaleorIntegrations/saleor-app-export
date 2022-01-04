@@ -17,7 +17,6 @@ export type Action = 'ADD' | 'REMOVE'
 export interface ModalOption {
   id: string
   slug: string
-  type: string
   value: string
   checked: boolean
   name: string
