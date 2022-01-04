@@ -4,6 +4,8 @@ export const useStyles = makeStyles(theme => ({
   modal: {
     width: '632px',
     padding: theme.spacing(3, 4),
+    maxHeight: '-webkit-fill-available',
+    overflow: 'scroll'
   },
   checkSlot: {
     width: '100%',

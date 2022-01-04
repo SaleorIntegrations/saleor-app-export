@@ -25,9 +25,9 @@ export interface ModalOption {
 export interface ModalSettingProps {
   search?: React.ReactNode
   options: ModalOption[]
-  filteredOptions: ModalOption[]
   title: string
   subtitle: string
+  allChecked: boolean
   checkboxTitle: string
   checkboxSubtitle?: string
   onAllCheck: (checked: boolean) => void
@@ -43,6 +43,7 @@ export function ModalSetting(props: ModalSettingProps) {
     options,
     title,
     subtitle,
+    allChecked,
     checkboxTitle,
     checkboxSubtitle,
     additionalSelect,
@@ -50,7 +51,6 @@ export function ModalSetting(props: ModalSettingProps) {
     onSubCheck,
     onExit,
     onSubmit,
-    filteredOptions,
   } = props
   const classes = useStyles()
 
@@ -82,14 +82,11 @@ export function ModalSetting(props: ModalSettingProps) {
           <FormControlLabel
             label={<ComplexLabel main={checkboxTitle} sub={checkboxSubtitle} />}
             control={
-              <Checkbox
-                checked={options.every(option => option.checked)}
-                onChange={onAllCheckboxChange}
-              />
+              <Checkbox checked={allChecked} onChange={onAllCheckboxChange} />
             }
           />
           <Box>
-            {filteredOptions.map(option => (
+            {options.map(option => (
               <FormControl key={option.id} className={classes.checkSlot}>
                 <FormControlLabel
                   label={option.name}

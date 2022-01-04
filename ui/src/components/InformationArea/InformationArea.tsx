@@ -3,7 +3,11 @@ import { Typography, Box } from '@material-ui/core'
 import clsx from 'clsx'
 
 import { ModalSelect } from '../ModalSelect'
-import { ChannelSettingModal, FieldSettingModal } from '../ModalSetting'
+import {
+  ChannelSettingModal,
+  FieldSettingModal,
+  AttributeSettingModal,
+} from '../ModalSetting'
 import Surface from '../Surface'
 import Label from '../Label'
 import useStyles from './styles'
@@ -11,6 +15,7 @@ import useStyles from './styles'
 export function InformationArea() {
   const [channels, setChannels] = useState<string[]>([])
   const [fields, setFields] = useState<string[]>([])
+  const [attributes, setAttributes] = useState<string[]>([])
   const classes = useStyles()
 
   return (
@@ -45,6 +50,19 @@ export function InformationArea() {
               <FieldSettingModal
                 fields={fields}
                 setFields={setFields}
+                setIsOpen={setIsOpen}
+              />
+            )}
+          />
+          <ModalSelect
+            title="Attributes"
+            description={
+              attributes.length ? `selected ${attributes.length}` : undefined
+            }
+            render={setIsOpen => (
+              <AttributeSettingModal
+                attributes={attributes}
+                setAttributes={setAttributes}
                 setIsOpen={setIsOpen}
               />
             )}

@@ -101,10 +101,10 @@ export function FieldSettingModal(props: FieldSettingModalProps) {
       subtitle="Select the product organizations you want to export information for"
       checkboxTitle="Select all product organizations"
       checkboxSubtitle="Make all variants available on all currently created product organizations."
-      options={options}
-      filteredOptions={options.filter(option =>
+      options={options.filter(option =>
         option.name.toLowerCase().includes(query.toLowerCase())
       )}
+      allChecked={options.every(option => option.checked)}
       onAllCheck={onAllCheck}
       onSubCheck={onSubCheck}
       onExit={onExit}

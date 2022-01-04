@@ -91,10 +91,10 @@ export function ChannelSettingModal(props: ChannelSettingModalProps) {
       subtitle="Select the channels you want to export information for"
       checkboxTitle="Select all channels"
       checkboxSubtitle="Make all variants available on all currently created channels."
-      options={options}
-      filteredOptions={options.filter(option =>
+      options={options.filter(option =>
         option.name.toLowerCase().includes(query.toLowerCase())
       )}
+      allChecked={options.every(option => option.checked)}
       onAllCheck={onAllCheck}
       onSubCheck={onSubCheck}
       onExit={onExit}
