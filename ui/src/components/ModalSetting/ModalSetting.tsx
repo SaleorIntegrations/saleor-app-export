@@ -10,7 +10,7 @@ import {
 } from '@material-ui/core'
 
 import useStyles from './styles'
-import ComplexLabel from './CheckboxComplexLabel'
+import ComplexLabel from '../InputComplexLabel'
 
 export type Action = 'ADD' | 'REMOVE'
 

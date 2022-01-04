@@ -1,12 +1,12 @@
 import React from 'react'
 import { Typography, Box } from '@material-ui/core'
 
-interface CheckboxComplexLabelProps {
+interface InputComplexLabelProps {
   main: string
   sub?: string
 }
 
-export function CheckboxComplexLabel(props: CheckboxComplexLabelProps) {
+export function InputComplexLabel(props: InputComplexLabelProps) {
   const { main, sub } = props
 
   return (
@@ -17,4 +17,4 @@ export function CheckboxComplexLabel(props: CheckboxComplexLabelProps) {
   )
 }
 
-export default CheckboxComplexLabel
+export default InputComplexLabel
