@@ -8,6 +8,7 @@ import {
   FieldSettingModal,
   AttributeSettingModal,
   FinancialSettingModal,
+  SEOSettingModal,
 } from '../ModalSetting'
 import Surface from '../Surface'
 import Label from '../Label'
@@ -18,6 +19,7 @@ export function InformationArea() {
   const [fields, setFields] = useState<string[]>([])
   const [attributes, setAttributes] = useState<string[]>([])
   const [financials, setFinancials] = useState<string[]>([])
+  const [seo, setSEO] = useState<string[]>([])
   const classes = useStyles()
 
   return (
@@ -70,7 +72,7 @@ export function InformationArea() {
             )}
           />
           <ModalSelect
-            title="Financial Information"
+            title="Financial"
             description={
               financials.length ? `selected ${financials.length}` : undefined
             }
@@ -78,6 +80,17 @@ export function InformationArea() {
               <FinancialSettingModal
                 fields={financials}
                 setFields={setFinancials}
+                setIsOpen={setIsOpen}
+              />
+            )}
+          />
+          <ModalSelect
+            title="SEO"
+            description={seo.length ? `selected ${seo.length}` : undefined}
+            render={setIsOpen => (
+              <SEOSettingModal
+                fields={seo}
+                setFields={setSEO}
                 setIsOpen={setIsOpen}
               />
             )}
