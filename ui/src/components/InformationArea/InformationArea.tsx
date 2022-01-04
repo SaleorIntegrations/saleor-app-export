@@ -7,6 +7,7 @@ import {
   ChannelSettingModal,
   FieldSettingModal,
   AttributeSettingModal,
+  FinancialSettingModal,
 } from '../ModalSetting'
 import Surface from '../Surface'
 import Label from '../Label'
@@ -16,6 +17,7 @@ export function InformationArea() {
   const [channels, setChannels] = useState<string[]>([])
   const [fields, setFields] = useState<string[]>([])
   const [attributes, setAttributes] = useState<string[]>([])
+  const [financials, setFinancials] = useState<string[]>([])
   const classes = useStyles()
 
   return (
@@ -63,6 +65,19 @@ export function InformationArea() {
               <AttributeSettingModal
                 attributes={attributes}
                 setAttributes={setAttributes}
+                setIsOpen={setIsOpen}
+              />
+            )}
+          />
+          <ModalSelect
+            title="Financial Information"
+            description={
+              financials.length ? `selected ${financials.length}` : undefined
+            }
+            render={setIsOpen => (
+              <FinancialSettingModal
+                fields={financials}
+                setFields={setFinancials}
                 setIsOpen={setIsOpen}
               />
             )}

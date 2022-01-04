@@ -4,35 +4,21 @@ import produce from 'immer'
 import ModalSetting, { Action, ModalOption } from '../ModalSetting'
 import SearchInput from '../../SearchInput'
 
-interface FieldSettingModalProps {
+interface FinancialSettingModalProps {
   fields: string[]
   setFields: (newFields: string[]) => void
   setIsOpen: (newIsOpen: boolean) => void
 }
 
-export function FieldSettingModal(props: FieldSettingModalProps) {
+export function FinancialSettingModal(props: FinancialSettingModalProps) {
   const { fields, setFields, setIsOpen } = props
   const [options, setOptions] = useState<ModalOption[]>([
     {
-      id: 'CATEGORY_ID',
-      name: 'Category',
-      slug: 'category_slug',
-      checked: fields.includes('CATEGORY'),
-      value: 'CATEGORY',
-    },
-    {
-      id: 'COLLECTIONS_ID',
-      name: 'Collections',
-      slug: 'Collections_slug',
-      checked: fields.includes('COLLECTIONS'),
-      value: 'COLLECTIONS',
-    },
-    {
-      id: 'PRODUCT_TYPE_ID',
-      name: 'Type',
-      slug: 'Product_type_slug',
-      checked: fields.includes('PRODUCT_TYPE'),
-      value: 'PRODUCT_TYPE',
+      id: 'CHARGE_TAXES_ID',
+      name: 'Charge Taxes',
+      slug: 'charge_taxes_slug',
+      checked: fields.includes('CHARGE_TAXES'),
+      value: 'CHARGE_TAXES',
     },
   ])
   const [query, setQuery] = useState('')
@@ -93,10 +79,10 @@ export function FieldSettingModal(props: FieldSettingModalProps) {
   return (
     <ModalSetting
       search={search}
-      title="Select Product Organization"
-      subtitle="Select the product organizations you want to export information for"
-      checkboxTitle="Select all product organizations"
-      checkboxSubtitle="Make all variants available on all currently created product organizations."
+      title="Select Financial Informations"
+      subtitle="Select the financial informations you want to export information for"
+      checkboxTitle="Select all financial informations"
+      checkboxSubtitle="Make all variants available on all currently created financial informations."
       options={options.filter(option =>
         option.name.toLowerCase().includes(query.toLowerCase())
       )}
@@ -109,4 +95,4 @@ export function FieldSettingModal(props: FieldSettingModalProps) {
   )
 }
 
-export default FieldSettingModal
+export default FinancialSettingModal
