@@ -1,14 +1,12 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Typography, Box } from '@material-ui/core'
 import clsx from 'clsx'
 
 import { ModalSelect } from '../ModalSelect'
 import {
   ChannelSettingModal,
-  FieldSettingModal,
   AttributeSettingModal,
-  FinancialSettingModal,
-  SEOSettingModal,
+  BaseFieldSettingModal,
 } from '../ModalSetting'
 import Surface from '../Surface'
 import Label from '../Label'
@@ -21,6 +19,16 @@ export function InformationArea() {
   const [financials, setFinancials] = useState<string[]>([])
   const [seo, setSEO] = useState<string[]>([])
   const classes = useStyles()
+
+  // TODO: remove after work done
+  useEffect(() => {
+    console.log({
+      channels: channels,
+      warehouses: [],
+      attributes: attributes,
+      fields: [...fields, ...financials, ...seo],
+    })
+  }, [channels, fields, attributes, financials, seo])
 
   return (
     <Surface padding={0}>
@@ -51,10 +59,35 @@ export function InformationArea() {
               fields.length ? `selected ${fields.length}` : undefined
             }
             render={setIsOpen => (
-              <FieldSettingModal
+              <BaseFieldSettingModal
                 fields={fields}
                 setFields={setFields}
                 setIsOpen={setIsOpen}
+                title="Select Product Organization"
+                subtitle="Select the product organizations you want to export information for"
+                fieldOptions={[
+                  {
+                    id: 'CATEGORY_ID',
+                    name: 'Category',
+                    slug: 'category_slug',
+                    checked: fields.includes('CATEGORY'),
+                    value: 'CATEGORY',
+                  },
+                  {
+                    id: 'COLLECTIONS_ID',
+                    name: 'Collections',
+                    slug: 'Collections_slug',
+                    checked: fields.includes('COLLECTIONS'),
+                    value: 'COLLECTIONS',
+                  },
+                  {
+                    id: 'PRODUCT_TYPE_ID',
+                    name: 'Type',
+                    slug: 'Product_type_slug',
+                    checked: fields.includes('PRODUCT_TYPE'),
+                    value: 'PRODUCT_TYPE',
+                  },
+                ]}
               />
             )}
           />
@@ -77,10 +110,21 @@ export function InformationArea() {
               financials.length ? `selected ${financials.length}` : undefined
             }
             render={setIsOpen => (
-              <FinancialSettingModal
+              <BaseFieldSettingModal
                 fields={financials}
                 setFields={setFinancials}
                 setIsOpen={setIsOpen}
+                title="Select Financial Informations"
+                subtitle="Select the financial informations you want to export information for"
+                fieldOptions={[
+                  {
+                    id: 'CHARGE_TAXES_ID',
+                    name: 'Charge Taxes',
+                    slug: 'charge_taxes_slug',
+                    checked: fields.includes('CHARGE_TAXES'),
+                    value: 'CHARGE_TAXES',
+                  },
+                ]}
               />
             )}
           />
@@ -88,10 +132,42 @@ export function InformationArea() {
             title="SEO"
             description={seo.length ? `selected ${seo.length}` : undefined}
             render={setIsOpen => (
-              <SEOSettingModal
+              <BaseFieldSettingModal
                 fields={seo}
                 setFields={setSEO}
                 setIsOpen={setIsOpen}
+                title="Select SEO Informations"
+                subtitle="Select the SEO informations you want to export information for"
+                fieldOptions={[
+                  {
+                    id: 'DESCRIPTION_ID',
+                    name: 'Description',
+                    slug: 'description_slug',
+                    checked: fields.includes('DESCRIPTION'),
+                    value: 'DESCRIPTION',
+                  },
+                  {
+                    id: 'NAME_ID',
+                    name: 'Name',
+                    slug: 'name_slug',
+                    checked: fields.includes('NAME'),
+                    value: 'NAME',
+                  },
+                  {
+                    id: 'PRODUCT_MEDIA_ID',
+                    name: 'Product Images',
+                    slug: 'product_media_slug',
+                    checked: fields.includes('PRODUCT_MEDIA'),
+                    value: 'PRODUCT_MEDIA',
+                  },
+                  {
+                    id: 'VARIANT_MEDIA_ID',
+                    name: 'Variant Images',
+                    slug: 'variant_images_slug',
+                    checked: fields.includes('VARIANT_MEDIA'),
+                    value: 'VARIANT_MEDIA',
+                  },
+                ]}
               />
             )}
           />

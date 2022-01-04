@@ -1,7 +1,5 @@
 export { default } from './ModalSetting'
 export * from './ModalSetting'
 export * from './ChannelSettingModal'
-export * from './FieldSettingModal'
 export * from './AttributeSettingModal'
-export * from './FinancialSettingModal'
-export * from './SEOSettingModal'
+export * from './BaseFieldSettingModal'

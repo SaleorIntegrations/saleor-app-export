@@ -4,44 +4,18 @@ import produce from 'immer'
 import ModalSetting, { Action, ModalOption } from '../ModalSetting'
 import SearchInput from '../../SearchInput'
 
-interface SEOSettingModalProps {
+interface BaseFieldSettingModalProps {
   fields: string[]
+  title: string
+  subtitle: string
   setFields: (newFields: string[]) => void
+  fieldOptions: ModalOption[]
   setIsOpen: (newIsOpen: boolean) => void
 }
 
-export function SEOSettingModal(props: SEOSettingModalProps) {
-  const { fields, setFields, setIsOpen } = props
-  const [options, setOptions] = useState<ModalOption[]>([
-    {
-      id: 'DESCRIPTION_ID',
-      name: 'Description',
-      slug: 'description_slug',
-      checked: fields.includes('DESCRIPTION'),
-      value: 'DESCRIPTION',
-    },
-    {
-      id: 'NAME_ID',
-      name: 'Name',
-      slug: 'name_slug',
-      checked: fields.includes('NAME'),
-      value: 'NAME',
-    },
-    {
-      id: 'PRODUCT_MEDIA_ID',
-      name: 'Product Images',
-      slug: 'product_media_slug',
-      checked: fields.includes('PRODUCT_MEDIA'),
-      value: 'PRODUCT_MEDIA',
-    },
-    {
-      id: 'VARIANT_MEDIA_ID',
-      name: 'Variant Images',
-      slug: 'variant_images_slug',
-      checked: fields.includes('VARIANT_MEDIA'),
-      value: 'VARIANT_MEDIA',
-    },
-  ])
+export function BaseFieldSettingModal(props: BaseFieldSettingModalProps) {
+  const { setFields, setIsOpen, fieldOptions, title, subtitle } = props
+  const [options, setOptions] = useState(fieldOptions)
   const [query, setQuery] = useState('')
 
   const onAllCheck = (checked: boolean) => {
@@ -100,10 +74,10 @@ export function SEOSettingModal(props: SEOSettingModalProps) {
   return (
     <ModalSetting
       search={search}
-      title="Select SEO Informations"
-      subtitle="Select the SEO informations you want to export information for"
-      checkboxTitle="Select all SEO informations"
-      checkboxSubtitle="Make all variants available on all currently created SEO informations."
+      title={title}
+      subtitle={subtitle}
+      checkboxTitle="Select all fields"
+      checkboxSubtitle="Make all variants available on all currently created options."
       options={options.filter(option =>
         option.name.toLowerCase().includes(query.toLowerCase())
       )}
@@ -116,4 +90,4 @@ export function SEOSettingModal(props: SEOSettingModalProps) {
   )
 }
 
-export default SEOSettingModal
+export default BaseFieldSettingModal
