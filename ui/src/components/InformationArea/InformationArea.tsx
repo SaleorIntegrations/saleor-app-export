@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useReducer } from 'react'
 import { Typography, Box } from '@material-ui/core'
 import clsx from 'clsx'
 
+import { ProductField, ExportInfo } from '../../globalTypes'
 import { ModalSelect } from '../ModalSelect'
 import {
   ChannelSettingModal,
@@ -11,27 +12,31 @@ import {
 } from '../ModalSetting'
 import Surface from '../Surface'
 import Label from '../Label'
+import { initialInformations, informationsReducer } from './reducer'
 import useStyles from './styles'
 
-export function InformationArea() {
-  const [channels, setChannels] = useState<string[]>([])
-  const [fields, setFields] = useState<string[]>([])
-  const [attributes, setAttributes] = useState<string[]>([])
-  const [financials, setFinancials] = useState<string[]>([])
-  const [seo, setSEO] = useState<string[]>([])
-  const [inventory, setInventory] = useState<string[]>([])
-  const [warehouses, setWarehouses] = useState<string[]>([])
-  const classes = useStyles()
+interface InformationAreaProps {
+  setInformations: (newInformations: ExportInfo) => void
+}
 
-  // TODO: remove after work done
+export function InformationArea(props: InformationAreaProps) {
+  const { setInformations } = props
+  const classes = useStyles()
+  const [state, dispatch] = useReducer(informationsReducer, initialInformations)
+
   useEffect(() => {
-    console.log({
-      channels: channels,
-      warehouses: [],
-      attributes: attributes,
-      fields: [...fields, ...financials, ...seo],
+    setInformations({
+      channels: state.channels,
+      attributes: state.attributes,
+      fields: [
+        ...state.financials,
+        ...state.inventory,
+        ...state.organisations,
+        ...state.seo,
+      ] as ProductField[],
+      warehouses: state.warehouses,
     })
-  }, [channels, fields, attributes, financials, seo])
+  }, [state])
 
   return (
     <Surface padding={0}>
@@ -46,12 +51,16 @@ export function InformationArea() {
           <ModalSelect
             title="Channels"
             description={
-              channels.length ? `selected ${channels.length}` : undefined
+              state.channels.length
+                ? `selected ${state.channels.length}`
+                : undefined
             }
             render={setIsOpen => (
               <ChannelSettingModal
-                channels={channels}
-                setChannels={setChannels}
+                channels={state.channels}
+                setChannels={newChannels =>
+                  dispatch({ type: 'SET_CHANNELS', channels: newChannels })
+                }
                 setIsOpen={setIsOpen}
               />
             )}
@@ -59,12 +68,19 @@ export function InformationArea() {
           <ModalSelect
             title="Product organsation"
             description={
-              fields.length ? `selected ${fields.length}` : undefined
+              state.organisations.length
+                ? `selected ${state.organisations.length}`
+                : undefined
             }
             render={setIsOpen => (
               <BaseFieldSettingModal
-                fields={fields}
-                setFields={setFields}
+                fields={state.organisations}
+                setFields={newOrganisations =>
+                  dispatch({
+                    type: 'SET_ORGANISATIONS',
+                    organisations: newOrganisations,
+                  })
+                }
                 setIsOpen={setIsOpen}
                 title="Select Product Organization"
                 subtitle="Select the product organizations you want to export information for"
@@ -73,22 +89,28 @@ export function InformationArea() {
                     id: 'CATEGORY_ID',
                     name: 'Category',
                     slug: 'category_slug',
-                    checked: fields.includes('CATEGORY'),
-                    value: 'CATEGORY',
+                    checked: state.organisations.includes(
+                      ProductField.CATEGORY
+                    ),
+                    value: ProductField.CATEGORY,
                   },
                   {
                     id: 'COLLECTIONS_ID',
                     name: 'Collections',
                     slug: 'Collections_slug',
-                    checked: fields.includes('COLLECTIONS'),
-                    value: 'COLLECTIONS',
+                    checked: state.organisations.includes(
+                      ProductField.COLLECTIONS
+                    ),
+                    value: ProductField.COLLECTIONS,
                   },
                   {
                     id: 'PRODUCT_TYPE_ID',
                     name: 'Type',
                     slug: 'Product_type_slug',
-                    checked: fields.includes('PRODUCT_TYPE'),
-                    value: 'PRODUCT_TYPE',
+                    checked: state.organisations.includes(
+                      ProductField.PRODUCT_TYPE
+                    ),
+                    value: ProductField.PRODUCT_TYPE,
                   },
                 ]}
               />
@@ -97,12 +119,19 @@ export function InformationArea() {
           <ModalSelect
             title="Attributes"
             description={
-              attributes.length ? `selected ${attributes.length}` : undefined
+              state.attributes.length
+                ? `selected ${state.attributes.length}`
+                : undefined
             }
             render={setIsOpen => (
               <AttributeSettingModal
-                attributes={attributes}
-                setAttributes={setAttributes}
+                attributes={state.attributes}
+                setAttributes={newAttributes =>
+                  dispatch({
+                    type: 'SET_ATTRIBUTES',
+                    attributes: newAttributes,
+                  })
+                }
                 setIsOpen={setIsOpen}
               />
             )}
@@ -110,12 +139,19 @@ export function InformationArea() {
           <ModalSelect
             title="Financial"
             description={
-              financials.length ? `selected ${financials.length}` : undefined
+              state.financials.length
+                ? `selected ${state.financials.length}`
+                : undefined
             }
             render={setIsOpen => (
               <BaseFieldSettingModal
-                fields={financials}
-                setFields={setFinancials}
+                fields={state.financials}
+                setFields={newFinancials =>
+                  dispatch({
+                    type: 'SET_FINANCIALS',
+                    financials: newFinancials,
+                  })
+                }
                 setIsOpen={setIsOpen}
                 title="Select Financial Informations"
                 subtitle="Select the financial informations you want to export information for"
@@ -124,8 +160,10 @@ export function InformationArea() {
                     id: 'CHARGE_TAXES_ID',
                     name: 'Charge Taxes',
                     slug: 'charge_taxes_slug',
-                    checked: fields.includes('CHARGE_TAXES'),
-                    value: 'CHARGE_TAXES',
+                    checked: state.financials.includes(
+                      ProductField.CHARGE_TAXES
+                    ),
+                    value: ProductField.CHARGE_TAXES,
                   },
                 ]}
               />
@@ -134,45 +172,56 @@ export function InformationArea() {
           <ModalSelect
             title="Inventory"
             description={
-              inventory.length || warehouses.length
-                ? `selected ${inventory.length + warehouses.length}`
+              state.inventory.length || state.warehouses.length
+                ? `selected ${state.inventory.length + state.warehouses.length}`
                 : undefined
             }
             render={setIsOpen => (
               <InventorySettingModal
                 setIsOpen={setIsOpen}
-                fields={inventory}
-                setFields={setInventory}
-                warehouses={warehouses}
-                setWarehouses={setWarehouses}
+                fields={state.inventory}
+                setFields={newInventory =>
+                  dispatch({ type: 'SET_INVENTORY', inventory: newInventory })
+                }
+                warehouses={state.warehouses}
+                setWarehouses={newWarehouses =>
+                  dispatch({
+                    type: 'SET_WAREHOUSES',
+                    warehouses: newWarehouses,
+                  })
+                }
                 fieldOptions={[
                   {
                     id: 'PRODUCT_WEIGHT_ID',
                     name: 'Export Product Weight',
                     slug: 'product_weight_slug',
-                    checked: inventory.includes('PRODUCT_WEIGHT'),
-                    value: 'PRODUCT_WEIGHT',
+                    checked: state.inventory.includes(
+                      ProductField.PRODUCT_WEIGHT
+                    ),
+                    value: ProductField.PRODUCT_WEIGHT,
                   },
                   {
                     id: 'VARIANT_ID_ID',
                     name: 'Export Variant ID',
                     slug: 'variant_id_slug',
-                    checked: inventory.includes('VARIANT_ID'),
-                    value: 'VARIANT_ID',
+                    checked: state.inventory.includes(ProductField.VARIANT_ID),
+                    value: ProductField.VARIANT_ID,
                   },
                   {
                     id: 'VARIANT_SKU_ID',
                     name: 'Export Variant SKU',
                     slug: 'variant_sku_slug',
-                    checked: inventory.includes('VARIANT_SKU'),
-                    value: 'VARIANT_SKU',
+                    checked: state.inventory.includes(ProductField.VARIANT_SKU),
+                    value: ProductField.VARIANT_SKU,
                   },
                   {
                     id: 'VARIANT_WEIGHT_ID',
                     name: 'Export Variant Weight',
                     slug: 'variant_weight_slug',
-                    checked: inventory.includes('VARIANT_WEIGHT'),
-                    value: 'VARIANT_WEIGHT',
+                    checked: state.inventory.includes(
+                      ProductField.VARIANT_WEIGHT
+                    ),
+                    value: ProductField.VARIANT_WEIGHT,
                   },
                 ]}
               />
@@ -180,11 +229,13 @@ export function InformationArea() {
           />
           <ModalSelect
             title="SEO"
-            description={seo.length ? `selected ${seo.length}` : undefined}
+            description={
+              state.seo.length ? `selected ${state.seo.length}` : undefined
+            }
             render={setIsOpen => (
               <BaseFieldSettingModal
-                fields={seo}
-                setFields={setSEO}
+                fields={state.seo}
+                setFields={newSEO => dispatch({ type: 'SET_SEO', seo: newSEO })}
                 setIsOpen={setIsOpen}
                 title="Select SEO Informations"
                 subtitle="Select the SEO informations you want to export information for"
@@ -193,29 +244,29 @@ export function InformationArea() {
                     id: 'DESCRIPTION_ID',
                     name: 'Description',
                     slug: 'description_slug',
-                    checked: fields.includes('DESCRIPTION'),
-                    value: 'DESCRIPTION',
+                    checked: state.seo.includes(ProductField.DESCRIPTION),
+                    value: ProductField.DESCRIPTION,
                   },
                   {
                     id: 'NAME_ID',
                     name: 'Name',
                     slug: 'name_slug',
-                    checked: fields.includes('NAME'),
-                    value: 'NAME',
+                    checked: state.seo.includes(ProductField.NAME),
+                    value: ProductField.NAME,
                   },
                   {
                     id: 'PRODUCT_MEDIA_ID',
                     name: 'Product Images',
                     slug: 'product_media_slug',
-                    checked: fields.includes('PRODUCT_MEDIA'),
-                    value: 'PRODUCT_MEDIA',
+                    checked: state.seo.includes(ProductField.PRODUCT_MEDIA),
+                    value: ProductField.PRODUCT_MEDIA,
                   },
                   {
                     id: 'VARIANT_MEDIA_ID',
                     name: 'Variant Images',
                     slug: 'variant_images_slug',
-                    checked: fields.includes('VARIANT_MEDIA'),
-                    value: 'VARIANT_MEDIA',
+                    checked: state.seo.includes(ProductField.VARIANT_MEDIA),
+                    value: ProductField.VARIANT_MEDIA,
                   },
                 ]}
               />

@@ -1,7 +1,6 @@
-import React, { useState } from 'react'
+import React, { useReducer, useEffect } from 'react'
+import { Box, Container } from '@material-ui/core'
 
-import Layout from '../../components/Layout'
-import Header from '../../components/Header'
 import Footer from '../../components/Footer'
 import Content from '../../components/Content'
 import ReportType from '../../components/ReportType'
@@ -9,34 +8,54 @@ import ExportPicker from '../../components/ExportPicker'
 import ActionsContainer from '../../components/ActionsContainer'
 import GeneralInformation from '../../components/GeneralInformation'
 import InformationArea from '../../components/InformationArea'
-
-const options = (
-  <>
-    <ReportType isMutable reportType="Products" />
-    <ExportPicker />
-    <ActionsContainer />
-  </>
-)
+import { initialProductExport, productExportReducer } from './reducer'
 
 export function ExportSetting() {
-  const [reportName, setReportName] = useState('')
-
-  const content = (
-    <>
-      <GeneralInformation
-        value={reportName}
-        onChange={e => setReportName(e.target.value)}
-      />
-      <InformationArea />
-    </>
+  const [state, dispatch] = useReducer(
+    productExportReducer,
+    initialProductExport
   )
 
+  useEffect(() => {
+    console.log(state)
+  }, [state])
+
   return (
-    <Layout
-      header={<Header />}
-      content={<Content settings={content} options={options} />}
-      footer={<Footer />}
-    />
+    <Container
+      maxWidth="lg"
+      style={{ display: 'flex', flexDirection: 'column', height: '100%' }}
+    >
+      <Box style={{ flex: '1 1 auto', margin: '1em 0' }}>
+        <Content
+          options={
+            <>
+              <ReportType reportType="Products" />
+              <ExportPicker />
+              <ActionsContainer />
+            </>
+          }
+          settings={
+            <>
+              <GeneralInformation
+                value={state.name}
+                onChange={e =>
+                  dispatch({ type: 'SET_NAME', name: e.target.value })
+                }
+              />
+              <InformationArea
+                setInformations={newExportInfo =>
+                  dispatch({
+                    type: 'SET_EXPORT_INFO',
+                    exportInfo: newExportInfo,
+                  })
+                }
+              />
+            </>
+          }
+        />
+      </Box>
+      <Footer />
+    </Container>
   )
 }
 
