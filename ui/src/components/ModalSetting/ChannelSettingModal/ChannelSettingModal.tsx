@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import produce from 'immer'
 
-import ModalSetting, { Action, ModalOption } from '../ModalSetting'
+import ModalSetting, { ModalOption } from '../ModalSetting'
 import SearchInput from '../../SearchInput'
 import { useQueryBaseChannels } from '../../../api/channels'
 
@@ -16,40 +15,6 @@ export function ChannelSettingModal(props: ChannelSettingModalProps) {
   const [fetchedChannels] = useQueryBaseChannels()
   const [options, setOptions] = useState<ModalOption[]>([])
   const [query, setQuery] = useState('')
-
-  const onAllCheck = (checked: boolean) => {
-    setOptions(
-      produce(draft => {
-        draft.forEach(option => {
-          option.checked = checked
-        })
-      })
-    )
-  }
-
-  const onSubCheck = (id: string, action: Action) => {
-    if (action === 'ADD') {
-      setOptions(
-        produce(draft => {
-          const option = draft.find(option => option.value === id)
-          if (option) {
-            option.checked = true
-          }
-        })
-      )
-    }
-
-    if (action === 'REMOVE') {
-      setOptions(
-        produce(draft => {
-          const option = draft.find(option => option.value === id)
-          if (option) {
-            option.checked = false
-          }
-        })
-      )
-    }
-  }
 
   const onExit = () => {
     setIsOpen(false)
@@ -91,12 +56,9 @@ export function ChannelSettingModal(props: ChannelSettingModalProps) {
       subtitle="Select the channels you want to export information for"
       checkboxTitle="Select all channels"
       checkboxSubtitle="Make all variants available on all currently created channels."
-      options={options.filter(option =>
-        option.name.toLowerCase().includes(query.toLowerCase())
-      )}
-      allChecked={options.every(option => option.checked)}
-      onAllCheck={onAllCheck}
-      onSubCheck={onSubCheck}
+      options={options}
+      filter={option => option.name.toLowerCase().includes(query.toLowerCase())}
+      setOptions={setOptions}
       onExit={onExit}
       onSubmit={onSubmit}
     />

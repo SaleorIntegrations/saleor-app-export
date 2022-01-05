@@ -32,40 +32,6 @@ export function AttributeSettingModal(props: AttributeSettingModalProps) {
   )
   const [options, setOptions] = useState<ModalOption[]>([])
 
-  const onAllCheck = (checked: boolean) => {
-    setOptions(
-      produce(draft => {
-        draft.forEach(option => {
-          option.checked = checked
-        })
-      })
-    )
-  }
-
-  const onSubCheck = (id: string, action: Action) => {
-    if (action === 'ADD') {
-      setOptions(
-        produce(draft => {
-          const option = draft.find(option => option.value === id)
-          if (option) {
-            option.checked = true
-          }
-        })
-      )
-    }
-
-    if (action === 'REMOVE') {
-      setOptions(
-        produce(draft => {
-          const option = draft.find(option => option.value === id)
-          if (option) {
-            option.checked = false
-          }
-        })
-      )
-    }
-  }
-
   const onExit = () => {
     setIsOpen(false)
   }
@@ -120,12 +86,9 @@ export function AttributeSettingModal(props: AttributeSettingModalProps) {
       subtitle="Select the attributes you want to export information for"
       checkboxTitle="Select all attributes"
       checkboxSubtitle="Make all variants available on all currently created attributes."
-      options={options.filter(option =>
-        option.name.toLowerCase().includes(query.toLowerCase())
-      )}
-      allChecked={options.every(option => option.checked)}
-      onAllCheck={onAllCheck}
-      onSubCheck={onSubCheck}
+      options={options}
+      filter={option => option.name.toLowerCase().includes(query.toLowerCase())}
+      setOptions={setOptions}
       onExit={onExit}
       onSubmit={onSubmit}
     />

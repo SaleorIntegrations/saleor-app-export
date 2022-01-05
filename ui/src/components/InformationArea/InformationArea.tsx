@@ -7,6 +7,7 @@ import {
   ChannelSettingModal,
   AttributeSettingModal,
   BaseFieldSettingModal,
+  InventorySettingModal,
 } from '../ModalSetting'
 import Surface from '../Surface'
 import Label from '../Label'
@@ -18,6 +19,8 @@ export function InformationArea() {
   const [attributes, setAttributes] = useState<string[]>([])
   const [financials, setFinancials] = useState<string[]>([])
   const [seo, setSEO] = useState<string[]>([])
+  const [inventory, setInventory] = useState<string[]>([])
+  const [warehouses, setWarehouses] = useState<string[]>([])
   const classes = useStyles()
 
   // TODO: remove after work done
@@ -123,6 +126,53 @@ export function InformationArea() {
                     slug: 'charge_taxes_slug',
                     checked: fields.includes('CHARGE_TAXES'),
                     value: 'CHARGE_TAXES',
+                  },
+                ]}
+              />
+            )}
+          />
+          <ModalSelect
+            title="Inventory"
+            description={
+              inventory.length || warehouses.length
+                ? `selected ${inventory.length + warehouses.length}`
+                : undefined
+            }
+            render={setIsOpen => (
+              <InventorySettingModal
+                setIsOpen={setIsOpen}
+                fields={inventory}
+                setFields={setInventory}
+                warehouses={warehouses}
+                setWarehouses={setWarehouses}
+                fieldOptions={[
+                  {
+                    id: 'PRODUCT_WEIGHT_ID',
+                    name: 'Export Product Weight',
+                    slug: 'product_weight_slug',
+                    checked: inventory.includes('PRODUCT_WEIGHT'),
+                    value: 'PRODUCT_WEIGHT',
+                  },
+                  {
+                    id: 'VARIANT_ID_ID',
+                    name: 'Export Variant ID',
+                    slug: 'variant_id_slug',
+                    checked: inventory.includes('VARIANT_ID'),
+                    value: 'VARIANT_ID',
+                  },
+                  {
+                    id: 'VARIANT_SKU_ID',
+                    name: 'Export Variant SKU',
+                    slug: 'variant_sku_slug',
+                    checked: inventory.includes('VARIANT_SKU'),
+                    value: 'VARIANT_SKU',
+                  },
+                  {
+                    id: 'VARIANT_WEIGHT_ID',
+                    name: 'Export Variant Weight',
+                    slug: 'variant_weight_slug',
+                    checked: inventory.includes('VARIANT_WEIGHT'),
+                    value: 'VARIANT_WEIGHT',
                   },
                 ]}
               />
