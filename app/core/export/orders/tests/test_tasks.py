@@ -31,9 +31,11 @@ async def test_start_job_for_report(
 
 @pytest.mark.asyncio
 @mock.patch.object(OrderExportMethods, "fetch_response")
-@mock.patch("app.core.export.tasks._continue_job")
+@mock.patch("app.core.export.tasks.finish_job")
+@mock.patch("app.core.export.tasks.continue_job")
 async def test_continue_job_with_empty_cursor(
     m_continue,
+    m_finish,
     m_fetch_response,
     dummy_orders_response_has_no_next,
     db_session,
@@ -46,12 +48,13 @@ async def test_continue_job_with_empty_cursor(
     await continue_job.inner(db_session, export_orders_job.id)
 
     # then
-    assert m_continue.call_count == 0
+    assert m_continue.delay.call_count == 0
+    m_finish.delay.assert_called_once_with(export_orders_job.id)
 
 
 @pytest.mark.asyncio
 @mock.patch.object(OrderExportMethods, "fetch_response")
-@mock.patch("app.core.export.tasks._continue_job")
+@mock.patch("app.core.export.tasks.continue_job")
 async def test_continue_job_with_next_page(
     m_continue,
     m_fetch_response,
@@ -69,5 +72,5 @@ async def test_continue_job_with_next_page(
     refreshed_job = (
         await db_session.exec(select(Job).where(Job.id == export_orders_job.id))
     ).one()
-    assert m_continue.call_count == 1
+    assert m_continue.delay.call_count == 1
     assert refreshed_job.cursor != ""

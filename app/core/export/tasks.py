@@ -7,7 +7,7 @@ from app.celery import database_task
 from app.core.export.fetch import fetch_job_by_id, fetch_report_by_id
 from app.core.export.files import write_partial_result_to_file
 from app.core.export.persist import update_job_cursor
-from app.core.reports.models import ExportObjectTypesEnum, Report
+from app.core.reports.models import ExportObjectTypesEnum, JobStatusesEnum, Report
 
 
 @dataclasses.dataclass
@@ -48,13 +48,6 @@ async def start_job_for_report(
     continue_job.delay(job.id)
 
 
-async def _continue_job(
-    job_id: int,
-):
-    """Use to unit test recursive function"""
-    continue_job.delay(job_id)
-
-
 @database_task
 async def continue_job(
     db: AsyncSession,
@@ -79,4 +72,23 @@ async def continue_job(
 
     # If next page exists, continue export
     if cursor:
-        await _continue_job(job_id)
+        continue_job.delay(job_id)
+    else:
+        finish_job.delay(job_id)
+
+
+@database_task
+async def finish_job(
+    db: AsyncSession,
+    job_id: int,
+):
+    """Post process the generated job file."""
+    job = await fetch_job_by_id(db, job_id)
+    # report = await fetch_report_by_id(db, job.report_id)
+    # Format conversion
+    # ...
+    # Send email to recipients
+    # ...
+    job.status = JobStatusesEnum.SUCCESS
+    db.add(job)
+    await db.commit()
