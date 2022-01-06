@@ -71,7 +71,7 @@ input OrderSelectedColumnsInput {
 
 type PageInfo {
   hasNext: Boolean!
-  endCursor: String!
+  endCursor: String
 }
 
 enum ProductFieldEnum {

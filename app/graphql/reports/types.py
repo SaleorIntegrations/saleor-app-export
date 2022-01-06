@@ -69,7 +69,7 @@ class ReportEdge:
 @strawberry.type
 class PageInfo:
     has_next: bool
-    end_cursor: str
+    end_cursor: Optional[str]
 
 
 @strawberry.type
