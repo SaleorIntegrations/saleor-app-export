@@ -19,7 +19,7 @@ class ExportObjectTypesEnum(str, enum.Enum):
     ORDERS = "orders"
 
 
-class FileTypesEnum(str, enum.Enum):
+class OutputFormatEnum(str, enum.Enum):
     CSV = "csv"
     XLSX = "xlsx"
 
@@ -36,6 +36,7 @@ class Report(SQLModel, table=True):
     name: constr(max_length=255) = Field(default="")
     scope: ExportScopeEnum
     type: ExportObjectTypesEnum
+    format: OutputFormatEnum
     filter_input: dict = Field(sa_column=Column(JSON), default_factory=dict)
     columns: dict = Field(sa_column=Column(JSON), default_factory=dict)
 
