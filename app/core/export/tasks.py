@@ -86,7 +86,9 @@ async def finish_job(
     job = await fetch_job_by_id(db, job_id)
     # report = await fetch_report_by_id(db, job.report_id)
     # Format conversion
-    # ...
+    # if report.format == OutputFormatEnum.CSV:
+    #     csv = pandas.read_csv(job.content_file, delimiter=";")
+    #     csv.to_excel(job.content_file.replace(".csv", ".xlsx"))
     # Send email to recipients
     # ...
     job.status = JobStatusesEnum.SUCCESS

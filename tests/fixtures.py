@@ -4,7 +4,13 @@ import pytest
 
 from app.core.export.orders.fields import OrderFieldEnum, OrderSelectedColumnsInfo
 from app.core.export.products.fields import ProductFieldEnum, ProductSelectedColumnsInfo
-from app.core.reports.models import ExportObjectTypesEnum, ExportScopeEnum, Job, Report
+from app.core.reports.models import (
+    ExportObjectTypesEnum,
+    ExportScopeEnum,
+    Job,
+    OutputFormatEnum,
+    Report,
+)
 
 
 @pytest.fixture
@@ -35,6 +41,7 @@ async def products_report(db_session, product_column_info):
     instance = Report(
         scope=ExportScopeEnum.ALL,
         type=ExportObjectTypesEnum.PRODUCTS,
+        format=OutputFormatEnum.CSV,
         columns=columns,
     )
     db_session.add(instance)
@@ -48,6 +55,7 @@ async def orders_report(db_session, order_column_info):
     instance = Report(
         scope=ExportScopeEnum.ALL,
         type=ExportObjectTypesEnum.ORDERS,
+        format=OutputFormatEnum.CSV,
         columns=columns,
     )
     db_session.add(instance)
@@ -63,6 +71,7 @@ def reports_factory(db_session):
             instance = Report(
                 scope=ExportScopeEnum.ALL,
                 type=ExportObjectTypesEnum.ORDERS,
+                format=OutputFormatEnum.CSV,
             )
             db_session.add(instance)
             instances.append(instance)

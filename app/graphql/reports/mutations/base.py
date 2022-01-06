@@ -7,7 +7,13 @@ from sqlalchemy import delete
 from sqlalchemy.exc import NoResultFound
 
 from app.core.export.fetch import fetch_report_by_id
-from app.core.reports.models import ExportObjectTypesEnum, ExportScopeEnum, Job, Report
+from app.core.reports.models import (
+    ExportObjectTypesEnum,
+    ExportScopeEnum,
+    Job,
+    OutputFormatEnum,
+    Report,
+)
 from app.graphql.reports.responses import (
     DeleteReportResponse,
     ReportError,
@@ -94,6 +100,7 @@ async def mutate_report_base(
             type=type,
             name=input.name,
             scope=ExportScopeEnum.FILTER,
+            format=OutputFormatEnum.CSV,
             filter_input=filter_input,
             columns=columns,
         )
