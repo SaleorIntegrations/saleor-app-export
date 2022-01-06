@@ -1,6 +1,10 @@
 """Date with time (isoformat)"""
 scalar DateTime
 
+type DeleteReportResponse {
+  errors: [ReportError!]!
+}
+
 enum ExportObjectTypesEnum {
   PRODUCTS
   ORDERS
@@ -30,6 +34,7 @@ type Mutation {
   createProductsReport(input: ExportProductsInput!): ReportResponse!
   updateProductsReport(reportId: Int!, input: ExportProductsInput!): ReportResponse!
   runReport(reportId: Int!): RunReportResponse!
+  deleteReport(reportId: Int!): DeleteReportResponse!
 }
 
 enum OrderFieldEnum {

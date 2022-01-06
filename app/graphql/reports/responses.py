@@ -30,3 +30,8 @@ class ReportResponse:
 @strawberry.type
 class RunReportResponse:
     job: Optional[Job]
+
+
+@strawberry.type
+class DeleteReportResponse:
+    errors: List[ReportError] = strawberry.field(default_factory=list)

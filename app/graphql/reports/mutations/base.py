@@ -3,11 +3,17 @@ from json import JSONDecodeError
 from typing import Any, Awaitable, Callable, Optional
 
 from gql.transport.exceptions import TransportQueryError
+from sqlalchemy import delete
 from sqlalchemy.exc import NoResultFound
 
 from app.core.export.fetch import fetch_report_by_id
-from app.core.reports.models import ExportObjectTypesEnum, ExportScopeEnum, Report
-from app.graphql.reports.responses import ReportError, ReportErrorCode, ReportResponse
+from app.core.reports.models import ExportObjectTypesEnum, ExportScopeEnum, Job, Report
+from app.graphql.reports.responses import (
+    DeleteReportResponse,
+    ReportError,
+    ReportErrorCode,
+    ReportResponse,
+)
 
 
 async def mutate_report_base(
@@ -94,3 +100,23 @@ async def mutate_report_base(
     db.add(report)
     await db.commit()
     return ReportResponse(report=report)
+
+
+async def mutate_delete_report(root, info, report_id: int) -> DeleteReportResponse:
+    db = info.context["db"]
+    try:
+        await fetch_report_by_id(db, report_id)
+    except NoResultFound:
+        return DeleteReportResponse(
+            errors=[
+                ReportError(
+                    code=ReportErrorCode.NOT_FOUND,
+                    message="Not found.",
+                    field="reportId",
+                )
+            ]
+        )
+    await db.exec(delete(Job).where(Job.report_id == report_id))
+    await db.exec(delete(Report).where(Report.id == report_id))
+    await db.commit()
+    return DeleteReportResponse()
