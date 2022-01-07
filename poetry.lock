@@ -1196,7 +1196,7 @@ typing-extensions = ">=3.7.4"
 
 [[package]]
 name = "sqlmodel"
-version = "0.0.5"
+version = "0.0.6"
 description = "SQLModel, SQL databases in Python, designed for simplicity, compatibility, and robustness."
 category = "main"
 optional = false
@@ -1407,7 +1407,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "7e3409ac80d7c2c00f4059e56798e71c77693647192bc908bc93875e0c798ce1"
+content-hash = "ca21c7352f3e7199d2c81fab0c855a68b85739dad99df1ee34eb88a3e5633f1b"
 
 [metadata.files]
 aiohttp = [
@@ -2305,8 +2305,8 @@ sqlalchemy2-stubs = [
     {file = "sqlalchemy2_stubs-0.0.2a19-py3-none-any.whl", hash = "sha256:aac7dca77a2c49e5f0934976421d5e25ae4dc5e27db48c01e055f81caa1e3ead"},
 ]
 sqlmodel = [
-    {file = "sqlmodel-0.0.5-py3-none-any.whl", hash = "sha256:bcf083c53b2a94d044ae09d62322401bde5d5b669e8173a0e2a43932b03d99d6"},
-    {file = "sqlmodel-0.0.5.tar.gz", hash = "sha256:72c7ca0f0bbabcba9d03eb707b70761684f8f68e693ea58a89e4238f4d4faf0f"},
+    {file = "sqlmodel-0.0.6-py3-none-any.whl", hash = "sha256:c5fd8719e09da348cd32ce2a5b6a44f289d3029fa8f1c9818229b6f34f1201b4"},
+    {file = "sqlmodel-0.0.6.tar.gz", hash = "sha256:3b4f966b9671b24d85529d274e6c4dbc7753b468e35d2d6a40bd75cad1f66813"},
 ]
 starlette = [
     {file = "starlette-0.14.2-py3-none-any.whl", hash = "sha256:3c8e48e52736b3161e34c9f0e8153b4f32ec5d8995a3ee1d59410d92f75162ed"},

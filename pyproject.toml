@@ -7,7 +7,7 @@ authors = ["Anatolii Serebrianskii <anatolii.serebrianskii@tango.agency>"]
 [tool.poetry.dependencies]
 python = "^3.9"
 celery = "^5.1"
-sqlmodel = "^0.0.5"
+sqlmodel = "^0.0.6"
 strawberry-graphql = "^0.93.21"
 saleor-app-base = {git = "git@github.com:SaleorIntegrations/saleor-app-base.git", rev = "main"}
 greenlet = "^1.1.2"
