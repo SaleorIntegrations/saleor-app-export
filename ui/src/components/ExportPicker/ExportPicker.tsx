@@ -9,21 +9,36 @@ import {
 
 import Surface from '../Surface'
 import Label from '../Label'
+import { FileType } from '../../globalTypes'
 
-export function ExportPicker() {
+interface ExportPickerProps {
+  setFileType: (newFileType: FileType) => void
+  fileType: FileType
+}
+
+export function ExportPicker(props: ExportPickerProps) {
+  const { setFileType, fileType } = props
+
+  const onChange = (
+    _event: React.ChangeEvent<HTMLInputElement>,
+    value: string
+  ) => {
+    setFileType(value as FileType)
+  }
+
   return (
     <Surface>
       <Typography variant="h6">Settings</Typography>
       <Label>FILE EXPORTED</Label>
       <FormControl fullWidth variant="outlined">
-        <RadioGroup name="export">
+        <RadioGroup onChange={onChange} value={fileType} name="export">
           <FormControlLabel
-            value="excel"
+            value={FileType.XLSX}
             control={<Radio />}
             label="Spreadsheet for Excel, Numbers etc."
           />
           <FormControlLabel
-            value="csv"
+            value={FileType.CSV}
             control={<Radio />}
             label="Plain CSV file"
           />

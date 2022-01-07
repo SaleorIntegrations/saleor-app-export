@@ -1,5 +1,6 @@
 import React, { useEffect, useReducer } from 'react'
 import { Typography, Box } from '@material-ui/core'
+import { Skeleton } from '@material-ui/lab'
 import clsx from 'clsx'
 
 import { ProductField, ExportInfo } from '../../globalTypes'
@@ -15,17 +16,22 @@ import Label from '../Label'
 import { initialInformations, informationsReducer } from './reducer'
 import useStyles from './styles'
 
-interface InformationAreaProps {
-  setInformations: (newInformations: ExportInfo) => void
+interface ProductAreaProps {
+  isInformation?: boolean
+  productCount?: number
+  title: string
+  subtitle: string
+  setProoductData: (newInformations: ExportInfo) => void
 }
 
-export function InformationArea(props: InformationAreaProps) {
-  const { setInformations } = props
+export function ProductArea(props: ProductAreaProps) {
+  const { setProoductData, title, subtitle, isInformation, productCount } =
+    props
   const classes = useStyles()
   const [state, dispatch] = useReducer(informationsReducer, initialInformations)
 
   useEffect(() => {
-    setInformations({
+    setProoductData({
       channels: state.channels,
       attributes: state.attributes,
       fields: [
@@ -40,12 +46,12 @@ export function InformationArea(props: InformationAreaProps) {
 
   return (
     <Surface padding={0}>
-      <Box className={clsx(classes.paddingBox, classes.bottomHr)}>
+      <Box
+        className={clsx(classes.paddingBox, isInformation && classes.bottomHr)}
+      >
         <Box paddingBottom={2}>
-          <Typography variant="h5">Information</Typography>
-          <Typography>
-            Select information you want to export from options below.
-          </Typography>
+          <Typography variant="h5">{title}</Typography>
+          <Typography>{subtitle}</Typography>
         </Box>
         <Box className={classes.selectBox}>
           <ModalSelect
@@ -274,12 +280,18 @@ export function InformationArea(props: InformationAreaProps) {
           />
         </Box>
       </Box>
-      <Box className={classes.paddingBox}>
-        <Label>EXPORTED DATA</Label>
-        <Typography>You will be exporting 260 products</Typography>
-      </Box>
+      {isInformation && (
+        <Box className={classes.paddingBox}>
+          <Label>EXPORTED DATA</Label>
+          {!productCount ? (
+            <Skeleton />
+          ) : (
+            <Typography>{`You will be exporting ${productCount} products`}</Typography>
+          )}
+        </Box>
+      )}
     </Surface>
   )
 }
 
-export default InformationArea
+export default ProductArea

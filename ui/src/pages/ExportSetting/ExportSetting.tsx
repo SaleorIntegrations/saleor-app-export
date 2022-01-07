@@ -1,24 +1,23 @@
-import React, { useReducer, useEffect } from 'react'
+import React, { useReducer } from 'react'
 import { Box, Container } from '@material-ui/core'
 
-import Footer from '../../components/Footer'
-import Content from '../../components/Content'
-import ReportType from '../../components/ReportType'
-import ExportPicker from '../../components/ExportPicker'
-import ActionsContainer from '../../components/ActionsContainer'
-import GeneralInformation from '../../components/GeneralInformation'
-import InformationArea from '../../components/InformationArea'
+import {
+  Footer,
+  Content,
+  ReportType,
+  ExportPicker,
+  GeneralInformation,
+  ProductArea,
+} from '../../components'
+import { useProductCountQuery } from '../../api'
 import { initialProductExport, productExportReducer } from './reducer'
 
 export function ExportSetting() {
+  const [productCount] = useProductCountQuery()
   const [state, dispatch] = useReducer(
     productExportReducer,
     initialProductExport
   )
-
-  useEffect(() => {
-    console.log(state)
-  }, [state])
 
   return (
     <Container
@@ -30,8 +29,12 @@ export function ExportSetting() {
           options={
             <>
               <ReportType reportType="Products" />
-              <ExportPicker />
-              <ActionsContainer />
+              <ExportPicker
+                fileType={state.fileType}
+                setFileType={newFileType =>
+                  dispatch({ type: 'SET_FILE_TYPE', fileType: newFileType })
+                }
+              />
             </>
           }
           settings={
@@ -42,8 +45,22 @@ export function ExportSetting() {
                   dispatch({ type: 'SET_NAME', name: e.target.value })
                 }
               />
-              <InformationArea
-                setInformations={newExportInfo =>
+              <ProductArea
+                isInformation
+                productCount={productCount.data?.products.totalCount}
+                title="Information"
+                subtitle="Select information you want to export from options below."
+                setProoductData={newExportInfo =>
+                  dispatch({
+                    type: 'SET_FILTER',
+                    filter: JSON.stringify(newExportInfo),
+                  })
+                }
+              />
+              <ProductArea
+                title="Columns"
+                subtitle="Define columns you want to export in your file"
+                setProoductData={newExportInfo =>
                   dispatch({
                     type: 'SET_EXPORT_INFO',
                     exportInfo: newExportInfo,

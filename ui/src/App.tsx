@@ -17,7 +17,7 @@ function App() {
         {/* <TenantProvider> */}
         <Routes>
           <Route path="/" element={<ReportList />} />
-          <Route path="/setting" element={<ExportSetting />} />
+          <Route path="/export" element={<ExportSetting />} />
         </Routes>
         {/* </TenantProvider> */}
       </ThemeProvider>
