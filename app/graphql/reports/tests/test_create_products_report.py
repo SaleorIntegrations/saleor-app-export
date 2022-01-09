@@ -35,7 +35,7 @@ async def test_create_products_report(graphql):
             },
             "name": name,
             "recipients": {
-                "users": [],
+                "users": ["User:1"],
                 "permissionGroups": [],
             },
         }
@@ -59,7 +59,7 @@ async def test_export_products_without_optional_columns(db_session, graphql):
                 "fields": ["ID", "VARIANT_ID"],
             },
             "recipients": {
-                "users": [],
+                "users": ["User:1"],
                 "permissionGroups": [],
             },
         }
@@ -93,7 +93,7 @@ async def test_export_products_wit_related_columns(db_session, graphql):
                 "attributes": attribute_ids,
             },
             "recipients": {
-                "users": [],
+                "users": ["User:1"],
                 "permissionGroups": [],
             },
         }
@@ -122,7 +122,7 @@ async def test_export_products_exceeds_column_limit(graphql, input_field):
                 input_field: [str(i) for i in range(101)],
             },
             "recipients": {
-                "users": [],
+                "users": ["User:1"],
                 "permissionGroups": [],
             },
         }
@@ -145,7 +145,7 @@ async def test_export_products_invalid_filter_json(graphql):
             "columns": {"fields": ["ID", "VARIANT_ID"]},
             "filter": {"filterStr": "{not a real json}"},
             "recipients": {
-                "users": [],
+                "users": ["User:1"],
                 "permissionGroups": [],
             },
         },
@@ -170,7 +170,7 @@ async def test_export_products_remote_graphql_error(m_fetch, graphql):
             "columns": {"fields": ["ID", "VARIANT_ID"]},
             "filter": {"filterStr": '{"notReal": "but json"}'},
             "recipients": {
-                "users": [],
+                "users": ["User:1"],
                 "permissionGroups": [],
             },
         },
@@ -183,3 +183,24 @@ async def test_export_products_remote_graphql_error(m_fetch, graphql):
     error = result["data"]["createProductsReport"]["errors"][0]
     assert error["code"] == "INVALID_FILTER"
     assert error["message"] == msg
+
+
+@pytest.mark.asyncio
+async def test_export_products_no_recipients(graphql):
+    # given
+    variables = {
+        "input": {
+            "columns": {"fields": ["ID", "VARIANT_ID"]},
+            "recipients": {
+                "users": [],
+                "permissionGroups": [],
+            },
+        },
+    }
+
+    # when
+    result = await graphql.execute(MUTATION_EXPORT_PRODUCTS, variables)
+
+    # then
+    error = result["data"]["createProductsReport"]["errors"][0]
+    assert error["code"] == "NO_RECIPIENTS"

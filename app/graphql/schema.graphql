@@ -157,6 +157,7 @@ enum ReportErrorCode {
   INVALID_TYPE
   INVALID_FILTER
   LIMIT_EXCEEDED
+  NO_RECIPIENTS
 }
 
 type ReportResponse {

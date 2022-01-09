@@ -50,7 +50,7 @@ async def test_update_orders_report(m_fetch, graphql, orders_report, db_session)
             },
             "name": name,
             "recipients": {
-                "users": [],
+                "users": ["User:1"],
                 "permissionGroups": [],
             },
         },
@@ -79,7 +79,7 @@ async def test_update_orders_report_invalid_type(graphql, products_report, db_se
                 "fields": ["ID"],
             },
             "recipients": {
-                "users": [],
+                "users": ["User:1"],
                 "permissionGroups": [],
             },
         },

@@ -8,6 +8,7 @@ from sqlalchemy import delete
 from sqlalchemy.exc import NoResultFound
 
 from app.core.export.fetch import fetch_report_by_id
+from app.core.export.fields import RecipientInfo
 from app.core.export.fields import RecipientInfo as RecipientInfoModel
 from app.core.reports.models import (
     ExportObjectTypesEnum,
@@ -71,6 +72,18 @@ async def mutate_report_base(
                     )
                 ]
             )
+
+    recipients: RecipientInfo = input.recipients
+    if not any([recipients.users, recipients.permission_groups]):
+        return ReportResponse(
+            errors=[
+                ReportError(
+                    code=ReportErrorCode.NO_RECIPIENTS,
+                    message="At least 1 recipient is needed",
+                    field="recipients",
+                )
+            ]
+        )
 
     filter_input = {}
     if input.filter:

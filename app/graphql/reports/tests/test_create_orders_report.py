@@ -32,7 +32,7 @@ async def test_crete_orders_report(graphql):
             "columns": {"fields": ["ID", "NUMBER"]},
             "name": name,
             "recipients": {
-                "users": [],
+                "users": ["User:1"],
                 "permissionGroups": [],
             },
         }
@@ -55,7 +55,7 @@ async def test_export_orders_invalid_filter_json(graphql):
             "columns": {"fields": ["ID", "NUMBER"]},
             "filter": {"filterStr": "{not a real json}"},
             "recipients": {
-                "users": [],
+                "users": ["User:1"],
                 "permissionGroups": [],
             },
         },
@@ -80,7 +80,7 @@ async def test_export_orders_remote_graphql_error(m_fetch, graphql):
             "columns": {"fields": ["ID", "NUMBER"]},
             "filter": {"filterStr": '{"notReal": "but json"}'},
             "recipients": {
-                "users": [],
+                "users": ["User:1"],
                 "permissionGroups": [],
             },
         },
@@ -93,3 +93,24 @@ async def test_export_orders_remote_graphql_error(m_fetch, graphql):
     error = result["data"]["createOrdersReport"]["errors"][0]
     assert error["code"] == "INVALID_FILTER"
     assert error["message"] == msg
+
+
+@pytest.mark.asyncio
+async def test_export_orders_no_recipients(graphql):
+    # given
+    variables = {
+        "input": {
+            "columns": {"fields": ["ID", "NUMBER"]},
+            "recipients": {
+                "users": [],
+                "permissionGroups": [],
+            },
+        },
+    }
+
+    # when
+    result = await graphql.execute(MUTATION_EXPORT_ORDERS, variables)
+
+    # then
+    error = result["data"]["createOrdersReport"]["errors"][0]
+    assert error["code"] == "NO_RECIPIENTS"
