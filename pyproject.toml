@@ -12,6 +12,7 @@ strawberry-graphql = "^0.93.21"
 saleor-app-base = {git = "git@github.com:SaleorIntegrations/saleor-app-base.git", rev = "main"}
 greenlet = "^1.1.2"
 asgiref = "^3.4.1"
+redis = "^4.1.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.5"
