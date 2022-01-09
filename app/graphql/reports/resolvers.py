@@ -39,6 +39,12 @@ async def resolve_report_columns(root: Report, info):
         return fetch_product_columns_info(root)
 
 
+async def resolve_report_recipients(root: Report, info):
+    from app.graphql.reports.types import RecipientInfo
+
+    return RecipientInfo()
+
+
 async def resolve_job_report(root: Job, info):
     # TODO: use dataloader
     db = info.context["db"]

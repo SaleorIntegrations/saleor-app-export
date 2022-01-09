@@ -12,14 +12,20 @@ enum ExportObjectTypesEnum {
 
 input ExportOrdersInput {
   columns: OrderSelectedColumnsInput!
+  recipients: RecipientInfoInput!
   name: String = ""
-  filter: OrderFilterInfo = null
+  filter: FilterInfoInput = null
 }
 
 input ExportProductsInput {
   columns: ProductSelectedColumnsInput!
+  recipients: RecipientInfoInput!
   name: String = ""
-  filter: ProductFilterInfo = null
+  filter: FilterInfoInput = null
+}
+
+input FilterInfoInput {
+  filterStr: String!
 }
 
 type Job {
@@ -62,10 +68,6 @@ enum OrderFieldEnum {
   TRACKING_NUMBER
 }
 
-input OrderFilterInfo {
-  filterStr: String!
-}
-
 type OrderSelectedColumnsInfo {
   fields: [OrderFieldEnum!]!
 }
@@ -95,10 +97,6 @@ enum ProductFieldEnum {
   VARIANT_MEDIA
 }
 
-input ProductFilterInfo {
-  filterStr: String!
-}
-
 type ProductSelectedColumnsInfo {
   fields: [ProductFieldEnum!]!
   attributes: [String!]
@@ -119,12 +117,23 @@ type Query {
   reports(first: Int!, after: String = null): ReportConnection!
 }
 
+type RecipientInfo {
+  users: [String!]
+  permissionGroups: [String!]
+}
+
+input RecipientInfoInput {
+  users: [String!] = []
+  permissionGroups: [String!] = []
+}
+
 type Report {
   id: Int!
   name: String!
   type: ExportObjectTypesEnum!
   filter: String
   columns: SelectedColumnsInfo!
+  recipients: RecipientInfo!
 }
 
 type ReportConnection {

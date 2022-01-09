@@ -2,11 +2,13 @@ import json
 from json import JSONDecodeError
 from typing import Any, Awaitable, Callable, Optional
 
+import strawberry
 from gql.transport.exceptions import TransportQueryError
 from sqlalchemy import delete
 from sqlalchemy.exc import NoResultFound
 
 from app.core.export.fetch import fetch_report_by_id
+from app.core.export.fields import RecipientInfo as RecipientInfoModel
 from app.core.reports.models import (
     ExportObjectTypesEnum,
     ExportScopeEnum,
@@ -20,6 +22,16 @@ from app.graphql.reports.responses import (
     ReportErrorCode,
     ReportResponse,
 )
+
+
+@strawberry.input
+class FilterInfoInput:
+    filter_str: str
+
+
+@strawberry.experimental.pydantic.input(model=RecipientInfoModel, all_fields=True)
+class RecipientInfoInput:
+    pass
 
 
 async def mutate_report_base(

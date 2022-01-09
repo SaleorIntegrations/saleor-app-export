@@ -31,6 +31,10 @@ async def test_crete_orders_report(graphql):
         "input": {
             "columns": {"fields": ["ID", "NUMBER"]},
             "name": name,
+            "recipients": {
+                "users": [],
+                "permissionGroups": [],
+            },
         }
     }
 
@@ -50,6 +54,10 @@ async def test_export_orders_invalid_filter_json(graphql):
         "input": {
             "columns": {"fields": ["ID", "NUMBER"]},
             "filter": {"filterStr": "{not a real json}"},
+            "recipients": {
+                "users": [],
+                "permissionGroups": [],
+            },
         },
     }
 
@@ -71,6 +79,10 @@ async def test_export_orders_remote_graphql_error(m_fetch, graphql):
         "input": {
             "columns": {"fields": ["ID", "NUMBER"]},
             "filter": {"filterStr": '{"notReal": "but json"}'},
+            "recipients": {
+                "users": [],
+                "permissionGroups": [],
+            },
         },
     }
 

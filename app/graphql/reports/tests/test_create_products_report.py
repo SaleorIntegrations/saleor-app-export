@@ -34,6 +34,10 @@ async def test_create_products_report(graphql):
                 "fields": ["ID", "VARIANT_ID"],
             },
             "name": name,
+            "recipients": {
+                "users": [],
+                "permissionGroups": [],
+            },
         }
     }
 
@@ -53,6 +57,10 @@ async def test_export_products_without_optional_columns(db_session, graphql):
         "input": {
             "columns": {
                 "fields": ["ID", "VARIANT_ID"],
+            },
+            "recipients": {
+                "users": [],
+                "permissionGroups": [],
             },
         }
     }
@@ -84,6 +92,10 @@ async def test_export_products_wit_related_columns(db_session, graphql):
                 "warehouses": warehouse_ids,
                 "attributes": attribute_ids,
             },
+            "recipients": {
+                "users": [],
+                "permissionGroups": [],
+            },
         }
     }
 
@@ -109,6 +121,10 @@ async def test_export_products_exceeds_column_limit(graphql, input_field):
                 "fields": ["ID", "VARIANT_ID"],
                 input_field: [str(i) for i in range(101)],
             },
+            "recipients": {
+                "users": [],
+                "permissionGroups": [],
+            },
         }
     }
 
@@ -128,6 +144,10 @@ async def test_export_products_invalid_filter_json(graphql):
         "input": {
             "columns": {"fields": ["ID", "VARIANT_ID"]},
             "filter": {"filterStr": "{not a real json}"},
+            "recipients": {
+                "users": [],
+                "permissionGroups": [],
+            },
         },
     }
 
@@ -149,6 +169,10 @@ async def test_export_products_remote_graphql_error(m_fetch, graphql):
         "input": {
             "columns": {"fields": ["ID", "VARIANT_ID"]},
             "filter": {"filterStr": '{"notReal": "but json"}'},
+            "recipients": {
+                "users": [],
+                "permissionGroups": [],
+            },
         },
     }
 

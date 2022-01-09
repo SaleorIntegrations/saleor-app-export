@@ -3,6 +3,7 @@ from typing import List, Optional
 
 import strawberry
 
+from app.core.export.fields import RecipientInfo as RecipientInfoModel
 from app.core.export.orders.fields import (
     OrderSelectedColumnsInfo as OrderSelectedColumnsInfoModel,
 )
@@ -16,10 +17,16 @@ from app.graphql.reports.resolvers import (
     resolve_report_edges,
     resolve_report_filter,
     resolve_report_page_info,
+    resolve_report_recipients,
     resolve_reports_count,
 )
 
 ReportTypes = strawberry.enum(ExportObjectTypesEnum)
+
+
+@strawberry.experimental.pydantic.type(model=RecipientInfoModel, all_fields=True)
+class RecipientInfo:
+    pass
 
 
 @strawberry.experimental.pydantic.type(
@@ -52,6 +59,7 @@ class Report:
     type: ReportTypes
     filter: Optional[str] = strawberry.field(resolve_report_filter)
     columns: SelectedColumnsInfo = strawberry.field(resolve_report_columns)
+    recipients: RecipientInfo = strawberry.field(resolve_report_recipients)
 
 
 @strawberry.type
