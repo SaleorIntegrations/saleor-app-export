@@ -8,7 +8,7 @@ from app.core.export.orders.fields import (
     OrderSelectedColumnsInfo as OrderSelectedColumnsInfoModel,
 )
 from app.core.reports.models import ExportObjectTypesEnum
-from app.graphql.reports.mutations.base import mutate_export_base
+from app.graphql.reports.mutations.base import mutate_report_base
 
 OrderFieldEnum = strawberry.enum(OrderFields)
 
@@ -16,7 +16,7 @@ OrderFieldEnum = strawberry.enum(OrderFields)
 @strawberry.experimental.pydantic.input(
     model=OrderSelectedColumnsInfoModel, all_fields=True
 )
-class OrderSelectedColumnsInfo:
+class OrderSelectedColumnsInput:
     pass
 
 
@@ -27,16 +27,37 @@ class OrderFilterInfo:
 
 @strawberry.input
 class ExportOrdersInput:
-    columns: OrderSelectedColumnsInfo
+    columns: OrderSelectedColumnsInput
+    name: Optional[str] = ""
     filter: Optional[OrderFilterInfo] = None
 
 
-async def mutate_export_orders(root, input: ExportOrdersInput, info):
-    """Mutation for triggering the orders export process."""
-    return await mutate_export_base(
+async def mutate_order_report_base(
+    root,
+    input,
+    info,
+    report_id: Optional[int] = None,
+):
+    """Common base for creating and updating order reports."""
+    return await mutate_report_base(
         root,
         input,
         info,
         fetch_orders_response,
         ExportObjectTypesEnum.ORDERS,
+        report_id,
     )
+
+
+async def mutate_create_orders_report(root, input: ExportOrdersInput, info):
+    return await mutate_order_report_base(
+        root,
+        input,
+        info,
+    )
+
+
+async def mutate_update_orders_report(
+    root, report_id: int, input: ExportOrdersInput, info
+):
+    return await mutate_order_report_base(root, input, info, report_id)

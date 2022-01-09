@@ -1,18 +1,13 @@
+from typing import Optional
+
 import strawberry
-from strawberry.types import Info
 
-from .reports.resolvers import resolve_report
-from .reports.types import Report, ReportConnection
-
-
-class empty:
-    pass
+from .reports.resolvers import resolve_job, resolve_report, resolve_reports
+from .reports.types import Job, Report, ReportConnection
 
 
 @strawberry.type
 class Query:
-    report: Report = strawberry.field(resolve_report)
-
-    @strawberry.field
-    async def reports(self, info: Info) -> ReportConnection:
-        return empty
+    report: Optional[Report] = strawberry.field(resolve_report)
+    job: Optional[Job] = strawberry.field(resolve_job)
+    reports: ReportConnection = strawberry.field(resolve_reports)

@@ -1,12 +1,8 @@
-enum ExportError {
-  INVALID_FILTER
-  LIMIT_EXCEEDED
-}
+"""Date with time (isoformat)"""
+scalar DateTime
 
-type ExportErrorResponse {
-  code: ExportError!
-  message: String!
-  field: String!
+type DeleteReportResponse {
+  errors: [ReportError!]!
 }
 
 enum ExportObjectTypesEnum {
@@ -15,20 +11,30 @@ enum ExportObjectTypesEnum {
 }
 
 input ExportOrdersInput {
-  columns: OrderSelectedColumnsInfo!
+  columns: OrderSelectedColumnsInput!
+  name: String = ""
   filter: OrderFilterInfo = null
 }
 
 input ExportProductsInput {
-  columns: ProductSelectedColumnsInfo!
+  columns: ProductSelectedColumnsInput!
+  name: String = ""
   filter: ProductFilterInfo = null
 }
 
-union ExportResponse = Report | ExportErrorResponse
+type Job {
+  id: Int!
+  createdAt: DateTime!
+  report: Report!
+}
 
 type Mutation {
-  exportOrders(input: ExportOrdersInput!): ExportResponse!
-  exportProducts(input: ExportProductsInput!): ExportResponse!
+  createOrdersReport(input: ExportOrdersInput!): ReportResponse!
+  updateOrdersReport(reportId: Int!, input: ExportOrdersInput!): ReportResponse!
+  createProductsReport(input: ExportProductsInput!): ReportResponse!
+  updateProductsReport(reportId: Int!, input: ExportProductsInput!): ReportResponse!
+  runReport(reportId: Int!): RunReportResponse!
+  deleteReport(reportId: Int!): DeleteReportResponse!
 }
 
 enum OrderFieldEnum {
@@ -60,8 +66,17 @@ input OrderFilterInfo {
   filterStr: String!
 }
 
-input OrderSelectedColumnsInfo {
+type OrderSelectedColumnsInfo {
   fields: [OrderFieldEnum!]!
+}
+
+input OrderSelectedColumnsInput {
+  fields: [OrderFieldEnum!]!
+}
+
+type PageInfo {
+  hasNext: Boolean!
+  endCursor: String
 }
 
 enum ProductFieldEnum {
@@ -84,7 +99,14 @@ input ProductFilterInfo {
   filterStr: String!
 }
 
-input ProductSelectedColumnsInfo {
+type ProductSelectedColumnsInfo {
+  fields: [ProductFieldEnum!]!
+  attributes: [String!]
+  warehouses: [String!]
+  channels: [String!]
+}
+
+input ProductSelectedColumnsInput {
   fields: [ProductFieldEnum!]!
   attributes: [String!] = []
   warehouses: [String!] = []
@@ -92,21 +114,49 @@ input ProductSelectedColumnsInfo {
 }
 
 type Query {
-  report(id: Int!): Report!
-  reports: ReportConnection!
+  report(id: Int!): Report
+  job(id: Int!): Job
+  reports(first: Int!, after: String = null): ReportConnection!
 }
 
 type Report {
   id: Int!
+  name: String!
   type: ExportObjectTypesEnum!
+  filter: String
+  columns: SelectedColumnsInfo!
 }
 
 type ReportConnection {
   edges: [ReportEdge!]!
+  pageInfo: PageInfo!
   totalCount: Int!
 }
 
 type ReportEdge {
   node: Report!
-  cursor: String!
 }
+
+type ReportError {
+  code: ReportErrorCode!
+  message: String!
+  field: String!
+}
+
+enum ReportErrorCode {
+  NOT_FOUND
+  INVALID_TYPE
+  INVALID_FILTER
+  LIMIT_EXCEEDED
+}
+
+type ReportResponse {
+  report: Report
+  errors: [ReportError!]!
+}
+
+type RunReportResponse {
+  job: Job
+}
+
+union SelectedColumnsInfo = ProductSelectedColumnsInfo | OrderSelectedColumnsInfo

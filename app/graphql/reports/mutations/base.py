@@ -1,33 +1,78 @@
 import json
 from json import JSONDecodeError
-from typing import Any, Awaitable, Callable
+from typing import Any, Awaitable, Callable, Optional
 
 from gql.transport.exceptions import TransportQueryError
+from sqlalchemy import delete
+from sqlalchemy.exc import NoResultFound
 
-from app.core.export.tasks import init_export_for_report
-from app.core.reports.models import ExportObjectTypesEnum, ExportScopeEnum, Report
-from app.graphql.reports import types
-from app.graphql.reports.types import ExportError, ExportErrorResponse
+from app.core.export.fetch import fetch_report_by_id
+from app.core.reports.models import (
+    ExportObjectTypesEnum,
+    ExportScopeEnum,
+    Job,
+    OutputFormatEnum,
+    Report,
+)
+from app.graphql.reports.responses import (
+    DeleteReportResponse,
+    ReportError,
+    ReportErrorCode,
+    ReportResponse,
+)
 
 
-async def mutate_export_base(
+async def mutate_report_base(
     root,
     input,
     info,
     fetch_response: Callable[[Any, str, dict], Awaitable],
     type: ExportObjectTypesEnum,
+    report_id: Optional[int] = None,
 ):
-    """Mutation for triggering the orders export process."""
+    """Common base for creating and updating reports."""
+
+    db = info.context["db"]
+    if report_id:
+        try:
+            report = await fetch_report_by_id(db, report_id)
+        except NoResultFound:
+            return ReportResponse(
+                errors=[
+                    ReportError(
+                        code=ReportErrorCode.NOT_FOUND,
+                        message="Report with given id not found",
+                        field="reportId",
+                    )
+                ]
+            )
+
+        if report.type != type:
+            return ReportResponse(
+                errors=[
+                    ReportError(
+                        code=ReportErrorCode.INVALID_TYPE,
+                        message=(
+                            "This mutation cannot be used for reports of this type."
+                        ),
+                        field="reportId",
+                    )
+                ]
+            )
 
     filter_input = {}
     if input.filter:
         try:
             filter_input = json.loads(input.filter.filter_str)
         except JSONDecodeError:
-            return ExportErrorResponse(
-                code=ExportError.INVALID_FILTER,
-                message="Provided `filterStr` contains invalid JSON.",
-                field="filterStr",
+            return ReportResponse(
+                errors=[
+                    ReportError(
+                        code=ReportErrorCode.INVALID_FILTER,
+                        message="Provided `filterStr` contains invalid JSON.",
+                        field="filterStr",
+                    )
+                ]
             )
 
     column_info = input.columns.to_pydantic()
@@ -35,23 +80,50 @@ async def mutate_export_base(
         try:
             await fetch_response(column_info, "", filter_input)
         except TransportQueryError as e:
-            return ExportErrorResponse(
-                code=ExportError.INVALID_FILTER,
-                message=str(e),
-                field="filterStr",
+            return ReportResponse(
+                errors=[
+                    ReportError(
+                        code=ReportErrorCode.INVALID_FILTER,
+                        message=str(e),
+                        field="filterStr",
+                    )
+                ]
             )
 
-    db = info.context["db"]
-    report = Report(
-        type=type,
-        scope=ExportScopeEnum.FILTER,
-        filter_input=filter_input,
-        columns=json.loads(column_info.json()),
-    )
+    columns = json.loads(column_info.json())
+    if report_id:
+        report.name = input.name
+        report.filter_input = filter_input
+        report.columns = columns
+    else:
+        report = Report(
+            type=type,
+            name=input.name,
+            scope=ExportScopeEnum.FILTER,
+            format=OutputFormatEnum.CSV,
+            filter_input=filter_input,
+            columns=columns,
+        )
     db.add(report)
     await db.commit()
-    init_export_for_report.delay(report.id)
-    return types.Report(
-        id=report.id,
-        type=report.type,
-    )
+    return ReportResponse(report=report)
+
+
+async def mutate_delete_report(root, info, report_id: int) -> DeleteReportResponse:
+    db = info.context["db"]
+    try:
+        await fetch_report_by_id(db, report_id)
+    except NoResultFound:
+        return DeleteReportResponse(
+            errors=[
+                ReportError(
+                    code=ReportErrorCode.NOT_FOUND,
+                    message="Not found.",
+                    field="reportId",
+                )
+            ]
+        )
+    await db.exec(delete(Job).where(Job.report_id == report_id))
+    await db.exec(delete(Report).where(Report.id == report_id))
+    await db.commit()
+    return DeleteReportResponse()

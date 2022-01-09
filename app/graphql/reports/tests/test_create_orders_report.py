@@ -7,13 +7,13 @@ from app.core.reports.models import ExportObjectTypesEnum
 
 MUTATION_EXPORT_ORDERS = """
 mutation OrdersExport($input: ExportOrdersInput!) {
-    exportOrders (input: $input) {
-        __typename
-        ...  on Report {
+    createOrdersReport (input: $input) {
+        report {
             id
+            name
             type
         }
-        ... on  ExportErrorResponse{
+        errors {
             code
             message
             field
@@ -24,20 +24,27 @@ mutation OrdersExport($input: ExportOrdersInput!) {
 
 
 @pytest.mark.asyncio
-@mock.patch("app.graphql.reports.mutations.base.init_export_for_report")
-async def test_export_orders_schedules_task(m_task, graphql):
+async def test_crete_orders_report(graphql):
     # given
-    variables = {"input": {"columns": {"fields": ["ID", "NUMBER"]}}}
+    name = "My report 12"
+    variables = {
+        "input": {
+            "columns": {"fields": ["ID", "NUMBER"]},
+            "name": name,
+        }
+    }
+
     # when
     result = await graphql.execute(MUTATION_EXPORT_ORDERS, variables)
+
     # then
-    assert result["data"]["exportOrders"]["type"] == ExportObjectTypesEnum.ORDERS.name
-    assert m_task.delay.call_count == 1
+    report = result["data"]["createOrdersReport"]["report"]
+    assert report["type"] == ExportObjectTypesEnum.ORDERS.name
+    assert report["name"] == name
 
 
 @pytest.mark.asyncio
-@mock.patch("app.graphql.reports.mutations.base.init_export_for_report")
-async def test_export_orders_invalid_filter_json(m_task, graphql):
+async def test_export_orders_invalid_filter_json(graphql):
     # given
     variables = {
         "input": {
@@ -45,17 +52,18 @@ async def test_export_orders_invalid_filter_json(m_task, graphql):
             "filter": {"filterStr": "{not a real json}"},
         },
     }
+
     # when
     result = await graphql.execute(MUTATION_EXPORT_ORDERS, variables)
+
     # then
-    assert result["data"]["exportOrders"]["code"] == "INVALID_FILTER"
-    assert m_task.delay.call_count == 0
+    error = result["data"]["createOrdersReport"]["errors"][0]
+    assert error["code"] == "INVALID_FILTER"
 
 
 @pytest.mark.asyncio
 @mock.patch("app.graphql.reports.mutations.orders.fetch_orders_response")
-@mock.patch("app.graphql.reports.mutations.base.init_export_for_report")
-async def test_export_orders_remote_graphql_error(m_task, m_fetch, graphql):
+async def test_export_orders_remote_graphql_error(m_fetch, graphql):
     # given
     msg = "remote error"
     m_fetch.side_effect = TransportQueryError(msg)
@@ -65,9 +73,11 @@ async def test_export_orders_remote_graphql_error(m_task, m_fetch, graphql):
             "filter": {"filterStr": '{"notReal": "but json"}'},
         },
     }
+
     # when
     result = await graphql.execute(MUTATION_EXPORT_ORDERS, variables)
+
     # then
-    assert result["data"]["exportOrders"]["code"] == "INVALID_FILTER"
-    assert result["data"]["exportOrders"]["message"] == msg
-    assert m_task.delay.call_count == 0
+    error = result["data"]["createOrdersReport"]["errors"][0]
+    assert error["code"] == "INVALID_FILTER"
+    assert error["message"] == msg
