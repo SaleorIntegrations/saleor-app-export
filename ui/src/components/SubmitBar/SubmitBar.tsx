@@ -14,17 +14,25 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-export function Footer() {
+interface SubmitBarProps {
+  onSaveAndExport: () => void
+  onExport: () => void
+}
+
+export function SubmitBar(props: SubmitBarProps) {
+  const { onSaveAndExport, onExport } = props
   const classes = useStyles()
 
   return (
     <Paper className={classes.root}>
-      <Button variant="outlined">Save & Export</Button>
-      <Button variant="contained" color="primary">
+      <Button onClick={onSaveAndExport} variant="outlined">
+        Save & Export
+      </Button>
+      <Button onClick={onExport} variant="contained" color="primary">
         Export
       </Button>
     </Paper>
   )
 }
 
-export default Footer
+export default SubmitBar

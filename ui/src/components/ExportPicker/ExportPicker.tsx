@@ -34,12 +34,12 @@ export function ExportPicker(props: ExportPickerProps) {
         <RadioGroup onChange={onChange} value={fileType} name="export">
           <FormControlLabel
             value={FileType.XLSX}
-            control={<Radio />}
+            control={<Radio color="primary" />}
             label="Spreadsheet for Excel, Numbers etc."
           />
           <FormControlLabel
             value={FileType.CSV}
-            control={<Radio />}
+            control={<Radio color="primary" />}
             label="Plain CSV file"
           />
         </RadioGroup>

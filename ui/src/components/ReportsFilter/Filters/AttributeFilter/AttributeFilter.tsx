@@ -5,7 +5,7 @@ import { TextField } from '@material-ui/core'
 import { Filter, Option } from '../Filter'
 import useStyles from '../styles'
 import { Filter as FilterType, ReducerAction } from '../../FilterButton/reducer'
-import { useSearchAttributeValuesQuery } from '../../../../api/attributesValues'
+import { useSearchAttributeValuesQuery } from '../../../../api/queries/saleor/attributesValues'
 
 export interface AttributeFilterProps {
   filter: FilterType

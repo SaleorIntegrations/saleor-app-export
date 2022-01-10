@@ -1,10 +1,10 @@
 import React from 'react'
 import { Provider as QLClientProvider } from 'urql'
-import { TenantProvider } from 'saleor-app-ui'
+// import { TenantProvider } from 'saleor-app-ui'
 import { ThemeProvider } from '@saleor/macaw-ui'
 import { Routes, Route } from 'react-router-dom'
 
-import ExportSetting from './pages/ExportSetting'
+import Export from './pages/Export'
 import ReportList from './pages/ReportList'
 
 import apiClient from './api/apiClient'
@@ -17,7 +17,7 @@ function App() {
         {/* <TenantProvider> */}
         <Routes>
           <Route path="/" element={<ReportList />} />
-          <Route path="/export" element={<ExportSetting />} />
+          <Route path="/export" element={<Export />} />
         </Routes>
         {/* </TenantProvider> */}
       </ThemeProvider>

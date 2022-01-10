@@ -1,10 +1,11 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useLayoutEffect, useState } from 'react'
 import { Skeleton } from '@material-ui/lab'
 import produce from 'immer'
 
 import ModalSetting, { ModalOption } from '../ModalSetting'
 import SearchInput from '../../SearchInput'
-import { useQuerySearchAttributes } from '../../../api/searchAttributes'
+import { useQuerySearchAttributes } from '../../../api/queries/saleor/searchAttributes'
 
 interface AttributeSettingModalProps {
   attributes: string[]

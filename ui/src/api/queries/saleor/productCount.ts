@@ -1,7 +1,5 @@
 import { useQuery } from 'urql'
 
-import { ProductFilterInput } from '../globalTypes'
-
 const apiQuery = `
   query ProductCount($filter: ProductFilterInput, $channel: String) {
     products(filter: $filter, channel: $channel) {
@@ -19,7 +17,6 @@ interface ProductCountQuery {
 }
 
 interface Variables {
-  filter?: ProductFilterInput
   channel?: string
 }
 

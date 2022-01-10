@@ -1,8 +1,9 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react'
 
 import ModalSetting, { ModalOption } from '../ModalSetting'
 import SearchInput from '../../SearchInput'
-import { useQueryBaseChannels } from '../../../api/channels'
+import { useQueryBaseChannels } from '../../../api/queries/saleor/channels'
 
 interface ChannelSettingModalProps {
   channels: string[]

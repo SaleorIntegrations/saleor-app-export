@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useReducer } from 'react'
 import { Typography, Box } from '@material-ui/core'
 import { Skeleton } from '@material-ui/lab'
