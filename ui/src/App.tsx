@@ -5,7 +5,7 @@ import { ThemeProvider } from '@saleor/macaw-ui'
 import { Routes, Route } from 'react-router-dom'
 
 import Export from './pages/Export'
-import ReportList from './pages/ReportList'
+import RaportList from './pages/RaportList'
 
 import apiClient from './api/apiClient'
 import './App.css'
@@ -16,7 +16,7 @@ function App() {
       <ThemeProvider>
         {/* <TenantProvider> */}
         <Routes>
-          <Route path="/" element={<ReportList />} />
+          <Route path="/" element={<RaportList />} />
           <Route path="/export" element={<Export />} />
         </Routes>
         {/* </TenantProvider> */}

@@ -1,25 +1,55 @@
-import React, { useState } from 'react'
+import React, { useEffect, useReducer } from 'react'
 import { Paper } from '@material-ui/core'
 
 import TableHeader from '../../components/TableHeader'
-import ReportTable from '../../components/ReportTable'
-import ReportsFilter from '../../components/ReportsFilter'
+import RaportTable from '../../components/RaportTable'
+import { raportsReducer, initialRaports } from './reducer'
 
-export function ReportList() {
-  const [reports, setReports] = useState(
-    data.map(d => ({ ...d, isSelected: false }))
-  )
+export function RaportList() {
+  const [state, dispatch] = useReducer(raportsReducer, initialRaports)
+
+  useEffect(() => {
+    dispatch({
+      type: 'SET_RAPORTS',
+      raports: data.map(d => ({ ...d, id: parseInt(d.id), isSelected: false })),
+    })
+  }, [])
+
+  useEffect(() => {
+    console.log(state)
+  }, [state])
 
   return (
     <Paper>
       <TableHeader />
-      <ReportsFilter />
-      <ReportTable reports={reports} setReports={setReports} />
+      <RaportTable
+        deleteSelectedRaports={() => alert('delete selected')}
+        deleteRaport={id => alert(`delete ${id}`)}
+        unselectAllRaports={() => dispatch({ type: 'UNSELECT_ALL' })}
+        selectAllRaports={() => dispatch({ type: 'SELECT_ALL' })}
+        toggleRaport={id => dispatch({ type: 'TOGGLE_RAPORT', id: id })}
+        raports={state.raports}
+        count={state.raports.length}
+        page={state.navigation.page}
+        setPage={page =>
+          dispatch({
+            type: 'SET_NAVIGATION',
+            navigation: { ...state.navigation, page: page },
+          })
+        }
+        rowsPerPage={state.navigation.first}
+        setRowsPerPage={rowsPerPage => {
+          dispatch({
+            type: 'SET_NAVIGATION',
+            navigation: { ...state.navigation, first: rowsPerPage, page: 0 },
+          })
+        }}
+      />
     </Paper>
   )
 }
 
-export default ReportList
+export default RaportList
 
 const data = [
   { id: '1', name: 'Quarterly sales', entity: 'Orders', recipients: 20 },

@@ -15,7 +15,7 @@ import { Delete as DeleteIcon } from '@material-ui/icons'
 import { Order, headCells } from '../utils'
 import useStyles from '../styles'
 
-interface ReportTableHeaderProps {
+interface RaportTableHeaderProps {
   numSelected: number
   rowCount: number
   onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void
@@ -30,7 +30,7 @@ interface ReportTableHeaderProps {
   ) => void
 }
 
-export function ReportTableHeader(props: ReportTableHeaderProps) {
+export function RaportTableHeader(props: RaportTableHeaderProps) {
   const classes = useStyles()
   const {
     numSelected,
@@ -89,4 +89,4 @@ export function ReportTableHeader(props: ReportTableHeaderProps) {
   )
 }
 
-export default ReportTableHeader
+export default RaportTableHeader

@@ -38,3 +38,11 @@ export interface ExportInfo {
   fields: ProductField[]
   warehouses: string[]
 }
+
+export interface TableRaport {
+  id: number
+  name: string
+  entity: string
+  recipients: number
+  isSelected: boolean
+}

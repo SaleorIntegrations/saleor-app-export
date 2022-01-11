@@ -1,4 +1,4 @@
-import { Order } from '../components/ReportTable/utils'
+import { Order } from '../components/RaportTable/utils'
 
 export function sortTable<T>(array: T[], orderBy: string, order: Order): T[] {
   const estimateDirection = (a: T, b: T, orderBy: keyof T) => {
@@ -16,7 +16,8 @@ export function sortTable<T>(array: T[], orderBy: string, order: Order): T[] {
       ? (a: T, b: T) => estimateDirection(a, b, orderBy as any)
       : (a: T, b: T) => -estimateDirection(a, b, orderBy as any)
 
-  return array.sort((a, b) => {
+  const arrayCopy = [...array]
+  return arrayCopy.sort((a, b) => {
     const order = getDirection(a, b)
     if (order !== 0) return order
     return array.indexOf(a) - array.indexOf(b)

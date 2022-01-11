@@ -4,27 +4,27 @@ import { Delete as DeleteIcon } from '@material-ui/icons'
 
 import useStyles from '../styles'
 
-interface ReportTableRowProps {
-  id: string
+interface RaportTableRowProps {
+  id: number
   name: string
   entity: string
   recipients: number
   onDelete: (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-    id: string
+    id: number
   ) => void
   onSelect: (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-    id: string
+    id: number
   ) => void
   onRowClick: (
     event: React.MouseEvent<HTMLTableRowElement, MouseEvent>,
-    id: string
+    id: number
   ) => void
   isSelected: boolean
 }
 
-export function ReportTableRow(props: ReportTableRowProps) {
+export function RaportTableRow(props: RaportTableRowProps) {
   const classes = useStyles()
   const {
     id,
@@ -48,13 +48,24 @@ export function ReportTableRow(props: ReportTableRowProps) {
       selected={isSelected}
     >
       <TableCell padding="checkbox">
-        <Checkbox checked={isSelected} onClick={event => onSelect(event, id)} />
+        <Checkbox
+          checked={isSelected}
+          onClick={event => {
+            event.stopPropagation()
+            onSelect(event, id)
+          }}
+        />
       </TableCell>
       <TableCell align="left">{name}</TableCell>
       <TableCell align="left">{entity}</TableCell>
       <TableCell align="right">{recipients}</TableCell>
       <TableCell align="center" padding="checkbox">
-        <IconButton onClick={event => onDelete(event, id)}>
+        <IconButton
+          onClick={event => {
+            event.stopPropagation()
+            onDelete(event, id)
+          }}
+        >
           <DeleteIcon />
         </IconButton>
       </TableCell>
@@ -62,4 +73,4 @@ export function ReportTableRow(props: ReportTableRowProps) {
   )
 }
 
-export default ReportTableRow
+export default RaportTableRow
