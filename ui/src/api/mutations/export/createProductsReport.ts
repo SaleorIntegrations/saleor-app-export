@@ -1,6 +1,6 @@
 import { useMutation } from 'urql'
 
-import { ExportProductsInput } from '../../../globalTypes'
+import { ExportProductsInput, ReportErrorCode } from '../../../globalTypes'
 
 const apiMutation = `
   mutation createProductsReport($columns: ProductSelectedColumnsInput!, $name: String, $filter: ProductFilterInfo) {
@@ -13,7 +13,9 @@ const apiMutation = `
         id
       }
       errors {
+        code
         message
+        field
       }
     }
   }
@@ -24,7 +26,11 @@ interface CreateProductsReport {
     report: {
       id: number
     }
-    errors: any
+    errors: {
+      code: ReportErrorCode
+      message: string
+      field: string
+    }[]
   }
 }
 

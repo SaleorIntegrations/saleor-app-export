@@ -1,14 +1,6 @@
 import produce from 'immer'
 
-import { ExportInfo, FileType, ExportObjectTypesEnum as ExportType } from '../../globalTypes'
-
-export interface ProductExport {
-  name: string,
-  exportInfo: ExportInfo
-  filter: string
-}
-
-export interface OrderExport {}
+import { FileType, ExportObjectTypesEnum as ExportType, ProductExport, OrderExport } from '../../globalTypes'
 
 export interface Export {
   fileType: FileType

@@ -14,7 +14,7 @@ import { ExportObjectTypesEnum as RaportTypes } from '../../globalTypes'
 export interface RaportTypeProps {
   isMutable?: boolean
   reportType?: RaportTypes
-  onReportTypeChange: (
+  onReportTypeChange?: (
     _event: React.ChangeEvent<{
       name?: string | undefined
       value: unknown

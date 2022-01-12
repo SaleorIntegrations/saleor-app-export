@@ -76,4 +76,3 @@ export function useQueryReports(variables: Variables, options?: any) {
 }
 
 export default useQueryReports
-

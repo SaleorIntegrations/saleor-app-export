@@ -1,6 +1,6 @@
 import produce from 'immer'
 
-import { ProductExport } from '../reducer'
+import { ProductExport } from '../../globalTypes'
 
 export interface ProductExportAction extends Partial<ProductExport> {
   type: 'SET_NAME' | 'SET_EXPORT_INFO' | 'SET_FILE_TYPE' | 'SET_FILTER'

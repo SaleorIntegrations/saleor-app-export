@@ -78,3 +78,11 @@ export interface TableRaport {
   recipients: number
   isSelected: boolean
 }
+
+export interface ProductExport {
+  name: string,
+  exportInfo: ExportInfo
+  filter: string
+}
+
+export interface OrderExport {}

@@ -1,26 +1,25 @@
-import React, { useReducer, useEffect, useState } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import React, { useReducer } from 'react'
 import { Box, Container, Grid } from '@material-ui/core'
+import { useNavigate } from 'react-router-dom'
 
-import { SubmitBar, RaportType, ExportPicker } from '../../components'
 import {
-  useProductCountQuery,
-  useMutationCreateProductsReport,
-} from '../../api'
-import { ExportObjectTypesEnum as ExportType } from '../../globalTypes'
+  SubmitBar,
+  RaportType,
+  ExportPicker,
+  ProductSetting,
+} from '../../../components'
+import { useMutationCreateProductsReport } from '../../../api'
 import {
-  initialExport,
-  exportReducer,
+  ExportObjectTypesEnum as ExportType,
   ProductExport,
   OrderExport,
-} from './reducer'
-import useStyles from './styles'
-import ProductSetting from './Product'
+} from '../../../globalTypes'
+import { initialExport, exportReducer } from '../reducer'
+import useStyles from '../styles'
 
-export function Export() {
+export function CreateRaport() {
   const classes = useStyles()
-  const [searchParams, setSearchParams] = useSearchParams()
-  //const [raportType, setRaportType] = useState<ExportType>(ExportType.PRODUCTS)
+  const navigation = useNavigate()
   const [, createProductReport] = useMutationCreateProductsReport()
   const [state, dispatch] = useReducer(exportReducer, initialExport)
 
@@ -50,7 +49,12 @@ export function Export() {
         }
       )
 
-      console.log(response)
+      if (
+        response.data &&
+        response.data.createProductsReport.errors.length < 1
+      ) {
+        navigation(`/raport/${response.data.createProductsReport.report.id}`)
+      }
     }
   }
 
@@ -71,26 +75,7 @@ export function Export() {
       type: 'SET_EXPORT_TYPE',
       exportType: _event.target.value as ExportType,
     })
-    searchParams.set('type', _event.target.value as ExportType)
-    setSearchParams(searchParams)
   }
-
-  useEffect(() => {
-    const type = searchParams.get('type')?.toUpperCase()
-    const strict = searchParams.get('strict')
-
-    if (type !== ExportType.ORDERS && type !== ExportType.PRODUCTS) {
-      searchParams.set('type', ExportType.PRODUCTS)
-    }
-    if (strict !== 'true' && strict !== 'false') {
-      searchParams.set('strict', 'false')
-    }
-    dispatch({
-      type: 'SET_EXPORT_TYPE',
-      exportType: searchParams.get('type') as ExportType,
-    })
-    setSearchParams(searchParams)
-  }, [])
 
   return (
     <Container
@@ -109,9 +94,7 @@ export function Export() {
             <Box className={classes.list}>
               <RaportType
                 onReportTypeChange={onTypeChange}
-                isMutable={
-                  !(searchParams.get('strict')?.toLocaleLowerCase() === 'true')
-                }
+                isMutable={true}
                 reportType={state.exportType}
               />
               <ExportPicker
@@ -146,4 +129,4 @@ export function Export() {
   )
 }
 
-export default Export
+export default CreateRaport

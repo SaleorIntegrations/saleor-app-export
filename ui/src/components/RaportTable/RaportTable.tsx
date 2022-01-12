@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import {
   Box,
   TableContainer,
@@ -43,6 +44,7 @@ export function RaportTable(props: ReportTableProps) {
     setRowsPerPage,
     subtract,
   } = props
+  const navigate = useNavigate()
   const paginationRef = useRef<HTMLDivElement>(null)
   const [orderBy, setOrderBy] = useState('name')
   const [order, setOrder] = useState<Order>('asc')
@@ -93,7 +95,7 @@ export function RaportTable(props: ReportTableProps) {
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map(d => (
                 <ReportTableRow
-                  onRowClick={(_, id) => alert(id)}
+                  onRowClick={(_, id) => navigate(`/raport/${id}`)}
                   key={d.id}
                   id={d.id}
                   name={d.name}

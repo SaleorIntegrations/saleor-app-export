@@ -14,7 +14,11 @@ import {
 } from '../ModalSetting'
 import Surface from '../Surface'
 import Label from '../Label'
-import { initialInformations, informationsReducer } from './reducer'
+import {
+  initialInformations,
+  informationsReducer,
+  Informations,
+} from './reducer'
 import useStyles from './styles'
 
 interface ProductAreaProps {
@@ -22,14 +26,24 @@ interface ProductAreaProps {
   productCount?: number
   title: string
   subtitle: string
+  initial?: Informations
   setProoductData: (newInformations: ExportInfo) => void
 }
 
 export function ProductArea(props: ProductAreaProps) {
-  const { setProoductData, title, subtitle, isInformation, productCount } =
-    props
+  const {
+    setProoductData,
+    title,
+    subtitle,
+    isInformation,
+    productCount,
+    initial,
+  } = props
   const classes = useStyles()
-  const [state, dispatch] = useReducer(informationsReducer, initialInformations)
+  const [state, dispatch] = useReducer(
+    informationsReducer,
+    initial || initialInformations
+  )
 
   useEffect(() => {
     setProoductData({
