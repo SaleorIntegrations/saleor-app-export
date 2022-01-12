@@ -1,5 +1,5 @@
-import React, { useEffect, useReducer, useState } from 'react'
-import { Paper } from '@material-ui/core'
+import React, { useEffect, useReducer, useState, useRef } from 'react'
+import { Box, Paper } from '@material-ui/core'
 
 import { useQueryReports } from '../../api/queries'
 import TableHeader from '../../components/TableHeader'
@@ -9,6 +9,7 @@ import useStyles from './style'
 
 export function RaportList() {
   const classes = useStyles()
+  const headerRef = useRef<HTMLDivElement>(null)
   const [state, dispatch] = useReducer(raportsReducer, initialRaports)
   const [page, setPage] = useState(0)
   const [raportsPerPage, setRaportsPerPage] = useState(10)
@@ -67,7 +68,9 @@ export function RaportList() {
 
   return (
     <Paper className={classes.paper}>
-      <TableHeader />
+      <div ref={headerRef}>
+        <TableHeader />
+      </div>
       <RaportTable
         deleteSelectedRaports={() => alert('delete selected')}
         deleteRaport={id => alert(`delete ${id}`)}
@@ -85,6 +88,7 @@ export function RaportList() {
           reset()
           setRaportsPerPage(rowsPerPage)
         }}
+        subtract={headerRef.current?.clientHeight}
       />
     </Paper>
   )

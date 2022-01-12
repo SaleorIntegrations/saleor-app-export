@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import {
   Box,
   TableContainer,
@@ -25,6 +25,7 @@ interface ReportTableProps {
   rowsPerPage: number
   setRowsPerPage: (rowsPerPage: number) => void
   count: number
+  subtract?: number
 }
 
 export function RaportTable(props: ReportTableProps) {
@@ -40,9 +41,12 @@ export function RaportTable(props: ReportTableProps) {
     setPage,
     rowsPerPage,
     setRowsPerPage,
+    subtract,
   } = props
+  const paginationRef = useRef<HTMLDivElement>(null)
   const [orderBy, setOrderBy] = useState('name')
   const [order, setOrder] = useState<Order>('asc')
+  const [coreSubtract, setCoreSubtract] = useState(0)
 
   const onSort = (
     event: React.MouseEvent<HTMLSpanElement, MouseEvent>,
@@ -62,8 +66,15 @@ export function RaportTable(props: ReportTableProps) {
     }
   }
 
+  useEffect(() => {
+    const paginationHeight = paginationRef.current?.clientHeight || 52
+    const headerHeight = subtract || 0
+    const newCoreSubtract = paginationHeight + headerHeight
+    setCoreSubtract(newCoreSubtract)
+  }, [])
+
   return (
-    <Box height="calc(100% - 152px)" minHeight="200px">
+    <Box height={`calc(100% - ${coreSubtract}px)`} minHeight="200px">
       <TableContainer style={{ height: '100%', overflow: 'scroll' }}>
         <Table stickyHeader>
           <ReportTableHeader
@@ -97,6 +108,7 @@ export function RaportTable(props: ReportTableProps) {
         </Table>
       </TableContainer>
       <TablePagination
+        ref={paginationRef}
         rowsPerPageOptions={[5, 10, 25, 50]}
         count={count}
         component="div"
