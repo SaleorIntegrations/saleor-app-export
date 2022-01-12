@@ -1,6 +1,7 @@
 import React, { useEffect, useReducer, useState, useRef } from 'react'
-import { Box, Paper } from '@material-ui/core'
+import { Paper } from '@material-ui/core'
 
+import { useMutationDeleteReport } from '../../api/mutations'
 import { useQueryReports } from '../../api/queries'
 import TableHeader from '../../components/TableHeader'
 import RaportTable from '../../components/RaportTable'
@@ -18,8 +19,9 @@ export function RaportList() {
       first: 25,
       after: state.navigation.endCursor,
     },
-    { pause: true }
+    { pause: true, requestPolicy: 'network-only' }
   )
+  const [, deleteReportMutation] = useMutationDeleteReport()
 
   const reset = () => {
     dispatch({ type: 'SET_TOTAL', total: 0 })
@@ -28,7 +30,22 @@ export function RaportList() {
       type: 'SET_NAVIGATION',
       navigation: { endCursor: '', hasNext: true },
     })
-    setPage(0)
+  }
+
+  const deleteSelectedReports = async () => {
+    // TODO: implement delete reports
+  }
+
+  const deleteReport = async (id: number) => {
+    const response = await deleteReportMutation(
+      { reportId: id },
+      { url: 'http://localhost:4321/graphql/' }
+    )
+
+    if (response.data && response.data.deleteReport.errors.length === 0) {
+      reset()
+      refetchPureRaports()
+    }
   }
 
   useEffect(() => {
@@ -72,8 +89,8 @@ export function RaportList() {
         <TableHeader />
       </div>
       <RaportTable
-        deleteSelectedRaports={() => alert('delete selected')}
-        deleteRaport={id => alert(`delete ${id}`)}
+        deleteSelectedRaports={deleteSelectedReports}
+        deleteRaport={deleteReport}
         unselectAllRaports={() => dispatch({ type: 'UNSELECT_ALL' })}
         selectAllRaports={() => dispatch({ type: 'SELECT_ALL' })}
         toggleRaport={id => dispatch({ type: 'TOGGLE_RAPORT', id: id })}
@@ -86,6 +103,7 @@ export function RaportList() {
         rowsPerPage={raportsPerPage}
         setRowsPerPage={rowsPerPage => {
           reset()
+          setPage(0)
           setRaportsPerPage(rowsPerPage)
         }}
         subtract={headerRef.current?.clientHeight}

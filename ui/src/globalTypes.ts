@@ -49,6 +49,13 @@ export enum ExportObjectTypesEnum {
   ORDERS = 'ORDERS'
 }
 
+export enum ReportErrorCode {
+  NOT_FOUND = 'NOT_FOUND',
+  INVALID_TYPE = 'INVALID_TYPE',
+  INVALID_FILTER = 'INVALID_FILTER',
+  LIMIT_EXCEEDED = 'LIMIT_EXCEEDED',
+}
+
 export interface ExportProductsInput {
   columns: ExportInfo
   name: string

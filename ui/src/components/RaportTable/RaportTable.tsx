@@ -71,7 +71,7 @@ export function RaportTable(props: ReportTableProps) {
     const headerHeight = subtract || 0
     const newCoreSubtract = paginationHeight + headerHeight
     setCoreSubtract(newCoreSubtract)
-  }, [])
+  }, [subtract, paginationRef])
 
   return (
     <Box height={`calc(100% - ${coreSubtract}px)`} minHeight="200px">
