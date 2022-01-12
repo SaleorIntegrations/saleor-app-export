@@ -1,32 +1,25 @@
 import { makeStyles } from '@saleor/macaw-ui'
 
 export const useStyles = makeStyles((theme) => ({
-  container: {
-    width: '100%',
-  },
-  table: {
-    width: '100%',
-  },
   row: {
     '&:hover': {
       cursor: 'pointer',
     },
   },
-  selected: {
-    backgroundColor: 'rgba(6, 132, 123, 0.05)'
-  },
-  checkBox: {
-    display: 'flex',
-    alignItems: 'center',
-    position: 'relative'
+  relative: {
+    position: 'relative',
   },
   hiddenCell: {
     visibility: 'hidden',
   },
   selectedText: {
     position: 'absolute',
-    left: '100%',
-    width: 'max-content'
+    zIndex: 10,
+    left: '70px',
+    top: 0,
+    height: '100%',
+    display: 'flex',
+    alignItems: 'center'
   }
 }))
 

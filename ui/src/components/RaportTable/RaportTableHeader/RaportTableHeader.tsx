@@ -43,21 +43,16 @@ export function RaportTableHeader(props: RaportTableHeaderProps) {
   } = props
 
   return (
-    <TableHead className={clsx(numSelected > 0 && classes.selected)}>
+    <TableHead className={classes.relative}>
       <TableRow>
         <TableCell padding="checkbox">
-          <Box className={classes.checkBox}>
+          <Box>
             <Checkbox
               disabled={rowCount === 0}
               indeterminate={numSelected > 0 && numSelected < rowCount}
               checked={rowCount > 0 && numSelected === rowCount}
               onChange={onSelectAllClick}
             />
-            {numSelected > 0 && (
-              <Typography className={classes.selectedText}>
-                {`Selected ${numSelected} reports`}
-              </Typography>
-            )}
           </Box>
         </TableCell>
         {headCells.map(headCell => (
@@ -85,6 +80,11 @@ export function RaportTableHeader(props: RaportTableHeaderProps) {
           )}
         </TableCell>
       </TableRow>
+      {numSelected > 0 && (
+        <Typography className={classes.selectedText}>
+          {`Selected ${numSelected} reports`}
+        </Typography>
+      )}
     </TableHead>
   )
 }

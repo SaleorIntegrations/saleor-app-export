@@ -1,6 +1,7 @@
+import { useMemo } from 'react'
 import { useQuery } from 'urql'
 
-import { ExportObjectTypesEnum, ProductField } from '../../../globalTypes'
+import { ExportObjectTypesEnum, ProductField, OrderField } from '../../../globalTypes'
 
 const apiQuery = `
   query getReports($first: Int!, $after: String) {
@@ -14,10 +15,13 @@ const apiQuery = `
           columns {
             __typename
             ... on ProductSelectedColumnsInfo {
-              fields
+              productFields: fields
               attributes
               warehouses
               channels
+            }
+            ... on OrderSelectedColumnsInfo {
+              orderFields: fields
             }
           }
         }
@@ -41,7 +45,8 @@ interface ReportsResponse {
         filter: string | null
         columns: {
           __typename: string
-          fields: ProductField[]
+          orderFields?: OrderField[]
+          productFields?: ProductField[]
           attributes?: string[]
           warehouses?: string[]
           channels?: string[]
@@ -58,14 +63,15 @@ interface ReportsResponse {
 
 interface Variables {
   first: number
-  after?: string
+  after?: string | null
 }
 
-export function useQueryReports(variables: Variables, options: any) {
+export function useQueryReports(variables: Variables, options?: any) {
   return useQuery<ReportsResponse>({
     query: apiQuery,
     variables: variables,
-    ...options
+    ...options,
+    context: useMemo(() =>({ url: 'http://localhost:4321/graphql/' }), [])
   })
 }
 

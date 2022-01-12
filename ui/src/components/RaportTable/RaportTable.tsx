@@ -11,7 +11,6 @@ import ReportTableHeader from './RaportTableHeader'
 import ReportTableRow from './RaportTableRow'
 import { Order } from './utils'
 import sortTable from '../../utils/sortTable'
-import useStyles from './styles'
 import { TableRaport } from '../../globalTypes'
 
 interface ReportTableProps {
@@ -42,7 +41,6 @@ export function RaportTable(props: ReportTableProps) {
     rowsPerPage,
     setRowsPerPage,
   } = props
-  const classes = useStyles()
   const [orderBy, setOrderBy] = useState('name')
   const [order, setOrder] = useState<Order>('asc')
 
@@ -65,9 +63,9 @@ export function RaportTable(props: ReportTableProps) {
   }
 
   return (
-    <Box className={classes.container}>
-      <TableContainer>
-        <Table className={classes.table}>
+    <Box height="calc(100% - 152px)" minHeight="200px">
+      <TableContainer style={{ height: '100%', overflow: 'scroll' }}>
+        <Table stickyHeader>
           <ReportTableHeader
             numSelected={
               raports.filter(raport => raport.isSelected === true).length
