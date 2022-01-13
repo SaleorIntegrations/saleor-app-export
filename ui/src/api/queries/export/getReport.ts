@@ -31,13 +31,13 @@ interface ReportResponse {
     id: number
     name: string
     type: ExportObjectTypesEnum
-    filter?: string
+    filter: string | null
     columns: {
-      productFields?: ProductField[]
-      orderFields?: OrderField[]
-      attributes?: string[]
-      warehouses?: string[]
-      channels?: string[]
+      productFields: ProductField[]
+      orderFields: OrderField[]
+      attributes: string[]
+      warehouses: string[]
+      channels: string[]
     }
   }
 }

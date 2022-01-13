@@ -1,11 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useReducer } from 'react'
+import React from 'react'
+import { produce } from 'immer'
 import { Typography, Box } from '@material-ui/core'
-import { Skeleton } from '@material-ui/lab'
 import clsx from 'clsx'
 
-import { ProductField, ExportInfo } from '../../globalTypes'
 import { ModalSelect } from '../ModalSelect'
+import { useProductExport } from '../../hooks'
 import {
   ChannelSettingModal,
   AttributeSettingModal,
@@ -13,57 +13,22 @@ import {
   InventorySettingModal,
 } from '../ModalSetting'
 import Surface from '../Surface'
-import Label from '../Label'
-import {
-  initialInformations,
-  informationsReducer,
-  Informations,
-} from './reducer'
+import { ProductField } from '../../globalTypes'
 import useStyles from './styles'
 
 interface ProductAreaProps {
-  isInformation?: boolean
-  productCount?: number
   title: string
   subtitle: string
-  initial?: Informations
-  setProoductData: (newInformations: ExportInfo) => void
 }
 
 export function ProductArea(props: ProductAreaProps) {
-  const {
-    setProoductData,
-    title,
-    subtitle,
-    isInformation,
-    productCount,
-    initial,
-  } = props
+  const { title, subtitle } = props
+  const { exportData, setExportData } = useProductExport()
   const classes = useStyles()
-  const [state, dispatch] = useReducer(
-    informationsReducer,
-    initial || initialInformations
-  )
-
-  useEffect(() => {
-    setProoductData({
-      channels: state.channels,
-      attributes: state.attributes,
-      fields: [
-        ...state.financials,
-        ...state.inventory,
-        ...state.organisations,
-        ...state.seo,
-      ] as ProductField[],
-      warehouses: state.warehouses,
-    })
-  }, [state])
 
   return (
     <Surface padding={0}>
-      <Box
-        className={clsx(classes.paddingBox, isInformation && classes.bottomHr)}
-      >
+      <Box className={clsx(classes.paddingBox)}>
         <Box paddingBottom={2}>
           <Typography variant="h5">{title}</Typography>
           <Typography>{subtitle}</Typography>
@@ -72,15 +37,19 @@ export function ProductArea(props: ProductAreaProps) {
           <ModalSelect
             title="Channels"
             description={
-              state.channels.length
-                ? `selected ${state.channels.length}`
+              exportData.exportInfo.channels.length
+                ? `selected ${exportData.exportInfo.channels.length}`
                 : undefined
             }
             render={setIsOpen => (
               <ChannelSettingModal
-                channels={state.channels}
+                channels={exportData.exportInfo.channels}
                 setChannels={newChannels =>
-                  dispatch({ type: 'SET_CHANNELS', channels: newChannels })
+                  setExportData(
+                    produce(exportData, draft => {
+                      draft.exportInfo.channels = newChannels
+                    })
+                  )
                 }
                 setIsOpen={setIsOpen}
               />
@@ -89,18 +58,20 @@ export function ProductArea(props: ProductAreaProps) {
           <ModalSelect
             title="Product organsation"
             description={
-              state.organisations.length
-                ? `selected ${state.organisations.length}`
+              exportData.exportInfo.fields.organisations.length
+                ? `selected ${exportData.exportInfo.fields.organisations.length}`
                 : undefined
             }
             render={setIsOpen => (
               <BaseFieldSettingModal
-                fields={state.organisations}
+                fields={exportData.exportInfo.fields.organisations}
                 setFields={newOrganisations =>
-                  dispatch({
-                    type: 'SET_ORGANISATIONS',
-                    organisations: newOrganisations,
-                  })
+                  setExportData(
+                    produce(exportData, draft => {
+                      draft.exportInfo.fields.organisations =
+                        newOrganisations as ProductField[]
+                    })
+                  )
                 }
                 setIsOpen={setIsOpen}
                 title="Select Product Organization"
@@ -110,27 +81,30 @@ export function ProductArea(props: ProductAreaProps) {
                     id: 'CATEGORY_ID',
                     name: 'Category',
                     slug: 'category_slug',
-                    checked: state.organisations.includes(
-                      ProductField.CATEGORY
-                    ),
+                    checked:
+                      exportData.exportInfo.fields.organisations.includes(
+                        ProductField.CATEGORY
+                      ),
                     value: ProductField.CATEGORY,
                   },
                   {
                     id: 'COLLECTIONS_ID',
                     name: 'Collections',
                     slug: 'Collections_slug',
-                    checked: state.organisations.includes(
-                      ProductField.COLLECTIONS
-                    ),
+                    checked:
+                      exportData.exportInfo.fields.organisations.includes(
+                        ProductField.COLLECTIONS
+                      ),
                     value: ProductField.COLLECTIONS,
                   },
                   {
                     id: 'PRODUCT_TYPE_ID',
                     name: 'Type',
                     slug: 'Product_type_slug',
-                    checked: state.organisations.includes(
-                      ProductField.PRODUCT_TYPE
-                    ),
+                    checked:
+                      exportData.exportInfo.fields.organisations.includes(
+                        ProductField.PRODUCT_TYPE
+                      ),
                     value: ProductField.PRODUCT_TYPE,
                   },
                 ]}
@@ -140,18 +114,19 @@ export function ProductArea(props: ProductAreaProps) {
           <ModalSelect
             title="Attributes"
             description={
-              state.attributes.length
-                ? `selected ${state.attributes.length}`
+              exportData.exportInfo.attributes.length
+                ? `selected ${exportData.exportInfo.attributes.length}`
                 : undefined
             }
             render={setIsOpen => (
               <AttributeSettingModal
-                attributes={state.attributes}
+                attributes={exportData.exportInfo.attributes}
                 setAttributes={newAttributes =>
-                  dispatch({
-                    type: 'SET_ATTRIBUTES',
-                    attributes: newAttributes,
-                  })
+                  setExportData(
+                    produce(exportData, draft => {
+                      draft.exportInfo.attributes = newAttributes
+                    })
+                  )
                 }
                 setIsOpen={setIsOpen}
               />
@@ -160,18 +135,20 @@ export function ProductArea(props: ProductAreaProps) {
           <ModalSelect
             title="Financial"
             description={
-              state.financials.length
-                ? `selected ${state.financials.length}`
+              exportData.exportInfo.fields.financials.length
+                ? `selected ${exportData.exportInfo.fields.financials.length}`
                 : undefined
             }
             render={setIsOpen => (
               <BaseFieldSettingModal
-                fields={state.financials}
+                fields={exportData.exportInfo.fields.financials}
                 setFields={newFinancials =>
-                  dispatch({
-                    type: 'SET_FINANCIALS',
-                    financials: newFinancials,
-                  })
+                  setExportData(
+                    produce(exportData, draft => {
+                      draft.exportInfo.fields.financials =
+                        newFinancials as ProductField[]
+                    })
+                  )
                 }
                 setIsOpen={setIsOpen}
                 title="Select Financial Informations"
@@ -181,7 +158,7 @@ export function ProductArea(props: ProductAreaProps) {
                     id: 'CHARGE_TAXES_ID',
                     name: 'Charge Taxes',
                     slug: 'charge_taxes_slug',
-                    checked: state.financials.includes(
+                    checked: exportData.exportInfo.fields.financials.includes(
                       ProductField.CHARGE_TAXES
                     ),
                     value: ProductField.CHARGE_TAXES,
@@ -193,30 +170,41 @@ export function ProductArea(props: ProductAreaProps) {
           <ModalSelect
             title="Inventory"
             description={
-              state.inventory.length || state.warehouses.length
-                ? `selected ${state.inventory.length + state.warehouses.length}`
+              exportData.exportInfo.fields.inventory.length ||
+              exportData.exportInfo.warehouses.length
+                ? `selected ${
+                    exportData.exportInfo.fields.inventory.length +
+                    exportData.exportInfo.warehouses.length
+                  }`
                 : undefined
             }
             render={setIsOpen => (
               <InventorySettingModal
                 setIsOpen={setIsOpen}
-                fields={state.inventory}
+                fields={exportData.exportInfo.fields.inventory}
                 setFields={newInventory =>
-                  dispatch({ type: 'SET_INVENTORY', inventory: newInventory })
+                  setExportData(
+                    produce(exportData, draft => {
+                      draft.exportInfo.fields.inventory =
+                        newInventory as ProductField[]
+                    })
+                  )
                 }
-                warehouses={state.warehouses}
+                warehouses={exportData.exportInfo.warehouses}
                 setWarehouses={newWarehouses =>
-                  dispatch({
-                    type: 'SET_WAREHOUSES',
-                    warehouses: newWarehouses,
-                  })
+                  setExportData(
+                    produce(exportData, draft => {
+                      draft.exportInfo.warehouses =
+                        newWarehouses as ProductField[]
+                    })
+                  )
                 }
                 fieldOptions={[
                   {
                     id: 'PRODUCT_WEIGHT_ID',
                     name: 'Export Product Weight',
                     slug: 'product_weight_slug',
-                    checked: state.inventory.includes(
+                    checked: exportData.exportInfo.fields.inventory.includes(
                       ProductField.PRODUCT_WEIGHT
                     ),
                     value: ProductField.PRODUCT_WEIGHT,
@@ -225,21 +213,25 @@ export function ProductArea(props: ProductAreaProps) {
                     id: 'VARIANT_ID_ID',
                     name: 'Export Variant ID',
                     slug: 'variant_id_slug',
-                    checked: state.inventory.includes(ProductField.VARIANT_ID),
+                    checked: exportData.exportInfo.fields.inventory.includes(
+                      ProductField.VARIANT_ID
+                    ),
                     value: ProductField.VARIANT_ID,
                   },
                   {
                     id: 'VARIANT_SKU_ID',
                     name: 'Export Variant SKU',
                     slug: 'variant_sku_slug',
-                    checked: state.inventory.includes(ProductField.VARIANT_SKU),
+                    checked: exportData.exportInfo.fields.inventory.includes(
+                      ProductField.VARIANT_SKU
+                    ),
                     value: ProductField.VARIANT_SKU,
                   },
                   {
                     id: 'VARIANT_WEIGHT_ID',
                     name: 'Export Variant Weight',
                     slug: 'variant_weight_slug',
-                    checked: state.inventory.includes(
+                    checked: exportData.exportInfo.fields.inventory.includes(
                       ProductField.VARIANT_WEIGHT
                     ),
                     value: ProductField.VARIANT_WEIGHT,
@@ -251,12 +243,20 @@ export function ProductArea(props: ProductAreaProps) {
           <ModalSelect
             title="SEO"
             description={
-              state.seo.length ? `selected ${state.seo.length}` : undefined
+              exportData.exportInfo.fields.seo.length
+                ? `selected ${exportData.exportInfo.fields.seo.length}`
+                : undefined
             }
             render={setIsOpen => (
               <BaseFieldSettingModal
-                fields={state.seo}
-                setFields={newSEO => dispatch({ type: 'SET_SEO', seo: newSEO })}
+                fields={exportData.exportInfo.fields.seo}
+                setFields={newSEO =>
+                  setExportData(
+                    produce(exportData, draft => {
+                      draft.exportInfo.fields.seo = newSEO as ProductField[]
+                    })
+                  )
+                }
                 setIsOpen={setIsOpen}
                 title="Select SEO Informations"
                 subtitle="Select the SEO informations you want to export information for"
@@ -265,28 +265,36 @@ export function ProductArea(props: ProductAreaProps) {
                     id: 'DESCRIPTION_ID',
                     name: 'Description',
                     slug: 'description_slug',
-                    checked: state.seo.includes(ProductField.DESCRIPTION),
+                    checked: exportData.exportInfo.fields.seo.includes(
+                      ProductField.DESCRIPTION
+                    ),
                     value: ProductField.DESCRIPTION,
                   },
                   {
                     id: 'NAME_ID',
                     name: 'Name',
                     slug: 'name_slug',
-                    checked: state.seo.includes(ProductField.NAME),
+                    checked: exportData.exportInfo.fields.seo.includes(
+                      ProductField.NAME
+                    ),
                     value: ProductField.NAME,
                   },
                   {
                     id: 'PRODUCT_MEDIA_ID',
                     name: 'Product Images',
                     slug: 'product_media_slug',
-                    checked: state.seo.includes(ProductField.PRODUCT_MEDIA),
+                    checked: exportData.exportInfo.fields.seo.includes(
+                      ProductField.PRODUCT_MEDIA
+                    ),
                     value: ProductField.PRODUCT_MEDIA,
                   },
                   {
                     id: 'VARIANT_MEDIA_ID',
                     name: 'Variant Images',
                     slug: 'variant_images_slug',
-                    checked: state.seo.includes(ProductField.VARIANT_MEDIA),
+                    checked: exportData.exportInfo.fields.seo.includes(
+                      ProductField.VARIANT_MEDIA
+                    ),
                     value: ProductField.VARIANT_MEDIA,
                   },
                 ]}
@@ -295,16 +303,6 @@ export function ProductArea(props: ProductAreaProps) {
           />
         </Box>
       </Box>
-      {isInformation && (
-        <Box className={classes.paddingBox}>
-          <Label>EXPORTED DATA</Label>
-          {!productCount ? (
-            <Skeleton />
-          ) : (
-            <Typography>{`You will be exporting ${productCount} products`}</Typography>
-          )}
-        </Box>
-      )}
     </Surface>
   )
 }

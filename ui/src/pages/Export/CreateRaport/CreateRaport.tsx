@@ -9,10 +9,10 @@ import {
   ProductSetting,
 } from '../../../components'
 import { useMutationCreateProductsReport } from '../../../api'
+import { ExportProductContext } from '../../../context'
 import {
   ExportObjectTypesEnum as ExportType,
   ProductExport,
-  OrderExport,
 } from '../../../globalTypes'
 import { initialExport, exportReducer } from '../reducer'
 import useStyles from '../styles'
@@ -34,11 +34,21 @@ export function CreateRaport() {
   }
 
   const createProductExportRaport = async () => {
-    if (state.exportData) {
-      const exportProduct = state.exportData as ProductExport
+    if (state.exportProductData) {
+      const exportProduct = state.exportProductData as ProductExport
       const response = await createProductReport(
         {
-          columns: exportProduct.exportInfo,
+          columns: {
+            attributes: exportProduct.exportInfo.attributes,
+            fields: [
+              ...exportProduct.exportInfo.fields.financials,
+              ...exportProduct.exportInfo.fields.inventory,
+              ...exportProduct.exportInfo.fields.organisations,
+              ...exportProduct.exportInfo.fields.seo,
+            ],
+            channels: exportProduct.exportInfo.channels,
+            warehouses: exportProduct.exportInfo.warehouses,
+          },
           name: exportProduct.name,
           filter: {
             filterStr: '{}' || exportProduct.filter, // TODO: remove empty object
@@ -59,8 +69,8 @@ export function CreateRaport() {
   }
 
   const createOrderExportRaport = async () => {
-    if (state.exportData) {
-      const exportOrder = state.exportData as OrderExport
+    if (state.exportProductData) {
+      alert('create order report')
       // TODO: add order create report implementation
     }
   }
@@ -107,14 +117,18 @@ export function CreateRaport() {
           </Grid>
           <Grid item md={8}>
             {state.exportType === ExportType.PRODUCTS ? (
-              <ProductSetting
-                setProductSetting={newProductExport =>
-                  dispatch({
-                    type: 'SET_EXPORT_DATA',
-                    exportData: newProductExport,
-                  })
-                }
-              />
+              <ExportProductContext.Provider
+                value={{
+                  exportData: state.exportProductData,
+                  setExportData: newExportData =>
+                    dispatch({
+                      type: 'SET_EXPORT_PRODUCT_DATA',
+                      exportProductData: newExportData,
+                    }),
+                }}
+              >
+                <ProductSetting />
+              </ExportProductContext.Provider>
             ) : (
               <div>orders</div>
             )}

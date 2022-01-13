@@ -5,15 +5,33 @@ import { FileType, ExportObjectTypesEnum as ExportType, ProductExport, OrderExpo
 export interface Export {
   fileType: FileType
   exportType: ExportType
-  exportData: ProductExport | OrderExport | null
+  exportProductData: ProductExport
+  exportOrderData: OrderExport
 }
 
 export interface ExportAction extends Partial<Export> {
-  type: 'SET_FILE_TYPE' | 'SET_EXPORT_DATA' | 'SET_EXPORT_TYPE'
+  type: 'SET_FILE_TYPE' | 'SET_EXPORT_PRODUCT_DATA' | 'SET_EXPORT_TYPE'
 }
 
 export const initialExport: Export = {
-  exportData: null,
+  exportProductData: {
+    name: '',
+    filter: '',
+    exportInfo: {
+      attributes: [],
+      channels: [],
+      fields: {
+        seo: [],
+        inventory: [],
+        financials: [],
+        organisations: []
+      },
+      warehouses: [],
+    },
+  },
+  exportOrderData: {
+    name: ''
+  },
   fileType: FileType.CSV,
   exportType: ExportType.PRODUCTS
 }
@@ -30,10 +48,10 @@ export const exportReducer = (state: Export, action: ExportAction) => {
         const { fileType } = action
         draft.fileType = fileType !== undefined ? fileType : state.fileType
       })
-    case 'SET_EXPORT_DATA':
+    case 'SET_EXPORT_PRODUCT_DATA':
       return produce(state, draft => {
-        const { exportData } = action
-        draft.exportData = exportData !== undefined ? exportData : state.exportData
+        const { exportProductData } = action
+        draft.exportProductData = exportProductData !== undefined ? exportProductData : state.exportProductData
       })
     default:
       return state

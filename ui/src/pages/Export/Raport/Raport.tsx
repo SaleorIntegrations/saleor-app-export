@@ -8,13 +8,10 @@ import {
   ExportPicker,
   ProductSetting,
 } from '../../../components'
+import { ExportProductContext } from '../../../context'
 import { useQueryReport, useMutationUpdateProductReport } from '../../../api'
-import {
-  ExportObjectTypesEnum as ExportType,
-  ProductExport,
-  // ProductExport,
-  // OrderExport,
-} from '../../../globalTypes'
+import { ExportObjectTypesEnum as ExportType } from '../../../globalTypes'
+import { sortProductFields } from '../../../utils'
 import { initialExport, exportReducer } from '../reducer'
 import useStyles from '../styles'
 
@@ -22,7 +19,6 @@ export function Raport() {
   const classes = useStyles()
   const { id } = useParams()
   const [report] = useQueryReport({ reportId: id ? +id : 0 })
-  // const [, createProductReport] = useMutationCreateProductsReport()
   const [updatedProductReport, updateProductReport] =
     useMutationUpdateProductReport()
   const [state, dispatch] = useReducer(exportReducer, initialExport)
@@ -31,19 +27,28 @@ export function Raport() {
     if (state.exportType === ExportType.PRODUCTS) {
       updateProductExportRaport()
     }
-    // if (state.exportType === ExportType.ORDERS) {
-    //   createOrderExportRaport()
-    // }
+
+    // TODO: save if order is set
   }
 
   const updateProductExportRaport = async () => {
-    if (state.exportData) {
-      const exportProduct = state.exportData as ProductExport
+    if (state.exportProductData) {
+      const exportProduct = state.exportProductData
       updateProductReport(
         {
           reportId: id ? +id : 0,
           input: {
-            columns: exportProduct.exportInfo,
+            columns: {
+              attributes: exportProduct.exportInfo.attributes,
+              fields: [
+                ...exportProduct.exportInfo.fields.financials,
+                ...exportProduct.exportInfo.fields.inventory,
+                ...exportProduct.exportInfo.fields.organisations,
+                ...exportProduct.exportInfo.fields.seo,
+              ],
+              channels: exportProduct.exportInfo.channels,
+              warehouses: exportProduct.exportInfo.warehouses,
+            },
             name: exportProduct.name,
             filter: {
               filterStr: '{}' || exportProduct.filter, // TODO: remove empty object
@@ -58,43 +63,30 @@ export function Raport() {
   }
 
   const updateOrderExportRaport = async () => {
-    // if (state.exportData) {
-    //   const exportOrder = state.exportData as OrderExport
-    //   // TODO: add order create report implementation
-    // }
+    // TODO: update order export
   }
-
-  // const onTypeChange = (
-  //   _event: React.ChangeEvent<{
-  //     name?: string | undefined
-  //     value: unknown
-  //   }>
-  // ) => {
-  //   dispatch({
-  //     type: 'SET_EXPORT_TYPE',
-  //     exportType: _event.target.value as ExportType,
-  //   })
-  // }
 
   useEffect(() => {
     if (report.data && !report.fetching) {
       const fetchedReport = report.data.report
-      dispatch({
-        type: 'SET_EXPORT_DATA',
-        exportData: {
-          name: fetchedReport.name,
-          filter: fetchedReport.filter,
-          exportInfo: {
-            attributes: fetchedReport.columns.attributes,
-            channels: fetchedReport.columns.channels,
-            fields:
-              fetchedReport.columns.productFields ||
-              fetchedReport.columns.orderFields,
-            warehouses: fetchedReport.columns.warehouses,
-          },
-        },
-      })
+
       dispatch({ type: 'SET_EXPORT_TYPE', exportType: fetchedReport.type })
+
+      if (fetchedReport.type === ExportType.PRODUCTS) {
+        dispatch({
+          type: 'SET_EXPORT_PRODUCT_DATA',
+          exportProductData: {
+            name: fetchedReport.name,
+            filter: fetchedReport.filter,
+            exportInfo: {
+              attributes: fetchedReport.columns.attributes,
+              channels: fetchedReport.columns.channels,
+              fields: sortProductFields(fetchedReport.columns.productFields),
+              warehouses: fetchedReport.columns.warehouses,
+            },
+          },
+        })
+      }
     }
   }, [report])
 
@@ -102,26 +94,27 @@ export function Raport() {
     if (updatedProductReport.data && !updatedProductReport.fetching) {
       const fetchedReport =
         updatedProductReport.data.updateProductsReport.report
-      dispatch({
-        type: 'SET_EXPORT_DATA',
-        exportData: {
-          name: fetchedReport.name,
-          filter: fetchedReport.filter,
-          exportInfo: {
-            attributes: fetchedReport.columns.attributes,
-            channels: fetchedReport.columns.channels,
-            fields: fetchedReport.columns.fields,
-            warehouses: fetchedReport.columns.warehouses,
+
+      if (fetchedReport.type === ExportType.PRODUCTS) {
+        dispatch({
+          type: 'SET_EXPORT_PRODUCT_DATA',
+          exportProductData: {
+            name: fetchedReport.name,
+            filter: fetchedReport.filter,
+            exportInfo: {
+              attributes: fetchedReport.columns.attributes,
+              channels: fetchedReport.columns.channels,
+              fields: sortProductFields(fetchedReport.columns.fields),
+              warehouses: fetchedReport.columns.warehouses,
+            },
           },
-        },
-      })
+        })
+      }
     }
   }, [updatedProductReport])
 
-  if (report.fetching || !state.exportData || updatedProductReport.fetching)
+  if (report.fetching || updatedProductReport.fetching)
     return <div>Loading...</div>
-
-  console.log(state)
 
   return (
     <Container
@@ -149,15 +142,18 @@ export function Raport() {
           </Grid>
           <Grid item md={8}>
             {state.exportType === ExportType.PRODUCTS ? (
-              <ProductSetting
-                setProductSetting={newProductExport =>
-                  dispatch({
-                    type: 'SET_EXPORT_DATA',
-                    exportData: newProductExport,
-                  })
-                }
-                initialExport={state.exportData as ProductExport}
-              />
+              <ExportProductContext.Provider
+                value={{
+                  exportData: state.exportProductData,
+                  setExportData: newExportData =>
+                    dispatch({
+                      type: 'SET_EXPORT_PRODUCT_DATA',
+                      exportProductData: newExportData,
+                    }),
+                }}
+              >
+                <ProductSetting />
+              </ExportProductContext.Provider>
             ) : (
               <div>orders</div>
             )}

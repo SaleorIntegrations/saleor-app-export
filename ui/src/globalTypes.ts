@@ -57,17 +57,29 @@ export enum ReportErrorCode {
 }
 
 export interface ExportProductsInput {
-  columns: ExportInfo
+  columns: ExportProductsInputColumns
   name: string
   filter: {
     filterStr: string
   }
 }
 
-export interface ExportInfo {
+export interface ExportProductsInputColumns {
   attributes: string[]
   channels: string[]
   fields: ProductField[]
+  warehouses: string[]
+}
+
+export interface ExportProductsInfo {
+  attributes: string[]
+  channels: string[]
+  fields: {
+    organisations: ProductField[]
+    seo: ProductField[]
+    financials: ProductField[]
+    inventory: ProductField[]
+  }
   warehouses: string[]
 }
 
@@ -81,8 +93,10 @@ export interface TableRaport {
 
 export interface ProductExport {
   name: string,
-  exportInfo: ExportInfo
-  filter: string
+  exportInfo: ExportProductsInfo
+  filter: string | null
 }
 
-export interface OrderExport {}
+export interface OrderExport {
+  name: string
+}
