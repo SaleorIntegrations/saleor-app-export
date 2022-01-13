@@ -9,7 +9,11 @@ import {
   ProductSetting,
 } from '../../../components'
 import { ExportProductContext } from '../../../context'
-import { useQueryReport, useMutationUpdateProductReport } from '../../../api'
+import {
+  useQueryReport,
+  useMutationUpdateProductReport,
+  useMutationRunReport,
+} from '../../../api'
 import { ExportObjectTypesEnum as ExportType } from '../../../globalTypes'
 import { sortProductFields } from '../../../utils'
 import { initialExport, exportReducer } from '../reducer'
@@ -18,10 +22,22 @@ import useStyles from '../styles'
 export function Raport() {
   const classes = useStyles()
   const { id } = useParams()
-  const [report] = useQueryReport({ reportId: id ? +id : 0 })
+  const [report] = useQueryReport({ reportId: parseInt(id || '') })
   const [updatedProductReport, updateProductReport] =
     useMutationUpdateProductReport()
+  const [, runReport] = useMutationRunReport()
   const [state, dispatch] = useReducer(exportReducer, initialExport)
+
+  const onExport = () => {
+    runReport(
+      {
+        reportId: parseInt(id || ''),
+      },
+      {
+        url: 'http://localhost:4321/graphql',
+      }
+    )
+  }
 
   const onSaveAndExport = () => {
     if (state.exportType === ExportType.PRODUCTS) {
@@ -160,10 +176,7 @@ export function Raport() {
           </Grid>
         </Grid>
       </Box>
-      <SubmitBar
-        onExport={() => alert('Export')}
-        onSaveAndExport={onSaveAndExport}
-      />
+      <SubmitBar onExport={onExport} onSaveAndExport={onSaveAndExport} />
     </Container>
   )
 }
