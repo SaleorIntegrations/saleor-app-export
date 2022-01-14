@@ -70,10 +70,7 @@ export function CreateRaport() {
   }
 
   const createOrderExportRaport = async () => {
-    if (state.exportProductData) {
-      alert('create order report')
-      // TODO: add order create report implementation
-    }
+    alert(JSON.stringify(state.exportOrderData.exportInfo))
   }
 
   const onTypeChange = (
