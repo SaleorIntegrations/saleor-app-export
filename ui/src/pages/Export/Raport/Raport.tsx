@@ -7,12 +7,14 @@ import {
   RaportType,
   ExportPicker,
   ProductSetting,
+  OrderSetting,
 } from '../../../components'
-import { ExportProductContext } from '../../../context'
+import { ExportOrderContext, ExportProductContext } from '../../../context'
 import {
   useQueryReport,
   useMutationUpdateProductReport,
   useMutationRunReport,
+  useMutationUpdateOrderReport,
 } from '../../../api'
 import { ExportObjectTypesEnum as ExportType } from '../../../globalTypes'
 import { sortProductFields, sortOrderFields } from '../../../utils'
@@ -25,6 +27,7 @@ export function Raport() {
   const [report] = useQueryReport({ reportId: parseInt(id || '') })
   const [updatedProductReport, updateProductReport] =
     useMutationUpdateProductReport()
+  const [updatedOrderReport, updateOrderReport] = useMutationUpdateOrderReport()
   const [, runReport] = useMutationRunReport()
   const [state, dispatch] = useReducer(exportReducer, initialExport)
 
@@ -44,24 +47,24 @@ export function Raport() {
       updateProductExportRaport()
     }
 
-    // TODO: save if order is set
+    if (state.exportType === ExportType.ORDERS) {
+      updateOrderExportRaport()
+    }
   }
 
   const updateProductExportRaport = async () => {
     if (state.exportProductData) {
       const exportProduct = state.exportProductData
+      const fields = Object.entries(state.exportProductData.exportInfo.fields)
+        .map(([, fieldValues]) => fieldValues)
+        .flat()
       updateProductReport(
         {
           reportId: state.id || -1,
           input: {
             columns: {
               attributes: exportProduct.exportInfo.attributes,
-              fields: [
-                ...exportProduct.exportInfo.fields.financials,
-                ...exportProduct.exportInfo.fields.inventory,
-                ...exportProduct.exportInfo.fields.organisations,
-                ...exportProduct.exportInfo.fields.seo,
-              ],
+              fields: fields,
               channels: exportProduct.exportInfo.channels,
               warehouses: exportProduct.exportInfo.warehouses,
             },
@@ -79,7 +82,17 @@ export function Raport() {
   }
 
   const updateOrderExportRaport = async () => {
-    // TODO: update order export
+    const fields = Object.entries(state.exportOrderData.exportInfo.fields)
+      .map(([, fieldValues]) => fieldValues)
+      .flat()
+    updateOrderReport(
+      {
+        fields: fields,
+        reportId: state.id || -1,
+        name: state.name,
+      },
+      { url: 'http://localhost:4321/graphql/' }
+    )
   }
 
   useEffect(() => {
@@ -144,6 +157,30 @@ export function Raport() {
     }
   }, [updatedProductReport])
 
+  useEffect(() => {
+    if (
+      updatedOrderReport.data?.updateOrdersReport.report &&
+      !updatedOrderReport.fetching
+    ) {
+      const fetchedReport = updatedOrderReport.data.updateOrdersReport.report
+
+      dispatch({ type: 'SET_NAME', name: fetchedReport.name })
+      dispatch({ type: 'SET_ID', id: fetchedReport.id })
+
+      if (fetchedReport.type === ExportType.PRODUCTS) {
+        dispatch({
+          type: 'SET_EXPORT_ORDER_DATA',
+          exportOrderData: {
+            filter: fetchedReport.filter,
+            exportInfo: {
+              fields: sortOrderFields(fetchedReport.columns.fields),
+            },
+          },
+        })
+      }
+    }
+  }, [updatedOrderReport])
+
   if (report.fetching || updatedProductReport.fetching)
     return <div>Loading...</div>
 
@@ -190,7 +227,22 @@ export function Raport() {
                 <ProductSetting />
               </ExportProductContext.Provider>
             ) : (
-              <div>{JSON.stringify(state)}</div>
+              <ExportOrderContext.Provider
+                value={{
+                  id: state.id,
+                  name: state.name,
+                  setName: newName =>
+                    dispatch({ type: 'SET_NAME', name: newName }),
+                  exportData: state.exportOrderData,
+                  setExportData: newExportData =>
+                    dispatch({
+                      type: 'SET_EXPORT_ORDER_DATA',
+                      exportOrderData: newExportData,
+                    }),
+                }}
+              >
+                <OrderSetting />
+              </ExportOrderContext.Provider>
             )}
           </Grid>
         </Grid>
