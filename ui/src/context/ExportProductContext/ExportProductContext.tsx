@@ -3,14 +3,18 @@ import React from 'react'
 import { ProductExport } from '../../globalTypes'
 
 export interface ExportProductContextType {
+  id: number | null
   exportData: ProductExport
+  name: string
   setExportData: (newExportData: ProductExport) => void
+  setName: (newName: string) => void
 }
 
 export const ExportProductContext =
   React.createContext<ExportProductContextType>({
+    name: '',
+    id: null,
     exportData: {
-      name: '',
       filter: '',
       exportInfo: {
         attributes: [],
@@ -24,6 +28,7 @@ export const ExportProductContext =
         warehouses: [],
       },
     },
+    setName: () => {},
     setExportData: () => {},
   })
 

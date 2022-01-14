@@ -49,7 +49,7 @@ export function CreateRaport() {
             channels: exportProduct.exportInfo.channels,
             warehouses: exportProduct.exportInfo.warehouses,
           },
-          name: exportProduct.name,
+          name: state.name,
           filter: {
             filterStr: '{}' || exportProduct.filter, // TODO: remove empty object
           },
@@ -119,6 +119,10 @@ export function CreateRaport() {
             {state.exportType === ExportType.PRODUCTS ? (
               <ExportProductContext.Provider
                 value={{
+                  id: state.id,
+                  name: state.name,
+                  setName: newName =>
+                    dispatch({ type: 'SET_NAME', name: newName }),
                   exportData: state.exportProductData,
                   setExportData: newExportData =>
                     dispatch({

@@ -25,10 +25,10 @@ export enum OrderField {
   TOTAL = 'TOTAL',
   SUBTOTAL = 'SUBTOTAL',
   SHIPPING_PRICE = 'SHIPPING_PRICE',
-  USER_EMAIL = 'USER_EMAIL',
+  EMAIL = 'EMAIL',
   SHIPPING_ADDRESS = 'SHIPPING_ADDRESS',
   BILLING_ADDRESS = 'BILLING_ADDRESS',
-  LINES_SKU = 'LINES_SKU',
+  ITEMS_SKU = 'ITEMS_SKU',
   PAYMENT_STATUS = 'PAYMENT_STATUS',
   GATEWAY = 'GATEWAY',
   PAYMENT_METHOD_TYPE = 'PAYMENT_METHOD_TYPE',
@@ -83,6 +83,17 @@ export interface ExportProductsInfo {
   warehouses: string[]
 }
 
+export interface ExportOrdersInfo {
+  fields: {
+    basic: OrderField[]
+    financial: OrderField[]
+    customer: OrderField[]
+    items: OrderField[]
+    payments: OrderField[]
+    fulfillments: OrderField[]
+  }
+}
+
 export interface TableRaport {
   id: number
   name: string
@@ -92,11 +103,11 @@ export interface TableRaport {
 }
 
 export interface ProductExport {
-  name: string,
   exportInfo: ExportProductsInfo
   filter: string | null
 }
 
 export interface OrderExport {
-  name: string
+  filter: string | null
+  exportInfo: ExportOrdersInfo
 }

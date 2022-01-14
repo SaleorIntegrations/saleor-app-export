@@ -16,12 +16,12 @@ import Surface from '../Surface'
 import { ProductField } from '../../globalTypes'
 import useStyles from './styles'
 
-interface ProductAreaProps {
+interface ProductColumnsAreaProps {
   title: string
   subtitle: string
 }
 
-export function ProductArea(props: ProductAreaProps) {
+export function ProductColumnsArea(props: ProductColumnsAreaProps) {
   const { title, subtitle } = props
   const { exportData, setExportData } = useProductExport()
   const classes = useStyles()
@@ -307,4 +307,4 @@ export function ProductArea(props: ProductAreaProps) {
   )
 }
 
-export default ProductArea
+export default ProductColumnsArea

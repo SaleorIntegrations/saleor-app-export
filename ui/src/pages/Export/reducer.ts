@@ -4,19 +4,20 @@ import { FileType, ExportObjectTypesEnum as ExportType, ProductExport, OrderExpo
 
 export interface Export {
   fileType: FileType
+  name: string
+  id: number | null
   exportType: ExportType
   exportProductData: ProductExport
   exportOrderData: OrderExport
 }
 
 export interface ExportAction extends Partial<Export> {
-  type: 'SET_FILE_TYPE' | 'SET_EXPORT_PRODUCT_DATA' | 'SET_EXPORT_TYPE'
+  type: 'SET_FILE_TYPE' | 'SET_EXPORT_PRODUCT_DATA' | 'SET_EXPORT_TYPE' | 'SET_EXPORT_ORDER_DATA' | 'SET_ID' | 'SET_NAME'
 }
 
 export const initialExport: Export = {
   exportProductData: {
-    name: '',
-    filter: '',
+    filter: null,
     exportInfo: {
       attributes: [],
       channels: [],
@@ -30,8 +31,20 @@ export const initialExport: Export = {
     },
   },
   exportOrderData: {
-    name: ''
+    filter: null,
+    exportInfo: {
+      fields: {
+        basic: [],
+        financial: [],
+        fulfillments: [],
+        items: [],
+        customer: [],
+        payments: []
+      }
+    }
   },
+  name: '',
+  id: null,
   fileType: FileType.CSV,
   exportType: ExportType.PRODUCTS
 }
@@ -52,6 +65,21 @@ export const exportReducer = (state: Export, action: ExportAction) => {
       return produce(state, draft => {
         const { exportProductData } = action
         draft.exportProductData = exportProductData !== undefined ? exportProductData : state.exportProductData
+      })
+    case 'SET_EXPORT_ORDER_DATA':
+      return produce(state, draft => {
+        const { exportOrderData } = action
+        draft.exportOrderData = exportOrderData !== undefined ? exportOrderData : state.exportOrderData
+      })
+    case 'SET_ID':
+      return produce(state, draft => {
+        const { id } = action
+        draft.id = id !== undefined ? id : state.id
+      })
+    case 'SET_NAME':
+      return produce(state, draft => {
+        const { name } = action
+        draft.name = name !== undefined ? name : state.name
       })
     default:
       return state

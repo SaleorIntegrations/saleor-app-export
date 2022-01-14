@@ -3,22 +3,22 @@ import { Box } from '@material-ui/core'
 
 import { GeneralInformation } from '../GeneralInformation'
 import { useProductExport } from '../../hooks'
-import { ProductArea } from '../ProductColumnsArea'
+import { ProductColumnsArea } from '../ProductColumnsArea/ProductColumnsArea'
 import useStyles from './styles'
 
 export function ProductSetting() {
   const classes = useStyles()
-  const { exportData, setExportData } = useProductExport()
+  const { exportData, name, setName } = useProductExport()
 
   if (!exportData) return <div>Loading...</div>
 
   return (
     <Box className={classes.list}>
       <GeneralInformation
-        value={exportData.name}
-        onChange={e => setExportData({ ...exportData, name: e.target.value })}
+        value={name}
+        onChange={e => setName(e.target.value)}
       />
-      <ProductArea
+      <ProductColumnsArea
         title="Columns"
         subtitle="Define columns you want to export in your file"
       />

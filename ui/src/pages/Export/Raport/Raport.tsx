@@ -15,7 +15,7 @@ import {
   useMutationRunReport,
 } from '../../../api'
 import { ExportObjectTypesEnum as ExportType } from '../../../globalTypes'
-import { sortProductFields } from '../../../utils'
+import { sortProductFields, sortOrderFields } from '../../../utils'
 import { initialExport, exportReducer } from '../reducer'
 import useStyles from '../styles'
 
@@ -52,7 +52,7 @@ export function Raport() {
       const exportProduct = state.exportProductData
       updateProductReport(
         {
-          reportId: id ? +id : 0,
+          reportId: state.id || -1,
           input: {
             columns: {
               attributes: exportProduct.exportInfo.attributes,
@@ -65,7 +65,7 @@ export function Raport() {
               channels: exportProduct.exportInfo.channels,
               warehouses: exportProduct.exportInfo.warehouses,
             },
-            name: exportProduct.name,
+            name: state.name,
             filter: {
               filterStr: '{}' || exportProduct.filter, // TODO: remove empty object
             },
@@ -87,18 +87,31 @@ export function Raport() {
       const fetchedReport = report.data.report
 
       dispatch({ type: 'SET_EXPORT_TYPE', exportType: fetchedReport.type })
+      dispatch({ type: 'SET_NAME', name: fetchedReport.name })
+      dispatch({ type: 'SET_ID', id: fetchedReport.id })
 
       if (fetchedReport.type === ExportType.PRODUCTS) {
         dispatch({
           type: 'SET_EXPORT_PRODUCT_DATA',
           exportProductData: {
-            name: fetchedReport.name,
             filter: fetchedReport.filter,
             exportInfo: {
               attributes: fetchedReport.columns.attributes,
               channels: fetchedReport.columns.channels,
               fields: sortProductFields(fetchedReport.columns.productFields),
               warehouses: fetchedReport.columns.warehouses,
+            },
+          },
+        })
+      }
+
+      if (fetchedReport.type === ExportType.ORDERS) {
+        dispatch({
+          type: 'SET_EXPORT_ORDER_DATA',
+          exportOrderData: {
+            filter: fetchedReport.filter,
+            exportInfo: {
+              fields: sortOrderFields(fetchedReport.columns.orderFields),
             },
           },
         })
@@ -111,11 +124,13 @@ export function Raport() {
       const fetchedReport =
         updatedProductReport.data.updateProductsReport.report
 
+      dispatch({ type: 'SET_NAME', name: fetchedReport.name })
+      dispatch({ type: 'SET_ID', id: fetchedReport.id })
+
       if (fetchedReport.type === ExportType.PRODUCTS) {
         dispatch({
           type: 'SET_EXPORT_PRODUCT_DATA',
           exportProductData: {
-            name: fetchedReport.name,
             filter: fetchedReport.filter,
             exportInfo: {
               attributes: fetchedReport.columns.attributes,
@@ -160,6 +175,10 @@ export function Raport() {
             {state.exportType === ExportType.PRODUCTS ? (
               <ExportProductContext.Provider
                 value={{
+                  id: state.id,
+                  name: state.name,
+                  setName: newName =>
+                    dispatch({ type: 'SET_NAME', name: newName }),
                   exportData: state.exportProductData,
                   setExportData: newExportData =>
                     dispatch({
@@ -171,7 +190,7 @@ export function Raport() {
                 <ProductSetting />
               </ExportProductContext.Provider>
             ) : (
-              <div>orders</div>
+              <div>{JSON.stringify(state)}</div>
             )}
           </Grid>
         </Grid>
