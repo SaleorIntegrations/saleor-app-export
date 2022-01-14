@@ -7,6 +7,7 @@ import {
   RaportType,
   ExportPicker,
   ProductSetting,
+  OrderSetting,
 } from '../../../components'
 import { useMutationCreateProductsReport } from '../../../api'
 import { ExportProductContext, ExportOrderContext } from '../../../context'
@@ -148,7 +149,7 @@ export function CreateRaport() {
                     }),
                 }}
               >
-                <div>orders</div>
+                <OrderSetting />
               </ExportOrderContext.Provider>
             )}
           </Grid>
