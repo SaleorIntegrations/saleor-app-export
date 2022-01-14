@@ -9,7 +9,7 @@ import {
   ProductSetting,
 } from '../../../components'
 import { useMutationCreateProductsReport } from '../../../api'
-import { ExportProductContext } from '../../../context'
+import { ExportProductContext, ExportOrderContext } from '../../../context'
 import {
   ExportObjectTypesEnum as ExportType,
   ProductExport,
@@ -134,7 +134,22 @@ export function CreateRaport() {
                 <ProductSetting />
               </ExportProductContext.Provider>
             ) : (
-              <div>orders</div>
+              <ExportOrderContext.Provider
+                value={{
+                  id: state.id,
+                  name: state.name,
+                  setName: newName =>
+                    dispatch({ type: 'SET_NAME', name: newName }),
+                  exportData: state.exportOrderData,
+                  setExportData: newExportData =>
+                    dispatch({
+                      type: 'SET_EXPORT_ORDER_DATA',
+                      exportOrderData: newExportData,
+                    }),
+                }}
+              >
+                <div>orders</div>
+              </ExportOrderContext.Provider>
             )}
           </Grid>
         </Grid>
