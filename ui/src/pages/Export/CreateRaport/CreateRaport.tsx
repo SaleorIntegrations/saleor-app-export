@@ -9,12 +9,12 @@ import {
   ProductSetting,
   OrderSetting,
 } from '../../../components'
-import { useMutationCreateProductsReport } from '../../../api'
-import { ExportProductContext, ExportOrderContext } from '../../../context'
 import {
-  ExportObjectTypesEnum as ExportType,
-  ProductExport,
-} from '../../../globalTypes'
+  useMutationCreateProductsReport,
+  useMutationCreateOrdersReport,
+} from '../../../api'
+import { ExportProductContext, ExportOrderContext } from '../../../context'
+import { ExportObjectTypesEnum as ExportType } from '../../../globalTypes'
 import { initialExport, exportReducer } from '../reducer'
 import useStyles from '../styles'
 
@@ -22,6 +22,7 @@ export function CreateRaport() {
   const classes = useStyles()
   const navigation = useNavigate()
   const [, createProductReport] = useMutationCreateProductsReport()
+  const [, createOrderReport] = useMutationCreateOrdersReport()
   const [state, dispatch] = useReducer(exportReducer, initialExport)
 
   const onSaveAndExport = () => {
@@ -36,24 +37,18 @@ export function CreateRaport() {
 
   const createProductExportRaport = async () => {
     if (state.exportProductData) {
-      const exportProduct = state.exportProductData as ProductExport
+      const fields = Object.entries(state.exportProductData.exportInfo.fields)
+        .map(([, fieldValues]) => fieldValues)
+        .flat()
       const response = await createProductReport(
         {
           columns: {
-            attributes: exportProduct.exportInfo.attributes,
-            fields: [
-              ...exportProduct.exportInfo.fields.financials,
-              ...exportProduct.exportInfo.fields.inventory,
-              ...exportProduct.exportInfo.fields.organisations,
-              ...exportProduct.exportInfo.fields.seo,
-            ],
-            channels: exportProduct.exportInfo.channels,
-            warehouses: exportProduct.exportInfo.warehouses,
+            attributes: state.exportProductData.exportInfo.attributes,
+            fields: fields,
+            channels: state.exportProductData.exportInfo.channels,
+            warehouses: state.exportProductData.exportInfo.warehouses,
           },
           name: state.name,
-          filter: {
-            filterStr: '{}' || exportProduct.filter, // TODO: remove empty object
-          },
         },
         {
           url: 'http://localhost:4321/graphql',
@@ -70,7 +65,17 @@ export function CreateRaport() {
   }
 
   const createOrderExportRaport = async () => {
-    alert(JSON.stringify(state.exportOrderData.exportInfo))
+    const fields = Object.entries(state.exportOrderData.exportInfo.fields)
+      .map(([, fieldValues]) => fieldValues)
+      .flat()
+    const response = await createOrderReport(
+      { fields: fields, name: state.name },
+      { url: 'http://localhost:4321/graphql' }
+    )
+
+    if (response.data && response.data.createOrdersReport.errors.length < 1) {
+      navigation(`/raport/${response.data.createOrdersReport.report?.id}`)
+    }
   }
 
   const onTypeChange = (

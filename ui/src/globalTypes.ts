@@ -25,10 +25,10 @@ export enum OrderField {
   TOTAL = 'TOTAL',
   SUBTOTAL = 'SUBTOTAL',
   SHIPPING_PRICE = 'SHIPPING_PRICE',
-  EMAIL = 'EMAIL',
+  EMAIL = 'USER_EMAIL',
   SHIPPING_ADDRESS = 'SHIPPING_ADDRESS',
   BILLING_ADDRESS = 'BILLING_ADDRESS',
-  ITEMS_SKU = 'ITEMS_SKU',
+  ITEMS_SKU = 'LINES_SKU',
   PAYMENT_STATUS = 'PAYMENT_STATUS',
   GATEWAY = 'GATEWAY',
   PAYMENT_METHOD_TYPE = 'PAYMENT_METHOD_TYPE',
@@ -59,7 +59,7 @@ export enum ReportErrorCode {
 export interface ExportProductsInput {
   columns: ExportProductsInputColumns
   name: string
-  filter: {
+  filter?: {
     filterStr: string
   }
 }
