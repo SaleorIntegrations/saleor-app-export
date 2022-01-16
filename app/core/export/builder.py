@@ -1,5 +1,7 @@
 import dataclasses
 
+from app.core.export.fields import RecipientInfo
+
 MAX_PAGE_SIZE = 100
 
 
@@ -49,3 +51,48 @@ def build_query_base(
         """,
         variable_values=variable_values,
     )
+
+
+def build_recipients_query(recipient_info: RecipientInfo) -> PreparedQuery:
+    variable_values = {}
+    users_segment = ""
+    if recipient_info.users:
+        user_ids = str(recipient_info.users).replace("'", '"')
+        users_segment = f"""
+            staffUsers (
+                first: 100,
+                filter: {{ids: {user_ids}}}
+            ) {{
+                edges {{
+                    node {{
+                        id
+                        email
+                    }}
+                }}
+            }}
+        """
+    groups_segment = ""
+    if recipient_info.permission_groups:
+        group_ids = str(recipient_info.permission_groups).replace("'", '"')
+        groups_segment = f"""
+            permissionGroups (
+                first: 100,
+                filter: {{ids: {group_ids}}}
+            ) {{
+                edges {{
+                    node {{
+                        id
+                        users {{
+                            email
+                        }}
+                    }}
+                }}
+            }}
+        """
+    query_str = f"""
+        query {{
+            {users_segment}
+            {groups_segment}
+        }}
+    """
+    return PreparedQuery(query_str=query_str, variable_values=variable_values)

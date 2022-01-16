@@ -7,7 +7,7 @@ from gql.transport.exceptions import TransportQueryError
 from sqlalchemy import delete
 from sqlalchemy.exc import NoResultFound
 
-from app.core.export.fetch import fetch_report_by_id
+from app.core.export.fetch import fetch_recipients, fetch_report_by_id
 from app.core.export.fields import RecipientInfo
 from app.core.export.fields import RecipientInfo as RecipientInfoModel
 from app.core.reports.models import (
@@ -73,8 +73,8 @@ async def mutate_report_base(
                 ]
             )
 
-    recipients: RecipientInfo = input.recipients
-    if not any([recipients.users, recipients.permission_groups]):
+    recipient_info: RecipientInfo = input.recipients.to_pydantic()
+    if not any([recipient_info.users, recipient_info.permission_groups]):
         return ReportResponse(
             errors=[
                 ReportError(
@@ -84,6 +84,19 @@ async def mutate_report_base(
                 )
             ]
         )
+    try:
+        await fetch_recipients(recipient_info, raise_exception=True)
+    except (ValueError, TransportQueryError) as e:
+        return ReportResponse(
+            errors=[
+                ReportError(
+                    code=ReportErrorCode.NOT_FOUND,
+                    message=str(e),
+                    field="recipients",
+                )
+            ]
+        )
+    recipients = json.loads(recipient_info.json())
 
     filter_input = {}
     if input.filter:
@@ -120,6 +133,7 @@ async def mutate_report_base(
         report.name = input.name
         report.filter_input = filter_input
         report.columns = columns
+        report.recipients = recipients
     else:
         report = Report(
             type=type,
@@ -128,6 +142,7 @@ async def mutate_report_base(
             format=OutputFormatEnum.CSV,
             filter_input=filter_input,
             columns=columns,
+            recipients=recipients,
         )
     db.add(report)
     await db.commit()
