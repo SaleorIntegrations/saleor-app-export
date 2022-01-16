@@ -31,7 +31,9 @@ mutation ProductsExport($input: ExportProductsInput!, $reportId: Int!) {
 
 @pytest.mark.asyncio
 @mock.patch("app.graphql.reports.mutations.products.fetch_products_response")
-async def test_update_products_report(m_fetch, graphql, products_report, db_session):
+async def test_update_products_report(
+    m_fetch, m_base_fetch_recipients, graphql, products_report, db_session
+):
     # given
     fields = ["VARIANT_SKU"]
     filter = {"ids": "1234"}

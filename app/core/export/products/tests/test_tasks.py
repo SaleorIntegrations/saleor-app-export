@@ -74,7 +74,9 @@ async def test_continue_job_with_next_page(
 
 
 @pytest.mark.asyncio
+@mock.patch("app.core.export.tasks.fetch_recipients")
 async def test_finish_job(
+    m_fetch_recipients,
     db_session,
     export_products_job,
 ):

@@ -24,7 +24,7 @@ mutation OrdersExport($input: ExportOrdersInput!) {
 
 
 @pytest.mark.asyncio
-async def test_crete_orders_report(graphql):
+async def test_crete_orders_report(graphql, m_base_fetch_recipients):
     # given
     name = "My report 12"
     variables = {
@@ -48,7 +48,7 @@ async def test_crete_orders_report(graphql):
 
 
 @pytest.mark.asyncio
-async def test_export_orders_invalid_filter_json(graphql):
+async def test_export_orders_invalid_filter_json(graphql, m_base_fetch_recipients):
     # given
     variables = {
         "input": {
@@ -71,7 +71,9 @@ async def test_export_orders_invalid_filter_json(graphql):
 
 @pytest.mark.asyncio
 @mock.patch("app.graphql.reports.mutations.orders.fetch_orders_response")
-async def test_export_orders_remote_graphql_error(m_fetch, graphql):
+async def test_export_orders_remote_graphql_error(
+    m_fetch, graphql, m_base_fetch_recipients
+):
     # given
     msg = "remote error"
     m_fetch.side_effect = TransportQueryError(msg)

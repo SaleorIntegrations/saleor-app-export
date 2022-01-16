@@ -25,7 +25,7 @@ mutation ProductsExport($input: ExportProductsInput!) {
 
 
 @pytest.mark.asyncio
-async def test_create_products_report(graphql):
+async def test_create_products_report(graphql, m_base_fetch_recipients):
     # given
     name = "My report 12"
     variables = {
@@ -51,7 +51,9 @@ async def test_create_products_report(graphql):
 
 
 @pytest.mark.asyncio
-async def test_export_products_without_optional_columns(db_session, graphql):
+async def test_export_products_without_optional_columns(
+    db_session, graphql, m_base_fetch_recipients
+):
     # given
     variables = {
         "input": {
@@ -78,7 +80,9 @@ async def test_export_products_without_optional_columns(db_session, graphql):
 
 
 @pytest.mark.asyncio
-async def test_export_products_wit_related_columns(db_session, graphql):
+async def test_export_products_wit_related_columns(
+    db_session, graphql, m_base_fetch_recipients
+):
     # given
     fields = ["ID", "VARIANT_ID"]
     channel_ids = ["1", "2", "3"]
@@ -138,7 +142,7 @@ async def test_export_products_exceeds_column_limit(graphql, input_field):
 
 
 @pytest.mark.asyncio
-async def test_export_products_invalid_filter_json(graphql):
+async def test_export_products_invalid_filter_json(graphql, m_base_fetch_recipients):
     # given
     variables = {
         "input": {
@@ -161,7 +165,9 @@ async def test_export_products_invalid_filter_json(graphql):
 
 @pytest.mark.asyncio
 @mock.patch("app.graphql.reports.mutations.products.fetch_products_response")
-async def test_export_products_remote_graphql_error(m_fetch, graphql):
+async def test_export_products_remote_graphql_error(
+    m_fetch, graphql, m_base_fetch_recipients
+):
     # given
     msg = "remote error"
     m_fetch.side_effect = TransportQueryError(msg)

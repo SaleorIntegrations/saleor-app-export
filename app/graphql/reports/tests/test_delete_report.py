@@ -25,7 +25,6 @@ async def test_delete_report(
 
     # when
     result = await graphql.execute(MUTATION_DELETE_REPORT, variables)
-    print(result)
 
     # then
     assert result["data"]["deleteReport"]["errors"] == []
