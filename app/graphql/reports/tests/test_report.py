@@ -6,6 +6,10 @@ query Report($id: Int!) {
     id
     type
     filter
+    recipients {
+      users
+      permissionGroups
+    }
     columns {
       __typename
       ... on ProductSelectedColumnsInfo {
@@ -32,6 +36,8 @@ async def test_get_orders_report(graphql, orders_report, order_column_info):
     assert result["data"]["report"]["id"] == orders_report.id
     assert result["data"]["report"]["type"] == orders_report.type.name
     assert result["data"]["report"]["filter"] is None
+    assert result["data"]["report"]["recipients"]["users"] == ["User:1"]
+    assert result["data"]["report"]["recipients"]["permissionGroups"] == ["Group:1"]
     assert (
         result["data"]["report"]["columns"]["__typename"] == "OrderSelectedColumnsInfo"
     )
@@ -49,6 +55,8 @@ async def test_get_products_report(graphql, products_report, product_column_info
     assert result["data"]["report"]["id"] == products_report.id
     assert result["data"]["report"]["type"] == products_report.type.name
     assert result["data"]["report"]["filter"] is None
+    assert result["data"]["report"]["recipients"]["users"] == ["User:1"]
+    assert result["data"]["report"]["recipients"]["permissionGroups"] == ["Group:1"]
     assert (
         result["data"]["report"]["columns"]["__typename"]
         == "ProductSelectedColumnsInfo"

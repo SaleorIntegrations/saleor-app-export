@@ -2,6 +2,7 @@ import json
 
 import pytest
 
+from app.core.export.fields import RecipientInfo
 from app.core.export.orders.fields import OrderFieldEnum, OrderSelectedColumnsInfo
 from app.core.export.products.fields import ProductFieldEnum, ProductSelectedColumnsInfo
 from app.core.reports.models import (
@@ -14,7 +15,7 @@ from app.core.reports.models import (
 
 
 @pytest.fixture
-async def product_column_info():
+def product_column_info():
     return ProductSelectedColumnsInfo(
         fields=list(ProductFieldEnum),
         attributes=[
@@ -29,20 +30,29 @@ async def product_column_info():
 
 
 @pytest.fixture
-async def order_column_info():
+def order_column_info():
     return OrderSelectedColumnsInfo(
         fields=list(OrderFieldEnum),
     )
 
 
 @pytest.fixture
-async def products_report(db_session, product_column_info):
+def recipient_info():
+    return RecipientInfo(
+        users=["User:1"],
+        permission_groups=["Group:1"],
+    )
+
+
+@pytest.fixture
+async def products_report(db_session, product_column_info, recipient_info):
     columns = json.loads(product_column_info.json())
     instance = Report(
         scope=ExportScopeEnum.ALL,
         type=ExportObjectTypesEnum.PRODUCTS,
         format=OutputFormatEnum.CSV,
         columns=columns,
+        recipients=recipient_info,
     )
     db_session.add(instance)
     await db_session.commit()
@@ -50,13 +60,14 @@ async def products_report(db_session, product_column_info):
 
 
 @pytest.fixture
-async def orders_report(db_session, order_column_info):
+async def orders_report(db_session, order_column_info, recipient_info):
     columns = json.loads(order_column_info.json())
     instance = Report(
         scope=ExportScopeEnum.ALL,
         type=ExportObjectTypesEnum.ORDERS,
         format=OutputFormatEnum.CSV,
         columns=columns,
+        recipients=recipient_info,
     )
     db_session.add(instance)
     await db_session.commit()
