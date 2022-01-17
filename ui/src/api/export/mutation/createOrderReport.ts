@@ -1,20 +1,26 @@
-import { useMutation, gql } from 'urql'
+import { gql } from 'urql'
 
 import { ReportFragment, ReportErrorFragment } from '../fragments'
 import { ReportResponse, FilterInfo, OrderFieldEnum } from '../types'
+import { useAppMutation } from '../useAppMutation'
 
 const apiMutation = gql`
   ${ReportFragment}
   ${ReportErrorFragment}
-  mutation createOrdersReport($fields: [OrderFieldEnum!]!, $name: String, $filter: OrderFilterInfo) {
-    createOrdersReport(input: { columns: { fields: $fields }, name: $name, filter: $filter }) {
+  mutation createOrdersReport(
+    $fields: [OrderFieldEnum!]!
+    $name: String
+    $filter: OrderFilterInfo
+  ) {
+    createOrdersReport(
+      input: { columns: { fields: $fields }, name: $name, filter: $filter }
+    ) {
       report {
         ...ReportFragment
       }
       errors {
         ...ReportErrorFragment
       }
-      __typename
     }
   }
 `
@@ -30,7 +36,9 @@ interface ExportOrderInput {
 }
 
 export function useMutationCreateOrdersReport() {
-  return useMutation<CreateOrdersReportResponse, ExportOrderInput>(apiMutation)
+  return useAppMutation<CreateOrdersReportResponse, ExportOrderInput>(
+    apiMutation
+  )
 }
 
 export default useMutationCreateOrdersReport

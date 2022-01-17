@@ -1,6 +1,11 @@
 import produce from 'immer'
 
-import { FilterInfo, ProductSelectedColumnsInfo, OrderSelectedColumnsInfo, ExportObjectTypesEnum } from '../../api/export/types'
+import {
+  FilterInfo,
+  ProductSelectedColumnsInfo,
+  OrderSelectedColumnsInfo,
+  ExportObjectTypesEnum,
+} from '../../api/export/types'
 
 import { FileType } from '../../globalTypes'
 
@@ -14,7 +19,14 @@ export interface Export {
 }
 
 export interface ExportAction extends Partial<Export> {
-  action: 'SET_FILE_TYPE' | 'SET_NAME' | 'SET_ID' | 'SET_TYPE' | 'SET_FILTER' | 'SET_COLUMNS' | 'SET_EXPORT'
+  action:
+    | 'SET_FILE_TYPE'
+    | 'SET_NAME'
+    | 'SET_ID'
+    | 'SET_TYPE'
+    | 'SET_FILTER'
+    | 'SET_COLUMNS'
+    | 'SET_EXPORT'
   export?: Export
 }
 
@@ -29,7 +41,7 @@ export const initialExport: Export = {
     attributes: [],
     channels: [],
     warehouses: [],
-  }
+  },
 }
 
 export const exportReducer = (state: Export, action: ExportAction) => {

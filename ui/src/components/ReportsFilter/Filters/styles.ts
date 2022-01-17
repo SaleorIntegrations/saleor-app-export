@@ -1,6 +1,6 @@
 import { makeStyles } from '@saleor/macaw-ui'
 
-export const useStyles = makeStyles((theme) => ({
+export const useStyles = makeStyles(theme => ({
   summary: {
     padding: '0',
     display: 'flex',
@@ -8,16 +8,16 @@ export const useStyles = makeStyles((theme) => ({
     '& .MuiAccordionSummary-content': {
       margin: '0',
       padding: theme.spacing(1, 2),
-      flexGrow: '0'
+      flexGrow: '0',
     },
     '& .MuiAccordionSummary-expandIcon': {
       marginRight: theme.spacing(1),
-      padding: '2px'
+      padding: '2px',
     },
   },
   accordion: {
     '&.Mui-expanded': {
-      margin: '0px'
+      margin: '0px',
     },
     '&::before': {
       opacity: '0',
@@ -28,8 +28,8 @@ export const useStyles = makeStyles((theme) => ({
     width: '100%',
     marginBottom: theme.spacing(1),
     '& input[type="text"]': {
-      padding: '12px 0 9px 12px'
-    }
+      padding: '12px 0 9px 12px',
+    },
   },
   details: {
     padding: theme.spacing(2, 3),
@@ -37,19 +37,19 @@ export const useStyles = makeStyles((theme) => ({
     display: 'block',
   },
   checkOption: {
-    display: 'block'
+    display: 'block',
   },
   linkButton: {
     '&.MuiLink-underlineHover:hover': {
-      cursor: 'pointer'
-    }
+      cursor: 'pointer',
+    },
   },
   search: {
     flexGrow: 1,
     '& .MuiOutlinedInput-input': {
-      padding: '9px 12px'
-    }
-  }
+      padding: '9px 12px',
+    },
+  },
 }))
 
 export default useStyles

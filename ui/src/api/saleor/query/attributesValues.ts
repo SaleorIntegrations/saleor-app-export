@@ -6,10 +6,15 @@ import { AttributeValue, PageInfo, Node } from '../types'
 const apiQuery = gql`
   ${PageInfoFragment}
   ${AttributeValueFragment}
-  query SearchAttributeValues($id: ID, $after: String, $first: Int!, $query: String!) {
+  query SearchAttributeValues(
+    $id: ID
+    $after: String
+    $first: Int!
+    $query: String!
+  ) {
     attribute(id: $id) {
       id
-      choices(after: $after, first: $first, filter: {search: $query}) {
+      choices(after: $after, first: $first, filter: { search: $query }) {
         edges {
           node {
             ...AttributeValueFragment

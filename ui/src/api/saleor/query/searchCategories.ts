@@ -7,7 +7,11 @@ const apiQuery = gql`
   ${PageInfoFragment}
   ${CategoryFragment}
   query SearchCategories($after: String, $first: Int!, $query: String!) {
-    search: categories(after: $after, first: $first, filter: {search: $query}) {
+    search: categories(
+      after: $after
+      first: $first
+      filter: { search: $query }
+    ) {
       edges {
         node {
           ...CategoryFragment

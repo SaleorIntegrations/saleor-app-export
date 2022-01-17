@@ -31,14 +31,9 @@ export function Report() {
   const [isLoading, setIsLoading] = useState(true)
 
   const onExport = () => {
-    runReport(
-      {
-        reportId: parseInt(id || ''),
-      },
-      {
-        url: 'http://localhost:4321/graphql',
-      }
-    )
+    runReport({
+      reportId: parseInt(id || ''),
+    })
   }
 
   const onSaveAndExport = () => {
@@ -52,35 +47,27 @@ export function Report() {
 
   const updateProductExportReport = async () => {
     if ('productFields' in state.columns) {
-      await updateProductReport(
-        {
-          reportId: state.id || -1,
-          columns: {
-            fields: state.columns.productFields,
-            warehouses: state.columns.warehouses,
-            channels: state.columns.channels,
-            attributes: state.columns.attributes,
-          },
-          name: state.name,
-          filter: state.filter ? state.filter : undefined,
+      await updateProductReport({
+        reportId: state.id || -1,
+        columns: {
+          fields: state.columns.productFields,
+          warehouses: state.columns.warehouses,
+          channels: state.columns.channels,
+          attributes: state.columns.attributes,
         },
-        {
-          url: 'http://localhost:4321/graphql',
-        }
-      )
+        name: state.name,
+        filter: state.filter ? state.filter : undefined,
+      })
     }
   }
 
   const updateOrderExportReport = async () => {
     if ('orderFields' in state.columns) {
-      await updateOrderReport(
-        {
-          fields: state.columns.orderFields,
-          reportId: state.id || -1,
-          name: state.name,
-        },
-        { url: 'http://localhost:4321/graphql/' }
-      )
+      await updateOrderReport({
+        fields: state.columns.orderFields,
+        reportId: state.id || -1,
+        name: state.name,
+      })
     }
   }
 

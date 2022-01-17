@@ -37,20 +37,15 @@ export function CreateReport() {
 
   const createProductExportReport = async () => {
     if ('productFields' in state.columns) {
-      const response = await createProductReport(
-        {
-          columns: {
-            attributes: state.columns.attributes,
-            fields: state.columns.productFields,
-            channels: state.columns.channels,
-            warehouses: state.columns.warehouses,
-          },
-          name: state.name,
+      const response = await createProductReport({
+        columns: {
+          attributes: state.columns.attributes,
+          fields: state.columns.productFields,
+          channels: state.columns.channels,
+          warehouses: state.columns.warehouses,
         },
-        {
-          url: 'http://localhost:4321/graphql',
-        }
-      )
+        name: state.name,
+      })
 
       if (
         response.data &&
@@ -63,10 +58,10 @@ export function CreateReport() {
 
   const createOrderExportReport = async () => {
     if ('orderFields' in state.columns) {
-      const response = await createOrderReport(
-        { fields: state.columns.orderFields, name: state.name },
-        { url: 'http://localhost:4321/graphql' }
-      )
+      const response = await createOrderReport({
+        fields: state.columns.orderFields,
+        name: state.name,
+      })
 
       if (response.data && response.data.createOrdersReport.errors.length < 1) {
         navigation(`/report/${response.data.createOrdersReport.report?.id}`)

@@ -1,12 +1,12 @@
 import { makeStyles } from '@saleor/macaw-ui'
 
-export const useStyles = makeStyles((theme) => ({
+export const useStyles = makeStyles(theme => ({
   filterSeparator: {
     display: 'inline',
     height: '2.2rem',
     width: '1px',
     backgroundColor: theme.palette.primary.main,
-    margin: theme.spacing(0, 1)
+    margin: theme.spacing(0, 1),
   },
   filterBox: {
     width: '100%',
@@ -15,7 +15,7 @@ export const useStyles = makeStyles((theme) => ({
     justifyContent: 'space-around',
     columnGap: '10px',
     padding: theme.spacing(1, 4),
-    borderBottom: '1px solid #EAEAEA'
+    borderBottom: '1px solid #EAEAEA',
   },
   filterHeader: {
     display: 'flex',
@@ -34,12 +34,12 @@ export const useStyles = makeStyles((theme) => ({
   search: {
     flexGrow: 1,
     '& .MuiOutlinedInput-input': {
-      padding: '9px 12px'
-    }
+      padding: '9px 12px',
+    },
   },
   filterPopover: {
-    width: '400px'
-  }
+    width: '400px',
+  },
 }))
 
 export default useStyles

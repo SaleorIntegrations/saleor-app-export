@@ -37,10 +37,7 @@ export function ReportList() {
   }
 
   const deleteReport = async (id: number) => {
-    const response = await deleteReportMutation(
-      { reportId: id },
-      { url: 'http://localhost:4321/graphql/' }
-    )
+    const response = await deleteReportMutation({ reportId: id })
 
     if (response.data && response.data.deleteReport.errors.length === 0) {
       reset()

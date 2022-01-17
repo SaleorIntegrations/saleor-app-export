@@ -11,12 +11,21 @@ export interface DateTime {
 }
 
 export interface Period {
-  to: DateTime,
+  to: DateTime
   from: DateTime
 }
 
 export interface Filter {
-  filterType: 'attribute' | 'category' | 'release' | 'price' | 'channel' | 'signed' | 'stock' | 'product-types' | 'collection'
+  filterType:
+    | 'attribute'
+    | 'category'
+    | 'release'
+    | 'price'
+    | 'channel'
+    | 'signed'
+    | 'stock'
+    | 'product-types'
+    | 'collection'
   id: string
   name: string
   checked: boolean
@@ -26,7 +35,13 @@ export interface Filter {
 }
 
 export interface ReducerAction extends Partial<Filter> {
-  type: 'CHANGE_FILTER' | 'SET_FILTERS' | 'CLEAR' | 'ADD_SELECTED' | 'SET_PERIOD' | 'SET_PRICE'
+  type:
+    | 'CHANGE_FILTER'
+    | 'SET_FILTERS'
+    | 'CLEAR'
+    | 'ADD_SELECTED'
+    | 'SET_PERIOD'
+    | 'SET_PRICE'
   filters?: Filter[]
   filter?: Filter
 }

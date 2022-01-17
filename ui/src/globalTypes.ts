@@ -1,6 +1,6 @@
 export enum FileType {
-  CSV = "CSV",
-  XLSX = "XLSX"
+  CSV = 'CSV',
+  XLSX = 'XLSX',
 }
 
 export interface TableReport {

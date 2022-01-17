@@ -1,6 +1,6 @@
-import { makeStyles } from "@saleor/macaw-ui";
+import { makeStyles } from '@saleor/macaw-ui'
 
-export const useStyles = makeStyles((theme) => ({
+export const useStyles = makeStyles(theme => ({
   editButton: {
     width: '100%',
     height: '70px',
@@ -9,17 +9,17 @@ export const useStyles = makeStyles((theme) => ({
     justifyContent: 'space-between',
     padding: theme.spacing(1, 3),
     '&:hover': {
-      cursor: 'pointer'
-    }
+      cursor: 'pointer',
+    },
   },
   typography: {
-    textAlign: 'left'
+    textAlign: 'left',
   },
   modal: {
     display: 'flex',
     justifyContent: 'center',
-    padding: theme.spacing(4)
-  }
+    padding: theme.spacing(4),
+  },
 }))
 
 export default useStyles

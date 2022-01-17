@@ -8,7 +8,7 @@ const apiQuery = gql`
   query InitialProductFilterAttributes {
     attributes(
       first: 100
-      filter: {filterableInDashboard: true, type: PRODUCT_TYPE}
+      filter: { filterableInDashboard: true, type: PRODUCT_TYPE }
     ) {
       edges {
         node {

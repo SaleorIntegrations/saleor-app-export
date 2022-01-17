@@ -7,7 +7,11 @@ const apiQuery = gql`
   ${AttributeFragment}
   ${PageInfoFragment}
   query SearchAttributes($after: String, $first: Int!, $query: String!) {
-    search: attributes(after: $after, first: $first, filter: {search: $query}) {
+    search: attributes(
+      after: $after
+      first: $first
+      filter: { search: $query }
+    ) {
       edges {
         node {
           ...AttributeFragment

@@ -6,7 +6,7 @@ import { Attribute, Node } from '../types'
 const apiQuery = gql`
   ${AttributeFragment}
   query GridAttributes($ids: [ID!]!) {
-    grid: attributes(first: 25, filter: {ids: $ids}) {
+    grid: attributes(first: 25, filter: { ids: $ids }) {
       edges {
         node {
           ...AttributeFragment

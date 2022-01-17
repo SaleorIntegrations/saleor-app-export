@@ -1,7 +1,8 @@
-import { useMutation, gql } from 'urql'
+import { gql } from 'urql'
 
 import { JobFragment } from '../../export/fragments'
 import { RunReportResponse as RunReport } from '../../export/types'
+import { useAppMutation } from '../useAppMutation'
 
 const apiMutation = gql`
   ${JobFragment}
@@ -10,7 +11,6 @@ const apiMutation = gql`
       job {
         ...JobFragment
       }
-      __typename
     }
   }
 `
@@ -24,7 +24,7 @@ interface RunReportInput {
 }
 
 export function useMutationRunReport() {
-  return useMutation<RunReportResponse, RunReportInput>(apiMutation)
+  return useAppMutation<RunReportResponse, RunReportInput>(apiMutation)
 }
 
 export default useMutationRunReport

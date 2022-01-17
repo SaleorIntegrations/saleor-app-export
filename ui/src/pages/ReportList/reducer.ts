@@ -14,7 +14,13 @@ export interface ReportsState {
 }
 
 export interface ReportsAction extends Partial<ReportsState> {
-  type: 'TOGGLE_REPORT' | 'SELECT_ALL' | 'UNSELECT_ALL' | 'SET_REPORTS' | 'SET_NAVIGATION' | 'SET_TOTAL'
+  type:
+    | 'TOGGLE_REPORT'
+    | 'SELECT_ALL'
+    | 'UNSELECT_ALL'
+    | 'SET_REPORTS'
+    | 'SET_NAVIGATION'
+    | 'SET_TOTAL'
   id?: number
 }
 
@@ -22,9 +28,9 @@ export const initialReports: ReportsState = {
   reports: [],
   navigation: {
     hasNext: true,
-    endCursor: ''
+    endCursor: '',
   },
-  total: 0
+  total: 0,
 }
 
 export const reportsReducer = (state: ReportsState, action: ReportsAction) => {
@@ -32,16 +38,19 @@ export const reportsReducer = (state: ReportsState, action: ReportsAction) => {
     case 'TOGGLE_REPORT':
       return produce(state, draft => {
         if (!action.id) return state
-        const toSelectReport = draft.reports.find(report => report.id === action.id)
-        if (toSelectReport) toSelectReport.isSelected = !toSelectReport.isSelected
+        const toSelectReport = draft.reports.find(
+          report => report.id === action.id
+        )
+        if (toSelectReport)
+          toSelectReport.isSelected = !toSelectReport.isSelected
       })
     case 'SELECT_ALL':
       return produce(state, draft => {
-        draft.reports.forEach(report => report.isSelected = true)
+        draft.reports.forEach(report => (report.isSelected = true))
       })
     case 'UNSELECT_ALL':
       return produce(state, draft => {
-        draft.reports.forEach(report => report.isSelected = false)
+        draft.reports.forEach(report => (report.isSelected = false))
       })
     case 'SET_REPORTS':
       return produce(state, draft => {

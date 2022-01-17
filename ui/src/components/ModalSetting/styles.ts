@@ -5,12 +5,12 @@ export const useStyles = makeStyles(theme => ({
     width: '632px',
     padding: theme.spacing(3, 4),
     maxHeight: '-webkit-fill-available',
-    overflow: 'scroll'
+    overflow: 'scroll',
   },
   checkSlot: {
     width: '100%',
     paddingTop: theme.spacing(1),
-    borderBottom: '1px solid #EFF5F8'
+    borderBottom: '1px solid #EFF5F8',
   },
   buttonBox: {
     width: '100%',
@@ -18,9 +18,9 @@ export const useStyles = makeStyles(theme => ({
     justifyContent: 'flex-end',
     marginTop: theme.spacing(2),
     '& > *': {
-      marginLeft: theme.spacing(1)
-    }
-  }
+      marginLeft: theme.spacing(1),
+    },
+  },
 }))
 
 export default useStyles

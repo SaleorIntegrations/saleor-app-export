@@ -1,7 +1,8 @@
-import { useMutation, gql } from 'urql'
+import { gql } from 'urql'
 
 import { ReportErrorFragment } from '../../export/fragments'
 import { DeleteReportResponse as DeleteReport } from '../../export/types'
+import { useAppMutation } from '../useAppMutation'
 
 const apiMutation = gql`
   ${ReportErrorFragment}
@@ -24,7 +25,7 @@ interface DeleteReportInput {
 }
 
 export function useMutationDeleteReport() {
-  return useMutation<DeleteReportResponse, DeleteReportInput>(apiMutation)
+  return useAppMutation<DeleteReportResponse, DeleteReportInput>(apiMutation)
 }
 
 export default useMutationDeleteReport

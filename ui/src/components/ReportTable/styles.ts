@@ -1,6 +1,6 @@
 import { makeStyles } from '@saleor/macaw-ui'
 
-export const useStyles = makeStyles((theme) => ({
+export const useStyles = makeStyles(theme => ({
   row: {
     '&:hover': {
       cursor: 'pointer',
@@ -19,8 +19,8 @@ export const useStyles = makeStyles((theme) => ({
     top: 0,
     height: '100%',
     display: 'flex',
-    alignItems: 'center'
-  }
+    alignItems: 'center',
+  },
 }))
 
 export default useStyles
