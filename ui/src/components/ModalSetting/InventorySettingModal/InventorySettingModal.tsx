@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 
 import ModalSetting, { ModalOption } from '../ModalSetting'
 import SearchInput from '../../SearchInput'
-import { useQueryWarehouseList } from '../../../api'
+import { useQueryWarehouseList } from '../../../api/saleor/query'
 import CheckboxList from '../../CheckboxList'
 import { Box } from '@material-ui/core'
 

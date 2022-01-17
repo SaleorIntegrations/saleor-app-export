@@ -1,2 +1,2 @@
-export { CreateRaport } from './CreateRaport'
-export { Raport } from './Raport'
+export { CreateReport } from './CreateReport/CreateReport'
+export { Report } from './Report'

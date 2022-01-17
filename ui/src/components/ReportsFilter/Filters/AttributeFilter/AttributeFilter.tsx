@@ -5,7 +5,7 @@ import { TextField } from '@material-ui/core'
 import { Filter, Option } from '../Filter'
 import useStyles from '../styles'
 import { Filter as FilterType, ReducerAction } from '../../FilterButton/reducer'
-import { useSearchAttributeValuesQuery } from '../../../../api/queries/saleor/attributesValues'
+import { useSearchAttributeValuesQuery } from '../../../../api/saleor/query/attributesValues'
 
 export interface AttributeFilterProps {
   filter: FilterType
@@ -86,7 +86,8 @@ export function AttributeFilter(props: AttributeFilterProps) {
               searchedAttributeValues.data.attribute.choices.pageInfo
                 .hasNextPage,
             after:
-              searchedAttributeValues.data.attribute.choices.pageInfo.endCursor,
+              searchedAttributeValues.data.attribute.choices.pageInfo
+                .endCursor || '',
           },
         })
       } else {
@@ -97,7 +98,8 @@ export function AttributeFilter(props: AttributeFilterProps) {
               searchedAttributeValues.data.attribute.choices.pageInfo
                 .hasNextPage,
             after:
-              searchedAttributeValues.data.attribute.choices.pageInfo.endCursor,
+              searchedAttributeValues.data.attribute.choices.pageInfo
+                .endCursor || '',
           },
         })
       }

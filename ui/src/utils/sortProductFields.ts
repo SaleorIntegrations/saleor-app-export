@@ -1,25 +1,25 @@
-import { ProductField } from '../globalTypes'
+import { ProductFieldEnum } from '../api/export/types'
 
 const organisationsOptions = [
-  ProductField.CATEGORY,
-  ProductField.COLLECTIONS,
-  ProductField.PRODUCT_TYPE,
+  ProductFieldEnum.CATEGORY,
+  ProductFieldEnum.COLLECTIONS,
+  ProductFieldEnum.PRODUCT_TYPE,
 ]
-const financialsOptions = [ProductField.CHARGE_TAXES]
+const financialsOptions = [ProductFieldEnum.CHARGE_TAXES]
 const seoOptions = [
-  ProductField.DESCRIPTION,
-  ProductField.NAME,
-  ProductField.PRODUCT_MEDIA,
-  ProductField.VARIANT_MEDIA,
+  ProductFieldEnum.DESCRIPTION,
+  ProductFieldEnum.NAME,
+  ProductFieldEnum.PRODUCT_MEDIA,
+  ProductFieldEnum.VARIANT_MEDIA,
 ]
 const inventoryOptions = [
-  ProductField.PRODUCT_WEIGHT,
-  ProductField.VARIANT_ID,
-  ProductField.VARIANT_SKU,
-  ProductField.VARIANT_WEIGHT,
+  ProductFieldEnum.PRODUCT_WEIGHT,
+  ProductFieldEnum.VARIANT_ID,
+  ProductFieldEnum.VARIANT_SKU,
+  ProductFieldEnum.VARIANT_WEIGHT,
 ]
 
-export function sortProductFields(fields: ProductField[]) {
+export function sortProductFields(fields: ProductFieldEnum[]) {
   return {
     organisations: fields.filter(field => organisationsOptions.includes(field)),
     seo: fields.filter(field => seoOptions.includes(field)),

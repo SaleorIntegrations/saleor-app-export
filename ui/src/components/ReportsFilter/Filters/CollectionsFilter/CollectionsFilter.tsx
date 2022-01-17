@@ -5,7 +5,7 @@ import { TextField } from '@material-ui/core'
 import { Filter, Option } from '../Filter'
 import useStyles from '../styles'
 import { Filter as FilterType, ReducerAction } from '../../FilterButton/reducer'
-import { useQuerySearchCollections } from '../../../../api'
+import { useQuerySearchCollections } from '../../../../api/saleor/query'
 
 export interface CollectionsFilterProps {
   filter: FilterType
@@ -84,7 +84,7 @@ export function CollectionsFilter(props: CollectionsFilterProps) {
           options: [...searchedOptions.options, ...unzipOptions()],
           navigation: {
             hasNext: searchedCollections.data.search.pageInfo.hasNextPage,
-            after: searchedCollections.data.search.pageInfo.endCursor,
+            after: searchedCollections.data.search.pageInfo.endCursor || '',
           },
         })
       } else {
@@ -92,7 +92,7 @@ export function CollectionsFilter(props: CollectionsFilterProps) {
           options: [...globalOptions.options, ...unzipOptions()],
           navigation: {
             hasNext: searchedCollections.data.search.pageInfo.hasNextPage,
-            after: searchedCollections.data.search.pageInfo.endCursor,
+            after: searchedCollections.data.search.pageInfo.endCursor || '',
           },
         })
       }

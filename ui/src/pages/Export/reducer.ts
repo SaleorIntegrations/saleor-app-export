@@ -1,75 +1,53 @@
 import produce from 'immer'
 
-import { FileType, ExportObjectTypesEnum as ExportType, ProductExport, OrderExport } from '../../globalTypes'
+import { FilterInfo, ProductSelectedColumnsInfo, OrderSelectedColumnsInfo, ExportObjectTypesEnum } from '../../api/export/types'
+
+import { FileType } from '../../globalTypes'
 
 export interface Export {
   fileType: FileType
   name: string
   id: number | null
-  exportType: ExportType
-  exportProductData: ProductExport
-  exportOrderData: OrderExport
+  type: ExportObjectTypesEnum
+  filter: FilterInfo | null
+  columns: ProductSelectedColumnsInfo | OrderSelectedColumnsInfo
 }
 
 export interface ExportAction extends Partial<Export> {
-  type: 'SET_FILE_TYPE' | 'SET_EXPORT_PRODUCT_DATA' | 'SET_EXPORT_TYPE' | 'SET_EXPORT_ORDER_DATA' | 'SET_ID' | 'SET_NAME'
+  action: 'SET_FILE_TYPE' | 'SET_NAME' | 'SET_ID' | 'SET_TYPE' | 'SET_FILTER' | 'SET_COLUMNS' | 'SET_EXPORT'
+  export?: Export
 }
 
 export const initialExport: Export = {
-  exportProductData: {
-    filter: null,
-    exportInfo: {
-      attributes: [],
-      channels: [],
-      fields: {
-        seo: [],
-        inventory: [],
-        financials: [],
-        organisations: []
-      },
-      warehouses: [],
-    },
-  },
-  exportOrderData: {
-    filter: null,
-    exportInfo: {
-      fields: {
-        basic: [],
-        financial: [],
-        fulfillments: [],
-        items: [],
-        customer: [],
-        payments: []
-      }
-    }
-  },
+  fileType: FileType.CSV,
   name: '',
   id: null,
-  fileType: FileType.CSV,
-  exportType: ExportType.PRODUCTS
+  type: ExportObjectTypesEnum.PRODUCTS,
+  filter: null,
+  columns: {
+    productFields: [],
+    attributes: [],
+    channels: [],
+    warehouses: [],
+  }
 }
 
 export const exportReducer = (state: Export, action: ExportAction) => {
-  switch (action.type) {
-    case 'SET_EXPORT_TYPE':
+  switch (action.action) {
+    case 'SET_COLUMNS':
       return produce(state, draft => {
-        const { exportType } = action
-        draft.exportType = exportType !== undefined ? exportType : state.exportType
+        const { columns } = action
+        draft.columns = columns !== undefined ? columns : state.columns
       })
     case 'SET_FILE_TYPE':
       return produce(state, draft => {
         const { fileType } = action
         draft.fileType = fileType !== undefined ? fileType : state.fileType
       })
-    case 'SET_EXPORT_PRODUCT_DATA':
+    case 'SET_FILTER':
       return produce(state, draft => {
-        const { exportProductData } = action
-        draft.exportProductData = exportProductData !== undefined ? exportProductData : state.exportProductData
-      })
-    case 'SET_EXPORT_ORDER_DATA':
-      return produce(state, draft => {
-        const { exportOrderData } = action
-        draft.exportOrderData = exportOrderData !== undefined ? exportOrderData : state.exportOrderData
+        const { filter } = action
+        draft.filter = filter !== undefined ? filter : state.filter
       })
     case 'SET_ID':
       return produce(state, draft => {
@@ -81,6 +59,13 @@ export const exportReducer = (state: Export, action: ExportAction) => {
         const { name } = action
         draft.name = name !== undefined ? name : state.name
       })
+    case 'SET_TYPE':
+      return produce(state, draft => {
+        const { type } = action
+        draft.type = type !== undefined ? type : state.type
+      })
+    case 'SET_EXPORT':
+      return action.export !== undefined ? action.export : state
     default:
       return state
   }

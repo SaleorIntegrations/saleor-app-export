@@ -5,7 +5,7 @@ import { TextField } from '@material-ui/core'
 import { Filter, Option } from '../Filter'
 import useStyles from '../styles'
 import { Filter as FilterType, ReducerAction } from '../../FilterButton/reducer'
-import { useQueryBaseChannels } from '../../../../api'
+import { useQueryBaseChannels } from '../../../../api/saleor/query'
 
 export interface ChannelFilterProps {
   filter: FilterType

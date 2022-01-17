@@ -1,9 +1,9 @@
-import { ProductField } from '../../globalTypes'
+import { ProductFieldEnum } from '../../api/export/types'
 import { ModalOption } from '../ModalSetting'
 
 type FieldType = 'organisations' | 'financials' | 'inventory' | 'seo'
 
-export const getFields = (comparator: ProductField[], field: FieldType): ModalOption[] => {
+export const getFields = (comparator: ProductFieldEnum[], field: FieldType): ModalOption[] => {
   const fields: Record<FieldType, ModalOption[]> = {
     'organisations': [
       {
@@ -12,9 +12,9 @@ export const getFields = (comparator: ProductField[], field: FieldType): ModalOp
         slug: 'category_slug',
         checked:
           comparator.includes(
-            ProductField.CATEGORY
+            ProductFieldEnum.CATEGORY
           ),
-        value: ProductField.CATEGORY,
+        value: ProductFieldEnum.CATEGORY,
       },
       {
         id: 'COLLECTIONS_ID',
@@ -22,9 +22,9 @@ export const getFields = (comparator: ProductField[], field: FieldType): ModalOp
         slug: 'Collections_slug',
         checked:
           comparator.includes(
-            ProductField.COLLECTIONS
+            ProductFieldEnum.COLLECTIONS
           ),
-        value: ProductField.COLLECTIONS,
+        value: ProductFieldEnum.COLLECTIONS,
       },
       {
         id: 'PRODUCT_TYPE_ID',
@@ -32,9 +32,9 @@ export const getFields = (comparator: ProductField[], field: FieldType): ModalOp
         slug: 'Product_type_slug',
         checked:
           comparator.includes(
-            ProductField.PRODUCT_TYPE
+            ProductFieldEnum.PRODUCT_TYPE
           ),
-        value: ProductField.PRODUCT_TYPE,
+        value: ProductFieldEnum.PRODUCT_TYPE,
       },
     ],
     'inventory': [
@@ -43,36 +43,36 @@ export const getFields = (comparator: ProductField[], field: FieldType): ModalOp
         name: 'Export Product Weight',
         slug: 'product_weight_slug',
         checked: comparator.includes(
-          ProductField.PRODUCT_WEIGHT
+          ProductFieldEnum.PRODUCT_WEIGHT
         ),
-        value: ProductField.PRODUCT_WEIGHT,
+        value: ProductFieldEnum.PRODUCT_WEIGHT,
       },
       {
         id: 'VARIANT_ID_ID',
         name: 'Export Variant ID',
         slug: 'variant_id_slug',
         checked: comparator.includes(
-          ProductField.VARIANT_ID
+          ProductFieldEnum.VARIANT_ID
         ),
-        value: ProductField.VARIANT_ID,
+        value: ProductFieldEnum.VARIANT_ID,
       },
       {
         id: 'VARIANT_SKU_ID',
         name: 'Export Variant SKU',
         slug: 'variant_sku_slug',
         checked: comparator.includes(
-          ProductField.VARIANT_SKU
+          ProductFieldEnum.VARIANT_SKU
         ),
-        value: ProductField.VARIANT_SKU,
+        value: ProductFieldEnum.VARIANT_SKU,
       },
       {
         id: 'VARIANT_WEIGHT_ID',
         name: 'Export Variant Weight',
         slug: 'variant_weight_slug',
         checked: comparator.includes(
-          ProductField.VARIANT_WEIGHT
+          ProductFieldEnum.VARIANT_WEIGHT
         ),
-        value: ProductField.VARIANT_WEIGHT,
+        value: ProductFieldEnum.VARIANT_WEIGHT,
       },
     ],
     'financials': [
@@ -81,9 +81,9 @@ export const getFields = (comparator: ProductField[], field: FieldType): ModalOp
         name: 'Charge Taxes',
         slug: 'charge_taxes_slug',
         checked: comparator.includes(
-          ProductField.CHARGE_TAXES
+          ProductFieldEnum.CHARGE_TAXES
         ),
-        value: ProductField.CHARGE_TAXES,
+        value: ProductFieldEnum.CHARGE_TAXES,
       },
     ],
     'seo': [
@@ -92,36 +92,36 @@ export const getFields = (comparator: ProductField[], field: FieldType): ModalOp
         name: 'Description',
         slug: 'description_slug',
         checked: comparator.includes(
-          ProductField.DESCRIPTION
+          ProductFieldEnum.DESCRIPTION
         ),
-        value: ProductField.DESCRIPTION,
+        value: ProductFieldEnum.DESCRIPTION,
       },
       {
         id: 'NAME_ID',
         name: 'Name',
         slug: 'name_slug',
         checked: comparator.includes(
-          ProductField.NAME
+          ProductFieldEnum.NAME
         ),
-        value: ProductField.NAME,
+        value: ProductFieldEnum.NAME,
       },
       {
         id: 'PRODUCT_MEDIA_ID',
         name: 'Product Images',
         slug: 'product_media_slug',
         checked: comparator.includes(
-          ProductField.PRODUCT_MEDIA
+          ProductFieldEnum.PRODUCT_MEDIA
         ),
-        value: ProductField.PRODUCT_MEDIA,
+        value: ProductFieldEnum.PRODUCT_MEDIA,
       },
       {
         id: 'VARIANT_MEDIA_ID',
         name: 'Variant Images',
         slug: 'variant_images_slug',
         checked: comparator.includes(
-          ProductField.VARIANT_MEDIA
+          ProductFieldEnum.VARIANT_MEDIA
         ),
-        value: ProductField.VARIANT_MEDIA,
+        value: ProductFieldEnum.VARIANT_MEDIA,
       },
     ]
   }

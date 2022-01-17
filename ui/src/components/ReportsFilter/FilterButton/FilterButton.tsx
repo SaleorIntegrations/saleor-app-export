@@ -11,7 +11,7 @@ import StockFilter from '../Filters/StockFilter'
 import CollectionsFilter from '../Filters/CollectionsFilter'
 import ProductTypesFilter from '../Filters/ProductTypesFilter'
 import PriceFilter from '../Filters/PriceFilter'
-import { useQueryInitialProductFilterAttributes } from '../../../api'
+import { useQueryInitialProductFilterAttributes } from '../../../api/saleor/query'
 import { reducer, initFilters, Filter } from './reducer'
 
 export function FilterButton() {

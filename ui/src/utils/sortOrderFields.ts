@@ -1,36 +1,39 @@
-import { OrderField } from '../globalTypes'
+import { OrderFieldEnum } from '../api/export/types'
 
 const basicOptions = [
-  OrderField.ID,
-  OrderField.NUMBER,
-  OrderField.CREATED,
-  OrderField.CHANNEL,
-  OrderField.LANGUAGE_CODE,
-  OrderField.SHIPPING_METHOD,
+  OrderFieldEnum.ID,
+  OrderFieldEnum.NUMBER,
+  OrderFieldEnum.CREATED,
+  OrderFieldEnum.CHANNEL,
+  OrderFieldEnum.LANGUAGE_CODE,
+  OrderFieldEnum.SHIPPING_METHOD,
 ]
 const financialOptions = [
-  OrderField.TOTAL,
-  OrderField.SUBTOTAL,
-  OrderField.SHIPPING_PRICE,
-  OrderField.CURRENCY,
+  OrderFieldEnum.TOTAL,
+  OrderFieldEnum.SUBTOTAL,
+  OrderFieldEnum.SHIPPING_PRICE,
+  OrderFieldEnum.CURRENCY,
 ]
 const customerOptions = [
-  OrderField.EMAIL,
-  OrderField.SHIPPING_ADDRESS,
-  OrderField.BILLING_ADDRESS,
+  OrderFieldEnum.USER_EMAIL,
+  OrderFieldEnum.SHIPPING_ADDRESS,
+  OrderFieldEnum.BILLING_ADDRESS,
 ]
-const itemsOptions = [OrderField.ITEMS_SKU]
+const itemsOptions = [OrderFieldEnum.LINES_SKU]
 const paymentOptions = [
-  OrderField.PAYMENT_STATUS,
-  OrderField.GATEWAY,
-  OrderField.PAYMENT_METHOD_TYPE,
-  OrderField.TOTAL_BALANCE,
-  OrderField.TOTAL_CAPTURED,
-  OrderField.TOTAL_AUTHORIZED,
+  OrderFieldEnum.PAYMENT_STATUS,
+  OrderFieldEnum.GATEWAY,
+  OrderFieldEnum.PAYMENT_METHOD_TYPE,
+  OrderFieldEnum.TOTAL_BALANCE,
+  OrderFieldEnum.TOTAL_CAPTURED,
+  OrderFieldEnum.TOTAL_AUTHORIZED,
 ]
-const fulfillmentsOpions = [OrderField.STATUS, OrderField.TRACKING_NUMBER]
+const fulfillmentsOpions = [
+  OrderFieldEnum.STATUS,
+  OrderFieldEnum.TRACKING_NUMBER,
+]
 
-export function sortOrderFields(fields: OrderField[]) {
+export function sortOrderFields(fields: OrderFieldEnum[]) {
   return {
     basic: fields.filter(field => basicOptions.includes(field)),
     financial: fields.filter(field => financialOptions.includes(field)),

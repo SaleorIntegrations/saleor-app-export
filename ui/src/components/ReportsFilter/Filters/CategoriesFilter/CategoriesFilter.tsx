@@ -5,7 +5,7 @@ import { TextField } from '@material-ui/core'
 import { Filter, Option } from '../Filter'
 import useStyles from '../styles'
 import { Filter as FilterType, ReducerAction } from '../../FilterButton/reducer'
-import { useQuerySearchCategories } from '../../../../api'
+import { useQuerySearchCategories } from '../../../../api/saleor/query'
 
 export interface CategoriesFilterProps {
   filter: FilterType
@@ -84,7 +84,8 @@ export function CategoriesFilter(props: CategoriesFilterProps) {
           options: [...searchedOptions.options, ...unzipOptions()],
           navigation: {
             hasNext: searchedCategoriesValues.data.search.pageInfo.hasNextPage,
-            after: searchedCategoriesValues.data.search.pageInfo.endCursor,
+            after:
+              searchedCategoriesValues.data.search.pageInfo.endCursor || '',
           },
         })
       } else {
@@ -92,7 +93,8 @@ export function CategoriesFilter(props: CategoriesFilterProps) {
           options: [...globalOptions.options, ...unzipOptions()],
           navigation: {
             hasNext: searchedCategoriesValues.data.search.pageInfo.hasNextPage,
-            after: searchedCategoriesValues.data.search.pageInfo.endCursor,
+            after:
+              searchedCategoriesValues.data.search.pageInfo.endCursor || '',
           },
         })
       }

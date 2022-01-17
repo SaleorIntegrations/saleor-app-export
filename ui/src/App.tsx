@@ -4,8 +4,8 @@ import { Provider as QLClientProvider } from 'urql'
 import { ThemeProvider } from '@saleor/macaw-ui'
 import { Routes, Route } from 'react-router-dom'
 
-import { CreateRaport, Raport } from './pages/Export'
-import RaportList from './pages/RaportList'
+import { CreateReport, Report } from './pages/Export'
+import { ReportList } from './pages/ReportList'
 
 import apiClient from './api/apiClient'
 import './App.css'
@@ -16,9 +16,9 @@ function App() {
       <ThemeProvider>
         {/* <TenantProvider> */}
         <Routes>
-          <Route path="/" element={<RaportList />} />
-          <Route path="/create" element={<CreateRaport />} />
-          <Route path="/raport/:id" element={<Raport />} />
+          <Route path="/" element={<ReportList />} />
+          <Route path="/create" element={<CreateReport />} />
+          <Route path="/report/:id" element={<Report />} />
         </Routes>
         {/* </TenantProvider> */}
       </ThemeProvider>

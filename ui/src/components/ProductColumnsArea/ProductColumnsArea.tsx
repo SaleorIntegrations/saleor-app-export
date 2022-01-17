@@ -1,11 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { produce } from 'immer'
 import { Typography, Box } from '@material-ui/core'
 import clsx from 'clsx'
 
 import { ModalSelect } from '../ModalSelect'
-import { useProductExport } from '../../hooks'
+import { useExportProduct } from '../../hooks'
+import { ProductFieldEnum } from '../../api/export/types'
 import {
   ChannelSettingModal,
   AttributeSettingModal,
@@ -13,7 +14,7 @@ import {
   InventorySettingModal,
 } from '../ModalSetting'
 import Surface from '../Surface'
-import { ProductField } from '../../globalTypes'
+import { sortProductFields } from '../../utils/sortProductFields'
 
 import { getFields } from './fields'
 import useStyles from './styles'
@@ -25,8 +26,22 @@ interface ProductColumnsAreaProps {
 
 export function ProductColumnsArea(props: ProductColumnsAreaProps) {
   const { title, subtitle } = props
-  const { exportData, setExportData } = useProductExport()
+  const {
+    setAttributes,
+    setChannels,
+    setProductFields,
+    setWarehouses,
+    columns,
+    isLoading,
+  } = useExportProduct()
+  const [fields, setFields] = useState(sortProductFields(columns.productFields))
   const classes = useStyles()
+
+  useEffect(() => {
+    setProductFields(Object.values(fields).flat())
+  }, [fields])
+
+  if (isLoading) return <div>Loading...</div>
 
   return (
     <Surface padding={0}>
@@ -39,20 +54,14 @@ export function ProductColumnsArea(props: ProductColumnsAreaProps) {
           <ModalSelect
             title="Channels"
             description={
-              exportData.exportInfo.channels.length
-                ? `selected ${exportData.exportInfo.channels.length}`
+              columns.channels.length
+                ? `selected ${columns.channels.length}`
                 : undefined
             }
             render={setIsOpen => (
               <ChannelSettingModal
-                channels={exportData.exportInfo.channels}
-                setChannels={newChannels =>
-                  setExportData(
-                    produce(exportData, draft => {
-                      draft.exportInfo.channels = newChannels
-                    })
-                  )
-                }
+                channels={columns.channels}
+                setChannels={setChannels}
                 setIsOpen={setIsOpen}
               />
             )}
@@ -60,48 +69,39 @@ export function ProductColumnsArea(props: ProductColumnsAreaProps) {
           <ModalSelect
             title="Product organsation"
             description={
-              exportData.exportInfo.fields.organisations.length
-                ? `selected ${exportData.exportInfo.fields.organisations.length}`
+              fields.organisations.length
+                ? `selected ${fields.organisations.length}`
                 : undefined
             }
             render={setIsOpen => (
               <BaseFieldSettingModal
-                fields={exportData.exportInfo.fields.organisations}
+                fields={fields.organisations}
                 setFields={newOrganisations =>
-                  setExportData(
-                    produce(exportData, draft => {
-                      draft.exportInfo.fields.organisations =
-                        newOrganisations as ProductField[]
+                  setFields(
+                    produce(draft => {
+                      draft.organisations =
+                        newOrganisations as ProductFieldEnum[]
                     })
                   )
                 }
                 setIsOpen={setIsOpen}
                 title="Select Product Organization"
                 subtitle="Select the product organizations you want to export information for"
-                fieldOptions={getFields(
-                  exportData.exportInfo.fields.organisations,
-                  'organisations'
-                )}
+                fieldOptions={getFields(fields.organisations, 'organisations')}
               />
             )}
           />
           <ModalSelect
             title="Attributes"
             description={
-              exportData.exportInfo.attributes.length
-                ? `selected ${exportData.exportInfo.attributes.length}`
+              columns.attributes.length
+                ? `selected ${columns.attributes.length}`
                 : undefined
             }
             render={setIsOpen => (
               <AttributeSettingModal
-                attributes={exportData.exportInfo.attributes}
-                setAttributes={newAttributes =>
-                  setExportData(
-                    produce(exportData, draft => {
-                      draft.exportInfo.attributes = newAttributes
-                    })
-                  )
-                }
+                attributes={columns.attributes}
+                setAttributes={setAttributes}
                 setIsOpen={setIsOpen}
               />
             )}
@@ -109,94 +109,72 @@ export function ProductColumnsArea(props: ProductColumnsAreaProps) {
           <ModalSelect
             title="Financial"
             description={
-              exportData.exportInfo.fields.financials.length
-                ? `selected ${exportData.exportInfo.fields.financials.length}`
+              fields.financials.length
+                ? `selected ${fields.financials.length}`
                 : undefined
             }
             render={setIsOpen => (
               <BaseFieldSettingModal
-                fields={exportData.exportInfo.fields.financials}
+                fields={fields.financials}
                 setFields={newFinancials =>
-                  setExportData(
-                    produce(exportData, draft => {
-                      draft.exportInfo.fields.financials =
-                        newFinancials as ProductField[]
+                  setFields(
+                    produce(draft => {
+                      draft.financials = newFinancials as ProductFieldEnum[]
                     })
                   )
                 }
                 setIsOpen={setIsOpen}
                 title="Select Financial Informations"
                 subtitle="Select the financial informations you want to export information for"
-                fieldOptions={getFields(
-                  exportData.exportInfo.fields.financials,
-                  'financials'
-                )}
+                fieldOptions={getFields(fields.financials, 'financials')}
               />
             )}
           />
           <ModalSelect
             title="Inventory"
             description={
-              exportData.exportInfo.fields.inventory.length ||
-              exportData.exportInfo.warehouses.length
+              fields.inventory.length || columns.warehouses.length
                 ? `selected ${
-                    exportData.exportInfo.fields.inventory.length +
-                    exportData.exportInfo.warehouses.length
+                    fields.inventory.length + columns.warehouses.length
                   }`
                 : undefined
             }
             render={setIsOpen => (
               <InventorySettingModal
                 setIsOpen={setIsOpen}
-                fields={exportData.exportInfo.fields.inventory}
+                fields={fields.inventory}
                 setFields={newInventory =>
-                  setExportData(
-                    produce(exportData, draft => {
-                      draft.exportInfo.fields.inventory =
-                        newInventory as ProductField[]
+                  setFields(
+                    produce(draft => {
+                      draft.inventory = newInventory as ProductFieldEnum[]
                     })
                   )
                 }
-                warehouses={exportData.exportInfo.warehouses}
-                setWarehouses={newWarehouses =>
-                  setExportData(
-                    produce(exportData, draft => {
-                      draft.exportInfo.warehouses =
-                        newWarehouses as ProductField[]
-                    })
-                  )
-                }
-                fieldOptions={getFields(
-                  exportData.exportInfo.fields.inventory,
-                  'inventory'
-                )}
+                warehouses={columns.warehouses}
+                setWarehouses={setWarehouses}
+                fieldOptions={getFields(fields.inventory, 'inventory')}
               />
             )}
           />
           <ModalSelect
             title="SEO"
             description={
-              exportData.exportInfo.fields.seo.length
-                ? `selected ${exportData.exportInfo.fields.seo.length}`
-                : undefined
+              fields.seo.length ? `selected ${fields.seo.length}` : undefined
             }
             render={setIsOpen => (
               <BaseFieldSettingModal
-                fields={exportData.exportInfo.fields.seo}
+                fields={fields.seo}
                 setFields={newSEO =>
-                  setExportData(
-                    produce(exportData, draft => {
-                      draft.exportInfo.fields.seo = newSEO as ProductField[]
+                  setFields(
+                    produce(draft => {
+                      draft.seo = newSEO as ProductFieldEnum[]
                     })
                   )
                 }
                 setIsOpen={setIsOpen}
                 title="Select SEO Informations"
                 subtitle="Select the SEO informations you want to export information for"
-                fieldOptions={getFields(
-                  exportData.exportInfo.fields.seo,
-                  'seo'
-                )}
+                fieldOptions={getFields(fields.seo, 'seo')}
               />
             )}
           />

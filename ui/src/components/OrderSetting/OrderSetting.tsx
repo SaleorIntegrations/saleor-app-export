@@ -2,14 +2,14 @@ import React from 'react'
 import { Box } from '@material-ui/core'
 
 import { GeneralInformation } from '../GeneralInformation'
-import { useOrderExport } from '../../hooks'
+import { useExportOrder } from '../../hooks'
 import { OrderColumnsArea } from '../OrderColumnsArea'
 
 import useStyles from './styles'
 
 export function OrderSetting() {
   const classes = useStyles()
-  const { name, setName } = useOrderExport()
+  const { name, setName } = useExportOrder()
 
   return (
     <Box className={classes.list}>
