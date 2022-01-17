@@ -1,4 +1,4 @@
-import { useMutation, gql } from 'urql'
+import { gql } from 'urql'
 
 import { ReportFragment, ReportErrorFragment } from '../../export/fragments'
 import {

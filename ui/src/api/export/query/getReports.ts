@@ -34,7 +34,10 @@ export function useQueryReports(variables: Variables, options?: any) {
     query: apiQuery,
     variables: variables,
     ...options,
-    context: useMemo(() => ({ url: 'http://localhost:4321/graphql/' }), []),
+    context: useMemo(
+      () => ({ url: `${process.env.REACT_APP_APP_URL}/graphql/` }),
+      []
+    ),
   })
 }
 
