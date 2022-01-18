@@ -1,7 +1,7 @@
 import { createClient } from 'urql'
 
 export const apiClient = createClient({
-  url: 'http://localhost:8000/graphql/',
+  url: `${process.env.REACT_APP_SALEOR_URL}/graphql/`,
   fetchOptions: () => {
     const token = process.env.REACT_APP_SALEOR_TOKEN
 

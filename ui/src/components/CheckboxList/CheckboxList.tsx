@@ -32,6 +32,7 @@ export function CheckboxList(props: CheckboxListProps) {
     _event: React.ChangeEvent<HTMLInputElement>,
     checked: boolean
   ) => {
+    // TODO: change for one produce
     if (checked) {
       setOptions(
         produce<CheckboxListOption[]>(draft => {

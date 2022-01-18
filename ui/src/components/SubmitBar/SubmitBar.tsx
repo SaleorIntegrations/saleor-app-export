@@ -2,6 +2,7 @@ import React from 'react'
 import { Paper, Button } from '@material-ui/core'
 import { makeStyles } from '@saleor/macaw-ui'
 
+// TODO: move to single file
 const useStyles = makeStyles(theme => ({
   root: {
     padding: '1.6rem 2.4rem 1.6rem 2.4rem',

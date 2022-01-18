@@ -2,6 +2,7 @@ import React from 'react'
 import { Paper } from '@material-ui/core'
 import { makeStyles } from '@saleor/macaw-ui'
 
+// TODO: move to signle file
 const useStyles = (padding: number) =>
   makeStyles(theme => ({
     root: {
