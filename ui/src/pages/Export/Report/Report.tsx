@@ -31,9 +31,7 @@ export function Report() {
   const [isLoading, setIsLoading] = useState(true)
 
   const onExport = () => {
-    runReport({
-      reportId: parseInt(id || ''),
-    })
+    if (state.id) runReport({ reportId: state.id })
   }
 
   const onSaveAndExport = () => {

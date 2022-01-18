@@ -12,6 +12,7 @@ import {
 import {
   useMutationCreateProductsReport,
   useMutationCreateOrdersReport,
+  useMutationRunReport,
 } from '../../../api/export/mutation'
 import { ExportObjectTypesEnum } from '../../../api/export/types'
 import { ExportContext } from '../../../context/ExportContext'
@@ -23,16 +24,33 @@ export function CreateReport() {
   const navigation = useNavigate()
   const [, createProductReport] = useMutationCreateProductsReport()
   const [, createOrderReport] = useMutationCreateOrdersReport()
+  const [, runReport] = useMutationRunReport()
   const [state, dispatch] = useReducer(exportReducer, initialExport)
 
-  const onSaveAndExport = () => {
+  const onExport = async () => {
+    // TODO: remove saving of report
     if (state.type === ExportObjectTypesEnum.PRODUCTS) {
-      createProductExportReport()
+      await createProductExportReport()
     }
 
     if (state.type === ExportObjectTypesEnum.ORDERS) {
-      createOrderExportReport()
+      await createOrderExportReport()
     }
+
+    if (state.id) runReport({ reportId: state.id || -1 })
+  }
+
+  const onSaveAndExport = async () => {
+    if (state.type === ExportObjectTypesEnum.PRODUCTS) {
+      await createProductExportReport()
+    }
+
+    if (state.type === ExportObjectTypesEnum.ORDERS) {
+      await createOrderExportReport()
+    }
+
+    if (state.id) runReport({ reportId: state.id })
+    navigation(`/report/${state.id}`)
   }
 
   const createProductExportReport = async () => {
@@ -51,7 +69,10 @@ export function CreateReport() {
         response.data &&
         response.data.createProductsReport.errors.length < 1
       ) {
-        navigation(`/report/${response.data.createProductsReport.report?.id}`)
+        dispatch({
+          action: 'SET_ID',
+          id: response.data.createProductsReport.report?.id,
+        })
       }
     }
   }
@@ -64,7 +85,10 @@ export function CreateReport() {
       })
 
       if (response.data && response.data.createOrdersReport.errors.length < 1) {
-        navigation(`/report/${response.data.createOrdersReport.report?.id}`)
+        dispatch({
+          action: 'SET_ID',
+          id: response.data.createOrdersReport.report?.id,
+        })
       }
     }
   }
@@ -141,10 +165,7 @@ export function CreateReport() {
             </Grid>
           </Grid>
         </Box>
-        <SubmitBar
-          onExport={() => alert('Export')}
-          onSaveAndExport={onSaveAndExport}
-        />
+        <SubmitBar onExport={onExport} onSaveAndExport={onSaveAndExport} />
       </Container>
     </ExportContext.Provider>
   )
