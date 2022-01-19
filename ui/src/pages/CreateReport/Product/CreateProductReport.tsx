@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { ReportPage, ProductSetting } from '../../../components'
@@ -18,6 +18,7 @@ export function CreateProductReport() {
   const columnsStore = useExportProductColumnsStore()
   const [, createProductReport] = useMutationCreateProductsReport()
   const [, runReport] = useMutationRunReport()
+  const [isLoading, setIsLoading] = useState(true)
 
   const onExport = async () => {
     await createProductExportReport()
@@ -59,9 +60,14 @@ export function CreateProductReport() {
   }
 
   useEffect(() => {
+    commonStore.clear()
     commonStore.setType(ExportObjectTypesEnum.PRODUCTS)
+    columnsStore.clear()
+    setIsLoading(false)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  if (isLoading) return <div>Loading...</div>
 
   return (
     <ReportPage

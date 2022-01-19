@@ -15,6 +15,12 @@ export const useExportOrderColumnsStore = create<ExportOrderColumnsStore>(
           draft.columns.orderFields = orderFields
         })
       ),
+    clear: () =>
+      set(state => ({
+        columns: {
+          orderFields: [],
+        },
+      })),
   })
 )
 

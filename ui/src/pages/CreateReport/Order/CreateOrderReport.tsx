@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { OrderSetting, ReportPage } from '../../../components'
@@ -18,6 +18,7 @@ export function CreateOrderReport() {
   const columnsStore = useExportOrderColumnsStore()
   const [, createOrderReport] = useMutationCreateOrdersReport()
   const [, runReport] = useMutationRunReport()
+  const [isLoading, setIsLoading] = useState(true)
 
   const onExport = async () => {
     const id = await createOrderExportReport()
@@ -54,9 +55,14 @@ export function CreateOrderReport() {
   }
 
   useEffect(() => {
+    commonStore.clear()
     commonStore.setType(ExportObjectTypesEnum.ORDERS)
+    columnsStore.clear()
+    setIsLoading(false)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  if (isLoading) return <div>Loading...</div>
 
   return (
     <ReportPage

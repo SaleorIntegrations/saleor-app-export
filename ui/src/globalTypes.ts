@@ -34,6 +34,7 @@ export interface ExportCommonStore extends ExportStoreCommonData {
   setId: (id: number | null) => void
   setType: (type: ExportObjectTypesEnum) => void
   setFilter: (filter: string | null) => void
+  clear: () => void
 }
 
 export interface ExportProductColumns {
@@ -46,6 +47,7 @@ export interface ExportProductColumnsStore extends ExportProductColumns {
   setAttributes: (attributes: string[]) => void
   setWarehouses: (warehouses: string[]) => void
   setProductFields: (productFields: ProductFieldEnum[]) => void
+  clear: () => void
 }
 
 export interface ExportOrderColumns {
@@ -55,4 +57,5 @@ export interface ExportOrderColumns {
 export interface ExportOrderColumnsStore extends ExportOrderColumns {
   setColumns: (columns: OrderSelectedColumnsInfo) => void
   setOrderFields: (orderFields: OrderFieldEnum[]) => void
+  clear: () => void
 }

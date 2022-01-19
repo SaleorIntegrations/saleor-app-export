@@ -36,6 +36,15 @@ export const useExportProductColumnsStore = create<ExportProductColumnsStore>(
           draft.columns.productFields = productFields
         })
       ),
+    clear: () =>
+      set(state => ({
+        columns: {
+          attributes: [],
+          channels: [],
+          warehouses: [],
+          productFields: [],
+        },
+      })),
   })
 )
 

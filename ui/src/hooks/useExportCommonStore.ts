@@ -1,10 +1,6 @@
 import create from 'zustand'
 
-import {
-  ExportObjectTypesEnum,
-  OrderSelectedColumnsInfo,
-  ProductSelectedColumnsInfo,
-} from '../api/export/types'
+import { ExportObjectTypesEnum } from '../api/export/types'
 import { ExportCommonStore, FileType } from '../globalTypes'
 
 export const useExportCommonStore = create<ExportCommonStore>(set => ({
@@ -22,6 +18,14 @@ export const useExportCommonStore = create<ExportCommonStore>(set => ({
       if (!filter) return { filter: null }
       return { filter: { filterStr: filter } }
     }),
+  clear: () =>
+    set(state => ({
+      fileType: FileType.CSV,
+      name: '',
+      id: null,
+      type: ExportObjectTypesEnum.PRODUCTS,
+      filter: null,
+    })),
 }))
 
 export default useExportCommonStore
