@@ -1,2 +1,3 @@
-export * from './ReportList/ReportList'
-export * from './Export/CreateReport'
+export * from './ReportList'
+export * from './CreateReport'
+export * from './UpdateReport'

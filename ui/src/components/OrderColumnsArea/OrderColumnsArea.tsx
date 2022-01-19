@@ -5,7 +5,7 @@ import { produce } from 'immer'
 import { Surface } from '../Surface'
 import { ModalSelect } from '../ModalSelect'
 import { BaseFieldSettingModal } from '../ModalSetting'
-import { useExportOrder } from '../../hooks'
+import { useExportOrderColumnsStore } from '../../hooks'
 import { sortOrderFields } from '../../utils'
 
 import useStyles from './styles'
@@ -20,7 +20,7 @@ interface OrderColumnsAreaProps {
 export function OrderColumnsArea(props: OrderColumnsAreaProps) {
   const classes = useStyles()
   const { title, subtitle } = props
-  const { columns, setOrderFields } = useExportOrder()
+  const { columns, setOrderFields } = useExportOrderColumnsStore()
   const [fields, setFields] = useState(sortOrderFields(columns.orderFields))
 
   useEffect(() => {

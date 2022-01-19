@@ -2,15 +2,16 @@ import React from 'react'
 import { Box } from '@material-ui/core'
 
 import { GeneralInformation } from '../GeneralInformation'
-import { useExportProduct } from '../../hooks'
 import { ProductColumnsArea } from '../ProductColumnsArea/ProductColumnsArea'
+import { useExportCommonStore } from '../../hooks'
 import useStyles from './styles'
 
 export function ProductSetting() {
   const classes = useStyles()
-  const { name, setName, isLoading } = useExportProduct()
-
-  if (isLoading) return <div>Loading...</div>
+  const [name, setName] = useExportCommonStore(state => [
+    state.name,
+    state.setName,
+  ])
 
   return (
     <Box className={classes.list}>

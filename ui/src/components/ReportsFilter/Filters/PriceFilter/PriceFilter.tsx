@@ -9,17 +9,14 @@ import {
   AccordionDetails,
   Select,
   MenuItem,
-  Grid,
-  Typography,
-  TextField,
 } from '@material-ui/core'
-import {
-  ExpandMore as ExpandMoreIcon,
-  SubdirectoryArrowRight as SubdirectoryArrowRightIcon,
-} from '@material-ui/icons'
+import { ExpandMore as ExpandMoreIcon } from '@material-ui/icons'
 
 import useStyles from '../styles'
 import { Filter as FilterType, ReducerAction } from '../../FilterButton/reducer'
+
+import { BetweenQuery } from './BetweenQuery'
+import { EqualQuery } from './EqualQuery'
 
 export interface PriceFilterProps {
   filter: FilterType
@@ -50,45 +47,6 @@ export function PriceFilter(props: PriceFilterProps) {
     setToPrice('')
     setType(event.target.value as string)
   }
-
-  const EqualQuery = (
-    <Grid container direction="row" spacing={1} alignItems="center">
-      <Grid item xs={1}>
-        <SubdirectoryArrowRightIcon />
-      </Grid>
-      <Grid item xs={11}>
-        <TextField
-          type="number"
-          className={clsx(classes.search, classes.searchInput)}
-          value={fromPrice}
-          onChange={event => setFromPrice(event.target.value)}
-        />
-      </Grid>
-    </Grid>
-  )
-
-  const BetweenQuery = (
-    <Grid container direction="row" spacing={1}>
-      <Grid item xs={1}>
-        <SubdirectoryArrowRightIcon style={{ marginTop: '0.5rem' }} />
-      </Grid>
-      <Grid item xs={11}>
-        <TextField
-          type="number"
-          className={clsx(classes.search, classes.searchInput)}
-          value={fromPrice}
-          onChange={event => setFromPrice(event.target.value)}
-        />
-        <Typography>and</Typography>
-        <TextField
-          type="number"
-          className={clsx(classes.search, classes.searchInput)}
-          value={toPrice}
-          onChange={event => setToPrice(event.target.value)}
-        />
-      </Grid>
-    </Grid>
-  )
 
   useEffect(() => {
     dispatch({
@@ -122,8 +80,17 @@ export function PriceFilter(props: PriceFilterProps) {
           <MenuItem value="equal">equal to</MenuItem>
           <MenuItem value="between">between</MenuItem>
         </Select>
-        {type === 'equal' && EqualQuery}
-        {type === 'between' && BetweenQuery}
+        {type === 'equal' && (
+          <EqualQuery fromPrice={fromPrice} setFromPrice={setFromPrice} />
+        )}
+        {type === 'between' && (
+          <BetweenQuery
+            fromPrice={fromPrice}
+            setFromPrice={setFromPrice}
+            setToPrice={setToPrice}
+            toPrice={toPrice}
+          />
+        )}
       </AccordionDetails>
     </Accordion>
   )

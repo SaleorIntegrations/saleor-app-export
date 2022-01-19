@@ -42,62 +42,25 @@ export function FilterButton() {
   }
 
   const assignFilter = (filter: Filter) => {
-    switch (filter.filterType) {
-      case 'attribute':
-        return (
-          <AttributeFilter
-            key={filter.id}
-            filter={filter}
-            dispatch={dispatch}
-          />
-        )
-      case 'category':
-        return (
-          <CategoriesFilter
-            key={filter.id}
-            filter={filter}
-            dispatch={dispatch}
-          />
-        )
-      case 'channel':
-        return (
-          <ChannelsFilter key={filter.id} filter={filter} dispatch={dispatch} />
-        )
-      case 'release':
-        return (
-          <ReleaseFilter key={filter.id} filter={filter} dispatch={dispatch} />
-        )
-      case 'signed':
-        return (
-          <SignedFilter key={filter.id} filter={filter} dispatch={dispatch} />
-        )
-      case 'stock':
-        return (
-          <StockFilter key={filter.id} filter={filter} dispatch={dispatch} />
-        )
-      case 'product-types':
-        return (
-          <ProductTypesFilter
-            key={filter.id}
-            filter={filter}
-            dispatch={dispatch}
-          />
-        )
-      case 'collection':
-        return (
-          <CollectionsFilter
-            key={filter.id}
-            filter={filter}
-            dispatch={dispatch}
-          />
-        )
-      case 'price':
-        return (
-          <PriceFilter key={filter.id} filter={filter} dispatch={dispatch} />
-        )
-      default:
-        return null
+    const FilterComponents: Record<string, Function> = {
+      attribute: AttributeFilter,
+      category: CategoriesFilter,
+      channel: ChannelsFilter,
+      release: ReleaseFilter,
+      signed: SignedFilter,
+      stock: StockFilter,
+      'product-types': ProductTypesFilter,
+      collection: CollectionsFilter,
+      price: PriceFilter,
     }
+
+    const FilterComponent = FilterComponents[filter.filterType]
+
+    if (!FilterComponent) return null
+
+    return (
+      <FilterComponent key={filter.id} filter={filter} dispatch={dispatch} />
+    )
   }
 
   const evaluateAttributeFilterType = (name: string) => {
@@ -125,7 +88,7 @@ export function FilterButton() {
         })
       )
 
-      const sattledCategoryFilter: Filter = {
+      const settledCategoryFilter: Filter = {
         filterType: 'category',
         id: 'category-id',
         name: 'Categories',
@@ -133,7 +96,7 @@ export function FilterButton() {
         selected: [],
       }
 
-      const sattledChannelFilter: Filter = {
+      const settledChannelFilter: Filter = {
         filterType: 'channel',
         id: 'channel-id',
         name: 'Channel',
@@ -141,7 +104,7 @@ export function FilterButton() {
         selected: [],
       }
 
-      const sattledStockQuantityFilter: Filter = {
+      const settledStockQuantityFilter: Filter = {
         filterType: 'stock',
         id: 'stock-id',
         name: 'Stock Quantity',
@@ -149,7 +112,7 @@ export function FilterButton() {
         selected: [],
       }
 
-      const sattledProductTypesFilter: Filter = {
+      const settledProductTypesFilter: Filter = {
         filterType: 'product-types',
         id: 'product-types-id',
         name: 'Product Types',
@@ -157,7 +120,7 @@ export function FilterButton() {
         selected: [],
       }
 
-      const sattledCollectionsFilter: Filter = {
+      const settledCollectionsFilter: Filter = {
         filterType: 'collection',
         id: 'collection-id',
         name: 'Collections',
@@ -165,7 +128,7 @@ export function FilterButton() {
         selected: [],
       }
 
-      const sattledPriceFilter: Filter = {
+      const settledPriceFilter: Filter = {
         filterType: 'price',
         id: 'price-id',
         name: 'Price',
@@ -177,12 +140,12 @@ export function FilterButton() {
         type: 'SET_FILTERS',
         filters: [
           ...settledInitialFilters,
-          sattledCategoryFilter,
-          sattledChannelFilter,
-          sattledStockQuantityFilter,
-          sattledProductTypesFilter,
-          sattledCollectionsFilter,
-          sattledPriceFilter,
+          settledCategoryFilter,
+          settledChannelFilter,
+          settledStockQuantityFilter,
+          settledProductTypesFilter,
+          settledCollectionsFilter,
+          settledPriceFilter,
         ],
       })
     }

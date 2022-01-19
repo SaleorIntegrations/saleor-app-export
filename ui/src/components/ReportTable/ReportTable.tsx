@@ -8,11 +8,13 @@ import {
   TablePagination,
 } from '@material-ui/core'
 
-import ReportTableHeader from './ReportTableHeader'
-import ReportTableRow from './ReportTableRow'
 import { Order } from './utils'
 import sortTable from '../../utils/sortTable'
 import { TableReport } from '../../globalTypes'
+import { ExportObjectTypesEnum } from '../../api/export/types'
+
+import ReportTableHeader from './ReportTableHeader'
+import ReportTableRow from './ReportTableRow'
 
 interface ReportTableProps {
   reports: TableReport[]
@@ -95,7 +97,15 @@ export function ReportTable(props: ReportTableProps) {
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map(d => (
                 <ReportTableRow
-                  onRowClick={(_, id) => navigate(`/report/${id}`)}
+                  onRowClick={(_, id) =>
+                    navigate(
+                      `/report/${id}/${
+                        d.entity === ExportObjectTypesEnum.PRODUCTS
+                          ? 'product'
+                          : 'order'
+                      }`
+                    )
+                  }
                   key={d.id}
                   id={d.id}
                   name={d.name}

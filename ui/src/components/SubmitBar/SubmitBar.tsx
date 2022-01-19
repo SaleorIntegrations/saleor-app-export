@@ -1,19 +1,7 @@
 import React from 'react'
 import { Paper, Button } from '@material-ui/core'
-import { makeStyles } from '@saleor/macaw-ui'
 
-// TODO: move to single file
-const useStyles = makeStyles(theme => ({
-  root: {
-    padding: '1.6rem 2.4rem 1.6rem 2.4rem',
-    boxSizing: 'border-box',
-    borderRadius: '6px 6px 0 0',
-    textAlign: 'right',
-    '& > *': {
-      marginLeft: '1.2rem',
-    },
-  },
-}))
+import useStyles from './styles'
 
 interface SubmitBarProps {
   onSaveAndExport: () => void

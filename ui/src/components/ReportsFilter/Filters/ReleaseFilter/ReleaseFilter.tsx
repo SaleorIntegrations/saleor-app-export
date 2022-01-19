@@ -1,7 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import clsx from 'clsx'
-import moment from 'moment'
+import { produce } from 'immer'
+import dayjs from 'dayjs'
 import {
   Accordion,
   AccordionSummary,
@@ -10,38 +11,20 @@ import {
   AccordionDetails,
   Select,
   MenuItem,
-  Grid,
-  Typography,
 } from '@material-ui/core'
-import {
-  ExpandMore as ExpandMoreIcon,
-  SubdirectoryArrowRight as SubdirectoryArrowRightIcon,
-} from '@material-ui/icons'
+import { ExpandMore as ExpandMoreIcon } from '@material-ui/icons'
 
 import useStyles from '../styles'
-import {
-  Filter as FilterType,
-  ReducerAction,
-  DateTime,
-} from '../../FilterButton/reducer'
-import { DateField, Format } from '../../../DateField'
+import { Filter as FilterType, ReducerAction } from '../../FilterButton/reducer'
+import { Format } from '../../../DateField'
+
+import { QueryAction, DateQuery } from './types'
+import BetweenQuery from './BetweenQuery'
+import EqualQuery from './EqualQuery'
 
 export interface ReleaseFilterProps {
   filter: FilterType
   dispatch: (action: ReducerAction) => void
-}
-
-interface DateQuery {
-  to: DateTime
-  from: DateTime
-}
-
-enum QueryAction {
-  setToTime = 'SET_TO_TIME',
-  setToDate = 'SET_TO_DATE',
-  setFromTime = 'SET_FROM_TIME',
-  setFromDate = 'SET_FROM_DATE',
-  clear = 'CLEAR',
 }
 
 export function ReleaseFilter(props: ReleaseFilterProps) {
@@ -50,46 +33,32 @@ export function ReleaseFilter(props: ReleaseFilterProps) {
   const [type, setType] = useState('equal')
   const [query, setQuery] = useState<DateQuery>({
     to: {
-      date: moment().format(Format.date),
-      time: moment().format(Format.time),
+      date: dayjs().format(Format.date),
+      time: dayjs().format(Format.time),
     },
     from: {
-      date: moment().format(Format.date),
-      time: moment().format(Format.time),
+      date: dayjs().format(Format.date),
+      time: dayjs().format(Format.time),
     },
   })
 
-  const getNewQuery = useCallback(
-    (action: QueryAction, newDateTime: string = '') => {
-      switch (action) {
-        case QueryAction.setToDate:
-          return { from: query.from, to: { ...query.to, date: newDateTime } }
-        case QueryAction.setToTime:
-          return { from: query.from, to: { ...query.to, time: newDateTime } }
-        case QueryAction.setFromDate:
-          return { to: query.to, from: { ...query.from, date: newDateTime } }
-        case QueryAction.setFromTime:
-          return { to: query.to, from: { ...query.from, time: newDateTime } }
-        case QueryAction.clear:
-          return {
-            to: {
-              date: moment().format(Format.date),
-              time: moment().format(Format.time),
-            },
-            from: {
-              date: moment().format(Format.date),
-              time: moment().format(Format.time),
-            },
-          }
-        default:
-          return query
-      }
-    },
-    [query]
-  )
-
-  const onDateTimeChange = (newDateTime: string, action: QueryAction) => {
-    setQuery(getNewQuery(action, newDateTime))
+  const setDateTime = (newDateTime: string, action: QueryAction) => {
+    setQuery(
+      produce(draft => {
+        switch (action) {
+          case QueryAction.setToDate:
+            return (draft.to.date = newDateTime)
+          case QueryAction.setToTime:
+            return (draft.to.time = newDateTime)
+          case QueryAction.setFromDate:
+            return (draft.from.date = newDateTime)
+          case QueryAction.setFromTime:
+            return (draft.from.time = newDateTime)
+          default:
+            return draft
+        }
+      })
+    )
   }
 
   const onMainCheckChange = (
@@ -105,48 +74,22 @@ export function ReleaseFilter(props: ReleaseFilterProps) {
       value: unknown
     }>
   ) => {
-    setQuery(getNewQuery(QueryAction.clear))
+    setQuery(
+      produce(draft => {
+        draft = {
+          to: {
+            date: dayjs().format(Format.date),
+            time: dayjs().format(Format.time),
+          },
+          from: {
+            date: dayjs().format(Format.date),
+            time: dayjs().format(Format.time),
+          },
+        }
+      })
+    )
     setType(event.target.value as string)
   }
-
-  const EqualQuery = (
-    <Grid container direction="row" spacing={1} alignItems="center">
-      <Grid item xs={1}>
-        <SubdirectoryArrowRightIcon />
-      </Grid>
-      <Grid item xs={11}>
-        <DateField
-          time={query.to.time}
-          date={query.to.date}
-          setDate={value => onDateTimeChange(value, QueryAction.setToDate)}
-          setTime={value => onDateTimeChange(value, QueryAction.setToTime)}
-        />
-      </Grid>
-    </Grid>
-  )
-
-  const BetweenQuery = (
-    <Grid container direction="row" spacing={1}>
-      <Grid item xs={1}>
-        <SubdirectoryArrowRightIcon style={{ marginTop: '2rem' }} />
-      </Grid>
-      <Grid item xs={11}>
-        <DateField
-          time={query.from.time}
-          date={query.from.date}
-          setDate={value => onDateTimeChange(value, QueryAction.setFromDate)}
-          setTime={value => onDateTimeChange(value, QueryAction.setFromTime)}
-        />
-        <Typography>and</Typography>
-        <DateField
-          time={query.to.time}
-          date={query.to.date}
-          setDate={value => onDateTimeChange(value, QueryAction.setToDate)}
-          setTime={value => onDateTimeChange(value, QueryAction.setToTime)}
-        />
-      </Grid>
-    </Grid>
-  )
 
   useEffect(() => {
     if (type === 'equal') {
@@ -180,8 +123,22 @@ export function ReleaseFilter(props: ReleaseFilterProps) {
           <MenuItem value="equal">equal to</MenuItem>
           <MenuItem value="between">between</MenuItem>
         </Select>
-        {type === 'equal' && EqualQuery}
-        {type === 'between' && BetweenQuery}
+        {type === 'equal' && (
+          <EqualQuery
+            toDate={query.to.date}
+            toTime={query.to.time}
+            setDateTime={setDateTime}
+          />
+        )}
+        {type === 'between' && (
+          <BetweenQuery
+            toDate={query.to.date}
+            toTime={query.to.time}
+            setDateTime={setDateTime}
+            fromDate={query.from.date}
+            fromTime={query.from.time}
+          />
+        )}
       </AccordionDetails>
     </Accordion>
   )

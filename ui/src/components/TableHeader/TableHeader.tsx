@@ -9,7 +9,7 @@ export function TableHeader() {
   const navigate = useNavigate()
 
   const onClick = () => {
-    navigate('/create', { replace: true })
+    navigate('/create/product', { replace: true })
   }
 
   return (

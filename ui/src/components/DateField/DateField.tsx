@@ -1,5 +1,5 @@
 import React from 'react'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { TextField, Box } from '@material-ui/core'
 
 import useStyles from './style'
@@ -27,9 +27,9 @@ export function DateField(props: DateFieldProps) {
         type="date"
         label="Date"
         value={date}
-        defaultValue={moment().format(Format.date)}
+        defaultValue={dayjs().format(Format.date)}
         onChange={e =>
-          setDate(moment(new Date(e.currentTarget.value)).format(Format.date))
+          setDate(dayjs(new Date(e.currentTarget.value)).format(Format.date))
         }
       />
       <TextField
@@ -37,7 +37,7 @@ export function DateField(props: DateFieldProps) {
         type="time"
         label="Time"
         value={time}
-        defaultValue={moment().format(Format.time)}
+        defaultValue={dayjs().format(Format.time)}
         onChange={e => {
           setTime(e.currentTarget.value)
         }}

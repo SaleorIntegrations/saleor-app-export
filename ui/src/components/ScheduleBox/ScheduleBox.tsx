@@ -10,7 +10,7 @@ import {
   Paper,
   Typography,
 } from '@material-ui/core'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { ToggleButtonGroup } from '@material-ui/lab'
 
 import Label from '../Label'
@@ -22,8 +22,8 @@ export function ScheduleBox() {
   const classes = useStyle()
   const [isExtended, setIsExtended] = useState(false)
   const [zone, setZone] = useState('utc')
-  const [selectedDate, setSelectedDate] = useState(moment().format(Format.date))
-  const [selectedTime, setSelectedTime] = useState(moment().format(Format.time))
+  const [selectedDate, setSelectedDate] = useState(dayjs().format(Format.date))
+  const [selectedTime, setSelectedTime] = useState(dayjs().format(Format.time))
 
   return (
     <Box>

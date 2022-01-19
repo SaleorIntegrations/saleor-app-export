@@ -5,7 +5,7 @@ import { Typography, Box } from '@material-ui/core'
 import clsx from 'clsx'
 
 import { ModalSelect } from '../ModalSelect'
-import { useExportProduct } from '../../hooks'
+import { useExportProductColumnsStore } from '../../hooks'
 import { ProductFieldEnum } from '../../api/export/types'
 import {
   ChannelSettingModal,
@@ -32,16 +32,13 @@ export function ProductColumnsArea(props: ProductColumnsAreaProps) {
     setProductFields,
     setWarehouses,
     columns,
-    isLoading,
-  } = useExportProduct()
+  } = useExportProductColumnsStore()
   const [fields, setFields] = useState(sortProductFields(columns.productFields))
   const classes = useStyles()
 
   useEffect(() => {
     setProductFields(Object.values(fields).flat())
   }, [fields])
-
-  if (isLoading) return <div>Loading...</div>
 
   return (
     <Surface padding={0}>

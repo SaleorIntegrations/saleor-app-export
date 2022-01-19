@@ -32,30 +32,14 @@ export function CheckboxList(props: CheckboxListProps) {
     _event: React.ChangeEvent<HTMLInputElement>,
     checked: boolean
   ) => {
-    // TODO: change for one produce
-    if (checked) {
-      setOptions(
-        produce<CheckboxListOption[]>(draft => {
-          const option = draft.find(
-            option => option.value === _event.target.value
-          )
-          if (option) {
-            option.checked = true
-          }
-        })
-      )
-    } else {
-      setOptions(
-        produce<CheckboxListOption[]>(draft => {
-          const option = draft.find(
-            option => option.value === _event.target.value
-          )
-          if (option) {
-            option.checked = false
-          }
-        })
-      )
-    }
+    setOptions(
+      produce<CheckboxListOption[]>(draft => {
+        const option = draft.find(
+          option => option.value === _event.target.value
+        )
+        if (option) option.checked = checked
+      })
+    )
   }
 
   const onAllCheckboxChange = (
