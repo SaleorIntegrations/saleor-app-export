@@ -2,17 +2,19 @@ import React, { useState, useEffect, useReducer } from 'react'
 import { Box, Button, Popover, Typography } from '@material-ui/core'
 
 import useStyles from '../styles'
-import AttributeFilter from '../Filters/AttributeFilter'
-import CategoriesFilter from '../Filters/CategoriesFilter'
-import ChannelsFilter from '../Filters/ChannelsFilter'
-import ReleaseFilter from '../Filters/ReleaseFilter'
-import SignedFilter from '../Filters/SignedFilter'
-import StockFilter from '../Filters/StockFilter'
-import CollectionsFilter from '../Filters/CollectionsFilter'
-import ProductTypesFilter from '../Filters/ProductTypesFilter'
-import PriceFilter from '../Filters/PriceFilter'
 import { useQueryInitialProductFilterAttributes } from '../../../api/saleor/query'
+import { evaluateAttributeFilterType } from '../../../utils'
+
 import { reducer, initFilters, Filter } from './reducer'
+import { FilterComponents } from './FilterComponents'
+import {
+  settledCategoryFilter,
+  settledChannelFilter,
+  settledCollectionsFilter,
+  settledPriceFilter,
+  settledProductTypesFilter,
+  settledStockQuantityFilter,
+} from './settledFilters'
 
 export function FilterButton() {
   const [filters, dispatch] = useReducer(reducer, initFilters)
@@ -42,18 +44,6 @@ export function FilterButton() {
   }
 
   const assignFilter = (filter: Filter) => {
-    const FilterComponents: Record<string, Function> = {
-      attribute: AttributeFilter,
-      category: CategoriesFilter,
-      channel: ChannelsFilter,
-      release: ReleaseFilter,
-      signed: SignedFilter,
-      stock: StockFilter,
-      'product-types': ProductTypesFilter,
-      collection: CollectionsFilter,
-      price: PriceFilter,
-    }
-
     const FilterComponent = FilterComponents[filter.filterType]
 
     if (!FilterComponent) return null
@@ -61,17 +51,6 @@ export function FilterButton() {
     return (
       <FilterComponent key={filter.id} filter={filter} dispatch={dispatch} />
     )
-  }
-
-  const evaluateAttributeFilterType = (name: string) => {
-    switch (name) {
-      case 'Release Date':
-        return 'release'
-      case 'Signed':
-        return 'signed'
-      default:
-        return 'attribute'
-    }
   }
 
   useEffect(() => {
@@ -87,54 +66,6 @@ export function FilterButton() {
           selected: [],
         })
       )
-
-      const settledCategoryFilter: Filter = {
-        filterType: 'category',
-        id: 'category-id',
-        name: 'Categories',
-        checked: false,
-        selected: [],
-      }
-
-      const settledChannelFilter: Filter = {
-        filterType: 'channel',
-        id: 'channel-id',
-        name: 'Channel',
-        checked: false,
-        selected: [],
-      }
-
-      const settledStockQuantityFilter: Filter = {
-        filterType: 'stock',
-        id: 'stock-id',
-        name: 'Stock Quantity',
-        checked: false,
-        selected: [],
-      }
-
-      const settledProductTypesFilter: Filter = {
-        filterType: 'product-types',
-        id: 'product-types-id',
-        name: 'Product Types',
-        checked: false,
-        selected: [],
-      }
-
-      const settledCollectionsFilter: Filter = {
-        filterType: 'collection',
-        id: 'collection-id',
-        name: 'Collections',
-        checked: false,
-        selected: [],
-      }
-
-      const settledPriceFilter: Filter = {
-        filterType: 'price',
-        id: 'price-id',
-        name: 'Price',
-        checked: false,
-        selected: [],
-      }
 
       dispatch({
         type: 'SET_FILTERS',

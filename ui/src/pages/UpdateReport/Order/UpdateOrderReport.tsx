@@ -12,6 +12,7 @@ import {
   useExportCommonStore,
   useExportOrderColumnsStore,
 } from '../../../hooks'
+import { FileType } from '../../../globalTypes'
 
 export function UpdateOrderReport() {
   const { id } = useParams()
@@ -36,11 +37,13 @@ export function UpdateOrderReport() {
 
   useEffect(() => {
     if (report.data && !report.fetching) {
-      const { type, id, name, filter, columns } = report.data.report
-      commonStore.setType(type)
-      commonStore.setId(id)
-      commonStore.setName(name)
-      commonStore.setFilter(filter)
+      const { id, name, filter, columns } = report.data.report
+      commonStore.initialize({
+        id: id,
+        name: name,
+        filter: filter ? { filterStr: filter } : null,
+        fileType: FileType.CSV,
+      })
       columnsStore.setColumns(columns as OrderSelectedColumnsInfo)
       setIsLoading(false)
     }
@@ -56,7 +59,7 @@ export function UpdateOrderReport() {
 
   return (
     <ReportPage
-      reportType={commonStore.type}
+      reportType={columnsStore.type}
       fileType={commonStore.fileType}
       setFileType={fileType => commonStore.setFileType(fileType)}
       onExport={onExport}

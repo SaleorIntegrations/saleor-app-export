@@ -9,21 +9,20 @@ export const useExportCommonStore = create<ExportCommonStore>(set => ({
   id: null,
   type: ExportObjectTypesEnum.PRODUCTS,
   filter: null,
+  initialize: data => set(state => data),
   setFileType: fileType => set(state => ({ fileType: fileType })),
   setName: name => set(state => ({ name: name })),
   setId: id => set(state => ({ id: id })),
-  setType: type => set(state => ({ type: type })),
   setFilter: filter =>
     set(state => {
       if (!filter) return { filter: null }
       return { filter: { filterStr: filter } }
     }),
-  clear: () =>
+  reset: () =>
     set(state => ({
       fileType: FileType.CSV,
       name: '',
       id: null,
-      type: ExportObjectTypesEnum.PRODUCTS,
       filter: null,
     })),
 }))

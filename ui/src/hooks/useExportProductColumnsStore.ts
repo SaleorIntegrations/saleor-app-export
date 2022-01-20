@@ -1,6 +1,7 @@
 import create from 'zustand'
 import { produce } from 'immer'
 
+import { ExportObjectTypesEnum } from '../api/export/types'
 import { ExportProductColumnsStore } from '../globalTypes'
 
 export const useExportProductColumnsStore = create<ExportProductColumnsStore>(
@@ -11,6 +12,7 @@ export const useExportProductColumnsStore = create<ExportProductColumnsStore>(
       warehouses: [],
       productFields: [],
     },
+    type: ExportObjectTypesEnum.PRODUCTS,
     setColumns: columns => set({ columns: columns }),
     setAttributes: attributes =>
       set(state =>
@@ -36,7 +38,7 @@ export const useExportProductColumnsStore = create<ExportProductColumnsStore>(
           draft.columns.productFields = productFields
         })
       ),
-    clear: () =>
+    reset: () =>
       set(state => ({
         columns: {
           attributes: [],

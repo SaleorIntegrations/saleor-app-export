@@ -6,7 +6,6 @@ import {
   useMutationCreateProductsReport,
   useMutationRunReport,
 } from '../../../api/export/mutation'
-import { ExportObjectTypesEnum } from '../../../api/export/types'
 import {
   useExportCommonStore,
   useExportProductColumnsStore,
@@ -60,9 +59,8 @@ export function CreateProductReport() {
   }
 
   useEffect(() => {
-    commonStore.clear()
-    commonStore.setType(ExportObjectTypesEnum.PRODUCTS)
-    columnsStore.clear()
+    commonStore.reset()
+    columnsStore.reset()
     setIsLoading(false)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -72,7 +70,7 @@ export function CreateProductReport() {
   return (
     <ReportPage
       isMutable
-      reportType={commonStore.type}
+      reportType={columnsStore.type}
       setReportType={onTypeChange}
       fileType={commonStore.fileType}
       setFileType={fileType => commonStore.setFileType(fileType)}

@@ -12,6 +12,7 @@ import {
   useExportCommonStore,
   useExportProductColumnsStore,
 } from '../../../hooks'
+import { FileType } from '../../../globalTypes'
 
 export function UpdateProductReport() {
   const { id } = useParams()
@@ -41,11 +42,13 @@ export function UpdateProductReport() {
 
   useEffect(() => {
     if (report.data && !report.fetching) {
-      const { type, id, name, filter, columns } = report.data.report
-      commonStore.setType(type)
-      commonStore.setId(id)
-      commonStore.setName(name)
-      commonStore.setFilter(filter)
+      const { id, name, filter, columns } = report.data.report
+      commonStore.initialize({
+        id: id,
+        name: name,
+        filter: filter ? { filterStr: filter } : null,
+        fileType: FileType.CSV,
+      })
       columnsStore.setColumns(columns as ProductSelectedColumnsInfo)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -60,7 +63,7 @@ export function UpdateProductReport() {
 
   return (
     <ReportPage
-      reportType={commonStore.type}
+      reportType={columnsStore.type}
       fileType={commonStore.fileType}
       setFileType={fileType => commonStore.setFileType(fileType)}
       onExport={onExport}

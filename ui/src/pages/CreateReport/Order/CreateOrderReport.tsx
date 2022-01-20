@@ -10,7 +10,6 @@ import {
   useMutationCreateOrdersReport,
   useMutationRunReport,
 } from '../../../api/export/mutation'
-import { ExportObjectTypesEnum } from '../../../api/export/types'
 
 export function CreateOrderReport() {
   const navigation = useNavigate()
@@ -55,9 +54,8 @@ export function CreateOrderReport() {
   }
 
   useEffect(() => {
-    commonStore.clear()
-    commonStore.setType(ExportObjectTypesEnum.ORDERS)
-    columnsStore.clear()
+    commonStore.reset()
+    columnsStore.reset()
     setIsLoading(false)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -67,7 +65,7 @@ export function CreateOrderReport() {
   return (
     <ReportPage
       isMutable
-      reportType={commonStore.type}
+      reportType={columnsStore.type}
       setReportType={onTypeChange}
       fileType={commonStore.fileType}
       setFileType={fileType => commonStore.setFileType(fileType)}
