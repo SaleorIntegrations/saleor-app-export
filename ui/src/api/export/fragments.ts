@@ -14,9 +14,16 @@ export const SelectedColumnsInfoFragment = gql`
     __typename
   }
 `
+export const RecipientInfoFragment = gql`
+  fragment RecipientInfoFragment on RecipientInfo {
+    users
+    permissionGroups
+  }
+`
 
 export const ReportFragment = gql`
   ${SelectedColumnsInfoFragment}
+  ${RecipientInfoFragment}
   fragment ReportFragment on Report {
     id
     name
@@ -24,6 +31,9 @@ export const ReportFragment = gql`
     filter
     columns {
       ...SelectedColumnsInfoFragment
+    }
+    recipients {
+      ...RecipientInfoFragment
     }
     __typename
   }

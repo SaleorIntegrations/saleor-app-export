@@ -38,6 +38,10 @@ export function CreateOrderReport() {
     const response = await createOrderReport({
       fields: columnsStore.columns.orderFields,
       name: commonStore.name,
+      recipients: {
+        users: null,
+        permissionGroups: null,
+      },
     })
 
     const report = response.data?.createOrdersReport

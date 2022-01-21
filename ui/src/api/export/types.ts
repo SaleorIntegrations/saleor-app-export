@@ -9,6 +9,7 @@ export interface Report {
   type: ExportObjectTypesEnum
   filter: string | null
   columns: ProductSelectedColumnsInfo | OrderSelectedColumnsInfo
+  recipients: RecipientInfo
 }
 
 export interface ReportError {
@@ -116,4 +117,9 @@ export interface ReportEdge {
 export interface PageInfo {
   hasNext: boolean
   endCursor: string | null
+}
+
+export interface RecipientInfo {
+  users: string[] | null
+  permissionGroups: string[] | null
 }

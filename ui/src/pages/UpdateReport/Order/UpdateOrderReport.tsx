@@ -32,6 +32,10 @@ export function UpdateOrderReport() {
       fields: columnsStore.columns.orderFields,
       reportId: commonStore.id || -1,
       name: commonStore.name,
+      recipients: {
+        users: null,
+        permissionGroups: null,
+      },
     })
   }
 

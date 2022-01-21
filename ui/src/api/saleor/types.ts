@@ -52,3 +52,10 @@ export interface AttributeValue {
 export interface Node<T> {
   node: T
 }
+
+export interface User {
+  id: string
+  firstName: string
+  lastName: string
+  email: string
+}

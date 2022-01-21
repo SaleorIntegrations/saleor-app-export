@@ -43,6 +43,10 @@ export function CreateProductReport() {
         warehouses: columnsStore.columns.warehouses,
       },
       name: commonStore.name,
+      recipients: {
+        users: ['VXNlcjox'],
+        permissionGroups: [],
+      },
     })
 
     const report = response.data?.createProductsReport
