@@ -35,9 +35,7 @@ export function FilterButton() {
     submit()
   }
 
-  const submit = () => {
-    console.log(filters.filter(filter => filter.checked === true))
-  }
+  const submit = () => {}
 
   const clearFilters = () => {
     dispatch({ type: 'CLEAR' })
