@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 
 import { OrderSetting, ReportPage } from '../../../components'
 import {
+  useCurrentUserStore,
   useExportCommonStore,
   useExportOrderColumnsStore,
 } from '../../../hooks'
@@ -15,6 +16,7 @@ export function CreateOrderReport() {
   const navigation = useNavigate()
   const commonStore = useExportCommonStore()
   const columnsStore = useExportOrderColumnsStore()
+  const currentUser = useCurrentUserStore(state => state.user)
   const [, createOrderReport] = useMutationCreateOrdersReport()
   const [, runReport] = useMutationRunReport()
   const [isLoading, setIsLoading] = useState(true)
@@ -39,8 +41,8 @@ export function CreateOrderReport() {
       fields: columnsStore.columns.orderFields,
       name: commonStore.name,
       recipients: {
-        users: null,
-        permissionGroups: null,
+        users: commonStore.recipients.users || [currentUser.id],
+        permissionGroups: commonStore.recipients.permissionGroups || [],
       },
     })
 

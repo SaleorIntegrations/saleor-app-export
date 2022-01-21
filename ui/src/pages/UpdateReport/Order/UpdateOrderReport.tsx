@@ -11,6 +11,7 @@ import { OrderSelectedColumnsInfo } from '../../../api/export/types'
 import {
   useExportCommonStore,
   useExportOrderColumnsStore,
+  useCurrentUserStore,
 } from '../../../hooks'
 import { FileType } from '../../../globalTypes'
 
@@ -18,6 +19,7 @@ export function UpdateOrderReport() {
   const { id } = useParams()
   const columnsStore = useExportOrderColumnsStore()
   const commonStore = useExportCommonStore()
+  const currentUser = useCurrentUserStore(state => state.user)
   const [report] = useQueryReport({ reportId: parseInt(id || '') })
   const [, updateOrderReport] = useMutationUpdateOrderReport()
   const [, runReport] = useMutationRunReport()
@@ -33,20 +35,21 @@ export function UpdateOrderReport() {
       reportId: commonStore.id || -1,
       name: commonStore.name,
       recipients: {
-        users: null,
-        permissionGroups: null,
+        users: commonStore.recipients.users || [currentUser.id],
+        permissionGroups: commonStore.recipients.permissionGroups || [],
       },
     })
   }
 
   useEffect(() => {
     if (report.data && !report.fetching) {
-      const { id, name, filter, columns } = report.data.report
+      const { id, name, filter, columns, recipients } = report.data.report
       commonStore.initialize({
         id: id,
         name: name,
         filter: filter ? { filterStr: filter } : null,
         fileType: FileType.CSV,
+        recipients: recipients,
       })
       columnsStore.setColumns(columns as OrderSelectedColumnsInfo)
       setIsLoading(false)

@@ -5,6 +5,7 @@ import {
   ProductFieldEnum,
   OrderSelectedColumnsInfo,
   OrderFieldEnum,
+  RecipientInfo,
 } from './api/export/types'
 
 export enum FileType {
@@ -25,6 +26,7 @@ export interface ExportStoreCommonData {
   name: string
   id: number | null
   filter: FilterInfo | null
+  recipients: RecipientInfo
 }
 
 export interface ExportCommonStore extends ExportStoreCommonData {
@@ -32,6 +34,8 @@ export interface ExportCommonStore extends ExportStoreCommonData {
   setName: (name: string) => void
   setId: (id: number | null) => void
   setFilter: (filter: string | null) => void
+  setUsers: (users: string[] | null) => void
+  setPermissionGroups: (permissionGroups: string[] | null) => void
   initialize: (data: ExportStoreCommonData) => void
   reset: () => void
 }

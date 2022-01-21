@@ -7,6 +7,7 @@ import {
   useMutationRunReport,
 } from '../../../api/export/mutation'
 import {
+  useCurrentUserStore,
   useExportCommonStore,
   useExportProductColumnsStore,
 } from '../../../hooks'
@@ -15,6 +16,7 @@ export function CreateProductReport() {
   const navigation = useNavigate()
   const commonStore = useExportCommonStore()
   const columnsStore = useExportProductColumnsStore()
+  const currentUser = useCurrentUserStore(state => state.user)
   const [, createProductReport] = useMutationCreateProductsReport()
   const [, runReport] = useMutationRunReport()
   const [isLoading, setIsLoading] = useState(true)
@@ -44,8 +46,8 @@ export function CreateProductReport() {
       },
       name: commonStore.name,
       recipients: {
-        users: ['VXNlcjox'],
-        permissionGroups: [],
+        users: commonStore.recipients.users || [currentUser.id],
+        permissionGroups: commonStore.recipients.permissionGroups || [],
       },
     })
 

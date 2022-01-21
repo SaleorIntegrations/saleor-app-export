@@ -9,6 +9,7 @@ import {
 import { useQueryReport } from '../../../api/export/query'
 import { ProductSelectedColumnsInfo } from '../../../api/export/types'
 import {
+  useCurrentUserStore,
   useExportCommonStore,
   useExportProductColumnsStore,
 } from '../../../hooks'
@@ -18,6 +19,7 @@ export function UpdateProductReport() {
   const { id } = useParams()
   const commonStore = useExportCommonStore()
   const columnsStore = useExportProductColumnsStore()
+  const currentUser = useCurrentUserStore(state => state.user)
   const [report] = useQueryReport({ reportId: parseInt(id || '') })
   const [, updateProductReport] = useMutationUpdateProductReport()
   const [, runReport] = useMutationRunReport()
@@ -38,20 +40,21 @@ export function UpdateProductReport() {
       reportId: commonStore.id || -1,
       name: commonStore.name,
       recipients: {
-        users: null,
-        permissionGroups: null,
+        users: commonStore.recipients.users || [currentUser.id],
+        permissionGroups: commonStore.recipients.permissionGroups || [],
       },
     })
   }
 
   useEffect(() => {
     if (report.data && !report.fetching) {
-      const { id, name, filter, columns } = report.data.report
+      const { id, name, filter, columns, recipients } = report.data.report
       commonStore.initialize({
         id: id,
         name: name,
         filter: filter ? { filterStr: filter } : null,
         fileType: FileType.CSV,
+        recipients: recipients,
       })
       columnsStore.setColumns(columns as ProductSelectedColumnsInfo)
     }
