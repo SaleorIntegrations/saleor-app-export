@@ -12,6 +12,7 @@ class ReportErrorCode(Enum):
     INVALID_TYPE = "invalid_type"
     INVALID_FILTER = "invalid_filter"
     LIMIT_EXCEEDED = "limit_exceeded"
+    NO_RECIPIENTS = "no_recipients"
 
 
 @strawberry.type

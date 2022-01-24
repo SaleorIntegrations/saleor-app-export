@@ -2,11 +2,14 @@ import json
 from json import JSONDecodeError
 from typing import Any, Awaitable, Callable, Optional
 
+import strawberry
 from gql.transport.exceptions import TransportQueryError
 from sqlalchemy import delete
 from sqlalchemy.exc import NoResultFound
 
-from app.core.export.fetch import fetch_report_by_id
+from app.core.export.fetch import fetch_recipients, fetch_report_by_id
+from app.core.export.fields import RecipientInfo
+from app.core.export.fields import RecipientInfo as RecipientInfoModel
 from app.core.reports.models import (
     ExportObjectTypesEnum,
     ExportScopeEnum,
@@ -20,6 +23,16 @@ from app.graphql.reports.responses import (
     ReportErrorCode,
     ReportResponse,
 )
+
+
+@strawberry.input
+class FilterInfoInput:
+    filter_str: str
+
+
+@strawberry.experimental.pydantic.input(model=RecipientInfoModel, all_fields=True)
+class RecipientInfoInput:
+    pass
 
 
 async def mutate_report_base(
@@ -60,6 +73,31 @@ async def mutate_report_base(
                 ]
             )
 
+    recipient_info: RecipientInfo = input.recipients.to_pydantic()
+    if not any([recipient_info.users, recipient_info.permission_groups]):
+        return ReportResponse(
+            errors=[
+                ReportError(
+                    code=ReportErrorCode.NO_RECIPIENTS,
+                    message="At least 1 recipient is needed",
+                    field="recipients",
+                )
+            ]
+        )
+    try:
+        await fetch_recipients(recipient_info, raise_exception=True)
+    except (ValueError, TransportQueryError) as e:
+        return ReportResponse(
+            errors=[
+                ReportError(
+                    code=ReportErrorCode.NOT_FOUND,
+                    message=str(e),
+                    field="recipients",
+                )
+            ]
+        )
+    recipients = json.loads(recipient_info.json())
+
     filter_input = {}
     if input.filter:
         try:
@@ -95,6 +133,7 @@ async def mutate_report_base(
         report.name = input.name
         report.filter_input = filter_input
         report.columns = columns
+        report.recipients = recipients
     else:
         report = Report(
             type=type,
@@ -103,6 +142,7 @@ async def mutate_report_base(
             format=OutputFormatEnum.CSV,
             filter_input=filter_input,
             columns=columns,
+            recipients=recipients,
         )
     db.add(report)
     await db.commit()

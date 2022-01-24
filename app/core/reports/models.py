@@ -39,6 +39,7 @@ class Report(SQLModel, table=True):
     format: OutputFormatEnum
     filter_input: dict = Field(sa_column=Column(JSON), default_factory=dict)
     columns: dict = Field(sa_column=Column(JSON), default_factory=dict)
+    recipients: dict = Field(sa_column=Column(JSON), default_factory=dict)
 
 
 class Job(SQLModel, table=True):

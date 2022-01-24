@@ -8,7 +8,11 @@ from app.core.export.products.fields import (
     ProductSelectedColumnsInfo as ProductSelectedColumnsInfoModel,
 )
 from app.core.reports.models import ExportObjectTypesEnum
-from app.graphql.reports.mutations.base import mutate_report_base
+from app.graphql.reports.mutations.base import (
+    FilterInfoInput,
+    RecipientInfoInput,
+    mutate_report_base,
+)
 from app.graphql.reports.responses import ReportError, ReportErrorCode, ReportResponse
 
 ProductFieldEnum = strawberry.enum(ProductFields)
@@ -25,15 +29,11 @@ class ProductSelectedColumnsInput:
 
 
 @strawberry.input
-class ProductFilterInfo:
-    filter_str: str
-
-
-@strawberry.input
 class ExportProductsInput:
     columns: ProductSelectedColumnsInput
+    recipients: RecipientInfoInput
     name: Optional[str] = ""
-    filter: Optional[ProductFilterInfo] = None
+    filter: Optional[FilterInfoInput] = None
 
 
 async def mutate_products_report_base(

@@ -24,13 +24,17 @@ mutation OrdersExport($input: ExportOrdersInput!) {
 
 
 @pytest.mark.asyncio
-async def test_crete_orders_report(graphql):
+async def test_crete_orders_report(graphql, m_base_fetch_recipients):
     # given
     name = "My report 12"
     variables = {
         "input": {
             "columns": {"fields": ["ID", "NUMBER"]},
             "name": name,
+            "recipients": {
+                "users": ["User:1"],
+                "permissionGroups": [],
+            },
         }
     }
 
@@ -44,12 +48,16 @@ async def test_crete_orders_report(graphql):
 
 
 @pytest.mark.asyncio
-async def test_export_orders_invalid_filter_json(graphql):
+async def test_export_orders_invalid_filter_json(graphql, m_base_fetch_recipients):
     # given
     variables = {
         "input": {
             "columns": {"fields": ["ID", "NUMBER"]},
             "filter": {"filterStr": "{not a real json}"},
+            "recipients": {
+                "users": ["User:1"],
+                "permissionGroups": [],
+            },
         },
     }
 
@@ -63,7 +71,9 @@ async def test_export_orders_invalid_filter_json(graphql):
 
 @pytest.mark.asyncio
 @mock.patch("app.graphql.reports.mutations.orders.fetch_orders_response")
-async def test_export_orders_remote_graphql_error(m_fetch, graphql):
+async def test_export_orders_remote_graphql_error(
+    m_fetch, graphql, m_base_fetch_recipients
+):
     # given
     msg = "remote error"
     m_fetch.side_effect = TransportQueryError(msg)
@@ -71,6 +81,10 @@ async def test_export_orders_remote_graphql_error(m_fetch, graphql):
         "input": {
             "columns": {"fields": ["ID", "NUMBER"]},
             "filter": {"filterStr": '{"notReal": "but json"}'},
+            "recipients": {
+                "users": ["User:1"],
+                "permissionGroups": [],
+            },
         },
     }
 
@@ -81,3 +95,24 @@ async def test_export_orders_remote_graphql_error(m_fetch, graphql):
     error = result["data"]["createOrdersReport"]["errors"][0]
     assert error["code"] == "INVALID_FILTER"
     assert error["message"] == msg
+
+
+@pytest.mark.asyncio
+async def test_export_orders_no_recipients(graphql):
+    # given
+    variables = {
+        "input": {
+            "columns": {"fields": ["ID", "NUMBER"]},
+            "recipients": {
+                "users": [],
+                "permissionGroups": [],
+            },
+        },
+    }
+
+    # when
+    result = await graphql.execute(MUTATION_EXPORT_ORDERS, variables)
+
+    # then
+    error = result["data"]["createOrdersReport"]["errors"][0]
+    assert error["code"] == "NO_RECIPIENTS"

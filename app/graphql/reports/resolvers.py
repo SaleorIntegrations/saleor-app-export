@@ -5,7 +5,11 @@ from sqlalchemy import func
 from sqlalchemy.exc import NoResultFound
 from sqlmodel import select
 
-from app.core.export.fetch import fetch_job_by_id, fetch_report_by_id
+from app.core.export.fetch import (
+    fetch_job_by_id,
+    fetch_recipients_info,
+    fetch_report_by_id,
+)
 from app.core.export.orders.fetch import fetch_order_columns_info
 from app.core.export.products.fetch import fetch_product_columns_info
 from app.core.reports.models import ExportObjectTypesEnum, Job, Report
@@ -37,6 +41,10 @@ async def resolve_report_columns(root: Report, info):
         return fetch_order_columns_info(root)
     if root.type == ExportObjectTypesEnum.PRODUCTS:
         return fetch_product_columns_info(root)
+
+
+async def resolve_report_recipients(root: Report, info):
+    return fetch_recipients_info(root)
 
 
 async def resolve_job_report(root: Job, info):

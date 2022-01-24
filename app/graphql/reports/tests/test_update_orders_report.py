@@ -31,13 +31,14 @@ mutation OrdersExport($input: ExportOrdersInput!, $reportId: Int!) {
 
 @pytest.mark.asyncio
 @mock.patch("app.graphql.reports.mutations.orders.fetch_orders_response")
-async def test_update_orders_report(m_fetch, graphql, orders_report, db_session):
+async def test_update_orders_report(
+    m_fetch, m_base_fetch_recipients, graphql, orders_report, db_session
+):
     # given
     fields = ["LINES_SKU"]
     filter = {"ids": "1234"}
     name = "Copy report 12"
     filter_str = json.dumps(filter)
-    print(filter_str)
 
     variables = {
         "reportId": orders_report.id,
@@ -49,6 +50,10 @@ async def test_update_orders_report(m_fetch, graphql, orders_report, db_session)
                 "filterStr": filter_str,
             },
             "name": name,
+            "recipients": {
+                "users": ["User:1"],
+                "permissionGroups": [],
+            },
         },
     }
 
@@ -73,7 +78,11 @@ async def test_update_orders_report_invalid_type(graphql, products_report, db_se
         "input": {
             "columns": {
                 "fields": ["ID"],
-            }
+            },
+            "recipients": {
+                "users": ["User:1"],
+                "permissionGroups": [],
+            },
         },
     }
 

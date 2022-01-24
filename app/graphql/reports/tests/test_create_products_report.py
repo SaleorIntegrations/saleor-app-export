@@ -25,7 +25,7 @@ mutation ProductsExport($input: ExportProductsInput!) {
 
 
 @pytest.mark.asyncio
-async def test_create_products_report(graphql):
+async def test_create_products_report(graphql, m_base_fetch_recipients):
     # given
     name = "My report 12"
     variables = {
@@ -34,6 +34,10 @@ async def test_create_products_report(graphql):
                 "fields": ["ID", "VARIANT_ID"],
             },
             "name": name,
+            "recipients": {
+                "users": ["User:1"],
+                "permissionGroups": [],
+            },
         }
     }
 
@@ -47,12 +51,18 @@ async def test_create_products_report(graphql):
 
 
 @pytest.mark.asyncio
-async def test_export_products_without_optional_columns(db_session, graphql):
+async def test_export_products_without_optional_columns(
+    db_session, graphql, m_base_fetch_recipients
+):
     # given
     variables = {
         "input": {
             "columns": {
                 "fields": ["ID", "VARIANT_ID"],
+            },
+            "recipients": {
+                "users": ["User:1"],
+                "permissionGroups": [],
             },
         }
     }
@@ -70,7 +80,9 @@ async def test_export_products_without_optional_columns(db_session, graphql):
 
 
 @pytest.mark.asyncio
-async def test_export_products_wit_related_columns(db_session, graphql):
+async def test_export_products_wit_related_columns(
+    db_session, graphql, m_base_fetch_recipients
+):
     # given
     fields = ["ID", "VARIANT_ID"]
     channel_ids = ["1", "2", "3"]
@@ -83,6 +95,10 @@ async def test_export_products_wit_related_columns(db_session, graphql):
                 "channels": channel_ids,
                 "warehouses": warehouse_ids,
                 "attributes": attribute_ids,
+            },
+            "recipients": {
+                "users": ["User:1"],
+                "permissionGroups": [],
             },
         }
     }
@@ -109,6 +125,10 @@ async def test_export_products_exceeds_column_limit(graphql, input_field):
                 "fields": ["ID", "VARIANT_ID"],
                 input_field: [str(i) for i in range(101)],
             },
+            "recipients": {
+                "users": ["User:1"],
+                "permissionGroups": [],
+            },
         }
     }
 
@@ -122,12 +142,16 @@ async def test_export_products_exceeds_column_limit(graphql, input_field):
 
 
 @pytest.mark.asyncio
-async def test_export_products_invalid_filter_json(graphql):
+async def test_export_products_invalid_filter_json(graphql, m_base_fetch_recipients):
     # given
     variables = {
         "input": {
             "columns": {"fields": ["ID", "VARIANT_ID"]},
             "filter": {"filterStr": "{not a real json}"},
+            "recipients": {
+                "users": ["User:1"],
+                "permissionGroups": [],
+            },
         },
     }
 
@@ -141,7 +165,9 @@ async def test_export_products_invalid_filter_json(graphql):
 
 @pytest.mark.asyncio
 @mock.patch("app.graphql.reports.mutations.products.fetch_products_response")
-async def test_export_products_remote_graphql_error(m_fetch, graphql):
+async def test_export_products_remote_graphql_error(
+    m_fetch, graphql, m_base_fetch_recipients
+):
     # given
     msg = "remote error"
     m_fetch.side_effect = TransportQueryError(msg)
@@ -149,6 +175,10 @@ async def test_export_products_remote_graphql_error(m_fetch, graphql):
         "input": {
             "columns": {"fields": ["ID", "VARIANT_ID"]},
             "filter": {"filterStr": '{"notReal": "but json"}'},
+            "recipients": {
+                "users": ["User:1"],
+                "permissionGroups": [],
+            },
         },
     }
 
@@ -159,3 +189,24 @@ async def test_export_products_remote_graphql_error(m_fetch, graphql):
     error = result["data"]["createProductsReport"]["errors"][0]
     assert error["code"] == "INVALID_FILTER"
     assert error["message"] == msg
+
+
+@pytest.mark.asyncio
+async def test_export_products_no_recipients(graphql):
+    # given
+    variables = {
+        "input": {
+            "columns": {"fields": ["ID", "VARIANT_ID"]},
+            "recipients": {
+                "users": [],
+                "permissionGroups": [],
+            },
+        },
+    }
+
+    # when
+    result = await graphql.execute(MUTATION_EXPORT_PRODUCTS, variables)
+
+    # then
+    error = result["data"]["createProductsReport"]["errors"][0]
+    assert error["code"] == "NO_RECIPIENTS"

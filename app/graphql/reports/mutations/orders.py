@@ -8,7 +8,11 @@ from app.core.export.orders.fields import (
     OrderSelectedColumnsInfo as OrderSelectedColumnsInfoModel,
 )
 from app.core.reports.models import ExportObjectTypesEnum
-from app.graphql.reports.mutations.base import mutate_report_base
+from app.graphql.reports.mutations.base import (
+    FilterInfoInput,
+    RecipientInfoInput,
+    mutate_report_base,
+)
 
 OrderFieldEnum = strawberry.enum(OrderFields)
 
@@ -21,15 +25,11 @@ class OrderSelectedColumnsInput:
 
 
 @strawberry.input
-class OrderFilterInfo:
-    filter_str: str
-
-
-@strawberry.input
 class ExportOrdersInput:
     columns: OrderSelectedColumnsInput
+    recipients: RecipientInfoInput
     name: Optional[str] = ""
-    filter: Optional[OrderFilterInfo] = None
+    filter: Optional[FilterInfoInput] = None
 
 
 async def mutate_order_report_base(
