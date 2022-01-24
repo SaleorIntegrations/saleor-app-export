@@ -23,6 +23,7 @@ query Reports($first: Int!, $after: String) {
 async def test_get_reports_paginate_has_next(graphql, reports_factory, first, has_next):
     # given
     reports = await reports_factory(10)
+    await reports_factory(10, domain="example.com")
 
     # when
     result = await graphql.execute(QUERY_REPORTS, {"first": first})
@@ -37,6 +38,7 @@ async def test_get_reports_paginate_has_next(graphql, reports_factory, first, ha
 async def test_get_reports_paginate_cursor(graphql, reports_factory):
     # given
     await reports_factory(10)
+    await reports_factory(10, domain="example.com")
 
     # when
     page_1 = await graphql.execute(QUERY_REPORTS, {"first": 5})
@@ -50,6 +52,9 @@ async def test_get_reports_paginate_cursor(graphql, reports_factory):
 
 @pytest.mark.asyncio
 async def test_get_reports_empty_page(graphql, reports_factory):
+    # given
+    await reports_factory(10, domain="example.com")
+
     # when
     response = await graphql.execute(QUERY_REPORTS, {"first": 100})
 

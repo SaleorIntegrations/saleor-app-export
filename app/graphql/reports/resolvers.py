@@ -58,9 +58,16 @@ async def resolve_job_report(root: Job, info):
 
 async def resolve_reports(root, info, first: int, after: Optional[str] = None):
     db = info.context["db"]
+    domain = info.context["domain"]
     if first > MAX_PAGE_SIZE:
         raise ValueError(f"Max page size is {MAX_PAGE_SIZE}. Provided: {first}.")
-    query = select(Report).order_by(Report.id).limit(first + 1)
+    # TODO TESTME multitenant
+    query = (
+        select(Report)
+        .order_by(Report.id)
+        .where(Report.domain == domain)
+        .limit(first + 1)
+    )
     if after:
         query = query.filter(Report.id > ConnectionContext.decode_cursor(after))
     edges = list(await db.exec(query))
@@ -80,5 +87,6 @@ async def resolve_report_page_info(root: ConnectionContext, info):
 
 async def resolve_reports_count(root: ConnectionContext, info):
     db = info.context["db"]
-    scalar = await db.exec(select(func.count(Report.id)))
+    domain = info.context["domain"]
+    scalar = await db.exec(select(func.count(Report.id)).where(Report.domain == domain))
     return scalar.first()

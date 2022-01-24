@@ -80,14 +80,14 @@ async def orders_report(db_session, order_column_info, recipient_info, x_saleor_
 
 @pytest.fixture
 def reports_factory(db_session, x_saleor_domain):
-    async def factory(num_reports=3):
+    async def factory(num_reports=3, domain=x_saleor_domain):
         instances = []
         for i in range(num_reports):
             instance = Report(
                 scope=ExportScopeEnum.ALL,
                 type=ExportObjectTypesEnum.ORDERS,
                 format=OutputFormatEnum.CSV,
-                domain=x_saleor_domain,
+                domain=domain,
             )
             db_session.add(instance)
             instances.append(instance)
