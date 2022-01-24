@@ -86,12 +86,22 @@ def mock_verify():
 def graphql(async_client, tenant, x_saleor_domain, x_saleor_token, mock_verify):
     class GqlClient:
         async def execute(self, query, variables=None):
+            # Prepare request arguments
             json = {"query": query}
             if variables is not None:
                 json["variables"] = variables
-            response = await async_client.post(
-                "/graphql",
+            kwargs = dict(
+                url="/graphql",
                 json=json,
+            )
+            # Test unauthenticated request
+            response = await async_client.post(
+                **kwargs,
+            )
+            assert response.status_code == 422
+            # Test authenticated requeset
+            response = await async_client.post(
+                **kwargs,
                 headers={
                     "x-saleor-domain": x_saleor_domain,
                     "x-saleor-token": x_saleor_token,
