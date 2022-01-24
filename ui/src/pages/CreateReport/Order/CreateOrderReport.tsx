@@ -40,10 +40,7 @@ export function CreateOrderReport() {
     const response = await createOrderReport({
       fields: columnsStore.columns.orderFields,
       name: commonStore.name,
-      recipients: {
-        users: commonStore.recipients.users || [currentUser.id],
-        permissionGroups: commonStore.recipients.permissionGroups || [],
-      },
+      recipients: commonStore.recipients,
     })
 
     const report = response.data?.createOrdersReport
@@ -60,7 +57,7 @@ export function CreateOrderReport() {
   }
 
   useEffect(() => {
-    commonStore.reset()
+    commonStore.reset(currentUser)
     columnsStore.reset()
     setIsLoading(false)
     // eslint-disable-next-line react-hooks/exhaustive-deps

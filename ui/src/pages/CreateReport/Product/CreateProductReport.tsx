@@ -45,10 +45,7 @@ export function CreateProductReport() {
         warehouses: columnsStore.columns.warehouses,
       },
       name: commonStore.name,
-      recipients: {
-        users: commonStore.recipients.users || [currentUser.id],
-        permissionGroups: commonStore.recipients.permissionGroups || [],
-      },
+      recipients: commonStore.recipients,
     })
 
     const report = response.data?.createProductsReport
@@ -65,7 +62,7 @@ export function CreateProductReport() {
   }
 
   useEffect(() => {
-    commonStore.reset()
+    commonStore.reset(currentUser)
     columnsStore.reset()
     setIsLoading(false)
     // eslint-disable-next-line react-hooks/exhaustive-deps

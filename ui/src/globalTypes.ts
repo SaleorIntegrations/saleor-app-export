@@ -7,6 +7,7 @@ import {
   OrderFieldEnum,
   RecipientInfo,
 } from './api/export/types'
+import { User } from './api/saleor/types'
 
 export enum FileType {
   CSV = 'CSV',
@@ -34,10 +35,10 @@ export interface ExportCommonStore extends ExportStoreCommonData {
   setName: (name: string) => void
   setId: (id: number | null) => void
   setFilter: (filter: string | null) => void
-  setUsers: (users: string[] | null) => void
-  setPermissionGroups: (permissionGroups: string[] | null) => void
+  setUsers: (users: string[]) => void
+  setPermissionGroups: (permissionGroups: string[]) => void
   initialize: (data: ExportStoreCommonData) => void
-  reset: () => void
+  reset: (currentUser: User) => void
 }
 
 export interface ExportProductColumns {

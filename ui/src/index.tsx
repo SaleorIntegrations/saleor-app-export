@@ -13,6 +13,7 @@ import { Router } from './Router'
 
 ReactDOM.render(
   <React.StrictMode>
+    {/* <TenantProvider> */}
     <ThemeProvider>
       <TenantProvider>
         <QLClientProvider value={apiClient}>
@@ -22,6 +23,7 @@ ReactDOM.render(
         </QLClientProvider>
       </TenantProvider>
     </ThemeProvider>
+    {/* </TenantProvider> */}
   </React.StrictMode>,
   document.getElementById('root')
 )

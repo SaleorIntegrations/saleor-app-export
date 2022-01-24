@@ -120,6 +120,6 @@ export interface PageInfo {
 }
 
 export interface RecipientInfo {
-  users: string[] | null
-  permissionGroups: string[] | null
+  users: string[]
+  permissionGroups: string[]
 }

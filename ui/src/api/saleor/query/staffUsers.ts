@@ -33,7 +33,7 @@ interface StaffUserResponse {
 
 interface Variables {
   first: number
-  after?: string
+  after?: string | null
   search?: string
 }
 

@@ -10,7 +10,7 @@ export interface CheckboxListOption {
   name: string
   value: string
   checked: boolean
-  slug: string
+  slug?: string
 }
 
 interface CheckboxListProps {

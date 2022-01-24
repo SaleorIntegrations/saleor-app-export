@@ -11,8 +11,8 @@ export const useExportCommonStore = create<ExportCommonStore>(set => ({
   type: ExportObjectTypesEnum.PRODUCTS,
   filter: null,
   recipients: {
-    users: null,
-    permissionGroups: null,
+    users: [],
+    permissionGroups: [],
   },
   initialize: data => set(state => data),
   setFileType: fileType => set(state => ({ fileType: fileType })),
@@ -35,15 +35,15 @@ export const useExportCommonStore = create<ExportCommonStore>(set => ({
       if (!filter) return { filter: null }
       return { filter: { filterStr: filter } }
     }),
-  reset: () =>
+  reset: currentUser =>
     set(state => ({
       fileType: FileType.CSV,
       name: '',
       id: null,
       filter: null,
       recipients: {
-        users: null,
-        permissionGroups: null,
+        users: [currentUser.id],
+        permissionGroups: [],
       },
     })),
 }))

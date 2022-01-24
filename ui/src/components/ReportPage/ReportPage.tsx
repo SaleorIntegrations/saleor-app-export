@@ -8,6 +8,7 @@ import ReportType from '../ReportType'
 import SubmitBar from '../SubmitBar'
 
 import useStyles from './styles'
+import SharingBox from '../SharingBox'
 
 interface ReportPageProps {
   reportType: ExportObjectTypesEnum
@@ -53,6 +54,7 @@ export function ReportPage(props: ReportPageProps) {
                 isMutable={isMutable}
               />
               <ExportPicker fileType={fileType} setFileType={setFileType} />
+              <SharingBox />
             </Box>
           </Grid>
           <Grid item md={8}>
