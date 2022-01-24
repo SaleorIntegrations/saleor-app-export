@@ -15,7 +15,7 @@ app = configure_application()
 async def get_context(db=Depends(get_db), auth=Depends(get_auth)):
     return {
         "db": db,
-        "auth": auth,
+        "domain": auth.domain,
     }
 
 

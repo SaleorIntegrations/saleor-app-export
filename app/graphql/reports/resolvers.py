@@ -18,16 +18,18 @@ from app.graphql.pagination import MAX_PAGE_SIZE, ConnectionContext, Edge, PageI
 
 async def resolve_report(root, info, id: int):
     db = info.context["db"]
+    domain = info.context["domain"]
     try:
-        return await fetch_report_by_id(db, id)
+        return await fetch_report_by_id(db, id, domain)
     except NoResultFound:
         return None
 
 
 async def resolve_job(root, info, id: int):
     db = info.context["db"]
+    domain = info.context["domain"]
     try:
-        return await fetch_job_by_id(db, id)
+        return await fetch_job_by_id(db, id, domain)
     except NoResultFound:
         return None
 
@@ -50,7 +52,8 @@ async def resolve_report_recipients(root: Report, info):
 async def resolve_job_report(root: Job, info):
     # TODO: use dataloader
     db = info.context["db"]
-    return await fetch_report_by_id(db, root.report_id)
+    domain = info.context["domain"]
+    return await fetch_report_by_id(db, root.report_id, domain)
 
 
 async def resolve_reports(root, info, first: int, after: Optional[str] = None):
