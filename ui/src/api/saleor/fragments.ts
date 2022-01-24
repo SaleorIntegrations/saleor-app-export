@@ -75,3 +75,10 @@ export const UserFragment = gql`
     email
   }
 `
+
+export const GroupFragment = gql`
+  fragment GroupFragment on Group {
+    id
+    name
+  }
+`

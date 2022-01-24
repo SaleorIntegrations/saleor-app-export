@@ -13,21 +13,22 @@ export const useStyles = makeStyles(theme => ({
   },
   recipient: {
     margin: theme.spacing(0.4),
-    display: 'inline-flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
     padding: theme.spacing(0.6),
     backgroundColor: theme.palette.primary.light,
     borderRadius: '4px',
     color: theme.palette.primary.contrastText,
     cursor: 'pointer',
-    '& > svg': {
+    '& svg': {
       opacity: 0.6,
+      fill: theme.palette.primary.contrastText
     },
-    '&:hover > svg': {
-      opacity: 1,
-    },
+    '& svg:hover': {
+      opacity: 1
+    }
   },
+  tabs: {
+    marginBottom: theme.spacing(1.5)
+  }
 }))
 
 export default useStyles

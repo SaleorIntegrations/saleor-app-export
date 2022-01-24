@@ -59,3 +59,8 @@ export interface User {
   lastName: string
   email: string
 }
+
+export interface Group {
+  id: string
+  name: string
+}
