@@ -20,15 +20,15 @@ export const useStyles = makeStyles(theme => ({
     cursor: 'pointer',
     '& svg': {
       opacity: 0.6,
-      fill: theme.palette.primary.contrastText
+      fill: theme.palette.primary.contrastText,
     },
     '& svg:hover': {
-      opacity: 1
-    }
+      opacity: 1,
+    },
   },
   tabs: {
-    marginBottom: theme.spacing(1.5)
-  }
+    marginBottom: theme.spacing(1.5),
+  },
 }))
 
 export default useStyles

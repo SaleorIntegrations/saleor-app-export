@@ -8,7 +8,7 @@ import {
   IconButton,
   Tab,
   Tabs,
-  Typography
+  Typography,
 } from '@material-ui/core'
 import { Add as AddIcon, Close as CloseIcon } from '@material-ui/icons'
 
@@ -36,20 +36,24 @@ type Navigation = {
 
 enum TabPage {
   GROUP = 'GROUP',
-  USER = 'USER'
+  USER = 'USER',
 }
 
 export function Recipients() {
   const classes = useStyles()
-  const { users, setUsers, permissionGroups, setPermissionGroups } = useExportCommonStore(state => ({
-    users: state.recipients.users,
-    setUsers: state.setUsers,
-    permissionGroups: state.recipients.permissionGroups,
-    setPermissionGroups: state.setPermissionGroups
-  }))
+  const { users, setUsers, permissionGroups, setPermissionGroups } =
+    useExportCommonStore(state => ({
+      users: state.recipients.users,
+      setUsers: state.setUsers,
+      permissionGroups: state.recipients.permissionGroups,
+      setPermissionGroups: state.setPermissionGroups,
+    }))
   const currentUserId = useCurrentUserStore(state => state.user.id)
   const [checked, setChecked] = useState(
-    Boolean(users.filter(userId => userId !== currentUserId).length + permissionGroups.length)
+    Boolean(
+      users.filter(userId => userId !== currentUserId).length +
+        permissionGroups.length
+    )
   )
   const [navigation, setNavigation] = useState<Navigation>({
     users: {
@@ -59,7 +63,7 @@ export function Recipients() {
     groups: {
       endCursor: null,
       hasNext: true,
-    }
+    },
   })
   const [fetchedStaff, refetchStaffUsers] = useQueryStaffUsers(
     { first: 100, after: navigation.users.endCursor },
@@ -88,8 +92,9 @@ export function Recipients() {
     ])
     setGroups(groupsCopy)
     setPermissionGroups([
-      ...groupsCopy.filter(group => group.checked === true)
-      .map(group => group.id),
+      ...groupsCopy
+        .filter(group => group.checked === true)
+        .map(group => group.id),
     ])
   }
 
@@ -110,8 +115,9 @@ export function Recipients() {
           .map(staffUser => staffUser.id),
       ])
       setPermissionGroups([
-        ...groups.filter(group => group.checked === true)
-        .map(group => group.id)
+        ...groups
+          .filter(group => group.checked === true)
+          .map(group => group.id),
       ])
     } else {
       setUsers([currentUserId])
@@ -158,10 +164,12 @@ export function Recipients() {
           .filter(option => option.id !== currentUserId),
       ])
 
-      setNavigation(produce(draft => {
-        draft.users.endCursor = pageInfo.endCursor
-        draft.users.hasNext = pageInfo.hasNextPage
-      }))
+      setNavigation(
+        produce(draft => {
+          draft.users.endCursor = pageInfo.endCursor
+          draft.users.hasNext = pageInfo.hasNextPage
+        })
+      )
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fetchedStaff.data])
@@ -175,16 +183,18 @@ export function Recipients() {
           id: node.id,
           name: node.name,
           value: node.id,
-          checked: permissionGroups.includes(node.id)
-        }))
+          checked: permissionGroups.includes(node.id),
+        })),
       ])
 
-      setNavigation(produce(draft => {
-        draft.groups.endCursor = pageInfo.endCursor
-        draft.groups.hasNext = pageInfo.hasNextPage
-      }))
+      setNavigation(
+        produce(draft => {
+          draft.groups.endCursor = pageInfo.endCursor
+          draft.groups.hasNext = pageInfo.hasNextPage
+        })
+      )
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fetchedGroups.data])
 
   useEffect(() => {
@@ -206,9 +216,17 @@ export function Recipients() {
     setGroupsCopy(groups)
   }, [groups])
 
-  if (fetchedStaff.fetching || navigation.users.hasNext || fetchedGroups.fetching || navigation.groups.hasNext) return <div>Loading...</div>
+  if (
+    fetchedStaff.fetching ||
+    navigation.users.hasNext ||
+    fetchedGroups.fetching ||
+    navigation.groups.hasNext
+  )
+    return <div>Loading...</div>
 
-  const fullSelectedRecipients = [...staff, ...groups].filter(recipient => recipient.checked)
+  const fullSelectedRecipients = [...staff, ...groups].filter(
+    recipient => recipient.checked
+  )
 
   return (
     <Box>
@@ -246,11 +264,19 @@ export function Recipients() {
             </IconButton>
           </Box>
           <SurfaceModal isOpen={isOpen} onClose={onCancel} onSave={onSave}>
-            <Tabs indicatorColor="primary" className={classes.tabs}  variant="fullWidth" value={tab} onChange={(_, value) => onTabChange(value)}>
-              <Tab value={TabPage.USER} fullWidth label="Users"/>
-              <Tab value={TabPage.GROUP} fullWidth label="Groups"/>
+            <Tabs
+              indicatorColor="primary"
+              className={classes.tabs}
+              variant="fullWidth"
+              value={tab}
+              onChange={(_, value) => onTabChange(value)}
+            >
+              <Tab value={TabPage.USER} fullWidth label="Users" />
+              <Tab value={TabPage.GROUP} fullWidth label="Groups" />
             </Tabs>
-            <Typography variant="h5">Select {tab === TabPage.USER ? 'Recipients' : 'Groups'}</Typography>
+            <Typography variant="h5">
+              Select {tab === TabPage.USER ? 'Recipients' : 'Groups'}
+            </Typography>
             <Box margin="1.2rem 0">
               <SearchInput
                 onChange={event => setSearch(event.target.value)}
