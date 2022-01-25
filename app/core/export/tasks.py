@@ -4,6 +4,7 @@ from typing import Any, Awaitable, Callable, List, Tuple
 from sqlmodel.ext.asyncio.session import AsyncSession
 
 from app.celery import database_task
+from app.core.export.email.report import send_report_email
 from app.core.export.fetch import (
     fetch_job_by_id,
     fetch_recipients,
@@ -100,7 +101,10 @@ async def finish_job(
     # Send email to recipients
     recipient_info = fetch_recipients_info(report)
     recipients = await fetch_recipients(recipient_info)
-    print("sending email to", recipients)
+    send_report_email(
+        report,
+        recipients,
+    )
     # Commit status to the database
     job.status = JobStatusesEnum.SUCCESS
     db.add(job)
