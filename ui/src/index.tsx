@@ -7,20 +7,20 @@ import { Provider as QLClientProvider } from 'urql'
 import './index.css'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
-import { apiClient } from './api'
 import { Router } from './Router'
+import { apiClient } from './api/apiClient'
 
 ReactDOM.render(
   <React.StrictMode>
-    <QLClientProvider value={apiClient}>
-      <ThemeProvider>
-        <TenantProvider>
+    <ThemeProvider>
+      <TenantProvider>
+        <QLClientProvider value={apiClient}>
           <Router>
             <App />
           </Router>
-        </TenantProvider>
-      </ThemeProvider>
-    </QLClientProvider>
+        </QLClientProvider>
+      </TenantProvider>
+    </ThemeProvider>
   </React.StrictMode>,
   document.getElementById('root')
 )

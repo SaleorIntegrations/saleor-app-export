@@ -1,7 +1,9 @@
 import { useQuery, gql } from 'urql'
+import { useTenant } from 'saleor-app-ui'
 
 import { PageInfoFragment, CategoryFragment } from '../fragments'
 import { Category, PageInfo, Node } from '../types'
+import { useMemo } from 'react'
 
 const apiQuery = gql`
   ${PageInfoFragment}
@@ -38,6 +40,7 @@ interface Variables {
 }
 
 export function useQuerySearchCategories(variables: Variables, options?: any) {
+  const { saleorDomain, saleorToken } = useTenant()
   return useQuery<SearchCategories>({
     query: apiQuery,
     variables: {
@@ -45,6 +48,17 @@ export function useQuerySearchCategories(variables: Variables, options?: any) {
       first: variables.first ? variables.first : 5,
       query: variables.query ? variables.query : '',
     },
+    context: useMemo(
+      () => ({
+        url: `http://${saleorDomain}/graphql/`,
+        fetchOptions: {
+          headers: {
+            authorization: `JWT ${saleorToken}`,
+          },
+        },
+      }),
+      [saleorDomain, saleorToken]
+    ),
     ...options,
   })
 }

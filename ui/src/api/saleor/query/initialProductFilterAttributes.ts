@@ -1,7 +1,9 @@
 import { useQuery, gql } from 'urql'
+import { useTenant } from 'saleor-app-ui'
 
 import { AttributeFragment } from '../fragments'
 import { Attribute, Node } from '../types'
+import { useMemo } from 'react'
 
 const apiQuery = gql`
   ${AttributeFragment}
@@ -26,8 +28,20 @@ interface InitialProductFilterAttributes {
 }
 
 export function useQueryInitialProductFilterAttributes(options?: any) {
+  const { saleorDomain, saleorToken } = useTenant()
   return useQuery<InitialProductFilterAttributes>({
     query: apiQuery,
+    context: useMemo(
+      () => ({
+        url: `http://${saleorDomain}/graphql/`,
+        fetchOptions: {
+          headers: {
+            authorization: `JWT ${saleorToken}`,
+          },
+        },
+      }),
+      [saleorDomain, saleorToken]
+    ),
     ...options,
   })
 }
