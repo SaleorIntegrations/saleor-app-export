@@ -38,8 +38,5 @@ def send_report_email(
     content = EMAIL_TEMPLATE
 
     send_email(
-        subject=subject,
-        content=content,
-        recipients=recipients,
-        attachments=attachments
+        subject=subject, content=content, recipients=recipients, attachments=attachments
     )
