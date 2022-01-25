@@ -32,7 +32,12 @@ mutation OrdersExport($input: ExportOrdersInput!, $reportId: Int!) {
 @pytest.mark.asyncio
 @mock.patch("app.graphql.reports.mutations.orders.fetch_orders_response")
 async def test_update_orders_report(
-    m_fetch, m_base_fetch_recipients, graphql, orders_report, db_session
+    m_fetch,
+    m_base_fetch_recipients,
+    graphql,
+    orders_report,
+    db_session,
+    x_saleor_domain,
 ):
     # given
     fields = ["LINES_SKU"]
@@ -65,7 +70,9 @@ async def test_update_orders_report(
     assert report["columns"]["fields"] == fields
     assert report["filter"] == filter_str
     assert report["name"] == name
-    refreshed_report = await fetch_report_by_id(db_session, orders_report.id)
+    refreshed_report = await fetch_report_by_id(
+        db_session, orders_report.id, x_saleor_domain
+    )
     assert refreshed_report.filter_input == filter
     assert refreshed_report.columns["fields"] == fields
 

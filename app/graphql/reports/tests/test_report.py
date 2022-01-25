@@ -73,3 +73,17 @@ async def test_get_report_does_not_exist(graphql, orders_report):
 
     # then
     assert result["data"]["report"] is None
+
+
+@pytest.mark.asyncio
+async def test_get_report_belongs_to_another_domain(
+    graphql, reports_factory, product_column_info
+):
+    # given
+    report = list(await reports_factory(num_reports=1, domain="example.com"))[0]
+
+    # when
+    result = await graphql.execute(QUERY_REPORT, {"id": report.id})
+
+    # then
+    assert result["data"]["report"] is None

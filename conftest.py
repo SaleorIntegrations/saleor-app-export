@@ -1,8 +1,13 @@
 import asyncio
 from typing import Generator
+from unittest import mock
+from uuid import uuid4
 
 import pytest  # noqa
 from httpx import AsyncClient
+from saleor_app_base.models.settings.adapter import adapt_db_obj_to_tenant_context
+from saleor_app_base.models.settings.model import SettingsModel
+from saleor_app_base.tests.fixtures import *  # noqa
 from sqlalchemy.ext.asyncio import create_async_engine
 from sqlmodel import SQLModel
 from sqlmodel.ext.asyncio.session import AsyncSession
@@ -57,13 +62,51 @@ async def async_client(fastapi):
 
 
 @pytest.fixture
-def graphql(async_client):
+async def tenant(db_session, x_saleor_token, x_saleor_domain):
+    settings = SettingsModel(
+        # General settings
+        domain=x_saleor_domain,
+        tenant_id=uuid4().hex,
+        data={},
+        saleor_token=x_saleor_token,
+        secret_key="",
+    )
+    db_session.add(settings)
+    return adapt_db_obj_to_tenant_context(settings)
+
+
+@pytest.fixture
+def mock_verify():
+    with mock.patch("saleor_app_base.sdk.saleor.verify_token") as m:
+        m.return_value = True
+        yield m
+
+
+@pytest.fixture
+def graphql(async_client, tenant, x_saleor_domain, x_saleor_token, mock_verify):
     class GqlClient:
         async def execute(self, query, variables=None):
+            # Prepare request arguments
             json = {"query": query}
             if variables is not None:
                 json["variables"] = variables
-            response = await async_client.post("/graphql", json=json)
+            kwargs = dict(
+                url="/graphql",
+                json=json,
+            )
+            # Test unauthenticated request
+            response = await async_client.post(
+                **kwargs,
+            )
+            assert response.status_code == 422
+            # Test authenticated requeset
+            response = await async_client.post(
+                **kwargs,
+                headers={
+                    "x-saleor-domain": x_saleor_domain,
+                    "x-saleor-token": x_saleor_token,
+                },
+            )
             return response.json()
 
     return GqlClient()

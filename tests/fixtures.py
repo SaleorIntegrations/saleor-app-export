@@ -45,7 +45,9 @@ def recipient_info():
 
 
 @pytest.fixture
-async def products_report(db_session, product_column_info, recipient_info):
+async def products_report(
+    db_session, product_column_info, recipient_info, x_saleor_domain
+):
     columns = json.loads(product_column_info.json())
     instance = Report(
         scope=ExportScopeEnum.ALL,
@@ -53,6 +55,7 @@ async def products_report(db_session, product_column_info, recipient_info):
         format=OutputFormatEnum.CSV,
         columns=columns,
         recipients=recipient_info,
+        domain=x_saleor_domain,
     )
     db_session.add(instance)
     await db_session.commit()
@@ -60,7 +63,7 @@ async def products_report(db_session, product_column_info, recipient_info):
 
 
 @pytest.fixture
-async def orders_report(db_session, order_column_info, recipient_info):
+async def orders_report(db_session, order_column_info, recipient_info, x_saleor_domain):
     columns = json.loads(order_column_info.json())
     instance = Report(
         scope=ExportScopeEnum.ALL,
@@ -68,6 +71,7 @@ async def orders_report(db_session, order_column_info, recipient_info):
         format=OutputFormatEnum.CSV,
         columns=columns,
         recipients=recipient_info,
+        domain=x_saleor_domain,
     )
     db_session.add(instance)
     await db_session.commit()
@@ -75,14 +79,15 @@ async def orders_report(db_session, order_column_info, recipient_info):
 
 
 @pytest.fixture
-def reports_factory(db_session):
-    async def factory(num_reports=3):
+def reports_factory(db_session, x_saleor_domain):
+    async def factory(num_reports=3, domain=x_saleor_domain):
         instances = []
         for i in range(num_reports):
             instance = Report(
                 scope=ExportScopeEnum.ALL,
                 type=ExportObjectTypesEnum.ORDERS,
                 format=OutputFormatEnum.CSV,
+                domain=domain,
             )
             db_session.add(instance)
             instances.append(instance)

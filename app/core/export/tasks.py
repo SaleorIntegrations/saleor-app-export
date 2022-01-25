@@ -37,10 +37,11 @@ def get_methods(report: Report) -> ExportMethods:
 async def start_job_for_report(
     db: AsyncSession,
     job_id: int,
+    domain: str,
 ):
     """Initialize export for a report with given id."""
-    job = await fetch_job_by_id(db, job_id)
-    report = await fetch_report_by_id(db, job.report_id)
+    job = await fetch_job_by_id(db, job_id, domain)
+    report = await fetch_report_by_id(db, job.report_id, domain)
     methods = get_methods(report)
     column_info = methods.fetch_column_info(report)
 
@@ -50,18 +51,19 @@ async def start_job_for_report(
     )
 
     await db.commit()
-    continue_job.delay(job.id)
+    continue_job.delay(job.id, domain)
 
 
 @database_task
 async def continue_job(
     db: AsyncSession,
     job_id: int,
+    domain: str,
 ):
     """Export a single batch of a report and schedule the next one."""
     # Fetch database object and parse column info
-    job = await fetch_job_by_id(db, job_id)
-    report = await fetch_report_by_id(db, job.report_id)
+    job = await fetch_job_by_id(db, job_id, domain)
+    report = await fetch_report_by_id(db, job.report_id, domain)
     methods = get_methods(report)
     column_info = methods.fetch_column_info(report)
 
@@ -77,19 +79,20 @@ async def continue_job(
 
     # If next page exists, continue export
     if cursor:
-        continue_job.delay(job_id)
+        continue_job.delay(job_id, domain)
     else:
-        finish_job.delay(job_id)
+        finish_job.delay(job_id, domain)
 
 
 @database_task
 async def finish_job(
     db: AsyncSession,
     job_id: int,
+    domain: str,
 ):
     """Post process the generated job file."""
-    job = await fetch_job_by_id(db, job_id)
-    report = await fetch_report_by_id(db, job.report_id)
+    job = await fetch_job_by_id(db, job_id, domain)
+    report = await fetch_report_by_id(db, job.report_id, domain)
     # Format conversion
     # if report.format == OutputFormatEnum.CSV:
     #     csv = pandas.read_csv(job.content_file, delimiter=";")

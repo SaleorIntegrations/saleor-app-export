@@ -1,6 +1,7 @@
 import strawberry
 import uvicorn
 from fastapi import Depends
+from saleor_app_base.api.api_v1.configuration.deps import get_auth
 from saleor_app_base.main import configure_application
 from strawberry.fastapi import GraphQLRouter
 
@@ -11,9 +12,10 @@ from db import get_db
 app = configure_application()
 
 
-async def get_context(db=Depends(get_db)):
+async def get_context(db=Depends(get_db), auth=Depends(get_auth)):
     return {
         "db": db,
+        "domain": auth.domain,
     }
 
 

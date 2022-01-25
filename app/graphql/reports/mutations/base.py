@@ -46,9 +46,10 @@ async def mutate_report_base(
     """Common base for creating and updating reports."""
 
     db = info.context["db"]
+    domain = info.context["domain"]
     if report_id:
         try:
-            report = await fetch_report_by_id(db, report_id)
+            report = await fetch_report_by_id(db, report_id, domain)
         except NoResultFound:
             return ReportResponse(
                 errors=[
@@ -143,6 +144,7 @@ async def mutate_report_base(
             filter_input=filter_input,
             columns=columns,
             recipients=recipients,
+            domain=domain,
         )
     db.add(report)
     await db.commit()
@@ -151,8 +153,9 @@ async def mutate_report_base(
 
 async def mutate_delete_report(root, info, report_id: int) -> DeleteReportResponse:
     db = info.context["db"]
+    domain = info.context["domain"]
     try:
-        await fetch_report_by_id(db, report_id)
+        await fetch_report_by_id(db, report_id, domain)
     except NoResultFound:
         return DeleteReportResponse(
             errors=[

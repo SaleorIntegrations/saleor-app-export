@@ -52,7 +52,7 @@ async def test_create_products_report(graphql, m_base_fetch_recipients):
 
 @pytest.mark.asyncio
 async def test_export_products_without_optional_columns(
-    db_session, graphql, m_base_fetch_recipients
+    db_session, graphql, m_base_fetch_recipients, x_saleor_domain
 ):
     # given
     variables = {
@@ -72,7 +72,7 @@ async def test_export_products_without_optional_columns(
 
     # then
     report_id = result["data"]["createProductsReport"]["report"]["id"]
-    report = await fetch_report_by_id(db_session, report_id)
+    report = await fetch_report_by_id(db_session, report_id, x_saleor_domain)
     assert len(report.columns["fields"]) == 2
     assert len(report.columns["attributes"]) == 0
     assert len(report.columns["warehouses"]) == 0
@@ -81,7 +81,7 @@ async def test_export_products_without_optional_columns(
 
 @pytest.mark.asyncio
 async def test_export_products_wit_related_columns(
-    db_session, graphql, m_base_fetch_recipients
+    db_session, graphql, m_base_fetch_recipients, x_saleor_domain
 ):
     # given
     fields = ["ID", "VARIANT_ID"]
@@ -108,7 +108,7 @@ async def test_export_products_wit_related_columns(
 
     # then
     report_id = result["data"]["createProductsReport"]["report"]["id"]
-    report = await fetch_report_by_id(db_session, report_id)
+    report = await fetch_report_by_id(db_session, report_id, x_saleor_domain)
     assert report.columns["fields"] == fields
     assert report.columns["attributes"] == attribute_ids
     assert report.columns["warehouses"] == warehouse_ids

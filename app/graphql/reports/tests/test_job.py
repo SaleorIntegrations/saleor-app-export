@@ -32,3 +32,19 @@ async def test_get_job_does_not_exist(graphql, orders_report):
 
     # then
     assert result["data"]["job"] is None
+
+
+@pytest.mark.asyncio
+async def test_get_job_belongs_to_another_domain(
+    graphql, orders_report, export_orders_job, db_session
+):
+    # given
+    orders_report.domain = "example.com"
+    db_session.add(orders_report)
+    await db_session.commit()
+
+    # when
+    result = await graphql.execute(QUERY_JOB, {"id": export_orders_job.id})
+
+    # then
+    assert result["data"]["job"] is None

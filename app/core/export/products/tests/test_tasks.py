@@ -13,20 +13,20 @@ from app.core.reports.models import Job, JobStatusesEnum
 @mock.patch("app.core.export.tasks.continue_job")
 @mock.patch.object(ProductExportMethods, "get_headers")
 async def test_start_job_for_report(
-    m_headers, m_continue, db_session, export_products_job
+    m_headers, m_continue, db_session, export_products_job, x_saleor_domain
 ):
     # given
     job = export_products_job
     m_headers.return_value = ["a", "b", "c"]
 
     # when
-    await start_job_for_report.inner(db_session, job.id)
+    await start_job_for_report.inner(db_session, job.id, x_saleor_domain)
 
     # then
     assert os.path.isfile(job.content_file)
     with open(job.content_file) as f:
         assert len(f.readlines()) == 1
-    m_continue.delay.assert_called_once_with(job.id)
+    m_continue.delay.assert_called_once_with(job.id, x_saleor_domain)
 
 
 @pytest.mark.asyncio
@@ -38,12 +38,13 @@ async def test_continue_job_with_empty_cursor(
     dummy_variants_response_has_no_next,
     db_session,
     export_products_job,
+    x_saleor_domain,
 ):
     # given
     m_fetch_response.return_value = dummy_variants_response_has_no_next
 
     # when
-    await continue_job.inner(db_session, export_products_job.id)
+    await continue_job.inner(db_session, export_products_job.id, x_saleor_domain)
 
     # then
     assert m_continue.delay.call_count == 0
@@ -58,18 +59,19 @@ async def test_continue_job_with_next_page(
     dummy_variants_response_has_next,
     db_session,
     export_products_job,
+    x_saleor_domain,
 ):
     # given
     m_fetch_response.return_value = dummy_variants_response_has_next
 
     # when
-    await continue_job.inner(db_session, export_products_job.id)
+    await continue_job.inner(db_session, export_products_job.id, x_saleor_domain)
 
     # then
     refreshed_job = (
         await db_session.exec(select(Job).where(Job.id == export_products_job.id))
     ).one()
-    m_continue.delay.assert_called_once_with(export_products_job.id)
+    m_continue.delay.assert_called_once_with(export_products_job.id, x_saleor_domain)
     assert refreshed_job.cursor != ""
 
 
@@ -79,12 +81,13 @@ async def test_finish_job(
     m_fetch_recipients,
     db_session,
     export_products_job,
+    x_saleor_domain,
 ):
     # given
     job = export_products_job
 
     # when
-    await finish_job.inner(db_session, job.id)
+    await finish_job.inner(db_session, job.id, x_saleor_domain)
 
     # then
     refreshed_job = (await db_session.exec(select(Job).where(Job.id == job.id))).one()
