@@ -1,12 +1,12 @@
 from typing import List
 
-from app.core.export.email.client import send_email
-from app.core.reports.models import Report, ExportObjectTypesEnum
+from app.core.export.email.client import send_email, Attachment
+from app.core.reports.models import Report, ExportObjectTypesEnum, Job
 
 EMAIL_TEMPLATE = """
 Hi!
 
-Your file with products data is ready to download: __DOWNLOAD_URL__
+Your file with products data is ready and attached to this email.
 
 This is an automatically generated e-mail, please do not reply.
 
@@ -27,13 +27,19 @@ def get_report_subject(report: Report):
 
 def send_report_email(
     report: Report,
+    job: Job,
     recipients: List[str],
-    url="https://example.com/report.csv",
+    attachments: List[Attachment] = None,
 ):
+    if attachments is None:
+        attachments = []
+
     subject = get_report_subject(report)
-    content = EMAIL_TEMPLATE.replace("__DOWNLOAD_URL__", url)
+    content = EMAIL_TEMPLATE
+
     send_email(
         subject=subject,
         content=content,
         recipients=recipients,
+        attachments=attachments
     )

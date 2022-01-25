@@ -49,3 +49,4 @@ Makefile
 
 # vscode
 .DS_Store
+.idea

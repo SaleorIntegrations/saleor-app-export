@@ -1,9 +1,12 @@
 import dataclasses
+import io
+import tempfile
 from typing import Any, Awaitable, Callable, List, Tuple
-
+import pandas
 from sqlmodel.ext.asyncio.session import AsyncSession
 
 from app.celery import database_task
+from app.core.export.email.client import Attachment
 from app.core.export.email.report import send_report_email
 from app.core.export.fetch import (
     fetch_job_by_id,
@@ -13,7 +16,12 @@ from app.core.export.fetch import (
 )
 from app.core.export.files import write_partial_result_to_file
 from app.core.export.persist import update_job_cursor
-from app.core.reports.models import ExportObjectTypesEnum, JobStatusesEnum, Report
+from app.core.reports.models import (
+    ExportObjectTypesEnum,
+    JobStatusesEnum,
+    Report,
+    OutputFormatEnum,
+)
 
 
 @dataclasses.dataclass
@@ -94,17 +102,22 @@ async def finish_job(
     """Post process the generated job file."""
     job = await fetch_job_by_id(db, job_id, domain)
     report = await fetch_report_by_id(db, job.report_id, domain)
+
     # Format conversion
-    # if report.format == OutputFormatEnum.CSV:
-    #     csv = pandas.read_csv(job.content_file, delimiter=";")
-    #     csv.to_excel(job.content_file.replace(".csv", ".xlsx"))
+    if report.format == OutputFormatEnum.XLSX:
+        xlsx_content_file = job.content_file.replace(".csv", ".xlsx")
+        xlsx = pandas.read_csv(job.content_file, delimiter=";")
+        xlsx.to_excel(xlsx_content_file, engine="xlsxwriter")
+        with open(xlsx_content_file, "rb") as f:
+            attachment = Attachment(content=f.read(), filename="export.xlsx")
+    else:
+        with open(job.content_file, "rb") as f:
+            attachment = Attachment(content=f.read(), filename="export.csv")
+
     # Send email to recipients
     recipient_info = fetch_recipients_info(report)
     recipients = await fetch_recipients(recipient_info)
-    send_report_email(
-        report,
-        recipients,
-    )
+    send_report_email(report, job, recipients, [attachment])
     # Commit status to the database
     job.status = JobStatusesEnum.SUCCESS
     db.add(job)
