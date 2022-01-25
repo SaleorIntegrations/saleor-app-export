@@ -5,6 +5,7 @@ import {
   useMutation,
   TypedDocumentNode,
 } from 'urql'
+import { useTenant } from 'saleor-app-ui'
 
 type AppFetchFunction<T, D> = (
   variables?: D | undefined,
@@ -16,13 +17,20 @@ export function useAppMutation<T, D>(
   query: string | TypedDocumentNode<T, D>
 ): [AppData<T, D>, AppFetchFunction<T, D>] {
   const [data, fetchFunction] = useMutation<T, D>(query)
+  const { appUrl, saleorDomain, saleorToken } = useTenant()
 
   const appFetchFunction = (
     variables?: D,
     context?: Partial<OperationContext>
   ) =>
     fetchFunction(variables, {
-      url: `${process.env.REACT_APP_APP_URL}/graphql`,
+      url: `${appUrl}/graphql`,
+      fetchOptions: {
+        headers: {
+          'X-Saleor-Domain': saleorDomain,
+          'X-Saleor-Token': saleorToken,
+        },
+      },
       ...context,
     })
 

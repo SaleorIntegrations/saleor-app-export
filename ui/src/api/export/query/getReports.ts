@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 import { useQuery, gql } from 'urql'
+import { useTenant } from 'saleor-app-ui'
 
 import { ReportEdgeFragment, PageInfoFragment } from '../../export/fragments'
 import { ReportConnection } from '../../export/types'
@@ -30,13 +31,23 @@ interface Variables {
 }
 
 export function useQueryReports(variables: Variables, options?: any) {
+  const { appUrl, saleorToken, saleorDomain } = useTenant()
+
   return useQuery<ReportsResponse>({
     query: apiQuery,
     variables: variables,
     ...options,
     context: useMemo(
-      () => ({ url: `${process.env.REACT_APP_APP_URL}/graphql/` }),
-      []
+      () => ({
+        url: `${appUrl}/graphql/`,
+        fetchOptions: () => ({
+          headers: {
+            'X-Saleor-Domain': saleorDomain,
+            'X-Saleor-Token': saleorToken,
+          },
+        }),
+      }),
+      [appUrl, saleorDomain, saleorToken]
     ),
   })
 }

@@ -1,4 +1,6 @@
 import { useQuery, gql } from 'urql'
+import { useTenant } from 'saleor-app-ui'
+import { useMemo } from 'react'
 
 const apiQuery = gql`
   query ProductCount($filter: ProductFilterInput, $channel: String) {
@@ -19,9 +21,21 @@ interface Variables {
 }
 
 export function useProductCountQuery(variables?: Variables, options?: any) {
+  const { saleorDomain, saleorToken } = useTenant()
   return useQuery<ProductCountQuery>({
     query: apiQuery,
     variables: variables,
+    context: useMemo(
+      () => ({
+        url: `http://${saleorDomain}/graphql/`,
+        fetchOptions: {
+          headers: {
+            authorization: `JWT ${saleorToken}`,
+          },
+        },
+      }),
+      [saleorDomain, saleorToken]
+    ),
     ...options,
   })
 }

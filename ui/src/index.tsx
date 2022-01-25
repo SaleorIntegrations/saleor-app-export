@@ -1,16 +1,26 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { BrowserRouter } from 'react-router-dom'
+import { TenantProvider } from 'saleor-app-ui'
+import { ThemeProvider } from '@saleor/macaw-ui'
+import { Provider as QLClientProvider } from 'urql'
 
 import './index.css'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
+import { Router } from './Router'
+import { apiClient } from './api/apiClient'
 
 ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+    <ThemeProvider>
+      <TenantProvider>
+        <QLClientProvider value={apiClient}>
+          <Router>
+            <App />
+          </Router>
+        </QLClientProvider>
+      </TenantProvider>
+    </ThemeProvider>
   </React.StrictMode>,
   document.getElementById('root')
 )
