@@ -14,7 +14,7 @@ RUN pip install poetry
 
 COPY ./poetry.lock /usr/src/app/poetry.lock
 
-RUN poetry install 
+RUN poetry install
 
 COPY . /usr/src/app
 
