@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 import { OrderSetting, ReportPage } from '../../../components'
 import {
@@ -16,6 +16,7 @@ import { FileType } from '../../../globalTypes'
 
 export function UpdateOrderReport() {
   const { id } = useParams()
+  const navigate = useNavigate()
   const columnsStore = useExportOrderColumnsStore()
   const commonStore = useExportCommonStore()
   const [report] = useQueryReport({ reportId: parseInt(id || '') })
@@ -27,14 +28,14 @@ export function UpdateOrderReport() {
     if (commonStore.id) runReport({ reportId: commonStore.id })
   }
 
-  const onSaveAndExport = () => {
-    console.log(commonStore.recipients)
-    updateOrderReport({
+  const onSaveAndExport = async () => {
+    await updateOrderReport({
       fields: columnsStore.columns.orderFields,
       reportId: commonStore.id || -1,
       name: commonStore.name,
       recipients: commonStore.recipients,
     })
+    onExport()
   }
 
   useEffect(() => {
@@ -71,6 +72,7 @@ export function UpdateOrderReport() {
       reportType={columnsStore.type}
       fileType={commonStore.fileType}
       setFileType={fileType => commonStore.setFileType(fileType)}
+      onCancel={() => navigate('/')}
       onExport={onExport}
       onSaveAndExport={onSaveAndExport}
     >

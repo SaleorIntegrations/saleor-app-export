@@ -9,6 +9,7 @@ interface ReportTableRowProps {
   name: string
   entity: string
   recipients: number
+  group: number
   onDelete: (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
     id: number
@@ -31,6 +32,7 @@ export function ReportTableRow(props: ReportTableRowProps) {
     name,
     entity,
     recipients,
+    group,
     onDelete,
     onSelect,
     isSelected,
@@ -59,6 +61,7 @@ export function ReportTableRow(props: ReportTableRowProps) {
       <TableCell align="left">{name}</TableCell>
       <TableCell align="left">{entity}</TableCell>
       <TableCell align="right">{recipients}</TableCell>
+      <TableCell align="right">{group}</TableCell>
       <TableCell align="center" padding="checkbox">
         <IconButton
           onClick={event => {

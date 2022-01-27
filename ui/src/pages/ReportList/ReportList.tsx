@@ -57,9 +57,8 @@ export function ReportList() {
             isSelected: false,
             id: node.id,
             entity: node.type,
-            recipients: node.recipients.users
-              ? node.recipients.users.length
-              : 0,
+            recipients: node.recipients.users.length,
+            groups: node.recipients.permissionGroups.length,
             name: node.name,
           })),
         ],

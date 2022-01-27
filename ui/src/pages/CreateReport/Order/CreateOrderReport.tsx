@@ -13,7 +13,7 @@ import {
 } from '../../../api/export/mutation'
 
 export function CreateOrderReport() {
-  const navigation = useNavigate()
+  const navigate = useNavigate()
   const commonStore = useExportCommonStore()
   const columnsStore = useExportOrderColumnsStore()
   const currentUser = useCurrentUserStore(state => state.user)
@@ -21,18 +21,12 @@ export function CreateOrderReport() {
   const [, runReport] = useMutationRunReport()
   const [isLoading, setIsLoading] = useState(true)
 
-  const onExport = async () => {
-    const id = await createOrderExportReport()
-
-    if (id) runReport({ reportId: id })
-  }
-
-  const onSaveAndExport = async () => {
+  const onSave = async () => {
     const id = await createOrderExportReport()
 
     if (id) {
       runReport({ reportId: id })
-      navigation(`/report/${id}/order`)
+      navigate(`/report/${id}/order`)
     }
   }
 
@@ -53,7 +47,7 @@ export function CreateOrderReport() {
   }
 
   const onTypeChange = () => {
-    navigation('/create/product', { replace: true })
+    navigate('/create/product', { replace: true })
   }
 
   useEffect(() => {
@@ -72,8 +66,8 @@ export function CreateOrderReport() {
       setReportType={onTypeChange}
       fileType={commonStore.fileType}
       setFileType={fileType => commonStore.setFileType(fileType)}
-      onExport={onExport}
-      onSaveAndExport={onSaveAndExport}
+      onSave={onSave}
+      onCancel={() => navigate('/')}
     >
       <OrderSetting />
     </ReportPage>

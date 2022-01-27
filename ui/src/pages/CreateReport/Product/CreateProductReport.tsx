@@ -13,7 +13,7 @@ import {
 } from '../../../hooks'
 
 export function CreateProductReport() {
-  const navigation = useNavigate()
+  const navigate = useNavigate()
   const commonStore = useExportCommonStore()
   const columnsStore = useExportProductColumnsStore()
   const currentUser = useCurrentUserStore(state => state.user)
@@ -21,18 +21,12 @@ export function CreateProductReport() {
   const [, runReport] = useMutationRunReport()
   const [isLoading, setIsLoading] = useState(true)
 
-  const onExport = async () => {
-    await createProductExportReport()
-
-    if (commonStore.id) runReport({ reportId: commonStore.id || -1 })
-  }
-
-  const onSaveAndExport = async () => {
+  const onSave = async () => {
     const id = await createProductExportReport()
 
     if (id) {
       runReport({ reportId: id })
-      navigation(`/report/${id}/product`)
+      navigate(`/report/${id}/product`)
     }
   }
 
@@ -58,7 +52,7 @@ export function CreateProductReport() {
   }
 
   const onTypeChange = () => {
-    navigation('/create/order', { replace: true })
+    navigate('/create/order', { replace: true })
   }
 
   useEffect(() => {
@@ -77,8 +71,8 @@ export function CreateProductReport() {
       setReportType={onTypeChange}
       fileType={commonStore.fileType}
       setFileType={fileType => commonStore.setFileType(fileType)}
-      onExport={onExport}
-      onSaveAndExport={onSaveAndExport}
+      onSave={onSave}
+      onCancel={() => navigate('/')}
     >
       <ProductSetting />
     </ReportPage>

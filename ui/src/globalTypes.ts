@@ -19,6 +19,7 @@ export interface TableReport {
   name: string
   entity: string
   recipients: number
+  groups: number
   isSelected: boolean
 }
 
