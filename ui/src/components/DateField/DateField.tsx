@@ -1,6 +1,7 @@
 import React from 'react'
-import dayjs from 'dayjs'
 import { TextField, Box } from '@material-ui/core'
+
+import dayjs from '../../utils/date'
 
 import useStyles from './style'
 
@@ -9,15 +10,17 @@ interface DateFieldProps {
   setTime: (newTime: string) => void
   time: string
   date: string
+  defaultTime?: Date
+  defaultDate?: Date
 }
 
 export enum Format {
   time = 'HH:mm',
-  date = 'yyyy-MM-DD',
+  date = 'YYYY-MM-D',
 }
 
 export function DateField(props: DateFieldProps) {
-  const { setDate, setTime, date, time } = props
+  const { setDate, setTime, date, time, defaultDate, defaultTime } = props
   const classes = useStyles()
 
   return (
@@ -27,9 +30,9 @@ export function DateField(props: DateFieldProps) {
         type="date"
         label="Date"
         value={date}
-        defaultValue={dayjs().format(Format.date)}
+        defaultValue={dayjs(defaultDate).format(Format.date)}
         onChange={e =>
-          setDate(dayjs(new Date(e.currentTarget.value)).format(Format.date))
+          setDate(dayjs(e.currentTarget.value).format(Format.date))
         }
       />
       <TextField
@@ -37,7 +40,7 @@ export function DateField(props: DateFieldProps) {
         type="time"
         label="Time"
         value={time}
-        defaultValue={dayjs().format(Format.time)}
+        defaultValue={dayjs(defaultTime).format(Format.time)}
         onChange={e => {
           setTime(e.currentTarget.value)
         }}
