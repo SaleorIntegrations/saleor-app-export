@@ -14,9 +14,10 @@ import { Add as AddIcon, Close as CloseIcon } from '@material-ui/icons'
 
 import { SurfaceModal } from '../SurfaceModal'
 import { CheckboxList, CheckboxListOption } from '../CheckboxList'
-import { useQueryStaffUsers } from '../../api/saleor/query/staffUsers'
+// import { useQueryStaffUsers } from '../../api/saleor/query/staffUsers'
 import { useExportCommonStore } from '../../hooks/useExportCommonStore'
 import { useCurrentUserStore } from '../../hooks/useCurrentUserStore'
+import { RecipientsList } from '../RecipientsList'
 import { Label } from '../Label'
 
 import { useStyles } from './styles'
@@ -24,10 +25,10 @@ import SearchInput from '../SearchInput'
 import { useQueryPermissionGroups } from '../../api/saleor'
 
 type Navigation = {
-  users: {
-    endCursor: null | string
-    hasNext: boolean
-  }
+  // users: {
+  //   endCursor: null | string
+  //   hasNext: boolean
+  // }
   groups: {
     endCursor: null | string
     hasNext: boolean
@@ -56,26 +57,26 @@ export function Recipients() {
     )
   )
   const [navigation, setNavigation] = useState<Navigation>({
-    users: {
-      endCursor: null,
-      hasNext: true,
-    },
+    // users: {
+    //   endCursor: null,
+    //   hasNext: true,
+    // },
     groups: {
       endCursor: null,
       hasNext: true,
     },
   })
-  const [fetchedStaff, refetchStaffUsers] = useQueryStaffUsers(
-    { first: 100, after: navigation.users.endCursor },
-    { pause: true }
-  )
+  // const [fetchedStaff, refetchStaffUsers] = useQueryStaffUsers(
+  //   { first: 100, after: navigation.users.endCursor },
+  //   { pause: true }
+  // )
   const [fetchedGroups, refetchedGroups] = useQueryPermissionGroups(
     { first: 100, after: navigation.groups.endCursor },
     { pause: true }
   )
   const [isOpen, setIsOpen] = useState(false)
   const [staff, setStaff] = useState<CheckboxListOption[]>([])
-  const [staffCopy, setStaffCopy] = useState<CheckboxListOption[]>([])
+  // const [staffCopy, setStaffCopy] = useState<CheckboxListOption[]>([])
   const [groups, setGroups] = useState<CheckboxListOption[]>([])
   const [groupsCopy, setGroupsCopy] = useState<CheckboxListOption[]>([])
   const [search, setSearch] = useState('')
@@ -83,13 +84,13 @@ export function Recipients() {
 
   const onSave = () => {
     setIsOpen(false)
-    setStaff(staffCopy)
-    setUsers([
-      currentUserId,
-      ...staffCopy
-        .filter(staffUser => staffUser.checked === true)
-        .map(staffUser => staffUser.id),
-    ])
+    //setStaff(staffCopy)
+    // setUsers([
+    //   currentUserId,
+    //   ...staffCopy
+    //     .filter(staffUser => staffUser.checked === true)
+    //     .map(staffUser => staffUser.id),
+    // ])
     setGroups(groupsCopy)
     setPermissionGroups([
       ...groupsCopy
@@ -100,7 +101,7 @@ export function Recipients() {
 
   const onCancel = () => {
     setIsOpen(false)
-    setStaffCopy(staff)
+    // setStaffCopy(staff)
     setGroupsCopy(groups)
   }
 
@@ -147,32 +148,32 @@ export function Recipients() {
     setSearch('')
   }
 
-  useEffect(() => {
-    if (fetchedStaff.data) {
-      const { edges, pageInfo } = fetchedStaff.data.staffUsers
-      setStaff([
-        ...staff,
-        ...edges
-          .map(({ node }) => ({
-            id: node.id,
-            name: node.firstName
-              ? `${node.firstName} ${node.lastName}`
-              : node.email,
-            value: node.id,
-            checked: users.includes(node.id),
-          }))
-          .filter(option => option.id !== currentUserId),
-      ])
+  // useEffect(() => {
+  //   if (fetchedStaff.data) {
+  //     const { edges, pageInfo } = fetchedStaff.data.staffUsers
+  //     setStaff([
+  //       ...staff,
+  //       ...edges
+  //         .map(({ node }) => ({
+  //           id: node.id,
+  //           name: node.firstName
+  //             ? `${node.firstName} ${node.lastName}`
+  //             : node.email,
+  //           value: node.id,
+  //           checked: users.includes(node.id),
+  //         }))
+  //         .filter(option => option.id !== currentUserId),
+  //     ])
 
-      setNavigation(
-        produce(draft => {
-          draft.users.endCursor = pageInfo.endCursor
-          draft.users.hasNext = pageInfo.hasNextPage
-        })
-      )
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fetchedStaff.data])
+  //     setNavigation(
+  //       produce(draft => {
+  //         draft.users.endCursor = pageInfo.endCursor
+  //         draft.users.hasNext = pageInfo.hasNextPage
+  //       })
+  //     )
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [fetchedStaff.data])
 
   useEffect(() => {
     if (fetchedGroups.data) {
@@ -198,9 +199,9 @@ export function Recipients() {
   }, [fetchedGroups.data])
 
   useEffect(() => {
-    if (navigation.users.hasNext) {
-      refetchStaffUsers()
-    }
+    // if (navigation.users.hasNext) {
+    //   refetchStaffUsers()
+    // }
 
     if (navigation.groups.hasNext) {
       refetchedGroups()
@@ -208,21 +209,22 @@ export function Recipients() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigation])
 
-  useEffect(() => {
-    setStaffCopy(staff)
-  }, [staff])
+  // useEffect(() => {
+  //   setStaffCopy(staff)
+  // }, [staff])
 
   useEffect(() => {
     setGroupsCopy(groups)
   }, [groups])
 
   if (
-    fetchedStaff.fetching ||
-    navigation.users.hasNext ||
+    // fetchedStaff.fetching ||
+    // navigation.users.hasNext ||
     fetchedGroups.fetching ||
     navigation.groups.hasNext
-  )
+  ) {
     return <div>Loading...</div>
+  }
 
   const fullSelectedRecipients = [...staff, ...groups].filter(
     recipient => recipient.checked
@@ -284,13 +286,14 @@ export function Recipients() {
               />
             </Box>
             {tab === TabPage.USER ? (
-              <CheckboxList
-                options={staffCopy}
-                mainCheckboxTitle="Select all recipients"
-                subCheckboxTitle="Send the report to all recipients"
-                setOptions={setStaffCopy}
-                filter={option => option.name.includes(search)}
-              />
+              // <CheckboxList
+              //   options={staffCopy}
+              //   mainCheckboxTitle="Select all recipients"
+              //   subCheckboxTitle="Send the report to all recipients"
+              //   setOptions={setStaffCopy}
+              //   filter={option => option.name.includes(search)}
+              // />
+              <RecipientsList />
             ) : (
               <CheckboxList
                 options={groupsCopy}
