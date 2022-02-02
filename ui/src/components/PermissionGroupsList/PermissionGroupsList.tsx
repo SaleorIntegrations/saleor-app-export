@@ -2,9 +2,9 @@ import React, { useEffect, useLayoutEffect, useState } from 'react'
 import { Box } from '@material-ui/core'
 import { produce } from 'immer'
 
-import { useQueryStaffUsers } from '../../api/saleor/query'
 import CheckboxList, { CheckboxListOption } from '../CheckboxList'
-import { useCurrentUserStore, useExportCommonStore } from '../../hooks'
+import { useQueryPermissionGroups } from '../../api/saleor/query'
+import { useExportCommonStore } from '../../hooks'
 import { SearchInput } from '../SearchInput'
 
 type Navigation = {
@@ -12,35 +12,32 @@ type Navigation = {
   hasNext: boolean
 }
 
-export function RecipientsList() {
-  const users = useExportCommonStore(state => state.recipients.users)
+export function PermissionGroupsList() {
   const [search, setSearch] = useState('')
-  const currentUserId = useCurrentUserStore(state => state.user.id)
-  const [staff, setStaff] = useState<CheckboxListOption[]>([])
+  const [groups, setGroups] = useState<CheckboxListOption[]>([])
+  const permissionGroups = useExportCommonStore(
+    state => state.recipients.permissionGroups
+  )
   const [navigation, setNavigation] = useState<Navigation>({
     endCursor: null,
     hasNext: true,
   })
-  const [fetchedStaff, refetchStaffUsers] = useQueryStaffUsers(
+  const [fetchedGroups, refetchedGroups] = useQueryPermissionGroups(
     { first: 100, after: navigation.endCursor },
     { pause: true }
   )
 
   useEffect(() => {
-    if (fetchedStaff.data) {
-      const { edges, pageInfo } = fetchedStaff.data.staffUsers
-      setStaff([
-        ...staff,
-        ...edges
-          .map(({ node }) => ({
-            id: node.id,
-            name: node.firstName
-              ? `${node.firstName} ${node.lastName}`
-              : node.email,
-            value: node.id,
-            checked: users.includes(node.id),
-          }))
-          .filter(option => option.id !== currentUserId),
+    if (fetchedGroups.data) {
+      const { edges, pageInfo } = fetchedGroups.data.permissionGroups
+      setGroups([
+        ...groups,
+        ...edges.map(({ node }) => ({
+          id: node.id,
+          name: node.name,
+          value: node.id,
+          checked: permissionGroups.includes(node.id),
+        })),
       ])
 
       setNavigation(
@@ -51,17 +48,18 @@ export function RecipientsList() {
       )
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fetchedStaff.data])
+  }, [fetchedGroups.data])
 
   useLayoutEffect(() => {
     if (navigation.hasNext) {
-      refetchStaffUsers()
+      refetchedGroups()
     }
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigation])
 
-  if (navigation.hasNext || fetchedStaff.fetching) return <div>Loading...</div>
+  if (fetchedGroups.fetching || navigation.hasNext) {
+    return <div>Loading...</div>
+  }
 
   return (
     <Box>
@@ -72,14 +70,14 @@ export function RecipientsList() {
         />
       </Box>
       <CheckboxList
-        options={staff}
-        mainCheckboxTitle="Select all recipients"
-        subCheckboxTitle="Send the report to all recipients"
-        setOptions={setStaff}
+        options={groups}
+        mainCheckboxTitle="Select all groups"
+        subCheckboxTitle="Send the report to all groups"
+        setOptions={setGroups}
         filter={option => option.name.includes(search)}
       />
     </Box>
   )
 }
 
-export default RecipientsList
+export default PermissionGroupsList

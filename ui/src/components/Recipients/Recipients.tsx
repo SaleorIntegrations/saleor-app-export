@@ -13,7 +13,7 @@ import {
 import { Add as AddIcon, Close as CloseIcon } from '@material-ui/icons'
 
 import { SurfaceModal } from '../SurfaceModal'
-import { CheckboxList, CheckboxListOption } from '../CheckboxList'
+import { CheckboxListOption } from '../CheckboxList'
 // import { useQueryStaffUsers } from '../../api/saleor/query/staffUsers'
 import { useExportCommonStore } from '../../hooks/useExportCommonStore'
 import { useCurrentUserStore } from '../../hooks/useCurrentUserStore'
@@ -21,19 +21,20 @@ import { RecipientsList } from '../RecipientsList'
 import { Label } from '../Label'
 
 import { useStyles } from './styles'
-import SearchInput from '../SearchInput'
-import { useQueryPermissionGroups } from '../../api/saleor'
+import { PermissionGroupsList } from '../PermissionGroupsList'
+// import SearchInput from '../SearchInput'
+// import { useQueryPermissionGroups } from '../../api/saleor'
 
-type Navigation = {
-  // users: {
-  //   endCursor: null | string
-  //   hasNext: boolean
-  // }
-  groups: {
-    endCursor: null | string
-    hasNext: boolean
-  }
-}
+// type Navigation = {
+//   // users: {
+//   //   endCursor: null | string
+//   //   hasNext: boolean
+//   // }
+//   groups: {
+//     endCursor: null | string
+//     hasNext: boolean
+//   }
+// }
 
 enum TabPage {
   GROUP = 'GROUP',
@@ -56,30 +57,30 @@ export function Recipients() {
         permissionGroups.length
     )
   )
-  const [navigation, setNavigation] = useState<Navigation>({
-    // users: {
-    //   endCursor: null,
-    //   hasNext: true,
-    // },
-    groups: {
-      endCursor: null,
-      hasNext: true,
-    },
-  })
+  // const [navigation, setNavigation] = useState<Navigation>({
+  //   // users: {
+  //   //   endCursor: null,
+  //   //   hasNext: true,
+  //   // },
+  //   groups: {
+  //     endCursor: null,
+  //     hasNext: true,
+  //   },
+  // })
   // const [fetchedStaff, refetchStaffUsers] = useQueryStaffUsers(
   //   { first: 100, after: navigation.users.endCursor },
   //   { pause: true }
   // )
-  const [fetchedGroups, refetchedGroups] = useQueryPermissionGroups(
-    { first: 100, after: navigation.groups.endCursor },
-    { pause: true }
-  )
+  // const [fetchedGroups, refetchedGroups] = useQueryPermissionGroups(
+  //   { first: 100, after: navigation.groups.endCursor },
+  //   { pause: true }
+  // )
   const [isOpen, setIsOpen] = useState(false)
   const [staff, setStaff] = useState<CheckboxListOption[]>([])
   // const [staffCopy, setStaffCopy] = useState<CheckboxListOption[]>([])
   const [groups, setGroups] = useState<CheckboxListOption[]>([])
-  const [groupsCopy, setGroupsCopy] = useState<CheckboxListOption[]>([])
-  const [search, setSearch] = useState('')
+  // const [groupsCopy, setGroupsCopy] = useState<CheckboxListOption[]>([])
+  // const [search, setSearch] = useState('')
   const [tab, setTab] = useState<TabPage>(TabPage.USER)
 
   const onSave = () => {
@@ -91,18 +92,18 @@ export function Recipients() {
     //     .filter(staffUser => staffUser.checked === true)
     //     .map(staffUser => staffUser.id),
     // ])
-    setGroups(groupsCopy)
-    setPermissionGroups([
-      ...groupsCopy
-        .filter(group => group.checked === true)
-        .map(group => group.id),
-    ])
+    // setGroups(groupsCopy)
+    // setPermissionGroups([
+    //   ...groupsCopy
+    //     .filter(group => group.checked === true)
+    //     .map(group => group.id),
+    // ])
   }
 
   const onCancel = () => {
     setIsOpen(false)
     // setStaffCopy(staff)
-    setGroupsCopy(groups)
+    // setGroupsCopy(groups)
   }
 
   const onCheck = (value: boolean) => {
@@ -145,7 +146,7 @@ export function Recipients() {
 
   const onTabChange = (value: string) => {
     setTab(value as TabPage)
-    setSearch('')
+    // setSearch('')
   }
 
   // useEffect(() => {
@@ -175,56 +176,56 @@ export function Recipients() {
   //   // eslint-disable-next-line react-hooks/exhaustive-deps
   // }, [fetchedStaff.data])
 
-  useEffect(() => {
-    if (fetchedGroups.data) {
-      const { edges, pageInfo } = fetchedGroups.data.permissionGroups
-      setGroups([
-        ...groups,
-        ...edges.map(({ node }) => ({
-          id: node.id,
-          name: node.name,
-          value: node.id,
-          checked: permissionGroups.includes(node.id),
-        })),
-      ])
+  // useEffect(() => {
+  //   if (fetchedGroups.data) {
+  //     const { edges, pageInfo } = fetchedGroups.data.permissionGroups
+  //     setGroups([
+  //       ...groups,
+  //       ...edges.map(({ node }) => ({
+  //         id: node.id,
+  //         name: node.name,
+  //         value: node.id,
+  //         checked: permissionGroups.includes(node.id),
+  //       })),
+  //     ])
 
-      setNavigation(
-        produce(draft => {
-          draft.groups.endCursor = pageInfo.endCursor
-          draft.groups.hasNext = pageInfo.hasNextPage
-        })
-      )
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fetchedGroups.data])
+  //     setNavigation(
+  //       produce(draft => {
+  //         draft.groups.endCursor = pageInfo.endCursor
+  //         draft.groups.hasNext = pageInfo.hasNextPage
+  //       })
+  //     )
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [fetchedGroups.data])
 
-  useEffect(() => {
-    // if (navigation.users.hasNext) {
-    //   refetchStaffUsers()
-    // }
+  // useEffect(() => {
+  //   // if (navigation.users.hasNext) {
+  //   //   refetchStaffUsers()
+  //   // }
 
-    if (navigation.groups.hasNext) {
-      refetchedGroups()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [navigation])
+  //   if (navigation.groups.hasNext) {
+  //     refetchedGroups()
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [navigation])
 
   // useEffect(() => {
   //   setStaffCopy(staff)
   // }, [staff])
 
-  useEffect(() => {
-    setGroupsCopy(groups)
-  }, [groups])
+  // useEffect(() => {
+  //   setGroupsCopy(groups)
+  // }, [groups])
 
-  if (
-    // fetchedStaff.fetching ||
-    // navigation.users.hasNext ||
-    fetchedGroups.fetching ||
-    navigation.groups.hasNext
-  ) {
-    return <div>Loading...</div>
-  }
+  // if (
+  //   // fetchedStaff.fetching ||
+  //   // navigation.users.hasNext ||
+  //   fetchedGroups.fetching ||
+  //   navigation.groups.hasNext
+  // ) {
+  //   return <div>Loading...</div>
+  // }
 
   const fullSelectedRecipients = [...staff, ...groups].filter(
     recipient => recipient.checked
@@ -279,12 +280,12 @@ export function Recipients() {
             <Typography variant="h5">
               Select {tab === TabPage.USER ? 'Recipients' : 'Groups'}
             </Typography>
-            <Box margin="1.2rem 0">
+            {/* <Box margin="1.2rem 0">
               <SearchInput
                 onChange={event => setSearch(event.target.value)}
                 value={search}
               />
-            </Box>
+            </Box> */}
             {tab === TabPage.USER ? (
               // <CheckboxList
               //   options={staffCopy}
@@ -295,13 +296,14 @@ export function Recipients() {
               // />
               <RecipientsList />
             ) : (
-              <CheckboxList
-                options={groupsCopy}
-                mainCheckboxTitle="Select all groups"
-                subCheckboxTitle="Send the report to all groups"
-                setOptions={setGroupsCopy}
-                filter={option => option.name.includes(search)}
-              />
+              <PermissionGroupsList />
+              // <CheckboxList
+              //   options={groupsCopy}
+              //   mainCheckboxTitle="Select all groups"
+              //   subCheckboxTitle="Send the report to all groups"
+              //   setOptions={setGroupsCopy}
+              //   filter={option => option.name.includes(search)}
+              // />
             )}
           </SurfaceModal>
         </>
