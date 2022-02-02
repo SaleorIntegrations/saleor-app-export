@@ -49,3 +49,14 @@ Dependencies are specified in the `pyproject.toml` file and installed by poetry.
 Some of them, however, have conflicts with some dependencies in the `saleor_app_base`.
 
 To fix that, we need to update the conflicting dependencies there. As a temporary solution, required dependencies can be installed via `pip`
+
+## Preparing deployment package
+
+```shell
+docker build -t export \
+  --build-arg FRONTEND_DEPLOY_KEY="$(cat ~/.ssh/id_saleor)"\
+  --build-arg BACKEND_DEPLOY_KEY="$(cat ~/.ssh/id_backend)"\
+  --build-arg PUBLIC_URL=https://static.saleor-integrations.com/export\
+  --build-arg APP_URL=https://export.saleor-integrations.com\
+  .
+```

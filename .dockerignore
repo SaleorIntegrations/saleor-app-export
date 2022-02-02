@@ -2,6 +2,7 @@
 .git/
 .docker-sync/
 node_modules/
+venv/
 
 *.pyc
 *.po
@@ -12,5 +13,7 @@ __pycache__/
 media/
 
 docker-compose.yml
+Dockerfile
+.env
 
 Makefile

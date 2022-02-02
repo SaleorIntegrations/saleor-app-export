@@ -1,23 +1,64 @@
-FROM python:3.9
+# Build frontend images
+FROM node:latest as frontend
 
-RUN apt-get update \
-    && apt-get install -y vim git \
-    && apt-get install -y python3-pip python3-dev libpq-dev wget \
-    && apt-get install -y libpq-dev \
-    && apt-get autoremove -y --purge \
-    && apt-get autoclean
+ARG FRONTEND_DEPLOY_KEY
+ARG STATIC_URL
+ARG API_URL
+
+WORKDIR /ui
+
+RUN apt-get update && apt-get install -y git
+
+RUN mkdir /root/.ssh/ && \
+    echo "${FRONTEND_DEPLOY_KEY}" > /root/.ssh/id_rsa && \
+    touch /root/.ssh/known_hosts && \
+    ssh-keyscan github.com >> /root/.ssh/known_hosts && \
+    chmod 0700 ~/.ssh/*
+
+COPY ./ui/package-lock.json .
+COPY ./ui/package.json .
+
+RUN npm install
+
+COPY ./ui/ .
+
+RUN PUBLIC_URL=${STATIC_URL} REACT_APP_APP_URL=${API_URL} npm run build
 
 
-WORKDIR /usr/src/app
+## Install poetry dependencies
+FROM python:3.9-slim as poetry
 
-RUN pip install poetry
+ARG BACKEND_DEPLOY_KEY
 
-COPY ./poetry.lock /usr/src/app/poetry.lock
+WORKDIR /app
 
-RUN poetry install 
+RUN apt-get update && apt-get install -y gcc git
 
-COPY . /usr/src/app
+RUN mkdir /root/.ssh/ && \
+    echo "${BACKEND_DEPLOY_KEY}" > /root/.ssh/id_rsa && \
+    touch /root/.ssh/known_hosts && \
+    ssh-keyscan github.com >> /root/.ssh/known_hosts && \
+    chmod 0700 ~/.ssh/*
 
-VOLUME /usr/src/app
+## Install python dependencies
+COPY poetry.lock .
+COPY pyproject.toml .
+RUN pip install --no-cache-dir poetry && \
+    poetry config virtualenvs.in-project true && \
+    poetry install
 
-CMD ["python", "main.py"]
+# Build python app
+FROM python:3.9-slim as export-app
+
+WORKDIR /app
+
+# Copy all app files
+COPY . .
+
+# Copy react artifacts from the previous stage
+COPY --from=frontend /ui/build ./ui/build
+
+# Copy virtualenv from poetry
+COPY --from=poetry /app/.venv ./.venv
+
+CMD source /app/.venv/bin/activate && uvicorn --host=0.0.0.0 --port=8000 main:app
