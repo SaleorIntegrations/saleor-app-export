@@ -31,6 +31,7 @@ export function CreateProductReport() {
   }
 
   const createProductExportReport = async () => {
+    const { addMore, users, permissionGroups } = commonStore.recipients
     const response = await createProductReport({
       columns: {
         attributes: columnsStore.columns.attributes,
@@ -39,7 +40,10 @@ export function CreateProductReport() {
         warehouses: columnsStore.columns.warehouses,
       },
       name: commonStore.name,
-      recipients: commonStore.recipients,
+      recipients: {
+        users: addMore ? users : [currentUser.id],
+        permissionGroups: addMore ? permissionGroups : [],
+      },
     })
 
     const report = response.data?.createProductsReport

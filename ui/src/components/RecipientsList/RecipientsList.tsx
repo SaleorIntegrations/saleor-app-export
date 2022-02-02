@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useState } from 'react'
+import React, { useLayoutEffect, useState } from 'react'
 import { Box } from '@material-ui/core'
 import { produce } from 'immer'
 
@@ -12,11 +12,16 @@ type Navigation = {
   hasNext: boolean
 }
 
-export function RecipientsList() {
+interface RecipientsListProps {
+  recipientOptions: CheckboxListOption[]
+  setRecipientOptions: (recipients: CheckboxListOption[]) => void
+}
+
+export function RecipientsList(props: RecipientsListProps) {
+  const { recipientOptions, setRecipientOptions } = props
   const users = useExportCommonStore(state => state.recipients.users)
   const [search, setSearch] = useState('')
   const currentUserId = useCurrentUserStore(state => state.user.id)
-  const [staff, setStaff] = useState<CheckboxListOption[]>([])
   const [navigation, setNavigation] = useState<Navigation>({
     endCursor: null,
     hasNext: true,
@@ -26,11 +31,11 @@ export function RecipientsList() {
     { pause: true }
   )
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (fetchedStaff.data) {
       const { edges, pageInfo } = fetchedStaff.data.staffUsers
-      setStaff([
-        ...staff,
+      setRecipientOptions([
+        ...recipientOptions,
         ...edges
           .map(({ node }) => ({
             id: node.id,
@@ -72,10 +77,10 @@ export function RecipientsList() {
         />
       </Box>
       <CheckboxList
-        options={staff}
+        options={recipientOptions}
         mainCheckboxTitle="Select all recipients"
         subCheckboxTitle="Send the report to all recipients"
-        setOptions={setStaff}
+        setOptions={setRecipientOptions}
         filter={option => option.name.includes(search)}
       />
     </Box>

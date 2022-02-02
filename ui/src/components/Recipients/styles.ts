@@ -26,9 +26,6 @@ export const useStyles = makeStyles(theme => ({
       opacity: 1,
     },
   },
-  tabs: {
-    marginBottom: theme.spacing(1.5),
-  },
 }))
 
 export default useStyles

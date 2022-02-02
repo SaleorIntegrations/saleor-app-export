@@ -31,10 +31,14 @@ export function CreateOrderReport() {
   }
 
   const createOrderExportReport = async () => {
+    const { addMore, users, permissionGroups } = commonStore.recipients
     const response = await createOrderReport({
       fields: columnsStore.columns.orderFields,
       name: commonStore.name,
-      recipients: commonStore.recipients,
+      recipients: {
+        users: addMore ? users : [currentUser.id],
+        permissionGroups: addMore ? permissionGroups : [],
+      },
     })
 
     const report = response.data?.createOrdersReport

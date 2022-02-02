@@ -23,12 +23,16 @@ export interface TableReport {
   isSelected: boolean
 }
 
+export interface ExportRecipientInfo extends RecipientInfo {
+  addMore: boolean
+}
+
 export interface ExportStoreCommonData {
   fileType: FileType
   name: string
   id: number | null
   filter: FilterInfo | null
-  recipients: RecipientInfo
+  recipients: ExportRecipientInfo
 }
 
 export interface ExportCommonStore extends ExportStoreCommonData {
@@ -36,8 +40,7 @@ export interface ExportCommonStore extends ExportStoreCommonData {
   setName: (name: string) => void
   setId: (id: number | null) => void
   setFilter: (filter: string | null) => void
-  setUsers: (users: string[]) => void
-  setPermissionGroups: (permissionGroups: string[]) => void
+  setRecipients: (recipients: ExportRecipientInfo) => void
   initialize: (data: ExportStoreCommonData) => void
   reset: (currentUser: User) => void
 }

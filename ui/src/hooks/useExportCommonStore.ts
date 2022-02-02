@@ -1,5 +1,4 @@
 import create from 'zustand'
-import { produce } from 'immer'
 
 import { ExportObjectTypesEnum } from '../api/export/types'
 import { ExportCommonStore, FileType } from '../globalTypes'
@@ -11,24 +10,14 @@ export const useExportCommonStore = create<ExportCommonStore>(set => ({
   type: ExportObjectTypesEnum.PRODUCTS,
   filter: null,
   recipients: {
+    addMore: false,
     users: [],
     permissionGroups: [],
   },
   initialize: data => set(state => data),
   setFileType: fileType => set(state => ({ fileType: fileType })),
   setName: name => set(state => ({ name: name })),
-  setUsers: users =>
-    set(state =>
-      produce(state, draft => {
-        draft.recipients.users = users
-      })
-    ),
-  setPermissionGroups: permissionGroups =>
-    set(state =>
-      produce(state, draft => {
-        draft.recipients.permissionGroups = permissionGroups
-      })
-    ),
+  setRecipients: recipients => set({ recipients: recipients }),
   setId: id => set(state => ({ id: id })),
   setFilter: filter =>
     set(state => {
@@ -42,6 +31,7 @@ export const useExportCommonStore = create<ExportCommonStore>(set => ({
       id: null,
       filter: null,
       recipients: {
+        addMore: false,
         users: [currentUser.id],
         permissionGroups: [],
       },

@@ -9,14 +9,17 @@ import {
 import { useQueryReport } from '../../../api/export/query'
 import { OrderSelectedColumnsInfo } from '../../../api/export/types'
 import {
+  useCurrentUserStore,
   useExportCommonStore,
   useExportOrderColumnsStore,
 } from '../../../hooks'
 import { FileType } from '../../../globalTypes'
+import { isRecipientsSelected } from '../../../utils'
 
 export function UpdateOrderReport() {
   const { id } = useParams()
   const navigate = useNavigate()
+  const userId = useCurrentUserStore(state => state.user.id)
   const columnsStore = useExportOrderColumnsStore()
   const commonStore = useExportCommonStore()
   const [report] = useQueryReport({ reportId: parseInt(id || '') })
@@ -29,11 +32,16 @@ export function UpdateOrderReport() {
   }
 
   const onSaveAndExport = async () => {
+    const { addMore, users, permissionGroups } = commonStore.recipients
+
     await updateOrderReport({
       fields: columnsStore.columns.orderFields,
       reportId: commonStore.id || -1,
       name: commonStore.name,
-      recipients: commonStore.recipients,
+      recipients: {
+        users: addMore ? users : [userId],
+        permissionGroups: addMore ? permissionGroups : [],
+      },
     })
     onExport()
   }
@@ -52,7 +60,11 @@ export function UpdateOrderReport() {
         name: name,
         filter: filter ? { filterStr: filter } : null,
         fileType: FileType.CSV,
-        recipients: { users, permissionGroups },
+        recipients: {
+          users,
+          permissionGroups,
+          addMore: isRecipientsSelected({ permissionGroups, users }),
+        },
       })
       columnsStore.setColumns(columns as OrderSelectedColumnsInfo)
       setIsLoading(false)

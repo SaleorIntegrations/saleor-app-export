@@ -11,12 +11,15 @@ import { ProductSelectedColumnsInfo } from '../../../api/export/types'
 import {
   useExportCommonStore,
   useExportProductColumnsStore,
+  useCurrentUserStore,
 } from '../../../hooks'
 import { FileType } from '../../../globalTypes'
+import { isRecipientsSelected } from '../../../utils'
 
 export function UpdateProductReport() {
   const { id } = useParams()
   const navigate = useNavigate()
+  const userId = useCurrentUserStore(state => state.user.id)
   const commonStore = useExportCommonStore()
   const columnsStore = useExportProductColumnsStore()
   const [report] = useQueryReport({ reportId: parseInt(id || '') })
@@ -29,6 +32,8 @@ export function UpdateProductReport() {
   }
 
   const onSaveAndExport = async () => {
+    const { users, permissionGroups, addMore } = commonStore.recipients
+
     await updateProductReport({
       columns: {
         fields: columnsStore.columns.productFields,
@@ -38,7 +43,10 @@ export function UpdateProductReport() {
       },
       reportId: commonStore.id || -1,
       name: commonStore.name,
-      recipients: commonStore.recipients,
+      recipients: {
+        users: addMore ? users : [userId],
+        permissionGroups: addMore ? permissionGroups : [],
+      },
     })
     onExport()
   }
@@ -57,7 +65,11 @@ export function UpdateProductReport() {
         name: name,
         filter: filter ? { filterStr: filter } : null,
         fileType: FileType.CSV,
-        recipients: { users, permissionGroups },
+        recipients: {
+          users,
+          permissionGroups,
+          addMore: isRecipientsSelected({ users, permissionGroups }),
+        },
       })
       columnsStore.setColumns(columns as ProductSelectedColumnsInfo)
     }
