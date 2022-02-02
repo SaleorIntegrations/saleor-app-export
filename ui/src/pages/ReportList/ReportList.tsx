@@ -3,8 +3,8 @@ import { Paper } from '@material-ui/core'
 
 import { useMutationDeleteReport } from '../../api/export/mutation'
 import { useQueryReports } from '../../api/export/query'
-import TableHeader from '../../components/TableHeader'
-import { ReportTable } from '../../components/ReportTable/ReportTable'
+import { TableHeader, ReportTable, TableReportFilter } from '../../components'
+
 import { reportsReducer, initialReports } from './reducer'
 import useStyles from './style'
 
@@ -85,6 +85,7 @@ export function ReportList() {
     <Paper className={classes.paper}>
       <div ref={headerRef}>
         <TableHeader />
+        <TableReportFilter />
       </div>
       <ReportTable
         deleteSelectedReports={deleteSelectedReports}
