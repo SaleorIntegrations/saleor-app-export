@@ -8,8 +8,8 @@ import { useMemo } from 'react'
 const apiQuery = gql`
   ${PageInfoFragment}
   ${GroupFragment}
-  query permissionGroups($first: Int, $after: String) {
-    permissionGroups(first: $first, after: $after) {
+  query permissionGroups($first: Int, $after: String, $ids: [ID]) {
+    permissionGroups(first: $first, after: $after, filter: { ids: $ids }) {
       edges {
         node {
           ...GroupFragment
@@ -32,6 +32,7 @@ interface PermissionGroupsResponse {
 interface Variables {
   first: number
   after?: string | null
+  ids: string[]
 }
 
 export function useQueryPermissionGroups(variables: Variables, options?: any) {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import { Tab, Tabs, Typography } from '@material-ui/core'
 import { produce } from 'immer'
 
@@ -44,16 +44,44 @@ export function RecipientsTabs(props: RecipientsTabsProps) {
     fetchedOptions: [],
   })
   const [tab, setTab] = useState<TabPage>(TabPage.USER)
+  const unfetchedGroups = useMemo(
+    () =>
+      recipients.permissionGroups.filter(
+        groupId =>
+          !fetchedGroups.fetchedOptions
+            .map(option => option.id)
+            .includes(groupId)
+      ),
+    [recipients.permissionGroups, fetchedGroups.fetchedOptions]
+  )
+  const unfetchedUsers = useMemo(
+    () =>
+      recipients.users.filter(
+        userId =>
+          !fetchedRecipients.fetchedOptions
+            .map(option => option.id)
+            .includes(userId)
+      ),
+    [recipients.users, fetchedGroups.fetchedOptions]
+  )
 
   const onSave = () => {
     setRecipients(
       produce(recipients, draft => {
-        draft.users = fetchedRecipients.fetchedOptions
-          .filter(option => option.checked)
-          .map(option => option.id)
-        draft.permissionGroups = fetchedGroups.fetchedOptions
-          .filter(option => option.checked)
-          .map(option => option.id)
+        const users = new Set(
+          fetchedRecipients.fetchedOptions
+            .filter(option => option.checked)
+            .map(option => option.id)
+            .concat(unfetchedUsers)
+        )
+        const groups = new Set(
+          fetchedGroups.fetchedOptions
+            .filter(option => option.checked)
+            .map(option => option.id)
+            .concat(unfetchedGroups)
+        )
+        draft.users = [...users]
+        draft.permissionGroups = [...groups]
       })
     )
     setIsOpen(false)

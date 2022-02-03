@@ -8,8 +8,12 @@ import { useMemo } from 'react'
 const apiQuery = gql`
   ${PageInfoFragment}
   ${UserFragment}
-  query getStaff($first: Int, $after: String, $search: String) {
-    staffUsers(first: $first, after: $after, filter: { search: $search }) {
+  query getStaff($first: Int, $after: String, $search: String, $ids: [ID]) {
+    staffUsers(
+      first: $first
+      after: $after
+      filter: { search: $search, ids: $ids }
+    ) {
       edges {
         cursor
         node {
@@ -37,6 +41,7 @@ interface Variables {
   first: number
   after?: string | null
   search?: string
+  ids: string[]
 }
 
 export function useQueryStaffUsers(variables: Variables, options?: any) {

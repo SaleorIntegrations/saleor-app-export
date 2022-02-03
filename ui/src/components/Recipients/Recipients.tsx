@@ -1,22 +1,22 @@
-import React, { useCallback, useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { produce } from 'immer'
 import {
   Box,
   Checkbox,
-  Chip,
   FormControlLabel,
   IconButton,
   Typography,
 } from '@material-ui/core'
-import { Add as AddIcon, Close as CloseIcon } from '@material-ui/icons'
+import { Add as AddIcon } from '@material-ui/icons'
 
 import { useExportCommonStore } from '../../hooks/useExportCommonStore'
-import { useCurrentUserStore } from '../../hooks/useCurrentUserStore'
-// import { isRecipientsSelected } from '../../utils'
+import { UserPills } from '../UserPills'
+import { RecipientGroupPills } from '../RecipientGroupPills'
 import { Label } from '../Label'
 
 import { useStyles } from './styles'
 import RecipientsTabs from '../RecipientsTabs'
+import Pill from '../Pill'
 
 export function Recipients() {
   const classes = useStyles()
@@ -24,19 +24,11 @@ export function Recipients() {
     recipients: state.recipients,
     setRecipients: state.setRecipients,
   }))
-  const currentUserId = useCurrentUserStore(state => state.user.id)
   const [isOpen, setIsOpen] = useState(false)
-
-  const onDelete = (id: string) => {
-    setRecipients(
-      produce(recipients, draft => {
-        draft.permissionGroups = draft.permissionGroups.filter(
-          groupId => groupId !== id
-        )
-        draft.users = draft.users.filter(userId => userId !== id)
-      })
-    )
-  }
+  const moreRecipients = useMemo(
+    () => recipients.permissionGroups.length + recipients.users.length - 6,
+    [recipients]
+  )
 
   const checkAddMoreRecipients = (check: boolean) => {
     setRecipients(
@@ -45,15 +37,6 @@ export function Recipients() {
       })
     )
   }
-
-  const getRecipientsChip = useCallback(() => {
-    return Object.values({
-      users: recipients.users,
-      groups: recipients.permissionGroups,
-    })
-      .flat()
-      .filter(id => id !== currentUserId)
-  }, [currentUserId, recipients.permissionGroups, recipients.users])
 
   return (
     <Box>
@@ -70,26 +53,9 @@ export function Recipients() {
       {recipients.addMore && (
         <Box className={classes.recipientsBox}>
           <Typography className={classes.boxTitle}>Recipients</Typography>
-          {getRecipientsChip()
-            .slice(0, 5)
-            .map(recipient => (
-              <Chip
-                className={classes.recipient}
-                deleteIcon={<CloseIcon />}
-                variant="default"
-                label={recipient}
-                key={recipient}
-                onDelete={() => onDelete(recipient)}
-              />
-            ))}
-          {getRecipientsChip().length - 5 > 0 && (
-            <Chip
-              className={classes.recipient}
-              variant="default"
-              label={`${getRecipientsChip().length - 5} more...`}
-              onClick={() => setIsOpen(true)}
-            />
-          )}
+          <UserPills />
+          <RecipientGroupPills />
+          {moreRecipients > 0 && <Pill label={`${moreRecipients} more...`} />}
           <IconButton onClick={() => setIsOpen(true)} size="small">
             <AddIcon />
           </IconButton>

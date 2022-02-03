@@ -24,6 +24,7 @@ export function RecipientsList(props: RecipientsListProps) {
     {
       first: 25,
       after: fetchedOptions.endCursor,
+      ids: [],
     },
     { pause: true }
   )
