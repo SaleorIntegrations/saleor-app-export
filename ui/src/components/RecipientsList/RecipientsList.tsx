@@ -22,7 +22,7 @@ export function RecipientsList(props: RecipientsListProps) {
   const currentUserId = useCurrentUserStore(state => state.user.id)
   const [fetchedStaff, refetchStaffUsers] = useQueryStaffUsers(
     {
-      first: 5,
+      first: 25,
       after: fetchedOptions.endCursor,
     },
     { pause: true }

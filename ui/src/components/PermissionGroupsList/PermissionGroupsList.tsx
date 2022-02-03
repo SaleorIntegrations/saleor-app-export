@@ -21,7 +21,7 @@ export function PermissionGroupsList(props: PermissionGroupsListProps) {
   )
   const [search, setSearch] = useState('')
   const [fetchedGroups, refetchedGroups] = useQueryPermissionGroups(
-    { first: 1, after: fetchedOptions.endCursor },
+    { first: 25, after: fetchedOptions.endCursor },
     { pause: true }
   )
 
