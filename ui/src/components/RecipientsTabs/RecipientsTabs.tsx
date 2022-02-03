@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Tab, Tabs, Typography } from '@material-ui/core'
 import { produce } from 'immer'
 
@@ -33,12 +33,16 @@ export function RecipientsTabs(props: RecipientsTabsProps) {
     state.recipients,
     state.setRecipients,
   ])
-  const [fetchedRecipients, setFetchRecipients] = useState<FetchOptions>({
+  const [fetchedRecipients, setFetchedRecipients] = useState<FetchOptions>({
     hasNext: true,
     endCursor: '',
     fetchedOptions: [],
   })
-  const [groupOptions, setGroupOptions] = useState<CheckboxListOption[]>([])
+  const [fetchedGroups, setFetchedGroups] = useState<FetchOptions>({
+    hasNext: true,
+    endCursor: '',
+    fetchedOptions: [],
+  })
   const [tab, setTab] = useState<TabPage>(TabPage.USER)
 
   const onSave = () => {
@@ -47,22 +51,40 @@ export function RecipientsTabs(props: RecipientsTabsProps) {
         draft.users = fetchedRecipients.fetchedOptions
           .filter(option => option.checked)
           .map(option => option.id)
-        draft.permissionGroups = groupOptions
+        draft.permissionGroups = fetchedGroups.fetchedOptions
           .filter(option => option.checked)
           .map(option => option.id)
       })
     )
     setIsOpen(false)
-    setGroupOptions([])
   }
 
-  const onClose = () => {
-    setGroupOptions([])
-    setIsOpen(false)
-  }
+  useEffect(() => {
+    setFetchedGroups(
+      produce(draft => {
+        for (const index in draft.fetchedOptions) {
+          const id = draft.fetchedOptions[index].id
+          draft.fetchedOptions[index].checked =
+            recipients.permissionGroups.includes(id)
+        }
+      })
+    )
+    setFetchedRecipients(
+      produce(draft => {
+        for (const index in draft.fetchedOptions) {
+          const id = draft.fetchedOptions[index].id
+          draft.fetchedOptions[index].checked = recipients.users.includes(id)
+        }
+      })
+    )
+  }, [recipients])
 
   return (
-    <SurfaceModal isOpen={isOpen} onClose={onClose} onSave={onSave}>
+    <SurfaceModal
+      isOpen={isOpen}
+      onClose={() => setIsOpen(false)}
+      onSave={onSave}
+    >
       <Tabs
         indicatorColor="primary"
         className={classes.tabs}
@@ -79,10 +101,13 @@ export function RecipientsTabs(props: RecipientsTabsProps) {
       {tab === TabPage.USER ? (
         <RecipientsList
           fetchedOptions={fetchedRecipients}
-          setFetchedOptions={setFetchRecipients}
+          setFetchedOptions={setFetchedRecipients}
         />
       ) : (
-        <PermissionGroupsList />
+        <PermissionGroupsList
+          fetchedOptions={fetchedGroups}
+          setFetchedOptions={setFetchedGroups}
+        />
       )}
     </SurfaceModal>
   )

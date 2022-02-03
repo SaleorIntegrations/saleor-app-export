@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Box } from '@material-ui/core'
 import { produce } from 'immer'
 
@@ -24,7 +24,6 @@ export function RecipientsList(props: RecipientsListProps) {
     {
       first: 5,
       after: fetchedOptions.endCursor,
-      search: search,
     },
     { pause: true }
   )
@@ -37,7 +36,7 @@ export function RecipientsList(props: RecipientsListProps) {
     )
   }
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (fetchedStaff.data) {
       const {
         edges,
