@@ -63,7 +63,6 @@ export function CreateProductReport() {
     commonStore.reset(currentUser)
     columnsStore.reset()
     setIsLoading(false)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   if (isLoading) return <div>Loading...</div>

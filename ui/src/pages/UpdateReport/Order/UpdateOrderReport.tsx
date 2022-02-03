@@ -69,12 +69,10 @@ export function UpdateOrderReport() {
       columnsStore.setColumns(columns as OrderSelectedColumnsInfo)
       setIsLoading(false)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [report])
 
   useEffect(() => {
     setIsLoading(!(report.data && !report.fetching))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [report.fetching])
 
   if (isLoading) return <div>Loading...</div>

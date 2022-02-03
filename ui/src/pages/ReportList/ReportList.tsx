@@ -75,12 +75,10 @@ export function ReportList() {
         total: totalCount,
       })
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pureReports])
 
   useEffect(() => {
     if (state.navigation.hasNext) refetchPureReports()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.navigation.endCursor])
 
   return (

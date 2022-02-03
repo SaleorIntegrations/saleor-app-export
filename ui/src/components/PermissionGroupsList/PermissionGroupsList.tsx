@@ -55,14 +55,12 @@ export function PermissionGroupsList(props: PermissionGroupsListProps) {
         })
       )
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fetchedGroups.data])
 
   useEffect(() => {
     if (fetchedOptions.hasNext) {
       refetchedGroups()
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fetchedOptions.endCursor])
 
   return (

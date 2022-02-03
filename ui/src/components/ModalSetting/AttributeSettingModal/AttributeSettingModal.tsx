@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useLayoutEffect, useState } from 'react'
 import { Skeleton } from '@material-ui/lab'
 import produce from 'immer'

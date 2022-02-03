@@ -62,12 +62,10 @@ export function RecipientsList(props: RecipientsListProps) {
         })
       )
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fetchedStaff.data])
 
   useEffect(() => {
     if (fetchedOptions.hasNext) refetchStaffUsers()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fetchedOptions.endCursor])
 
   return (

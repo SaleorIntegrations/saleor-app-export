@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react'
 import clsx from 'clsx'
 import { produce } from 'immer'
@@ -76,6 +75,7 @@ export function ReleaseFilter(props: ReleaseFilterProps) {
   ) => {
     setQuery(
       produce(draft => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         draft = {
           to: {
             date: dayjs().format(Format.date),

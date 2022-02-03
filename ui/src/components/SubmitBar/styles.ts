@@ -1,6 +1,6 @@
 import { makeStyles } from '@saleor/macaw-ui'
 
-export const useStyles = makeStyles(theme => ({
+export const useStyles = makeStyles(() => ({
   root: {
     padding: '1.6rem 2.4rem 1.6rem 2.4rem',
     boxSizing: 'border-box',
