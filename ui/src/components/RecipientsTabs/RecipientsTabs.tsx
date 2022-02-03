@@ -15,6 +15,12 @@ enum TabPage {
   USER = 'USER',
 }
 
+export interface FetchOptions {
+  hasNext: boolean
+  endCursor: string | null
+  fetchedOptions: CheckboxListOption[]
+}
+
 interface RecipientsTabsProps {
   isOpen: boolean
   setIsOpen: (isOpen: boolean) => void
@@ -27,16 +33,18 @@ export function RecipientsTabs(props: RecipientsTabsProps) {
     state.recipients,
     state.setRecipients,
   ])
-  const [recipentOptions, setRecipientOptions] = useState<CheckboxListOption[]>(
-    []
-  )
+  const [fetchedRecipients, setFetchRecipients] = useState<FetchOptions>({
+    hasNext: true,
+    endCursor: '',
+    fetchedOptions: [],
+  })
   const [groupOptions, setGroupOptions] = useState<CheckboxListOption[]>([])
   const [tab, setTab] = useState<TabPage>(TabPage.USER)
 
   const onSave = () => {
     setRecipients(
       produce(recipients, draft => {
-        draft.users = recipentOptions
+        draft.users = fetchedRecipients.fetchedOptions
           .filter(option => option.checked)
           .map(option => option.id)
         draft.permissionGroups = groupOptions
@@ -45,12 +53,10 @@ export function RecipientsTabs(props: RecipientsTabsProps) {
       })
     )
     setIsOpen(false)
-    setRecipientOptions([])
     setGroupOptions([])
   }
 
   const onClose = () => {
-    setRecipientOptions([])
     setGroupOptions([])
     setIsOpen(false)
   }
@@ -72,8 +78,8 @@ export function RecipientsTabs(props: RecipientsTabsProps) {
       </Typography>
       {tab === TabPage.USER ? (
         <RecipientsList
-          recipientOptions={recipentOptions}
-          setRecipientOptions={setRecipientOptions}
+          fetchedOptions={fetchedRecipients}
+          setFetchedOptions={setFetchRecipients}
         />
       ) : (
         <PermissionGroupsList />
