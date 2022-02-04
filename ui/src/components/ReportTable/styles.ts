@@ -1,6 +1,6 @@
 import { makeStyles } from '@saleor/macaw-ui'
 
-export const useStyles = makeStyles(() => ({
+export const useStyles = makeStyles(theme => ({
   row: {
     '&:hover': {
       cursor: 'pointer',
@@ -9,7 +9,7 @@ export const useStyles = makeStyles(() => ({
   tableHead: {
     position: 'relative',
     '& th': {
-      background: 'transparent',
+      background: theme.palette.background.paper,
     },
   },
   hiddenCell: {

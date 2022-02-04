@@ -83,6 +83,17 @@ export function TableReportFilter() {
     setIsOpen(false)
   }
 
+  const onDelete = (event: React.MouseEvent, key: string) => {
+    event.stopPropagation()
+
+    if (tab === key) setTab('ALL')
+    setTabs(
+      produce(draft => {
+        delete draft[key]
+      })
+    )
+  }
+
   useEffect(() => {
     window.localStorage.setItem('FILTER', JSON.stringify(tabs))
   }, [tabs])
@@ -97,7 +108,16 @@ export function TableReportFilter() {
         onChange={(_, newTab) => onTabChange(newTab)}
       >
         {Object.keys(tabs).map(key => (
-          <Tab value={key} key={key} label={tabs[key].name} />
+          <Tab
+            icon={
+              !['ALL', 'SEARCH_CUSTOM'].includes(key) ? (
+                <DeleteIcon onClick={event => onDelete(event, key)} />
+              ) : undefined
+            }
+            value={key}
+            key={key}
+            label={tabs[key].name}
+          />
         ))}
       </Tabs>
       <Box className={classes.searchBar}>
