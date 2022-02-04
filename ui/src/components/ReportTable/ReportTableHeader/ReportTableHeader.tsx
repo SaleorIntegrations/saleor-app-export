@@ -43,7 +43,7 @@ export function ReportTableHeader(props: ReportTableHeaderProps) {
   } = props
 
   return (
-    <TableHead className={classes.relative}>
+    <TableHead className={classes.tableHead}>
       <TableRow>
         <TableCell padding="checkbox">
           <Box>

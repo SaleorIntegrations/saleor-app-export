@@ -6,8 +6,11 @@ export const useStyles = makeStyles(() => ({
       cursor: 'pointer',
     },
   },
-  relative: {
+  tableHead: {
     position: 'relative',
+    '& th': {
+      background: 'transparent',
+    },
   },
   hiddenCell: {
     visibility: 'hidden',
