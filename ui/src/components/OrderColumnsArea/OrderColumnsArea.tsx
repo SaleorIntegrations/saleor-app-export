@@ -25,7 +25,6 @@ export function OrderColumnsArea(props: OrderColumnsAreaProps) {
 
   useEffect(() => {
     setOrderFields(Object.values(fields).flat())
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fields])
 
   return (

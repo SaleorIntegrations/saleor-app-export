@@ -5,7 +5,9 @@ import {
   ProductFieldEnum,
   OrderSelectedColumnsInfo,
   OrderFieldEnum,
+  RecipientInfo,
 } from './api/export/types'
+import { User } from './api/saleor/types'
 
 export enum FileType {
   CSV = 'CSV',
@@ -17,7 +19,12 @@ export interface TableReport {
   name: string
   entity: string
   recipients: number
+  groups: number
   isSelected: boolean
+}
+
+export interface ExportRecipientInfo extends RecipientInfo {
+  addMore: boolean
 }
 
 export interface ExportStoreCommonData {
@@ -25,6 +32,7 @@ export interface ExportStoreCommonData {
   name: string
   id: number | null
   filter: FilterInfo | null
+  recipients: ExportRecipientInfo
 }
 
 export interface ExportCommonStore extends ExportStoreCommonData {
@@ -32,8 +40,9 @@ export interface ExportCommonStore extends ExportStoreCommonData {
   setName: (name: string) => void
   setId: (id: number | null) => void
   setFilter: (filter: string | null) => void
+  setRecipients: (recipients: ExportRecipientInfo) => void
   initialize: (data: ExportStoreCommonData) => void
-  reset: () => void
+  reset: (currentUser: User) => void
 }
 
 export interface ExportProductColumns {

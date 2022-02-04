@@ -111,6 +111,7 @@ export function ReportTable(props: ReportTableProps) {
                   name={d.name}
                   entity={d.entity}
                   recipients={d.recipients}
+                  group={d.groups}
                   isSelected={d.isSelected}
                   onSelect={(_, id) => toggleReport(id)}
                   onDelete={(_, id) => deleteReport(id)}

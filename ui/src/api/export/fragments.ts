@@ -11,12 +11,18 @@ export const SelectedColumnsInfoFragment = gql`
     ... on OrderSelectedColumnsInfo {
       orderFields: fields
     }
-    __typename
+  }
+`
+export const RecipientInfoFragment = gql`
+  fragment RecipientInfoFragment on RecipientInfo {
+    users
+    permissionGroups
   }
 `
 
 export const ReportFragment = gql`
   ${SelectedColumnsInfoFragment}
+  ${RecipientInfoFragment}
   fragment ReportFragment on Report {
     id
     name
@@ -25,7 +31,9 @@ export const ReportFragment = gql`
     columns {
       ...SelectedColumnsInfoFragment
     }
-    __typename
+    recipients {
+      ...RecipientInfoFragment
+    }
   }
 `
 
@@ -34,7 +42,6 @@ export const ReportErrorFragment = gql`
     code
     message
     field
-    __typename
   }
 `
 
@@ -46,7 +53,6 @@ export const JobFragment = gql`
     report {
       ...ReportFragment
     }
-    __typename
   }
 `
 

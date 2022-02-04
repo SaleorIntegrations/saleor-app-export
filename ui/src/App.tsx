@@ -1,13 +1,24 @@
-import React from 'react'
-import { Routes, Route } from 'react-router-dom'
+import React, { useEffect } from 'react'
+import { Routes, Route, Navigate } from 'react-router-dom'
 
 import { UpdateOrderReport, UpdateProductReport } from './pages/UpdateReport'
+import { useCurrentUserQuery } from './api/saleor/query'
+import { useCurrentUserStore } from './hooks/useCurrentUserStore'
 import { CreateOrderReport, CreateProductReport } from './pages/CreateReport'
 import { ReportList } from './pages/ReportList'
 
 import './App.css'
 
 function App() {
+  const [currentUser] = useCurrentUserQuery()
+  const setCurrentUser = useCurrentUserStore(state => state.setUser)
+
+  useEffect(() => {
+    if (currentUser.data) setCurrentUser(currentUser.data.me)
+  }, [currentUser, setCurrentUser])
+
+  if (currentUser.fetching) return <div>Loading...</div>
+
   return (
     <Routes>
       <Route path="/" element={<ReportList />} />
@@ -19,6 +30,7 @@ function App() {
         <Route path="order" element={<CreateOrderReport />} />
         <Route path="product" element={<CreateProductReport />} />
       </Route>
+      <Route path="*" element={<Navigate to="/" />} />
     </Routes>
   )
 }

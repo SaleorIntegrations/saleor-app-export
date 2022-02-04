@@ -10,7 +10,7 @@ import {
 } from '../Filters'
 import ChannelsFilter from '../Filters/ChannelsFilter'
 
-export const FilterComponents: Record<string, Function> = {
+export const FilterComponents: Record<string, (props: any) => JSX.Element> = {
   attribute: AttributeFilter,
   category: CategoriesFilter,
   channel: ChannelsFilter,

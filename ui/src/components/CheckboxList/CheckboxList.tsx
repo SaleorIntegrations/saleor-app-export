@@ -10,14 +10,14 @@ export interface CheckboxListOption {
   name: string
   value: string
   checked: boolean
-  slug: string
+  slug?: string
 }
 
 interface CheckboxListProps {
   options: CheckboxListOption[]
   mainCheckboxTitle: string
   subCheckboxTitle?: string
-  setOptions: React.SetStateAction<any>
+  setOptions: (options: CheckboxListOption[]) => void
   filter?: (option: CheckboxListOption) => boolean
 }
 
@@ -33,7 +33,7 @@ export function CheckboxList(props: CheckboxListProps) {
     checked: boolean
   ) => {
     setOptions(
-      produce<CheckboxListOption[]>(draft => {
+      produce(options, draft => {
         const option = draft.find(
           option => option.value === _event.target.value
         )
@@ -47,7 +47,7 @@ export function CheckboxList(props: CheckboxListProps) {
     checked: boolean
   ) => {
     setOptions(
-      produce<CheckboxListOption[]>(draft => {
+      produce(options, draft => {
         draft.forEach(option => {
           option.checked = checked
         })

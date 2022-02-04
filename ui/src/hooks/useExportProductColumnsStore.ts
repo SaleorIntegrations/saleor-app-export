@@ -39,7 +39,7 @@ export const useExportProductColumnsStore = create<ExportProductColumnsStore>(
         })
       ),
     reset: () =>
-      set(state => ({
+      set(() => ({
         columns: {
           attributes: [],
           channels: [],

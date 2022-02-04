@@ -9,22 +9,33 @@ export const useExportCommonStore = create<ExportCommonStore>(set => ({
   id: null,
   type: ExportObjectTypesEnum.PRODUCTS,
   filter: null,
-  initialize: data => set(state => data),
-  setFileType: fileType => set(state => ({ fileType: fileType })),
-  setName: name => set(state => ({ name: name })),
-  setId: id => set(state => ({ id: id })),
+  recipients: {
+    addMore: false,
+    users: [],
+    permissionGroups: [],
+  },
+  initialize: data => set(data),
+  setFileType: fileType => set({ fileType: fileType }),
+  setName: name => set({ name: name }),
+  setRecipients: recipients => set({ recipients: recipients }),
+  setId: id => set({ id: id }),
   setFilter: filter =>
-    set(state => {
+    set(() => {
       if (!filter) return { filter: null }
       return { filter: { filterStr: filter } }
     }),
-  reset: () =>
-    set(state => ({
+  reset: currentUser =>
+    set({
       fileType: FileType.CSV,
       name: '',
       id: null,
       filter: null,
-    })),
+      recipients: {
+        addMore: false,
+        users: [currentUser.id],
+        permissionGroups: [],
+      },
+    }),
 }))
 
 export default useExportCommonStore

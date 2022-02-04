@@ -1,14 +1,15 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+
 import { TenantProvider } from 'saleor-app-ui'
 import { ThemeProvider } from '@saleor/macaw-ui'
 import { Provider as QLClientProvider } from 'urql'
 
 import './index.css'
 import App from './App'
+import apiClient from './api/apiClient'
 import reportWebVitals from './reportWebVitals'
 import { Router } from './Router'
-import { apiClient } from './api/apiClient'
 
 ReactDOM.render(
   <React.StrictMode>

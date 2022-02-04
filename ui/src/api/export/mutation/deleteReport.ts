@@ -11,7 +11,6 @@ const apiMutation = gql`
       errors {
         ...ReportErrorFragment
       }
-      __typename
     }
   }
 `

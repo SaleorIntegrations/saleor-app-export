@@ -1,7 +1,12 @@
 import { gql } from 'urql'
 
 import { ReportFragment, ReportErrorFragment } from '../../export/fragments'
-import { ReportResponse, OrderFieldEnum, FilterInfo } from '../../export/types'
+import {
+  ReportResponse,
+  OrderFieldEnum,
+  FilterInfo,
+  RecipientInfo,
+} from '../../export/types'
 import { useAppMutation } from '../useAppMutation'
 
 const apiMutation = gql`
@@ -10,11 +15,17 @@ const apiMutation = gql`
   mutation updateOrdersReport(
     $fields: [OrderFieldEnum!]!
     $name: String
-    $filter: OrderFilterInfo
+    $filter: FilterInfoInput
     $reportId: Int!
+    $recipients: RecipientInfoInput!
   ) {
     updateOrdersReport(
-      input: { columns: { fields: $fields }, name: $name, filter: $filter }
+      input: {
+        columns: { fields: $fields }
+        name: $name
+        filter: $filter
+        recipients: $recipients
+      }
       reportId: $reportId
     ) {
       report {
@@ -23,7 +34,6 @@ const apiMutation = gql`
       errors {
         ...ReportErrorFragment
       }
-      __typename
     }
   }
 `
@@ -37,6 +47,7 @@ interface UpdateOrderReportInput {
   name?: string
   filter?: FilterInfo
   reportId: number
+  recipients: RecipientInfo
 }
 
 export function useMutationUpdateOrderReport() {

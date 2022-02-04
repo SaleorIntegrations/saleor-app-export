@@ -4,6 +4,7 @@ import { ReportFragment, ReportErrorFragment } from '../../export/fragments'
 import {
   FilterInfo,
   ProductFieldEnum,
+  RecipientInfo,
   ReportResponse,
 } from '../../export/types'
 import { useAppMutation } from '../useAppMutation'
@@ -14,11 +15,17 @@ const apiMutation = gql`
   mutation updateProductRepoort(
     $columns: ProductSelectedColumnsInput!
     $name: String
-    $filter: ProductFilterInfo
+    $filter: FilterInfoInput
     $reportId: Int!
+    $recipients: RecipientInfoInput!
   ) {
     updateProductsReport(
-      input: { columns: $columns, name: $name, filter: $filter }
+      input: {
+        columns: $columns
+        name: $name
+        filter: $filter
+        recipients: $recipients
+      }
       reportId: $reportId
     ) {
       report {
@@ -27,7 +34,6 @@ const apiMutation = gql`
       errors {
         ...ReportErrorFragment
       }
-      __typename
     }
   }
 `
@@ -46,6 +52,7 @@ interface UpdateProductReportInput {
     warehouses: string[]
     channels: string[]
   }
+  recipients: RecipientInfo
 }
 
 export function useMutationUpdateProductReport() {

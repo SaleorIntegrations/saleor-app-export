@@ -8,6 +8,7 @@ import ReportType from '../ReportType'
 import SubmitBar from '../SubmitBar'
 
 import useStyles from './styles'
+import SharingBox from '../SharingBox'
 
 interface ReportPageProps {
   reportType: ExportObjectTypesEnum
@@ -18,8 +19,10 @@ interface ReportPageProps {
   ) => void
   isMutable?: boolean
   children: React.ReactNode
-  onExport: () => void
-  onSaveAndExport: () => void
+  onExport?: () => void
+  onSaveAndExport?: () => void
+  onCancel?: () => void
+  onSave?: () => void
 }
 
 export function ReportPage(props: ReportPageProps) {
@@ -33,6 +36,8 @@ export function ReportPage(props: ReportPageProps) {
     children,
     onExport,
     onSaveAndExport,
+    onCancel,
+    onSave,
   } = props
 
   return (
@@ -53,6 +58,7 @@ export function ReportPage(props: ReportPageProps) {
                 isMutable={isMutable}
               />
               <ExportPicker fileType={fileType} setFileType={setFileType} />
+              <SharingBox />
             </Box>
           </Grid>
           <Grid item md={8}>
@@ -60,7 +66,12 @@ export function ReportPage(props: ReportPageProps) {
           </Grid>
         </Grid>
       </Box>
-      <SubmitBar onExport={onExport} onSaveAndExport={onSaveAndExport} />
+      <SubmitBar
+        onExport={onExport}
+        onSaveAndExport={onSaveAndExport}
+        onSave={onSave}
+        onCancel={onCancel}
+      />
     </Container>
   )
 }

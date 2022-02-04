@@ -66,3 +66,19 @@ export const AttributeValueFragment = gql`
     slug
   }
 `
+
+export const UserFragment = gql`
+  fragment UserFragment on User {
+    id
+    firstName
+    lastName
+    email
+  }
+`
+
+export const GroupFragment = gql`
+  fragment GroupFragment on Group {
+    id
+    name
+  }
+`

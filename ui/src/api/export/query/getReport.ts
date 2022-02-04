@@ -32,10 +32,12 @@ export function useQueryReport(variables: Variables, options?: any) {
     context: useMemo(
       () => ({
         url: `${appUrl}/graphql/`,
-        headers: {
-          'X-Saleor-Domain': saleorDomain,
-          'X-Saleor-Token': saleorToken,
-        },
+        fetchOptions: () => ({
+          headers: {
+            'X-Saleor-Domain': saleorDomain,
+            'X-Saleor-Token': saleorToken,
+          },
+        }),
       }),
       [appUrl, saleorDomain, saleorToken]
     ),

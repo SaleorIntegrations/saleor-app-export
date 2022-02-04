@@ -21,11 +21,14 @@ export const SearchInput = React.forwardRef<HTMLDivElement, TextFieldProps>(
           ),
         }}
         fullWidth
+        // eslint-disable-next-line react/prop-types
         className={clsx(classes.root, props.className)}
         placeholder="search..."
       />
     )
   }
 )
+
+SearchInput.displayName = 'SearchInput'
 
 export default SearchInput

@@ -47,15 +47,18 @@ export function ReportList() {
 
   useEffect(() => {
     if (pureReports.data && !pureReports.fetching) {
+      const { edges, pageInfo, totalCount } = pureReports.data.reports
+
       dispatch({
         type: 'SET_REPORTS',
         reports: [
           ...state.reports,
-          ...pureReports.data.reports.edges.map(({ node }) => ({
+          ...edges.map(({ node }) => ({
             isSelected: false,
             id: node.id,
             entity: node.type,
-            recipients: 20,
+            recipients: node.recipients.users.length,
+            groups: node.recipients.permissionGroups.length,
             name: node.name,
           })),
         ],
@@ -63,21 +66,19 @@ export function ReportList() {
       dispatch({
         type: 'SET_NAVIGATION',
         navigation: {
-          hasNext: pureReports.data.reports.pageInfo.hasNext,
-          endCursor: pureReports.data.reports.pageInfo.endCursor,
+          hasNext: pageInfo.hasNext,
+          endCursor: pageInfo.endCursor,
         },
       })
       dispatch({
         type: 'SET_TOTAL',
-        total: pureReports.data.reports.totalCount,
+        total: totalCount,
       })
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pureReports])
 
   useEffect(() => {
     if (state.navigation.hasNext) refetchPureReports()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.navigation.endCursor])
 
   return (

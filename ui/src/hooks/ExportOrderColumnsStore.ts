@@ -18,11 +18,11 @@ export const useExportOrderColumnsStore = create<ExportOrderColumnsStore>(
         })
       ),
     reset: () =>
-      set(state => ({
+      set({
         columns: {
           orderFields: [],
         },
-      })),
+      }),
   })
 )
 

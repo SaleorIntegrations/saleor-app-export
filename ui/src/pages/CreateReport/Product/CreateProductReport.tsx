@@ -7,34 +7,31 @@ import {
   useMutationRunReport,
 } from '../../../api/export/mutation'
 import {
+  useCurrentUserStore,
   useExportCommonStore,
   useExportProductColumnsStore,
 } from '../../../hooks'
 
 export function CreateProductReport() {
-  const navigation = useNavigate()
+  const navigate = useNavigate()
   const commonStore = useExportCommonStore()
   const columnsStore = useExportProductColumnsStore()
+  const currentUser = useCurrentUserStore(state => state.user)
   const [, createProductReport] = useMutationCreateProductsReport()
   const [, runReport] = useMutationRunReport()
   const [isLoading, setIsLoading] = useState(true)
 
-  const onExport = async () => {
-    await createProductExportReport()
-
-    if (commonStore.id) runReport({ reportId: commonStore.id || -1 })
-  }
-
-  const onSaveAndExport = async () => {
+  const onSave = async () => {
     const id = await createProductExportReport()
 
     if (id) {
       runReport({ reportId: id })
-      navigation(`/report/${id}/product`)
+      navigate(`/report/${id}/product`)
     }
   }
 
   const createProductExportReport = async () => {
+    const { addMore, users, permissionGroups } = commonStore.recipients
     const response = await createProductReport({
       columns: {
         attributes: columnsStore.columns.attributes,
@@ -43,6 +40,10 @@ export function CreateProductReport() {
         warehouses: columnsStore.columns.warehouses,
       },
       name: commonStore.name,
+      recipients: {
+        users: addMore ? users : [currentUser.id],
+        permissionGroups: addMore ? permissionGroups : [],
+      },
     })
 
     const report = response.data?.createProductsReport
@@ -55,14 +56,13 @@ export function CreateProductReport() {
   }
 
   const onTypeChange = () => {
-    navigation('/create/order', { replace: true })
+    navigate('/create/order', { replace: true })
   }
 
   useEffect(() => {
-    commonStore.reset()
+    commonStore.reset(currentUser)
     columnsStore.reset()
     setIsLoading(false)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   if (isLoading) return <div>Loading...</div>
@@ -74,8 +74,8 @@ export function CreateProductReport() {
       setReportType={onTypeChange}
       fileType={commonStore.fileType}
       setFileType={fileType => commonStore.setFileType(fileType)}
-      onExport={onExport}
-      onSaveAndExport={onSaveAndExport}
+      onSave={onSave}
+      onCancel={() => navigate('/')}
     >
       <ProductSetting />
     </ReportPage>

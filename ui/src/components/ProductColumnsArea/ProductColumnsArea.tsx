@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react'
 import { produce } from 'immer'
 import { Typography, Box } from '@material-ui/core'
