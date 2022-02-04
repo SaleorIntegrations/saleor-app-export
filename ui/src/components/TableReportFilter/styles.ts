@@ -5,6 +5,14 @@ export const useStyles = makeStyles(theme => ({
     borderBottom: '1px solid #EFF5F8',
     padding: theme.spacing(0, 4),
   },
+  tab: {
+    minHeight: 'auto',
+    '& > .MuiTab-wrapper': {
+      flexDirection: 'row-reverse',
+      gap: theme.spacing(0.5),
+      justifyContent: 'space-around',
+    },
+  },
   searchBar: {
     display: 'flex',
     alignItems: 'center',

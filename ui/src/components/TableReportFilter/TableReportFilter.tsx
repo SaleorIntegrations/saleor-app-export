@@ -109,6 +109,7 @@ export function TableReportFilter() {
       >
         {Object.keys(tabs).map(key => (
           <Tab
+            className={classes.tab}
             icon={
               !['ALL', 'SEARCH_CUSTOM'].includes(key) ? (
                 <DeleteIcon onClick={event => onDelete(event, key)} />
