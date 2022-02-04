@@ -48,9 +48,7 @@ export function RecipientsTabs(props: RecipientsTabsProps) {
     () =>
       recipients.permissionGroups.filter(
         groupId =>
-          !fetchedGroups.fetchedOptions
-            .map(option => option.id)
-            .includes(groupId)
+          !fetchedGroups.fetchedOptions.find(option => option.id === groupId)
       ),
     [recipients.permissionGroups, fetchedGroups.fetchedOptions]
   )
@@ -58,9 +56,7 @@ export function RecipientsTabs(props: RecipientsTabsProps) {
     () =>
       recipients.users.filter(
         userId =>
-          !fetchedRecipients.fetchedOptions
-            .map(option => option.id)
-            .includes(userId)
+          !fetchedRecipients.fetchedOptions.find(option => option.id === userId)
       ),
     [recipients.users, fetchedGroups.fetchedOptions]
   )

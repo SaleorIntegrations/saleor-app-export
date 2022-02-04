@@ -2,7 +2,7 @@
   "root": true,
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "project": "ui/tsconfig.json",
+    "project": "tsconfig.json",
     "sourceType": "module"
   },
   "plugins": [

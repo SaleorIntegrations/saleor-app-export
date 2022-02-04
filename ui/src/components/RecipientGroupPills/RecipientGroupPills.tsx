@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { produce } from 'immer'
 
 import { useExportCommonStore } from '../../hooks'
@@ -18,10 +18,7 @@ export function RecipientGroupPills() {
     },
     { pause: true }
   )
-  const allowToDisplay = useMemo(
-    () => 5 - (recipients.users.length - 1),
-    [recipients.users]
-  )
+  const allowToDisplay = 5 - (recipients.users.length - 1)
 
   const onDelete = (recipientId: string) => {
     setRecipients(
@@ -37,7 +34,7 @@ export function RecipientGroupPills() {
     refetchGroups()
   }, [recipients.permissionGroups])
 
-  if (recipients.permissionGroups.length < 1) return null
+  if (allowToDisplay < 1 || recipients.permissionGroups.length < 1) return null
 
   return (
     <PillsSkeleton isLoaded={!fetchedGroups.fetching} repeat={3}>
