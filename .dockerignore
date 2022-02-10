@@ -14,3 +14,5 @@ media/
 docker-compose.yml
 
 Makefile
+
+ui/
