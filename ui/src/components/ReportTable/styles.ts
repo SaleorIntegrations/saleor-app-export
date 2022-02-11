@@ -16,7 +16,7 @@ export const useStyles = makeStyles(theme => ({
     visibility: 'hidden',
   },
   selectedText: {
-    position: 'absolute',
+    position: 'fixed',
     zIndex: 10,
     left: '70px',
     top: 0,

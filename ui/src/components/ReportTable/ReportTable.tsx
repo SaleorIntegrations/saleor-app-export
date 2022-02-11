@@ -79,7 +79,7 @@ export function ReportTable(props: ReportTableProps) {
 
   return (
     <Box height={`calc(100% - ${coreSubtract}px)`} minHeight="200px">
-      <TableContainer style={{ height: '100%', overflow: 'scroll' }}>
+      <TableContainer style={{ height: '100%', overflow: 'auto' }}>
         <Table stickyHeader>
           <ReportTableHeader
             numSelected={
