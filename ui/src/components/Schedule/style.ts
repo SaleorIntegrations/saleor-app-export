@@ -1,6 +1,6 @@
 import { makeStyles } from '@saleor/macaw-ui'
 
-export const useStyles = makeStyles(() => ({
+export const useStyles = makeStyles(theme => ({
   zoneToggle: {
     borderRadius: '4px !important',
     width: '100% !important',
