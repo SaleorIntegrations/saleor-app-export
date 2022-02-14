@@ -13,6 +13,7 @@ import { produce } from 'immer'
 import { useStyles } from './styles'
 import SurfaceModal from '../SurfaceModal'
 import { PopoverFilter } from '../PopoverFilter'
+import { FilterContainer } from '../FilterContainer'
 
 type Filter = {
   query: string
@@ -137,10 +138,7 @@ export function TableReportFilter() {
       <Box className={classes.searchBar}>
         <PopoverFilter
           render={setIsFilterOpen => (
-            <div>
-              bbbb
-              <button onClick={() => setIsFilterOpen(false)}>aaaa</button>
-            </div>
+            <FilterContainer setIsOpen={setIsFilterOpen} />
           )}
         />
         <TextField
