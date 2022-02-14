@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   Tabs,
   Tab,
@@ -12,7 +12,7 @@ import { produce } from 'immer'
 
 import { useStyles } from './styles'
 import SurfaceModal from '../SurfaceModal'
-import { useEffect } from 'react'
+import { PopoverFilter } from '../PopoverFilter'
 
 type Filter = {
   query: string
@@ -135,9 +135,14 @@ export function TableReportFilter() {
         ))}
       </Tabs>
       <Box className={classes.searchBar}>
-        <Button variant="text" color="primary">
-          Filter
-        </Button>
+        <PopoverFilter
+          render={setIsFilterOpen => (
+            <div>
+              bbbb
+              <button onClick={() => setIsFilterOpen(false)}>aaaa</button>
+            </div>
+          )}
+        />
         <TextField
           fullWidth
           className={classes.search}
