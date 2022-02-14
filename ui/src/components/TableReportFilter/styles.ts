@@ -6,12 +6,7 @@ export const useStyles = makeStyles(theme => ({
     padding: theme.spacing(0, 4),
   },
   tab: {
-    minHeight: 'auto',
-    '& > .MuiTab-wrapper': {
-      flexDirection: 'row-reverse',
-      gap: theme.spacing(0.5),
-      justifyContent: 'space-around',
-    },
+    position: 'relative',
   },
   searchBar: {
     display: 'flex',
@@ -23,6 +18,17 @@ export const useStyles = makeStyles(theme => ({
   search: {
     '& input': {
       padding: theme.spacing(1.2, 1),
+    },
+  },
+  icon: {
+    position: 'absolute',
+    right: '2px',
+    top: 0,
+    bottom: 0,
+    marginTop: 'auto',
+    marginBottom: 'auto',
+    '&:hover': {
+      color: theme.palette.primary.main,
     },
   },
 }))

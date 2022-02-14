@@ -1,6 +1,13 @@
 import React, { useState } from 'react'
-import { Tabs, Tab, Box, Button, TextField } from '@material-ui/core'
-import { HighlightOff as DeleteIcon } from '@material-ui/icons'
+import {
+  Tabs,
+  Tab,
+  Box,
+  Button,
+  TextField,
+  Typography,
+} from '@material-ui/core'
+import { CloseRounded as DeleteIcon } from '@material-ui/icons'
 import { produce } from 'immer'
 
 import { useStyles } from './styles'
@@ -60,12 +67,14 @@ export function TableReportFilter() {
   }
 
   const onTabChange = (newTab: string) => {
-    setTab(newTab)
-    setTabs(
-      produce(draft => {
-        delete draft['SEARCH_CUSTOM']
-      })
-    )
+    if (newTab !== tab) {
+      setTab(newTab)
+      setTabs(
+        produce(draft => {
+          delete draft['SEARCH_CUSTOM']
+        })
+      )
+    }
   }
 
   const onSearchSave = () => {
@@ -109,15 +118,19 @@ export function TableReportFilter() {
       >
         {Object.keys(tabs).map(key => (
           <Tab
-            className={classes.tab}
-            icon={
-              !['ALL', 'SEARCH_CUSTOM'].includes(key) ? (
-                <DeleteIcon onClick={event => onDelete(event, key)} />
-              ) : undefined
-            }
             value={key}
             key={key}
-            label={tabs[key].name}
+            label={
+              <>
+                {tabs[key].name}
+                {!['ALL', 'SEARCH_CUSTOM'].includes(key) && (
+                  <DeleteIcon
+                    className={classes.icon}
+                    onClick={event => onDelete(event, key)}
+                  />
+                )}
+              </>
+            }
           />
         ))}
       </Tabs>
@@ -151,8 +164,14 @@ export function TableReportFilter() {
       <SurfaceModal
         isOpen={isOpen}
         onSave={onSearchSave}
-        onClose={() => setIsOpen(false)}
+        onClose={() => {
+          setName('')
+          setIsOpen(false)
+        }}
       >
+        <Box mb={3}>
+          <Typography variant="h5">Save Custom Search</Typography>
+        </Box>
         <TextField
           label="New Title"
           fullWidth
