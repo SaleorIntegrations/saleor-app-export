@@ -1,19 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import {
-  Tabs,
-  Tab,
-  Box,
-  Button,
-  TextField,
-  Typography,
-} from '@material-ui/core'
+import { Tabs, Tab, Box, Button, TextField } from '@material-ui/core'
 import { CloseRounded as DeleteIcon } from '@material-ui/icons'
 import { produce } from 'immer'
 
-import { useStyles } from './styles'
-import SurfaceModal from '../SurfaceModal'
 import { PopoverFilter } from '../PopoverFilter'
 import { FilterContainer } from '../FilterContainer'
+import { CreateCustomFilter } from '../CreateCustomFilter'
+
+import { useStyles } from './styles'
 
 type Filter = {
   query: string
@@ -164,24 +158,16 @@ export function TableReportFilter() {
           </Button>
         )}
       </Box>
-      <SurfaceModal
+      <CreateCustomFilter
         isOpen={isOpen}
         onSave={onSearchSave}
         onClose={() => {
           setName('')
           setIsOpen(false)
         }}
-      >
-        <Box mb={3}>
-          <Typography variant="h5">Save Custom Search</Typography>
-        </Box>
-        <TextField
-          label="New Title"
-          fullWidth
-          value={name}
-          onChange={event => setName(event.currentTarget.value)}
-        />
-      </SurfaceModal>
+        setName={setName}
+        name={name}
+      />
     </Box>
   )
 }
