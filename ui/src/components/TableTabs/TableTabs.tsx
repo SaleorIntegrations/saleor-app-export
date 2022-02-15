@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { Tabs as NavigationTabs, Tab as NavigationTab } from '@material-ui/core'
-import { DeleteRounded as DeleteIcon } from '@material-ui/icons'
+import { CloseRounded as DeleteIcon } from '@material-ui/icons'
 
 import { useTabs } from '../../hooks'
 
@@ -17,10 +17,6 @@ export function TableTabs() {
   useEffect(() => {
     window.localStorage.setItem('FILTER', JSON.stringify(tabs))
   }, [tabs])
-
-  useEffect(() => {
-    setCurrentTab('ALL')
-  }, [])
 
   return (
     <NavigationTabs

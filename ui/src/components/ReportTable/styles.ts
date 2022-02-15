@@ -24,6 +24,10 @@ export const useStyles = makeStyles(theme => ({
     display: 'flex',
     alignItems: 'center',
   },
+  container: {
+    overflow: 'auto',
+    height: 'calc(100% - 52px)',
+  },
 }))
 
 export default useStyles

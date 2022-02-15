@@ -10,7 +10,6 @@ import useStyles from './style'
 
 export function ReportList() {
   const classes = useStyles()
-  const headerRef = useRef<HTMLDivElement>(null)
   const [state, dispatch] = useReducer(reportsReducer, initialReports)
   const [page, setPage] = useState(0)
   const [reportsPerPage, setReportsPerPage] = useState(10)
@@ -83,10 +82,8 @@ export function ReportList() {
 
   return (
     <Paper className={classes.paper}>
-      <div ref={headerRef}>
-        <TableHeader />
-        <TableReportFilter />
-      </div>
+      <TableHeader />
+      <TableReportFilter />
       <ReportTable
         deleteSelectedReports={deleteSelectedReports}
         deleteReport={deleteReport}
@@ -105,7 +102,6 @@ export function ReportList() {
           setPage(0)
           setReportsPerPage(rowsPerPage)
         }}
-        subtract={headerRef.current?.clientHeight}
       />
     </Paper>
   )

@@ -5,8 +5,9 @@ export const useStyles = makeStyles(theme => ({
     display: 'flex',
     alignItems: 'center',
     gap: theme.spacing(2),
-    padding: theme.spacing(2, 4),
+    padding: theme.spacing(0, 4),
     borderBottom: '1px solid #EFF5F8',
+    height: '80px',
   },
   search: {
     '& input': {

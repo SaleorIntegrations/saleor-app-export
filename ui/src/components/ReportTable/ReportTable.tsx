@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
   Box,
@@ -15,6 +15,7 @@ import { ExportObjectTypesEnum } from '../../api/export/types'
 
 import ReportTableHeader from './ReportTableHeader'
 import ReportTableRow from './ReportTableRow'
+import useStyles from './styles'
 
 interface ReportTableProps {
   reports: TableReport[]
@@ -32,6 +33,7 @@ interface ReportTableProps {
 }
 
 export function ReportTable(props: ReportTableProps) {
+  const classes = useStyles()
   const {
     reports,
     toggleReport,
@@ -44,13 +46,10 @@ export function ReportTable(props: ReportTableProps) {
     setPage,
     rowsPerPage,
     setRowsPerPage,
-    subtract,
   } = props
   const navigate = useNavigate()
-  const paginationRef = useRef<HTMLDivElement>(null)
   const [orderBy, setOrderBy] = useState('name')
   const [order, setOrder] = useState<Order>('asc')
-  const [coreSubtract, setCoreSubtract] = useState(0)
 
   const onSort = (
     event: React.MouseEvent<HTMLSpanElement, MouseEvent>,
@@ -70,16 +69,9 @@ export function ReportTable(props: ReportTableProps) {
     }
   }
 
-  useEffect(() => {
-    const paginationHeight = paginationRef.current?.clientHeight || 52
-    const headerHeight = subtract || 0
-    const newCoreSubtract = paginationHeight + headerHeight
-    setCoreSubtract(newCoreSubtract)
-  }, [subtract, paginationRef])
-
   return (
-    <Box height={`calc(100% - ${coreSubtract}px)`} minHeight="200px">
-      <TableContainer style={{ height: '100%', overflow: 'auto' }}>
+    <Box flexGrow={1} minHeight="200px" overflow="auto">
+      <TableContainer className={classes.container}>
         <Table stickyHeader>
           <ReportTableHeader
             numSelected={
@@ -121,7 +113,6 @@ export function ReportTable(props: ReportTableProps) {
         </Table>
       </TableContainer>
       <TablePagination
-        ref={paginationRef}
         rowsPerPageOptions={[5, 10, 25, 50]}
         count={count}
         component="div"
