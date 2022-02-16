@@ -49,7 +49,7 @@ export function ReportTableRow(props: ReportTableRowProps) {
       tabIndex={-1}
       selected={isSelected}
     >
-      <TableCell padding="checkbox">
+      <TableCell width="4%" padding="checkbox">
         <Checkbox
           checked={isSelected}
           onClick={event => {
@@ -58,11 +58,19 @@ export function ReportTableRow(props: ReportTableRowProps) {
           }}
         />
       </TableCell>
-      <TableCell align="left">{name}</TableCell>
-      <TableCell align="left">{entity}</TableCell>
-      <TableCell align="right">{recipients}</TableCell>
-      <TableCell align="right">{group}</TableCell>
-      <TableCell align="center" padding="checkbox">
+      <TableCell width="23%" align="left">
+        {name}
+      </TableCell>
+      <TableCell width="23%" align="left">
+        {entity}
+      </TableCell>
+      <TableCell width="23%" align="right">
+        {recipients}
+      </TableCell>
+      <TableCell width="23%" align="right">
+        {group}
+      </TableCell>
+      <TableCell width="4%" align="center" padding="checkbox">
         <IconButton
           onClick={event => {
             event.stopPropagation()

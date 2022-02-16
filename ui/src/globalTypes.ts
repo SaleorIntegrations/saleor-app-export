@@ -69,3 +69,7 @@ export interface ExportOrderColumnsStore extends ExportOrderColumns {
   setOrderFields: (orderFields: OrderFieldEnum[]) => void
   reset: () => void
 }
+
+export type Filter = {
+  query: string
+}
