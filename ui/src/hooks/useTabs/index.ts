@@ -1,30 +1,7 @@
 import create from 'zustand'
 import { produce } from 'immer'
 
-import { Filter } from '../../globalTypes'
-
-export interface Tab {
-  key: string
-  title: string
-  filter: Filter
-}
-
-type Tabs = Record<string, Tab>
-type SetCurrentTab = (key: string) => void
-type AddTab = (tab: Tab) => void
-type RemoveTab = (key: string) => void
-type UpdateCurrentTab = (tab: Tab) => void
-type AddCustomTab = (filter: Filter) => void
-
-interface TabStore {
-  tabs: Tabs
-  currentTab: Tab
-  setCurrentTab: SetCurrentTab
-  addTab: AddTab
-  removeTab: RemoveTab
-  updateCurrentTab: UpdateCurrentTab
-  addCustomTab: AddCustomTab
-}
+import { TabStore, Tabs } from './types'
 
 const defaultState: Tabs = {
   ALL_EXPORTS: {
@@ -43,7 +20,7 @@ export const useTabs = create<TabStore>(set => ({
     window.localStorage.getItem('FILTER') || JSON.stringify(defaultState)
   ),
   currentTab: defaultState['ALL_EXPORTS'],
-  setCurrentTab: (key: string) =>
+  setCurrentTab: key =>
     set(state =>
       produce(state, draft => {
         draft.currentTab = state.tabs[key]
@@ -52,7 +29,7 @@ export const useTabs = create<TabStore>(set => ({
         }
       })
     ),
-  addTab: (tab: Tab) => {
+  addTab: tab => {
     if (RESERVED_TABS.includes(tab.key)) {
       throw new Error('Name of tab is reserved')
     }
@@ -63,7 +40,7 @@ export const useTabs = create<TabStore>(set => ({
       })
     )
   },
-  removeTab: (key: string) =>
+  removeTab: key =>
     set(state =>
       produce(state, draft => {
         if (key === draft.currentTab.key) {
@@ -72,14 +49,14 @@ export const useTabs = create<TabStore>(set => ({
         delete draft.tabs[key]
       })
     ),
-  updateCurrentTab: (tab: Tab) =>
+  updateCurrentTab: tab =>
     set(state =>
       produce(state, draft => {
         draft.tabs[tab.key] = tab
         draft.currentTab = tab
       })
     ),
-  addCustomTab: (filter: Filter) =>
+  addCustomTab: filter =>
     set(state =>
       produce(state, draft => {
         draft.tabs['CUSTOM_FILTER'] = {

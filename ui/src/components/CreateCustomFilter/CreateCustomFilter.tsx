@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Box, Typography, TextField, FormControl } from '@material-ui/core'
+import { Box, Typography, TextField } from '@material-ui/core'
 
 import { SurfaceModal } from '../SurfaceModal'
 
