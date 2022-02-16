@@ -36,6 +36,8 @@ const defaultState: Tabs = {
   },
 }
 
+export const RESERVED_TABS = ['ALL_EXPORTS', 'CUSTOM_FILTER']
+
 export const useTabs = create<TabStore>(set => ({
   tabs: JSON.parse(
     window.localStorage.getItem('FILTER') || JSON.stringify(defaultState)
@@ -50,12 +52,17 @@ export const useTabs = create<TabStore>(set => ({
         }
       })
     ),
-  addTab: (tab: Tab) =>
+  addTab: (tab: Tab) => {
+    if (RESERVED_TABS.includes(tab.key)) {
+      throw new Error('Name of tab is reserved')
+    }
+
     set(state =>
       produce(state, draft => {
         draft.tabs[tab.key] = tab
       })
-    ),
+    )
+  },
   removeTab: (key: string) =>
     set(state =>
       produce(state, draft => {

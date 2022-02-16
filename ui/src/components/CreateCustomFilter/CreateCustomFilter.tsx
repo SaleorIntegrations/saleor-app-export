@@ -1,5 +1,5 @@
-import React from 'react'
-import { Box, Typography, TextField } from '@material-ui/core'
+import React, { useState } from 'react'
+import { Box, Typography, TextField, FormControl } from '@material-ui/core'
 
 import { SurfaceModal } from '../SurfaceModal'
 
@@ -17,14 +17,36 @@ interface CreateCustomFilterProps {
 
 export function CreateCustomFilter(props: CreateCustomFilterProps) {
   const { isOpen, onSave, onClose, setName, name } = props
+  const [error, setError] = useState({
+    isActive: false,
+    message: '',
+  })
+
+  const onCreate = () => {
+    try {
+      onSave()
+      setError({
+        isActive: false,
+        message: '',
+      })
+    } catch (fail) {
+      const onCreateError = fail as any
+      setError({
+        isActive: true,
+        message: onCreateError.message as string,
+      })
+    }
+  }
 
   return (
-    <SurfaceModal isOpen={isOpen} onSave={onSave} onClose={onClose}>
+    <SurfaceModal isOpen={isOpen} onSave={onCreate} onClose={onClose}>
       <Box mb={3}>
         <Typography variant="h5">Save Custom Search</Typography>
       </Box>
       <TextField
         label="New Title"
+        error={error.isActive}
+        helperText={error.message}
         fullWidth
         value={name}
         onChange={event => setName(event.currentTarget.value)}

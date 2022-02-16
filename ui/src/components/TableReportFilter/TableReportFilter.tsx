@@ -19,10 +19,7 @@ export function TableReportFilter() {
   const [name, setName] = useState('')
 
   const onFilterChange = (filter: Filter) => {
-    const key =
-      currentTab.key === 'ALL_EXPORTS' ? 'CUSTOM_FILTER' : currentTab.key
-
-    if (currentTab.key === key) {
+    if (currentTab.key !== 'ALL_EXPORTS') {
       updateCurrentTab(
         produce(currentTab, draft => {
           draft.filter = filter
@@ -59,11 +56,10 @@ export function TableReportFilter() {
           className={classes.search}
           value={currentTab.filter.query}
           onChange={event =>
-            onFilterChange(
-              produce(currentTab.filter, draft => {
-                draft.query = event.target.value
-              })
-            )
+            onFilterChange({
+              ...currentTab.filter,
+              query: event.target.value,
+            })
           }
         />
         {currentTab.key === 'CUSTOM_FILTER' && (

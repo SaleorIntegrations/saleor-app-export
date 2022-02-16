@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { Tabs as NavigationTabs, Tab as NavigationTab } from '@material-ui/core'
 import { CloseRounded as DeleteIcon } from '@material-ui/icons'
 
-import { useTabs } from '../../hooks'
+import { useTabs, RESERVED_TABS } from '../../hooks'
 
 import { useStyles } from './styles'
 
@@ -33,7 +33,7 @@ export function TableTabs() {
           label={
             <>
               {tabs[key].title}
-              {!['ALL_EXPORTS', 'CUSTOM_FILTER'].includes(key) && (
+              {!RESERVED_TABS.includes(key) && (
                 <DeleteIcon
                   className={classes.icon}
                   onClick={event => {
