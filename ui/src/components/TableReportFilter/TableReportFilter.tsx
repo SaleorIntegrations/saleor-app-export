@@ -1,32 +1,19 @@
 import React, { useState } from 'react'
-import { Box, Button, TextField } from '@material-ui/core'
-import { produce } from 'immer'
+import { Box, Button } from '@material-ui/core'
 
 import { PopoverFilter } from '../PopoverFilter'
 import { FilterContainer } from '../FilterContainer'
 import { CreateCustomFilter } from '../CreateCustomFilter'
 import { useTabs } from '../../hooks'
 import { TableTabs } from '../TableTabs'
-import { Filter } from '../../globalTypes'
 
 import { useStyles } from './styles'
+import TableSearch from '../TableSearch'
 
 export function TableReportFilter() {
-  const { updateCurrentTab, currentTab, addCustomTab } = useTabs()
   const classes = useStyles()
+  const { currentTab } = useTabs()
   const [isOpen, setIsOpen] = useState(false)
-
-  const onFilterChange = (filter: Filter) => {
-    if (currentTab.key !== 'ALL_EXPORTS') {
-      updateCurrentTab(
-        produce(currentTab, draft => {
-          draft.filter = filter
-        })
-      )
-    } else {
-      addCustomTab(filter)
-    }
-  }
 
   return (
     <Box>
@@ -37,17 +24,7 @@ export function TableReportFilter() {
             <FilterContainer setIsOpen={setIsFilterOpen} />
           )}
         />
-        <TextField
-          fullWidth
-          className={classes.search}
-          value={currentTab.filter.query}
-          onChange={event =>
-            onFilterChange({
-              ...currentTab.filter,
-              query: event.target.value,
-            })
-          }
-        />
+        <TableSearch />
         {currentTab.key === 'CUSTOM_FILTER' && (
           <Button
             style={{ minWidth: 'max-content' }}

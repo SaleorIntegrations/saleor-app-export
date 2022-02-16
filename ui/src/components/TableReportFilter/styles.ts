@@ -9,11 +9,6 @@ export const useStyles = makeStyles(theme => ({
     borderBottom: '1px solid #EFF5F8',
     height: '80px',
   },
-  search: {
-    '& input': {
-      padding: theme.spacing(1.2, 1),
-    },
-  },
 }))
 
 export default useStyles
