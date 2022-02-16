@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useState, useRef } from 'react'
+import React, { useEffect, useReducer, useState } from 'react'
 import { Paper } from '@material-ui/core'
 
 import { useMutationDeleteReport } from '../../api/export/mutation'

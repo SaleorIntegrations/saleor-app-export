@@ -33,7 +33,7 @@ export function TableTabs() {
           label={
             <>
               {tabs[key].title}
-              {!['ALL', 'SEARCH_CUSTOM'].includes(key) && (
+              {!['ALL_EXPORTS', 'CUSTOM_FILTER'].includes(key) && (
                 <DeleteIcon
                   className={classes.icon}
                   onClick={event => {

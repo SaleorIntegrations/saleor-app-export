@@ -18,7 +18,8 @@ export function TableReportFilter() {
   const [name, setName] = useState('')
 
   const onFilterChange = (filter: Filter) => {
-    const key = currentTab.key === 'ALL' ? 'SEARCH_CUSTOM' : currentTab.key
+    const key =
+      currentTab.key === 'ALL_EXPORTS' ? 'CUSTOM_FILTER' : currentTab.key
 
     if (currentTab.key === key) {
       updateCurrentTab(
@@ -69,7 +70,7 @@ export function TableReportFilter() {
             )
           }
         />
-        {currentTab.key === 'SEARCH_CUSTOM' && (
+        {currentTab.key === 'CUSTOM_FILTER' && (
           <Button
             style={{ minWidth: 'max-content' }}
             onClick={() => setIsOpen(true)}

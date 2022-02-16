@@ -14,6 +14,7 @@ type SetCurrentTab = (key: string) => void
 type AddTab = (tab: Tab) => void
 type RemoveTab = (key: string) => void
 type UpdateCurrentTab = (tab: Tab) => void
+type AddCustomTab = (filter: Filter) => void
 
 interface TabStore {
   tabs: Tabs
@@ -22,34 +23,30 @@ interface TabStore {
   addTab: AddTab
   removeTab: RemoveTab
   updateCurrentTab: UpdateCurrentTab
+  addCustomTab: AddCustomTab
 }
 
-export const useTabs = create<TabStore>(set => ({
-  tabs: JSON.parse(
-    window.localStorage.getItem('FILTER') ||
-      JSON.stringify({
-        ALL: {
-          key: 'ALL',
-          title: 'All Exports',
-          filter: {
-            query: '',
-          },
-        },
-      })
-  ),
-  currentTab: {
-    key: 'ALL',
+const defaultState: Tabs = {
+  ALL_EXPORTS: {
+    key: 'ALL_EXPORTS',
     title: 'All Exports',
     filter: {
       query: '',
     },
   },
+}
+
+export const useTabs = create<TabStore>(set => ({
+  tabs: JSON.parse(
+    window.localStorage.getItem('FILTER') || JSON.stringify(defaultState)
+  ),
+  currentTab: defaultState['ALL_EXPORTS'],
   setCurrentTab: (key: string) =>
     set(state =>
       produce(state, draft => {
         draft.currentTab = state.tabs[key]
-        if (key !== 'SEARCH_CUSTOM') {
-          delete draft.tabs['SEARCH_CUSTOM']
+        if (key !== 'CUSTOM_FILTER') {
+          delete draft.tabs['CUSTOM_FILTER']
         }
       })
     ),
@@ -63,7 +60,7 @@ export const useTabs = create<TabStore>(set => ({
     set(state =>
       produce(state, draft => {
         if (key === draft.currentTab.key) {
-          draft.currentTab = draft.tabs['ALL']
+          draft.currentTab = draft.tabs['ALL_EXPORTS']
         }
         delete draft.tabs[key]
       })
@@ -73,6 +70,17 @@ export const useTabs = create<TabStore>(set => ({
       produce(state, draft => {
         draft.tabs[tab.key] = tab
         draft.currentTab = tab
+      })
+    ),
+  addCustomTab: (filter: Filter) =>
+    set(state =>
+      produce(state, draft => {
+        draft.tabs['CUSTOM_FILTER'] = {
+          key: 'CUSTOM_FILTER',
+          title: 'Custom Filter',
+          filter: filter,
+        }
+        draft.currentTab = draft.tabs['CUSTOM_FILTER']
       })
     ),
 }))
