@@ -83,6 +83,7 @@ export enum TimezoneEnum {
   LOCAL = 'LOCAL',
   CHANNEL = 'CHANNEL',
   UTC = 'UTC',
+}
 
 export type Filter = {
   query: string
