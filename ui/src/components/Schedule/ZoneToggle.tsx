@@ -1,11 +1,11 @@
 import { withStyles } from '@material-ui/core'
 import { ToggleButton } from '@material-ui/lab'
 
-export const ZoneToggle = withStyles({
+export const ZoneToggle = withStyles(theme => ({
   selected: {
-    backgroundColor: '#06847B !important',
+    backgroundColor: `${theme.palette.primary.light} !important`,
     color: '#FFFFFF !important',
   },
-})(ToggleButton)
+}))(ToggleButton)
 
 export default ZoneToggle

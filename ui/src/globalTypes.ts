@@ -70,6 +70,20 @@ export interface ExportOrderColumnsStore extends ExportOrderColumns {
   reset: () => void
 }
 
+export enum ExportFrequency {
+  DAILY = 'DAILY',
+  WEEKLY = 'WEEKLY',
+  BIWEEKLY = 'BIWEEKLY',
+  MONTHLY = 'MONTHLY',
+  QUARTERLY = 'QUARTERLY',
+  YEARLY = 'YEARLY',
+}
+
+export enum TimezoneEnum {
+  LOCAL = 'LOCAL',
+  CHANNEL = 'CHANNEL',
+  UTC = 'UTC',
+
 export type Filter = {
   query: string
 }
