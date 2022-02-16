@@ -2,33 +2,35 @@ import React, { useState } from 'react'
 import { Box, Typography, TextField } from '@material-ui/core'
 
 import { SurfaceModal } from '../SurfaceModal'
+import { useTabs } from '../../hooks'
 
-type OnSave = () => void
-type OnClose = () => void
-type SetName = (name: string) => void
+type SetIsOpen = (isOpen: boolean) => void
 
 interface CreateCustomFilterProps {
   isOpen: boolean
-  onSave: OnSave
-  onClose: OnClose
-  setName: SetName
-  name: string
+  setIsOpen: SetIsOpen
 }
 
 export function CreateCustomFilter(props: CreateCustomFilterProps) {
-  const { isOpen, onSave, onClose, setName, name } = props
+  const { isOpen, setIsOpen } = props
+  const { addTab, setCurrentTab, currentTab } = useTabs()
+  const [name, setName] = useState('')
   const [error, setError] = useState({
     isActive: false,
     message: '',
   })
 
   const onCreate = () => {
+    const tab = {
+      key: name.toUpperCase().replaceAll(' ', '_'),
+      title: name,
+      filter: currentTab.filter,
+    }
     try {
-      onSave()
-      setError({
-        isActive: false,
-        message: '',
-      })
+      addTab(tab)
+      setCurrentTab(tab.key)
+
+      onClose()
     } catch (fail) {
       const onCreateError = fail as any
       setError({
@@ -36,6 +38,15 @@ export function CreateCustomFilter(props: CreateCustomFilterProps) {
         message: onCreateError.message as string,
       })
     }
+  }
+
+  const onClose = () => {
+    setName('')
+    setIsOpen(false)
+    setError({
+      isActive: false,
+      message: '',
+    })
   }
 
   return (

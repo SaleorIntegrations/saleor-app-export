@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useState } from 'react'
 import { Box, Button, TextField } from '@material-ui/core'
 import { produce } from 'immer'
 
@@ -12,11 +12,9 @@ import { Filter } from '../../globalTypes'
 import { useStyles } from './styles'
 
 export function TableReportFilter() {
-  const { addTab, setCurrentTab, updateCurrentTab, currentTab, addCustomTab } =
-    useTabs()
+  const { updateCurrentTab, currentTab, addCustomTab } = useTabs()
   const classes = useStyles()
   const [isOpen, setIsOpen] = useState(false)
-  const [name, setName] = useState('')
 
   const onFilterChange = (filter: Filter) => {
     if (currentTab.key !== 'ALL_EXPORTS') {
@@ -29,18 +27,6 @@ export function TableReportFilter() {
       addCustomTab(filter)
     }
   }
-
-  const onSave = useCallback(() => {
-    const tab = {
-      key: name.toUpperCase().replaceAll(' ', '_'),
-      title: name,
-      filter: currentTab.filter,
-    }
-    addTab(tab)
-    setCurrentTab(tab.key)
-    setName('')
-    setIsOpen(false)
-  }, [name])
 
   return (
     <Box>
@@ -73,16 +59,7 @@ export function TableReportFilter() {
           </Button>
         )}
       </Box>
-      <CreateCustomFilter
-        isOpen={isOpen}
-        onSave={onSave}
-        onClose={() => {
-          setName('')
-          setIsOpen(false)
-        }}
-        setName={setName}
-        name={name}
-      />
+      <CreateCustomFilter isOpen={isOpen} setIsOpen={setIsOpen} />
     </Box>
   )
 }
