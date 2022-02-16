@@ -1,25 +1,32 @@
 import { makeStyles } from '@saleor/macaw-ui'
 
-export const useStyles = makeStyles(() => ({
+export const useStyles = makeStyles(theme => ({
   row: {
     '&:hover': {
       cursor: 'pointer',
     },
   },
-  relative: {
+  tableHead: {
     position: 'relative',
+    '& th': {
+      background: theme.palette.background.paper,
+    },
   },
   hiddenCell: {
     visibility: 'hidden',
   },
   selectedText: {
-    position: 'absolute',
+    position: 'fixed',
     zIndex: 10,
     left: '70px',
     top: 0,
     height: '100%',
     display: 'flex',
     alignItems: 'center',
+  },
+  container: {
+    overflow: 'auto',
+    height: 'calc(100% - 52px)',
   },
 }))
 
