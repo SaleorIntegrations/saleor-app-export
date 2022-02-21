@@ -1,8 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-import { TenantProvider } from 'saleor-app-ui'
-import { ThemeProvider } from '@saleor/macaw-ui'
+import { SaleorApp } from 'saleor-app-ui'
 import { Provider as QLClientProvider } from 'urql'
 
 import './index.css'
@@ -13,15 +12,13 @@ import { Router } from './Router'
 
 ReactDOM.render(
   <React.StrictMode>
-    <ThemeProvider>
-      <TenantProvider>
-        <QLClientProvider value={apiClient}>
-          <Router>
-            <App />
-          </Router>
-        </QLClientProvider>
-      </TenantProvider>
-    </ThemeProvider>
+    <SaleorApp>
+      <QLClientProvider value={apiClient}>
+        <Router>
+          <App />
+        </Router>
+      </QLClientProvider>
+    </SaleorApp>
   </React.StrictMode>,
   document.getElementById('root')
 )
