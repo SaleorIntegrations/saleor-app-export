@@ -4,7 +4,7 @@ export const useStyles = makeStyles(() => ({
   paper: {
     maxHeight: '100%',
     height: '100%',
-    overflow: 'scroll',
+    overflow: 'auto',
     display: 'flex',
     flexDirection: 'column',
   },

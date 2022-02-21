@@ -1,16 +1,15 @@
-import React, { useEffect, useReducer, useState, useRef } from 'react'
+import React, { useEffect, useReducer, useState } from 'react'
 import { Paper } from '@material-ui/core'
 
 import { useMutationDeleteReport } from '../../api/export/mutation'
 import { useQueryReports } from '../../api/export/query'
-import TableHeader from '../../components/TableHeader'
-import { ReportTable } from '../../components/ReportTable/ReportTable'
+import { TableHeader, ReportTable, TableReportFilter } from '../../components'
+
 import { reportsReducer, initialReports } from './reducer'
 import useStyles from './style'
 
 export function ReportList() {
   const classes = useStyles()
-  const headerRef = useRef<HTMLDivElement>(null)
   const [state, dispatch] = useReducer(reportsReducer, initialReports)
   const [page, setPage] = useState(0)
   const [reportsPerPage, setReportsPerPage] = useState(10)
@@ -83,9 +82,8 @@ export function ReportList() {
 
   return (
     <Paper className={classes.paper}>
-      <div ref={headerRef}>
-        <TableHeader />
-      </div>
+      <TableHeader />
+      <TableReportFilter />
       <ReportTable
         deleteSelectedReports={deleteSelectedReports}
         deleteReport={deleteReport}
@@ -104,7 +102,6 @@ export function ReportList() {
           setPage(0)
           setReportsPerPage(rowsPerPage)
         }}
-        subtract={headerRef.current?.clientHeight}
       />
     </Paper>
   )

@@ -8,12 +8,7 @@ interface CurrentUserStore {
 }
 
 export const useCurrentUserStore = create<CurrentUserStore>(set => ({
-  user: {
-    id: '',
-    firstName: '',
-    lastName: '',
-    email: '',
-  },
+  user: { id: '', firstName: '', lastName: '', email: '' },
   setUser: user => set({ user: user }),
 }))
 

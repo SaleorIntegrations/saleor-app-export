@@ -43,9 +43,9 @@ export function ReportTableHeader(props: ReportTableHeaderProps) {
   } = props
 
   return (
-    <TableHead className={classes.relative}>
-      <TableRow>
-        <TableCell padding="checkbox">
+    <TableHead className={classes.tableHead}>
+      <TableRow style={{ height: '75px' }}>
+        <TableCell width="4%" padding="checkbox">
           <Box>
             <Checkbox
               disabled={rowCount === 0}
@@ -55,24 +55,29 @@ export function ReportTableHeader(props: ReportTableHeaderProps) {
             />
           </Box>
         </TableCell>
-        {headCells.map(headCell => (
+        {headCells.map((headCell, index) => (
           <TableCell
+            width={headCell.width}
             key={headCell.key}
             align={headCell.numeric ? 'right' : 'left'}
             padding="normal"
             sortDirection={orderBy === headCell.key ? order : false}
           >
-            <TableSortLabel
-              active={orderBy === headCell.key}
-              direction={orderBy === headCell.key ? order : 'asc'}
-              onClick={event => onSort(event, headCell.key)}
-              className={clsx(numSelected > 0 && classes.hiddenCell)}
-            >
-              {headCell.label}
-            </TableSortLabel>
+            {index === 0 && numSelected > 0 ? (
+              <Typography>{`Selected ${numSelected} reports`}</Typography>
+            ) : (
+              <TableSortLabel
+                active={orderBy === headCell.key}
+                direction={orderBy === headCell.key ? order : 'asc'}
+                onClick={event => onSort(event, headCell.key)}
+                className={clsx(numSelected > 0 && classes.hiddenCell)}
+              >
+                {headCell.label}
+              </TableSortLabel>
+            )}
           </TableCell>
         ))}
-        <TableCell align="center" padding="checkbox">
+        <TableCell width="4%" align="center" padding="checkbox">
           {numSelected > 0 && (
             <IconButton onClick={onMultiDelete}>
               <DeleteIcon />
@@ -80,11 +85,6 @@ export function ReportTableHeader(props: ReportTableHeaderProps) {
           )}
         </TableCell>
       </TableRow>
-      {numSelected > 0 && (
-        <Typography className={classes.selectedText}>
-          {`Selected ${numSelected} reports`}
-        </Typography>
-      )}
     </TableHead>
   )
 }
