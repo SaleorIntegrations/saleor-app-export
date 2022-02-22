@@ -1,8 +1,8 @@
 import create from 'zustand'
 import { produce } from 'immer'
 
-import { ExportObjectTypesEnum } from '../api/export/types'
-import { ExportProductColumnsStore } from '../globalTypes'
+import { ExportObjectTypesEnum } from '../../../api/export/types'
+import { ExportProductColumnsStore } from '../../../globalTypes'
 
 export const useExportProductColumnsStore = create<ExportProductColumnsStore>(
   set => ({

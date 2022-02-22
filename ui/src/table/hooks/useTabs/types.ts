@@ -1,4 +1,4 @@
-import { Filter } from '../../globalTypes'
+import { Filter } from '../../../globalTypes'
 
 export interface Tab {
   key: string

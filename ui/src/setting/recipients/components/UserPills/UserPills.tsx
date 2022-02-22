@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { produce } from 'immer'
 
-import { useCurrentUserStore, useExportCommonStore } from '../../../../hooks'
+import { useCurrentUserStore, useExportCommonStore } from '../../../../common'
 import { useQueryStaffUsers } from '../../../../api/saleor/query'
 import { PillsSkeleton } from '../../../../common/components/PillsSkeleton'
 import { Pill } from '../../../../common/components/Pill'

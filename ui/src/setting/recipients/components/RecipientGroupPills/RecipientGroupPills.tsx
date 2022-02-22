@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react'
 import { produce } from 'immer'
 
-import { useExportCommonStore } from '../../../../hooks'
 import { useQueryPermissionGroups } from '../../../../api/saleor/query'
 import { PillsSkeleton } from '../../../../common/components/PillsSkeleton'
 import { Pill } from '../../../../common/components/Pill'
+import { useExportCommonStore } from '../../../../common'
 
 export function RecipientGroupPills() {
   const { setRecipients, recipients } = useExportCommonStore(state => ({

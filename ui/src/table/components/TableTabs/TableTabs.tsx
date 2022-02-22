@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { Tabs as NavigationTabs, Tab as NavigationTab } from '@material-ui/core'
 import { CloseRounded as DeleteIcon } from '@material-ui/icons'
 
-import { useTabs, RESERVED_TABS } from '../../../hooks'
+import { useTabs, RESERVED_TABS } from '../../hooks'
 
 import { useStyles } from './styles'
 

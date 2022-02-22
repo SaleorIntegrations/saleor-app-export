@@ -7,8 +7,8 @@ import { RecipientsList } from '../RecipientsList'
 import { SurfaceModal } from '../../../../common/components/SurfaceModal'
 
 import { useStyles } from './styles'
-import { useExportCommonStore } from '../../../../hooks'
 import { CheckboxListOption } from '../../../../common/components/CheckboxList'
+import { useExportCommonStore } from '../../../../common'
 
 enum TabPage {
   GROUP = 'GROUP',

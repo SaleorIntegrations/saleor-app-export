@@ -2,8 +2,8 @@ import React from 'react'
 import { Box } from '@material-ui/core'
 
 import { GeneralInformation } from '../../../setting/general/components/GeneralInformation'
-import { useExportCommonStore } from '../../../hooks'
 import { OrderColumnsArea } from '../OrderColumnsArea'
+import { useExportCommonStore } from '../../../common'
 
 import useStyles from './styles'
 

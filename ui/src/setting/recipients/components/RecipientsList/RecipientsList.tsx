@@ -4,11 +4,11 @@ import { produce } from 'immer'
 
 import { useQueryStaffUsers } from '../../../../api/saleor/query'
 import CheckboxList from '../../../../common/components/CheckboxList'
-import { useCurrentUserStore, useExportCommonStore } from '../../../../hooks'
 import { SearchInput } from '../../../../common/components/SearchInput'
 import { FetchOptions } from '../RecipientsTabs'
 import { CheckboxListOption } from '../../../../common/components/CheckboxList'
 import { BasicSkeleton } from '../../../../common/components/BasicSkeleton'
+import { useExportCommonStore, useCurrentUserStore } from '../../../../common'
 
 interface RecipientsListProps {
   fetchedOptions: FetchOptions

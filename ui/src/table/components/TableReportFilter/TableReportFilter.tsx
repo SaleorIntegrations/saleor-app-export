@@ -4,11 +4,11 @@ import { Box, Button } from '@material-ui/core'
 import { PopoverFilter } from '../PopoverFilter'
 import { FilterContainer } from '../FilterContainer'
 import { CreateCustomFilter } from '../CreateCustomFilter'
-import { useTabs } from '../../../hooks'
 import { TableTabs } from '../TableTabs'
+import TableSearch from '../TableSearch'
+import { useTabs } from '../../hooks'
 
 import { useStyles } from './styles'
-import TableSearch from '../TableSearch'
 
 export function TableReportFilter() {
   const classes = useStyles()

@@ -9,7 +9,7 @@ import {
 } from '@material-ui/core'
 import { Add as AddIcon } from '@material-ui/icons'
 
-import { useExportCommonStore } from '../../../../hooks/useExportCommonStore'
+import { useExportCommonStore } from '../../../../common/hooks/useExportCommonStore'
 import { UserPills } from '../UserPills'
 import { RecipientGroupPills } from '../RecipientGroupPills'
 import { Label } from '../../../../common/components/Label'

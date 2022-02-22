@@ -5,7 +5,7 @@ import { produce } from 'immer'
 import { Surface } from '../../../common/components/Surface'
 import { ModalSelect } from '../../../common/components/ModalSelect'
 import { BaseFieldSettingModal } from '../../../common/components/ModalSetting'
-import { useExportOrderColumnsStore } from '../../../hooks'
+import { useExportOrderColumnsStore } from '../../../common'
 import { sortOrderFields } from '../../../utils'
 
 import useStyles from './styles'

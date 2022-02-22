@@ -1,6 +1,6 @@
 import create from 'zustand'
 
-import { User } from '../api/saleor/types'
+import { User } from '../../../api/saleor/types'
 
 interface CurrentUserStore {
   user: User

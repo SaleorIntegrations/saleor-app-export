@@ -4,7 +4,6 @@ import { Typography, Box } from '@material-ui/core'
 import clsx from 'clsx'
 
 import { ModalSelect } from '../../../common/components/ModalSelect'
-import { useExportProductColumnsStore } from '../../../hooks'
 import { ProductFieldEnum } from '../../../api/export/types'
 import {
   ChannelSettingModal,
@@ -14,6 +13,7 @@ import {
 } from '../../../common/components/ModalSetting'
 import Surface from '../../../common/components/Surface'
 import { sortProductFields } from '../../../utils/sortProductFields'
+import { useExportProductColumnsStore } from '../../../common'
 
 import { getFields } from './fields'
 import useStyles from './styles'

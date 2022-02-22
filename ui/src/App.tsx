@@ -3,7 +3,7 @@ import { Routes, Route, Navigate } from 'react-router-dom'
 
 import { UpdateOrderReport, UpdateProductReport } from './pages/UpdateReport'
 import { useCurrentUserQuery } from './api/saleor/query'
-import { useCurrentUserStore } from './hooks/useCurrentUserStore'
+import { useCurrentUserStore } from './common/hooks/useCurrentUserStore'
 import { CreateOrderReport, CreateProductReport } from './pages/CreateReport'
 import { ReportList } from './pages/ReportList'
 

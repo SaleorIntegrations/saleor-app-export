@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Box, Typography, TextField } from '@material-ui/core'
 
 import { SurfaceModal } from '../../../common/components/SurfaceModal'
-import { useTabs } from '../../../hooks'
+import { useTabs } from '../../hooks'
 
 type SetIsOpen = (isOpen: boolean) => void
 

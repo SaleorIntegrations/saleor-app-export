@@ -6,10 +6,10 @@ import CheckboxList, {
   CheckboxListOption,
 } from '../../../../common/components/CheckboxList'
 import { useQueryPermissionGroups } from '../../../../api/saleor/query'
-import { useExportCommonStore } from '../../../../hooks'
 import { SearchInput } from '../../../../common/components/SearchInput'
 import { FetchOptions } from '../RecipientsTabs'
 import { BasicSkeleton } from '../../../../common/components/BasicSkeleton'
+import { useExportCommonStore } from '../../../../common'
 
 interface PermissionGroupsListProps {
   fetchedOptions: FetchOptions

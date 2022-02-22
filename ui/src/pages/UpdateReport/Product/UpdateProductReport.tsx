@@ -7,15 +7,15 @@ import {
 } from '../../../api/export/mutation'
 import { useQueryReport } from '../../../api/export/query'
 import { ProductSelectedColumnsInfo } from '../../../api/export/types'
-import {
-  useExportCommonStore,
-  useExportProductColumnsStore,
-  useCurrentUserStore,
-} from '../../../hooks'
 import { FileType } from '../../../globalTypes'
 import { isRecipientsSelected } from '../../../utils'
 import ReportPage from '../../../common/components/ReportPage'
 import ProductSetting from '../../../product/components/ProductSetting'
+import {
+  useCurrentUserStore,
+  useExportCommonStore,
+  useExportProductColumnsStore,
+} from '../../../common'
 
 export function UpdateProductReport() {
   const { id } = useParams()

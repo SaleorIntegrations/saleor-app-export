@@ -3,7 +3,8 @@ import { Box } from '@material-ui/core'
 
 import { GeneralInformation } from '../../../setting/general/components/GeneralInformation'
 import { ProductColumnsArea } from '../ProductColumnsArea/ProductColumnsArea'
-import { useExportCommonStore } from '../../../hooks'
+import { useExportCommonStore } from '../../../common'
+
 import useStyles from './styles'
 
 export function ProductSetting() {
