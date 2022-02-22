@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import { OrderSetting, ReportPage } from '../../../components'
 import {
   useCurrentUserStore,
   useExportCommonStore,
@@ -11,6 +10,8 @@ import {
   useMutationCreateOrdersReport,
   useMutationRunReport,
 } from '../../../api/export/mutation'
+import ReportPage from '../../../common/components/ReportPage'
+import OrderSetting from '../../../order/components/OrderSetting'
 
 export function CreateOrderReport() {
   const navigate = useNavigate()

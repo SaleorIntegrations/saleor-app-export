@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import { ReportPage, ProductSetting } from '../../../components'
 import {
   useMutationCreateProductsReport,
   useMutationRunReport,
 } from '../../../api/export/mutation'
+import ReportPage from '../../../common/components/ReportPage'
 import {
   useCurrentUserStore,
   useExportCommonStore,
   useExportProductColumnsStore,
 } from '../../../hooks'
+import ProductSetting from '../../../product/components/ProductSetting'
 
 export function CreateProductReport() {
   const navigate = useNavigate()

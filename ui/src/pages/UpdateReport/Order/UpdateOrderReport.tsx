@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
-import { OrderSetting, ReportPage } from '../../../components'
 import {
   useMutationRunReport,
   useMutationUpdateOrderReport,
@@ -15,6 +14,8 @@ import {
 } from '../../../hooks'
 import { FileType } from '../../../globalTypes'
 import { isRecipientsSelected } from '../../../utils'
+import ReportPage from '../../../common/components/ReportPage'
+import OrderSetting from '../../../order/components/OrderSetting'
 
 export function UpdateOrderReport() {
   const { id } = useParams()
