@@ -8,13 +8,13 @@ import {
 import { useQueryReport } from '../../../api/export/query'
 import { OrderSelectedColumnsInfo } from '../../../api/export/types'
 import { FileType } from '../../../globalTypes'
-import { isRecipientsSelected } from '../../../utils'
 import ReportPage from '../../../common/components/ReportPage'
 import OrderSetting from '../../../order/components/OrderSetting'
 import {
   useCurrentUserStore,
   useExportOrderColumnsStore,
   useExportCommonStore,
+  isRecipientsSelected,
 } from '../../../common'
 
 export function UpdateOrderReport() {

@@ -12,7 +12,7 @@ import {
   InventorySettingModal,
 } from '../../../common/components/ModalSetting'
 import Surface from '../../../common/components/Surface'
-import { sortProductFields } from '../../../utils/sortProductFields'
+import { sortProductFields } from '../../utils/sortProductFields'
 import { useExportProductColumnsStore } from '../../../common'
 
 import { getFields } from './fields'

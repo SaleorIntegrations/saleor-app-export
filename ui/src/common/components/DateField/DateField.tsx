@@ -1,7 +1,7 @@
 import React from 'react'
 import { TextField, Box } from '@material-ui/core'
 
-import dayjs from '../../../utils/date'
+import dayjs from '../../utils/date'
 
 import useStyles from './style'
 

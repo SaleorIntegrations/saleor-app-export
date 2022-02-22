@@ -8,10 +8,10 @@ import {
 import { useQueryReport } from '../../../api/export/query'
 import { ProductSelectedColumnsInfo } from '../../../api/export/types'
 import { FileType } from '../../../globalTypes'
-import { isRecipientsSelected } from '../../../utils'
 import ReportPage from '../../../common/components/ReportPage'
 import ProductSetting from '../../../product/components/ProductSetting'
 import {
+  isRecipientsSelected,
   useCurrentUserStore,
   useExportCommonStore,
   useExportProductColumnsStore,

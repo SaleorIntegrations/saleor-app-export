@@ -9,7 +9,7 @@ import {
 } from '@material-ui/core'
 
 import { Order } from './utils'
-import sortTable from '../../../utils/sortTable'
+import sortTable from '../../utils/sortTable'
 import { TableReport } from '../../../globalTypes'
 import { ExportObjectTypesEnum } from '../../../api/export/types'
 
