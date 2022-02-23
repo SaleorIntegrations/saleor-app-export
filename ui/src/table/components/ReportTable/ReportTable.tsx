@@ -11,7 +11,7 @@ import {
 import { Order } from './utils'
 import sortTable from '../../utils/sortTable'
 import { TableReport } from '../../../globalTypes'
-import { ExportObjectTypesEnum } from '../../../api/export/types'
+import { ExportObjectTypesEnum } from '../../../common/api/export/types'
 
 import ReportTableHeader from './ReportTableHeader'
 import ReportTableRow from './ReportTableRow'

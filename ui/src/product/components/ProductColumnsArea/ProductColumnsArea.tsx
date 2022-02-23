@@ -4,7 +4,7 @@ import { Typography, Box } from '@material-ui/core'
 import clsx from 'clsx'
 
 import { ModalSelect } from '../../../common/components/ModalSelect'
-import { ProductFieldEnum } from '../../../api/export/types'
+import { ProductFieldEnum } from '../../../common/api/export/types'
 import {
   ChannelSettingModal,
   AttributeSettingModal,

@@ -1,4 +1,4 @@
-import { ProductFieldEnum } from '../../../api/export/types'
+import { ProductFieldEnum } from '../../../common/api/export/types'
 
 const organisationsOptions = [
   ProductFieldEnum.CATEGORY,

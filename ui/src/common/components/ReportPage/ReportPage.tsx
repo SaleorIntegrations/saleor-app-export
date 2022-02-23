@@ -1,7 +1,7 @@
 import React from 'react'
 import { Box, Container, Grid } from '@material-ui/core'
 
-import { ExportObjectTypesEnum } from '../../../api/export/types'
+import { ExportObjectTypesEnum } from '../../api/export/types'
 import { FileType } from '../../../globalTypes'
 import ExportPicker from '../../../setting/general/components/ExportPicker'
 import ReportType from '../../../setting/general/components/ReportType'

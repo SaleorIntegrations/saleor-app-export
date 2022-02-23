@@ -5,7 +5,7 @@ import { produce } from 'immer'
 import CheckboxList, {
   CheckboxListOption,
 } from '../../../../common/components/CheckboxList'
-import { useQueryPermissionGroups } from '../../../../api/saleor/query'
+import { useQueryPermissionGroups } from '../../../../common/api/saleor/query'
 import { SearchInput } from '../../../../common/components/SearchInput'
 import { FetchOptions } from '../RecipientsTabs'
 import { BasicSkeleton } from '../../../../common/components/BasicSkeleton'

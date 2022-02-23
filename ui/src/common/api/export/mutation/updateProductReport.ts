@@ -1,30 +1,32 @@
 import { gql } from 'urql'
 
-import { ReportFragment, ReportErrorFragment } from '../../export/fragments'
+import { ReportFragment, ReportErrorFragment } from '../fragments'
 import {
-  ReportResponse,
   FilterInfo,
   ProductFieldEnum,
   RecipientInfo,
-} from '../../export/types'
+  ReportResponse,
+} from '../types'
 import { useAppMutation } from '../useAppMutation'
 
 const apiMutation = gql`
-  ${ReportFragment}
   ${ReportErrorFragment}
-  mutation createProductsReport(
+  ${ReportFragment}
+  mutation updateProductRepoort(
     $columns: ProductSelectedColumnsInput!
     $name: String
     $filter: FilterInfoInput
+    $reportId: Int!
     $recipients: RecipientInfoInput!
   ) {
-    createProductsReport(
+    updateProductsReport(
       input: {
         columns: $columns
-        recipients: $recipients
         name: $name
         filter: $filter
+        recipients: $recipients
       }
+      reportId: $reportId
     ) {
       report {
         ...ReportFragment
@@ -36,11 +38,12 @@ const apiMutation = gql`
   }
 `
 
-interface CreateProductsReportResponse {
-  createProductsReport: ReportResponse
+interface UpdateProductReportResponse {
+  updateProductsReport: ReportResponse
 }
 
-interface CreateProductsReportInput {
+interface UpdateProductReportInput {
+  reportId: number
   name?: string
   filter?: FilterInfo
   columns: {
@@ -52,11 +55,10 @@ interface CreateProductsReportInput {
   recipients: RecipientInfo
 }
 
-export function useMutationCreateProductsReport() {
-  return useAppMutation<
-    CreateProductsReportResponse,
-    CreateProductsReportInput
-  >(apiMutation)
+export function useMutationUpdateProductReport() {
+  return useAppMutation<UpdateProductReportResponse, UpdateProductReportInput>(
+    apiMutation
+  )
 }
 
-export default useMutationCreateProductsReport
+export default useMutationUpdateProductReport

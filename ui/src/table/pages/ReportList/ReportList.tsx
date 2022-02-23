@@ -1,8 +1,8 @@
 import React, { useEffect, useReducer, useState } from 'react'
 import { Paper } from '@material-ui/core'
 
-import { useMutationDeleteReport } from '../../../api/export/mutation'
-import { useQueryReports } from '../../../api/export/query'
+import { useMutationDeleteReport } from '../../../common/api/export/mutation'
+import { useQueryReports } from '../../../common/api/export/query'
 
 import { reportsReducer, initialReports } from './reducer'
 import useStyles from './style'

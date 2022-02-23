@@ -1,7 +1,7 @@
 import { gql } from 'urql'
 
-import { ReportErrorFragment } from '../../export/fragments'
-import { DeleteReportResponse as DeleteReport } from '../../export/types'
+import { ReportErrorFragment } from '../fragments'
+import { DeleteReportResponse as DeleteReport } from '../types'
 import { useAppMutation } from '../useAppMutation'
 
 const apiMutation = gql`

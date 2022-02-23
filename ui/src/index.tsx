@@ -6,7 +6,7 @@ import { Provider as QLClientProvider } from 'urql'
 
 import './index.css'
 import App from './App'
-import apiClient from './api/apiClient'
+import apiClient from './common/api/apiClient'
 import reportWebVitals from './reportWebVitals'
 import { Router } from './Router'
 

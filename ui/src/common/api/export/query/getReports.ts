@@ -2,8 +2,8 @@ import { useMemo } from 'react'
 import { useQuery, gql } from 'urql'
 import { useTenant } from 'saleor-app-ui'
 
-import { ReportEdgeFragment, PageInfoFragment } from '../../export/fragments'
-import { ReportConnection } from '../../export/types'
+import { ReportEdgeFragment, PageInfoFragment } from '../fragments'
+import { ReportConnection } from '../types'
 
 const apiQuery = gql`
   ${ReportEdgeFragment}

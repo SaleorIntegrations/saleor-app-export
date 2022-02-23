@@ -1,4 +1,4 @@
-import { OrderFieldEnum } from '../../../api/export/types'
+import { OrderFieldEnum } from '../../../common/api/export/types'
 import { ModalOption } from '../../../common/components/ModalSetting'
 
 type FieldType =

@@ -1,6 +1,6 @@
 import create from 'zustand'
 
-import { ExportObjectTypesEnum } from '../../../api/export/types'
+import { ExportObjectTypesEnum } from '../../api/export/types'
 import { ExportCommonStore, FileType } from '../../../globalTypes'
 
 export const useExportCommonStore = create<ExportCommonStore>(set => ({

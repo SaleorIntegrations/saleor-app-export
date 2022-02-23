@@ -6,7 +6,7 @@ import { Surface } from '../../../common/components/Surface'
 import { ModalSelect } from '../../../common/components/ModalSelect'
 import { BaseFieldSettingModal } from '../../../common/components/ModalSetting'
 import { useExportOrderColumnsStore } from '../../../common'
-import { OrderFieldEnum } from '../../../api/export/types'
+import { OrderFieldEnum } from '../../../common/api/export/types'
 import { sortOrderFields } from '../../utils'
 
 import useStyles from './styles'

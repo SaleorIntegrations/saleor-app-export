@@ -4,7 +4,7 @@ import produce from 'immer'
 
 import ModalSetting, { ModalOption } from '../ModalSetting'
 import SearchInput from '../../SearchInput'
-import { useQuerySearchAttributes } from '../../../../api/saleor/query'
+import { useQuerySearchAttributes } from '../../../api/saleor/query'
 
 interface AttributeSettingModalProps {
   attributes: string[]

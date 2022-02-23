@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import ModalSetting, { ModalOption } from '../ModalSetting'
 import SearchInput from '../../SearchInput'
-import { useQueryBaseChannels } from '../../../../api/saleor/query'
+import { useQueryBaseChannels } from '../../../api/saleor/query'
 
 interface ChannelSettingModalProps {
   channels: string[]

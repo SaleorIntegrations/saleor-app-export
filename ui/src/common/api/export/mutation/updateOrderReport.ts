@@ -1,12 +1,12 @@
 import { gql } from 'urql'
 
-import { ReportFragment, ReportErrorFragment } from '../../export/fragments'
+import { ReportFragment, ReportErrorFragment } from '../fragments'
 import {
   ReportResponse,
   OrderFieldEnum,
   FilterInfo,
   RecipientInfo,
-} from '../../export/types'
+} from '../types'
 import { useAppMutation } from '../useAppMutation'
 
 const apiMutation = gql`

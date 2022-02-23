@@ -1,4 +1,4 @@
-import { ProductFieldEnum } from '../../../api/export/types'
+import { ProductFieldEnum } from '../../../common/api/export/types'
 import { ModalOption } from '../../../common/components/ModalSetting'
 
 type FieldType = 'organisations' | 'financials' | 'inventory' | 'seo'

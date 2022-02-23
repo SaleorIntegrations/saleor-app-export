@@ -1,4 +1,4 @@
-import { OrderFieldEnum } from '../../../api/export/types'
+import { OrderFieldEnum } from '../../../common/api/export/types'
 
 const basicOptions = [
   OrderFieldEnum.ID,

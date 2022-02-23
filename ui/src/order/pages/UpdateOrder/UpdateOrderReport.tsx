@@ -4,9 +4,9 @@ import { useNavigate, useParams } from 'react-router-dom'
 import {
   useMutationRunReport,
   useMutationUpdateOrderReport,
-} from '../../../api/export/mutation'
-import { useQueryReport } from '../../../api/export/query'
-import { OrderSelectedColumnsInfo } from '../../../api/export/types'
+} from '../../../common/api/export/mutation'
+import { useQueryReport } from '../../../common/api/export/query'
+import { OrderSelectedColumnsInfo } from '../../../common/api/export/types'
 import { FileType } from '../../../globalTypes'
 import ReportPage from '../../../common/components/ReportPage'
 import OrderSetting from '../../components/OrderSetting'

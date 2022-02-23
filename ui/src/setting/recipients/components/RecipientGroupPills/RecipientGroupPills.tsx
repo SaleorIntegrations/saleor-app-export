@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { produce } from 'immer'
 
-import { useQueryPermissionGroups } from '../../../../api/saleor/query'
+import { useQueryPermissionGroups } from '../../../../common/api/saleor/query'
 import { PillsSkeleton } from '../../../../common/components/PillsSkeleton'
 import { Pill } from '../../../../common/components/Pill'
 import { useExportCommonStore } from '../../../../common'

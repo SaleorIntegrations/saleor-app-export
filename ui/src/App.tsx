@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
 
-import { useCurrentUserQuery } from './api/saleor/query'
+import { useCurrentUserQuery } from './common/api/saleor/query'
 import { useCurrentUserStore } from './common/hooks/useCurrentUserStore'
 import { ReportList } from './table'
 import { UpdateOrderReport, CreateOrderReport } from './order'

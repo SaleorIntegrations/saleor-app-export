@@ -1,7 +1,7 @@
 import { gql } from 'urql'
 
-import { JobFragment } from '../../export/fragments'
-import { RunReportResponse as RunReport } from '../../export/types'
+import { JobFragment } from '../fragments'
+import { RunReportResponse as RunReport } from '../types'
 import { useAppMutation } from '../useAppMutation'
 
 const apiMutation = gql`

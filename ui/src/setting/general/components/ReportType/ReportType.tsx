@@ -9,7 +9,7 @@ import {
 
 import Surface from '../../../../common/components/Surface'
 import Label from '../../../../common/components/Label'
-import { ExportObjectTypesEnum } from '../../../../api/export/types'
+import { ExportObjectTypesEnum } from '../../../../common/api/export/types'
 
 export interface ReportTypeProps {
   isMutable?: boolean

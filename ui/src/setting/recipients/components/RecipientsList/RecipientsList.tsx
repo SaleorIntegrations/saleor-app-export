@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Box } from '@material-ui/core'
 import { produce } from 'immer'
 
-import { useQueryStaffUsers } from '../../../../api/saleor/query'
+import { useQueryStaffUsers } from '../../../../common/api/saleor/query'
 import CheckboxList from '../../../../common/components/CheckboxList'
 import { SearchInput } from '../../../../common/components/SearchInput'
 import { FetchOptions } from '../RecipientsTabs'
