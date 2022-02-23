@@ -1,6 +1,6 @@
 import { produce } from 'immer'
 
-import { TableReport } from '../../globalTypes'
+import { TableReport } from '../../../globalTypes'
 
 export interface Navigation {
   endCursor: string | null

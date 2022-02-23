@@ -2,44 +2,39 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import {
-  useMutationCreateProductsReport,
+  useMutationCreateOrdersReport,
   useMutationRunReport,
 } from '../../../api/export/mutation'
 import {
   useExportCommonStore,
-  useExportProductColumnsStore,
+  useExportOrderColumnsStore,
   useCurrentUserStore,
 } from '../../../common'
 import ReportPage from '../../../common/components/ReportPage'
-import ProductSetting from '../../../product/components/ProductSetting'
+import OrderSetting from '../../components/OrderSetting'
 
-export function CreateProductReport() {
+export function CreateOrderReport() {
   const navigate = useNavigate()
   const commonStore = useExportCommonStore()
-  const columnsStore = useExportProductColumnsStore()
+  const columnsStore = useExportOrderColumnsStore()
   const currentUser = useCurrentUserStore(state => state.user)
-  const [, createProductReport] = useMutationCreateProductsReport()
+  const [, createOrderReport] = useMutationCreateOrdersReport()
   const [, runReport] = useMutationRunReport()
   const [isLoading, setIsLoading] = useState(true)
 
   const onSave = async () => {
-    const id = await createProductExportReport()
+    const id = await createOrderExportReport()
 
     if (id) {
       runReport({ reportId: id })
-      navigate(`/report/${id}/product`)
+      navigate(`/report/${id}/order`)
     }
   }
 
-  const createProductExportReport = async () => {
+  const createOrderExportReport = async () => {
     const { addMore, users, permissionGroups } = commonStore.recipients
-    const response = await createProductReport({
-      columns: {
-        attributes: columnsStore.columns.attributes,
-        fields: columnsStore.columns.productFields,
-        channels: columnsStore.columns.channels,
-        warehouses: columnsStore.columns.warehouses,
-      },
+    const response = await createOrderReport({
+      fields: columnsStore.columns.orderFields,
       name: commonStore.name,
       recipients: {
         users: addMore ? users : [currentUser.id],
@@ -47,7 +42,7 @@ export function CreateProductReport() {
       },
     })
 
-    const report = response.data?.createProductsReport
+    const report = response.data?.createOrdersReport
 
     if (report && report.errors.length < 1) {
       commonStore.setId(report.report?.id || null)
@@ -57,7 +52,7 @@ export function CreateProductReport() {
   }
 
   const onTypeChange = () => {
-    navigate('/create/order', { replace: true })
+    navigate('/create/product', { replace: true })
   }
 
   useEffect(() => {
@@ -78,9 +73,9 @@ export function CreateProductReport() {
       onSave={onSave}
       onCancel={() => navigate('/')}
     >
-      <ProductSetting />
+      <OrderSetting />
     </ReportPage>
   )
 }
 
-export default CreateProductReport
+export default CreateOrderReport

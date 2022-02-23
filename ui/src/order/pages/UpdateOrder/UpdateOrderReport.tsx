@@ -9,7 +9,7 @@ import { useQueryReport } from '../../../api/export/query'
 import { OrderSelectedColumnsInfo } from '../../../api/export/types'
 import { FileType } from '../../../globalTypes'
 import ReportPage from '../../../common/components/ReportPage'
-import OrderSetting from '../../../order/components/OrderSetting'
+import OrderSetting from '../../components/OrderSetting'
 import {
   useCurrentUserStore,
   useExportOrderColumnsStore,
