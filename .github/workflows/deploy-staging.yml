@@ -90,5 +90,6 @@ jobs:
             --set app.image_tag=${BUILD_TAG} \
             --wait
       - name: Migrate DB schema
-        run: kubectl exec deploy/export-staging -n $KUBERNETES_NAMESPACE -- manage.py alembic upgrade head
-        run: kubectl exec deploy/export-staging -n $KUBERNETES_NAMESPACE -- alembic upgrade head
+        run: |
+          kubectl exec deploy/export-staging -n $KUBERNETES_NAMESPACE -- manage.py alembic upgrade head
+          kubectl exec deploy/export-staging -n $KUBERNETES_NAMESPACE -- alembic upgrade head
