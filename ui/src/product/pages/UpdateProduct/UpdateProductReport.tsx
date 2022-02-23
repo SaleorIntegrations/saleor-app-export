@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
-import {
-  useMutationRunReport,
-  useMutationUpdateProductReport,
-} from '../../../common/api/export/mutation'
+import { useMutationRunReport } from '../../../common/api/export'
+import { useMutationUpdateProductReport } from '../../api'
 import { useQueryReport } from '../../../common/api/export/query'
 import { ProductSelectedColumnsInfo } from '../../../common/api/export/types'
 import { FileType } from '../../../globalTypes'

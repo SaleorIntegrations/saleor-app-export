@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react'
 import { Box } from '@material-ui/core'
 import { produce } from 'immer'
 
-import { useQueryStaffUsers } from '../../../../common/api/saleor/query'
 import CheckboxList from '../../../../common/components/CheckboxList'
 import { SearchInput } from '../../../../common/components/SearchInput'
 import { FetchOptions } from '../RecipientsTabs'
 import { CheckboxListOption } from '../../../../common/components/CheckboxList'
 import { BasicSkeleton } from '../../../../common/components/BasicSkeleton'
 import { useExportCommonStore, useCurrentUserStore } from '../../../../common'
+import { useQueryStaffUsers } from '../../api'
 
 interface RecipientsListProps {
   fetchedOptions: FetchOptions

@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
-import {
-  useMutationRunReport,
-  useMutationUpdateOrderReport,
-} from '../../../common/api/export/mutation'
 import { useQueryReport } from '../../../common/api/export/query'
 import { OrderSelectedColumnsInfo } from '../../../common/api/export/types'
 import { FileType } from '../../../globalTypes'
@@ -16,6 +12,8 @@ import {
   useExportCommonStore,
   isRecipientsSelected,
 } from '../../../common'
+import { useMutationRunReport } from '../../../common/api/export'
+import { useMutationUpdateOrderReport } from '../../api'
 
 export function UpdateOrderReport() {
   const { id } = useParams()

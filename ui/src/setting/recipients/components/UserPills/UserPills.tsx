@@ -2,9 +2,9 @@ import React, { useEffect } from 'react'
 import { produce } from 'immer'
 
 import { useCurrentUserStore, useExportCommonStore } from '../../../../common'
-import { useQueryStaffUsers } from '../../../../common/api/saleor/query'
 import { PillsSkeleton } from '../../../../common/components/PillsSkeleton'
 import { Pill } from '../../../../common/components/Pill'
+import { useQueryStaffUsers } from '../../api'
 
 export function UserPills() {
   const userId = useCurrentUserStore(state => state.user.id)

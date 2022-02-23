@@ -1,14 +1,13 @@
 import React, { useEffect, useReducer, useState } from 'react'
 import { Paper } from '@material-ui/core'
 
-import { useMutationDeleteReport } from '../../../common/api/export/mutation'
-import { useQueryReports } from '../../../common/api/export/query'
-
-import { reportsReducer, initialReports } from './reducer'
-import useStyles from './style'
+import { useQueryReports, useMutationDeleteReport } from '../../api'
 import ReportTable from '../../components/ReportTable'
 import TableHeader from '../../components/TableHeader'
 import TableReportFilter from '../../components/TableReportFilter'
+
+import { reportsReducer, initialReports } from './reducer'
+import useStyles from './style'
 
 export function ReportList() {
   const classes = useStyles()

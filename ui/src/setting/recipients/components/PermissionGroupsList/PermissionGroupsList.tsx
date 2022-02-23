@@ -5,11 +5,11 @@ import { produce } from 'immer'
 import CheckboxList, {
   CheckboxListOption,
 } from '../../../../common/components/CheckboxList'
-import { useQueryPermissionGroups } from '../../../../common/api/saleor/query'
 import { SearchInput } from '../../../../common/components/SearchInput'
 import { FetchOptions } from '../RecipientsTabs'
 import { BasicSkeleton } from '../../../../common/components/BasicSkeleton'
 import { useExportCommonStore } from '../../../../common'
+import { useQueryPermissionGroups } from '../../api'
 
 interface PermissionGroupsListProps {
   fetchedOptions: FetchOptions
