@@ -1,6 +1,7 @@
 from logging.config import fileConfig
 
 from saleor_app_base.core.app_settings import app_settings
+from saleor_app_base.database import async_to_sync
 from sqlalchemy import engine_from_config, pool
 
 from alembic import context
@@ -11,7 +12,10 @@ from app.core.models import ProxySQLModel
 
 config = context.config
 
-config.set_main_option("sqlalchemy.url", app_settings.SQLALCHEMY_DB_URI)
+config.set_main_option(
+    "sqlalchemy.url",
+    async_to_sync(app_settings.SQLALCHEMY_DB_URI)
+)
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
