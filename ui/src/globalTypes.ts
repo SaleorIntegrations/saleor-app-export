@@ -6,8 +6,8 @@ import {
   OrderSelectedColumnsInfo,
   OrderFieldEnum,
   RecipientInfo,
-} from './api/export/types'
-import { User } from './api/saleor/types'
+} from './common/api/export/types'
+import { User } from './common/api/saleor/types'
 
 export enum FileType {
   CSV = 'CSV',
