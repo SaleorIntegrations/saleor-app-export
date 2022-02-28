@@ -14,11 +14,24 @@ jobs:
       AWS_ACCOUNT: "727618530289"
       AWS_REGION: us-east-1
       AWS_STATICS_BUCKET: saleor-apps-public-us-east-1
+      AWS_CLOUDFRONT_DISTRIBUTION: E38NXZ4NFYS1CQ
+      KUBERNETES_CLUSTER: saleor-cloud-us
+      KUBERNETES_NAMESPACE: apps-staging
     steps:
+      - name: Get github token
+        run: |
+          echo "GITHUB_SUBMODULE_TOKEN=$(\
+            curl \
+              --request GET \
+              --url ${{ secrets.VAULT_URL}} \
+              --header "Authorization: JWT ${{ secrets.VAULT_JWT }}" \
+            | jq -r .token\
+          )" >> $GITHUB_ENV
       - name: Checkout
         uses: actions/checkout@v2
         with:
           submodules: recursive
+          token: ${{ env.GITHUB_SUBMODULE_TOKEN }}
       - name: Setup environment
         run: |
           BUILD_TAG=git-$(git rev-parse --short "$GITHUB_SHA")
@@ -65,3 +78,18 @@ jobs:
         run: |
           aws s3 sync build s3://${AWS_STATICS_BUCKET}/export/staging --delete
           aws s3 sync build s3://${AWS_STATICS_BUCKET}/export/${BUILD_TAG} --delete
+          aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DISTRIBUTION --paths "/*"
+      - name: Update Kubernetes deployment
+        working-directory: ./deployments/apps
+        run: |
+          aws eks update-kubeconfig --name $KUBERNETES_CLUSTER
+          helm upgrade export-staging . \
+            -f values_base.yaml \
+            -f values_export_staging.yaml \
+            -n $KUBERNETES_NAMESPACE \
+            --set app.image_tag=${BUILD_TAG} \
+            --wait
+      - name: Migrate DB schema
+        run: |
+          kubectl exec deploy/export-staging -n $KUBERNETES_NAMESPACE -- manage.py alembic upgrade head
+          kubectl exec deploy/export-staging -n $KUBERNETES_NAMESPACE -- alembic upgrade head
