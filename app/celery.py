@@ -1,4 +1,6 @@
 import functools
+import os
+from urllib.parse import urlparse
 
 import structlog
 from asgiref.sync import async_to_sync
@@ -10,9 +12,26 @@ from saleor_app_base.core.tenant_settings import environment_tenant_context
 
 from db import async_session, get_db
 
+
+AWS_SQS_ENDPOINT_URL = os.getenv("AWS_SQS_ENDPOINT_URL")
+endpoint_parsed = urlparse(AWS_SQS_ENDPOINT_URL)
+
+
 celery = Celery("app")
-celery.conf.broker_url = "redis://localhost:6379/0"
-celery.conf.result_backend = "redis://localhost:6379/0"
+celery.conf.broker_url = "sqs://" + (
+    ""
+    if AWS_SQS_ENDPOINT_URL is None
+    else f"{endpoint_parsed.hostname}:{endpoint_parsed.port}"
+)
+celery.conf.broker_transport_options = {
+    "region": os.environ["AWS_DEFAULT_REGION"],
+    "is_secure": AWS_SQS_ENDPOINT_URL is None or endpoint_parsed.scheme == "https",
+    "predefined_queues": {
+        "celery": {
+            "url": os.environ["CELERY_BROKER_QUEUE"],
+        }
+    },
+}
 
 
 class ContextTask(celery.Task):
