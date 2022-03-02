@@ -33,7 +33,8 @@ It will run the app with `Uvicorn`, an ASGI server.
 
 You also need to specify at least these two variables:
 - `SQLALCHEMY_DB_URI` (e.g. `postgresql+asyncpg://<host>/<database_name>`)
-- `SITE_URL` (this is the URL of the app)
+- `BACKEND_URL` (this is the URL of the backend app)
+- `FRONTEND_URL` (this is the URL of the frontend app)
 
 Actual exports are processed as Celery tasks, in order launch a worker run:
 ```
