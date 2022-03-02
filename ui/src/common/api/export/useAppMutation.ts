@@ -24,7 +24,7 @@ export function useAppMutation<T, D>(
     context?: Partial<OperationContext>
   ) =>
     fetchFunction(variables, {
-      url: `${appUrl}/graphql`,
+      url: `${appUrl}/v1/graphql`,
       fetchOptions: {
         headers: {
           'X-Saleor-Domain': saleorDomain,

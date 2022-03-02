@@ -31,7 +31,6 @@ export function useQueryReport(variables: Variables, options?: any) {
     ...options,
     context: useMemo(
       () => ({
-        url: `${appUrl}/graphql/`,
         fetchOptions: () => ({
           headers: {
             'X-Saleor-Domain': saleorDomain,
