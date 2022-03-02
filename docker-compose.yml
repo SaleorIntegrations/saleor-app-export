@@ -26,6 +26,8 @@ services:
     restart: unless-stopped
     command: python main.py
     environment: &docker_environment
+      FRONTEND_URL: http://localhost:8000
+      BACKEND_URL: http://localhost:8000
       SQLALCHEMY_DB_URI: postgresql+asyncpg://export:export@db/export
       AWS_ACCESS_KEY_ID: FAKE
       AWS_SECRET_ACCESS_KEY: FAKE
