@@ -21,7 +21,7 @@ async def get_context(db=Depends(get_db), auth=Depends(get_auth)):
 
 schema = strawberry.Schema(Query, Mutation)
 graphql_app = GraphQLRouter(schema, context_getter=get_context)
-app.include_router(graphql_app, prefix="/graphql")
+app.include_router(graphql_app, prefix="/v1/graphql")
 
 
 if __name__ == "__main__":
