@@ -4,6 +4,7 @@ import { useTenant } from 'saleor-app-ui'
 import { AttributeFragment, PageInfoFragment } from '../../fragments'
 import { Attribute, PageInfo, Node } from '../../types'
 import { useMemo } from 'react'
+import { isHTTP } from '../../../../utils'
 
 const apiQuery = gql`
   ${AttributeFragment}
@@ -50,7 +51,7 @@ export function useQuerySearchAttributes(variables: Variables, options?: any) {
     },
     context: useMemo(
       () => ({
-        url: `http://${saleorDomain}/graphql/`,
+        url: `http${isHTTP() ? '' : 's'}://${saleorDomain}/graphql/`,
         fetchOptions: {
           headers: {
             authorization: `JWT ${saleorToken}`,

@@ -7,6 +7,7 @@ import {
 } from '../../../../../../common/api/saleor/fragments'
 import { User, PageInfo } from '../../../../../../common/api/saleor/types'
 import { useMemo } from 'react'
+import { isHTTP } from '../../../../../../common'
 
 const apiQuery = gql`
   ${PageInfoFragment}
@@ -54,7 +55,7 @@ export function useQueryStaffUsers(variables: Variables, options?: any) {
     variables: variables,
     context: useMemo(
       () => ({
-        url: `http://${saleorDomain}/graphql/`,
+        url: `http${isHTTP() ? '' : 's'}://${saleorDomain}/graphql/`,
         fetchOptions: {
           headers: {
             authorization: `JWT ${saleorToken}`,
