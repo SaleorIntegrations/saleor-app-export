@@ -4,6 +4,7 @@ import { useTenant } from 'saleor-app-ui'
 
 import { UserFragment } from '../../fragments'
 import { User } from '../../types'
+import { isHTTP } from '../../../../utils'
 
 const apiQuery = gql`
   ${UserFragment}
@@ -24,7 +25,7 @@ export function useCurrentUserQuery(options?: any) {
     query: apiQuery,
     context: useMemo(
       () => ({
-        url: `http://${saleorDomain}/graphql/`,
+        url: `http${isHTTP() ? '' : 's'}://${saleorDomain}/graphql/`,
         fetchOptions: {
           headers: {
             authorization: `JWT ${saleorToken}`,

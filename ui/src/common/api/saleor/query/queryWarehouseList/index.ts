@@ -1,9 +1,10 @@
+import { useMemo } from 'react'
 import { useQuery, gql } from 'urql'
 import { useTenant } from 'saleor-app-ui'
 
 import { WarehouseFragment, PageInfoFragment } from '../../fragments'
 import { Warehouse, PageInfo, Node } from '../../types'
-import { useMemo } from 'react'
+import { isHTTP } from '../../../../utils'
 
 const apiQuery = gql`
   ${WarehouseFragment}
@@ -56,7 +57,7 @@ export function useQueryWarehouseList(variables: Variables, options?: any) {
     },
     context: useMemo(
       () => ({
-        url: `http://${saleorDomain}/graphql/`,
+        url: `http${isHTTP() ? '' : 's'}://${saleorDomain}/graphql/`,
         fetchOptions: {
           headers: {
             authorization: `JWT ${saleorToken}`,
