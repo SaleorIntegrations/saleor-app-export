@@ -42,11 +42,6 @@ venv.bak/
 # Exported results file
 django-queries-results.html
 
-# Docker
-docker-compose.yml
-
-Makefile
-
 # vscode
 .DS_Store
 .idea

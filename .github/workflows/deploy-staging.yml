@@ -68,7 +68,6 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: ./
-          file: docker/prod.Dockerfile
           push: True
           tags: ${{ env.IMAGE_TAGS }}
           build-args: |

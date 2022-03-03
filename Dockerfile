@@ -1,23 +1,29 @@
-FROM python:3.9
+FROM python:3.9-slim
 
-RUN apt-get update \
-    && apt-get install -y vim git \
-    && apt-get install -y python3-pip python3-dev libpq-dev wget \
-    && apt-get install -y libpq-dev \
-    && apt-get autoremove -y --purge \
-    && apt-get autoclean
+ARG SSH_DEPLOYMENT_KEY
 
+WORKDIR /app
 
-WORKDIR /usr/src/app
+COPY pyproject.toml poetry.lock ./
 
-RUN pip install poetry
+RUN apt update && \
+    apt install -y \
+        gcc \
+        git \
+        libcurl4-openssl-dev \
+        libssl-dev \
+        ssh
 
-COPY ./poetry.lock /usr/src/app/poetry.lock
+RUN pip install poetry && \
+    poetry config virtualenvs.create false
 
-RUN poetry install 
+RUN mkdir -p ~/.ssh && \
+    ssh-keyscan github.com >> ~/.ssh/known_hosts && \
+    echo "$SSH_DEPLOYMENT_KEY" >> ~/.ssh/id_rsa && \
+    chmod 400 ~/.ssh/id_rsa && \
+    poetry install && \
+    rm -r ~/.ssh
 
-COPY . /usr/src/app
+COPY . .
 
-VOLUME /usr/src/app
-
-CMD ["python", "main.py"]
+CMD ["gunicorn", "--worker-class=uvicorn.workers.UvicornH11Worker", "--bind=0.0.0.0:8000", "main:app"]
