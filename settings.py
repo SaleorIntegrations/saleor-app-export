@@ -37,6 +37,7 @@ UI_HTML_PATH = "ui/build/index.html"
 PERMISSIONS = [
     Permission.MANAGE_PRODUCTS,
     Permission.MANAGE_ORDERS,
+    Permission.MANAGE_STAFF,
 ]
 
 

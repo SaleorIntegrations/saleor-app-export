@@ -8,6 +8,14 @@
       content="Web site created using create-react-app"
     />
     <title>Saleor-Export</title>
+    <script>
+      window.tenantContext = {
+        saleorDomain: "%REACT_APP_SALEOR_DOMAIN%",
+        saleorToken: "%REACT_APP_SALEOR_TOKEN%",
+        appUrl: "%REACT_APP_APP_URL%",
+        tenantId: "%REACT_APP_TENANT_ID%"
+      }
+    </script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>

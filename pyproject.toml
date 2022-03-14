@@ -9,13 +9,15 @@ python = "^3.9"
 celery = "^5.1"
 sqlmodel = "^0.0.6"
 strawberry-graphql = "^0.93.21"
-saleor-app-base = {git = "git@github.com:SaleorIntegrations/saleor-app-base.git", rev = "5c59c707b12f0a0196a4dcc28578498f7bd9754d"}
+saleor-app-base = {git = "git@github.com:SaleorIntegrations/saleor-app-base.git", rev = "main"}
 greenlet = "^1.1.2"
 asgiref = "^3.4.1"
 redis = "^4.1.0"
 pandas = "^1.4.0"
 numpy = "^1.22.1"
 XlsxWriter = "^3.0.2"
+gunicorn = "^20.1.0"
+pycurl = "^7.44.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.5"
