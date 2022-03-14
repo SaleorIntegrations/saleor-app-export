@@ -77,7 +77,9 @@ async def test_continue_job_with_next_page(
 
 @pytest.mark.asyncio
 @mock.patch("app.core.export.tasks.fetch_recipients")
+@mock.patch("app.core.export.tasks.send_report_email")
 async def test_finish_job(
+    m_send_email,
     m_fetch_recipients,
     db_session,
     export_products_job,
@@ -92,3 +94,4 @@ async def test_finish_job(
     # then
     refreshed_job = (await db_session.exec(select(Job).where(Job.id == job.id))).one()
     assert refreshed_job.status == JobStatusesEnum.SUCCESS
+    assert m_send_email.call_count == 1

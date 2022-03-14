@@ -15,5 +15,5 @@ async def mutate_run_report(root, info, report_id: int) -> RunReportResponse:
     except NoResultFound:
         return RunReportResponse(job=None)
     job = await create_job(db, report.id)
-    start_job_for_report.delay(job.id)
+    start_job_for_report.delay(job.id, domain)
     return RunReportResponse(job=job)
