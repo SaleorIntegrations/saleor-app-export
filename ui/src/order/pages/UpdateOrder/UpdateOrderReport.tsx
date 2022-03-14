@@ -35,7 +35,7 @@ export function UpdateOrderReport() {
       if (response.error) {
         runToast('Somethiong went wrong', 'error')
       } else {
-        runToast('Report has been sent')
+        runToast('Everything went well')
       }
     }
   }

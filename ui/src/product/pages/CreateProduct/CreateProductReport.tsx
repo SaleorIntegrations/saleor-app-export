@@ -28,6 +28,7 @@ export function CreateProductReport() {
     if (id) {
       runReport({ reportId: id })
       navigate(`/report/${id}/product`)
+      runToast('Everything went well')
     } else {
       runToast('Someting went wrong', 'error')
     }
