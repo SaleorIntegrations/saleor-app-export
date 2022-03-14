@@ -1,3 +1,4 @@
+from saleor_app_base.core.context import get_tenant_id
 from sqlalchemy.exc import NoResultFound
 
 from app.core.export.fetch import fetch_report_by_id
@@ -15,5 +16,5 @@ async def mutate_run_report(root, info, report_id: int) -> RunReportResponse:
     except NoResultFound:
         return RunReportResponse(job=None)
     job = await create_job(db, report.id)
-    start_job_for_report.delay(job.id, domain)
+    start_job_for_report.delay(job.id, domain, tenant_id=get_tenant_id())
     return RunReportResponse(job=job)

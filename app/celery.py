@@ -9,6 +9,7 @@ from celery.signals import task_prerun
 from fastapi import Depends
 from saleor_app_base.core import context
 from saleor_app_base.core.tenant_settings import environment_tenant_context
+from saleor_app_base.models.settings.queries import get_tenant_by_tenant_id
 
 from db import async_session, get_db
 
@@ -40,7 +41,6 @@ else:
 
 class ContextTask(celery.Task):
     def __call__(self, *args, db=Depends(get_db), **kwargs):
-        context.init(environment_tenant_context())
         result = async_to_sync(self.run)(*args, **kwargs)
         return result
 
@@ -53,6 +53,13 @@ def database_task(task_fun):
     @functools.wraps(task_fun)
     async def task(*args, **kwargs):
         async with async_session() as db:
+            # Activate context based on env variables
+            await context.init(environment_tenant_context())
+            # Activate context based on the tenant
+            tenant_id = kwargs.pop("tenant_id")
+            tenant_context = await get_tenant_by_tenant_id(db, tenant_id)
+            await context.init(tenant_context, db)
+            # Execute the task with injected db connection
             res = await task_fun(db, *args, **kwargs)
         return res
 

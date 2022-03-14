@@ -3,6 +3,7 @@ import io
 import tempfile
 from typing import Any, Awaitable, Callable, List, Tuple
 import pandas
+from saleor_app_base.core.context import tenant_context, get_tenant_id
 from sqlmodel.ext.asyncio.session import AsyncSession
 
 from app.celery import database_task
@@ -60,7 +61,7 @@ async def start_job_for_report(
     )
 
     await db.commit()
-    continue_job.delay(job.id, domain)
+    continue_job.delay(job.id, domain, tenant_id=get_tenant_id())
 
 
 @database_task
@@ -88,9 +89,9 @@ async def continue_job(
 
     # If next page exists, continue export
     if cursor:
-        continue_job.delay(job_id, domain)
+        continue_job.delay(job_id, domain, tenant_id=get_tenant_id())
     else:
-        finish_job.delay(job_id, domain)
+        finish_job.delay(job_id, domain, tenant_id=get_tenant_id())
 
 
 @database_task
