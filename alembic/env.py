@@ -12,10 +12,7 @@ from app.core.models import ProxySQLModel
 
 config = context.config
 
-config.set_main_option(
-    "sqlalchemy.url",
-    async_to_sync(app_settings.SQLALCHEMY_DB_URI)
-)
+config.set_main_option("sqlalchemy.url", async_to_sync(app_settings.SQLALCHEMY_DB_URI))
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
