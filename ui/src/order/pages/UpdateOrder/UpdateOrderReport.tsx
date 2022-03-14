@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import { useToast } from 'saleor-app-ui'
 
 import { useQueryReport } from '../../../common/api/export/query'
 import { OrderSelectedColumnsInfo } from '../../../common/api/export/types'
@@ -17,6 +18,7 @@ import { useMutationUpdateOrderReport } from '../../api'
 
 export function UpdateOrderReport() {
   const { id } = useParams()
+  const runToast = useToast()
   const navigate = useNavigate()
   const userId = useCurrentUserStore(state => state.user.id)
   const columnsStore = useExportOrderColumnsStore()
@@ -26,14 +28,21 @@ export function UpdateOrderReport() {
   const [, runReport] = useMutationRunReport()
   const [isLoading, setIsLoading] = useState(true)
 
-  const onExport = () => {
-    if (commonStore.id) runReport({ reportId: commonStore.id })
+  const onExport = async () => {
+    if (commonStore.id) {
+      const response = await runReport({ reportId: commonStore.id })
+
+      if (response.error) {
+        runToast('Somethiong went wrong', 'error')
+      } else {
+        runToast('Report has been sent')
+      }
+    }
   }
 
   const onSaveAndExport = async () => {
     const { addMore, users, permissionGroups } = commonStore.recipients
-
-    await updateOrderReport({
+    const response = await updateOrderReport({
       fields: columnsStore.columns.orderFields,
       reportId: commonStore.id || -1,
       name: commonStore.name,
@@ -42,6 +51,10 @@ export function UpdateOrderReport() {
         permissionGroups: addMore ? permissionGroups : [],
       },
     })
+
+    if (response.error) {
+      runToast('Somethiong went wrong', 'error')
+    }
     onExport()
   }
 
