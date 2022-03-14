@@ -1202,7 +1202,7 @@ aws = []
 type = "git"
 url = "git@github.com:SaleorIntegrations/saleor-app-base.git"
 reference = "feature/sqlmodel-channels"
-resolved_reference = "907ca88e9bed0b08591b99d846b4d3428ab74cd4"
+resolved_reference = "0f7b777fbdf0b73a423c6b000119fa0963d41d1b"
 
 [[package]]
 name = "scramp"
