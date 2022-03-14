@@ -1201,8 +1201,8 @@ aws = []
 [package.source]
 type = "git"
 url = "git@github.com:SaleorIntegrations/saleor-app-base.git"
-reference = "main"
-resolved_reference = "6e8811918f62ada37f886d4ee42e39417e6a1250"
+reference = "feature/sqlmodel-channels"
+resolved_reference = "907ca88e9bed0b08591b99d846b4d3428ab74cd4"
 
 [[package]]
 name = "scramp"
@@ -1544,7 +1544,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "689f874e4b429606785eb962588ca2d12106c5bfb5911a83d300bcc0cf66ce6d"
+content-hash = "e2a338fdf6af434c45a37100fe888aae84a55992830c8d59aadc9e8609a22d28"
 
 [metadata.files]
 aiohttp = [

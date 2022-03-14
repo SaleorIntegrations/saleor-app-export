@@ -1,12 +1,8 @@
 import asyncio
 from typing import Generator
-from unittest import mock
-from uuid import uuid4
 
 import pytest  # noqa
 from httpx import AsyncClient
-from saleor_app_base.models.settings.adapter import adapt_db_obj_to_tenant_context
-from saleor_app_base.models.settings.model import SettingsModel
 from saleor_app_base.tests.fixtures import *  # noqa
 from sqlalchemy.ext.asyncio import create_async_engine
 from sqlmodel import SQLModel
@@ -72,7 +68,7 @@ async def tenant(db_session, x_saleor_token, x_saleor_domain):
         secret_key="",
     )
     db_session.add(settings)
-    return adapt_db_obj_to_tenant_context(settings)
+    return settings
 
 
 @pytest.fixture
@@ -91,7 +87,7 @@ def graphql(async_client, tenant, x_saleor_domain, x_saleor_token, mock_verify):
             if variables is not None:
                 json["variables"] = variables
             kwargs = dict(
-                url="/graphql",
+                url="/v1/graphql",
                 json=json,
             )
             # Test unauthenticated request

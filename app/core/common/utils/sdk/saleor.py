@@ -8,8 +8,8 @@ logger = structlog.get_logger()
 
 async def get_saleor_transport():
     tc = tenant_context()
-    domain = tc.immutable.saleor_domain
-    token = tc.immutable.saleor_api_token
+    domain = tc.tenant.domain
+    token = tc.tenant.saleor_token
     headers = {
         "Authorization": f"Bearer {token}",
     }

@@ -15,7 +15,10 @@ def tenant_id_getter() -> str:
 
 TENANT_ID_GETTER = tenant_id_getter
 
-EXTERNAL_APP_NAME = "Export"
+APP_SLUG = "export"
+APP_NAME = "Export"
+APP_ID = "io.saleor.export"
+MULTI_CHANNEL = False
 
 
 class MutableSettings(BaseSettings):

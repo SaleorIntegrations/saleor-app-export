@@ -9,7 +9,7 @@ python = "^3.9"
 celery = "^5.1"
 sqlmodel = "^0.0.6"
 strawberry-graphql = "^0.93.21"
-saleor-app-base = {git = "git@github.com:SaleorIntegrations/saleor-app-base.git", rev = "main"}
+saleor-app-base = {git = "git@github.com:SaleorIntegrations/saleor-app-base.git", rev = "feature/sqlmodel-channels"}
 greenlet = "^1.1.2"
 asgiref = "^3.4.1"
 redis = "^4.1.0"
