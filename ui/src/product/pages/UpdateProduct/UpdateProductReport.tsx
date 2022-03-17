@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import { useToast } from 'saleor-app-ui'
 
 import { useMutationRunReport } from '../../../common/api/export'
 import { useMutationUpdateProductReport } from '../../api'
@@ -17,6 +18,7 @@ import {
 
 export function UpdateProductReport() {
   const { id } = useParams()
+  const runToast = useToast()
   const navigate = useNavigate()
   const userId = useCurrentUserStore(state => state.user.id)
   const commonStore = useExportCommonStore()
@@ -26,14 +28,21 @@ export function UpdateProductReport() {
   const [, runReport] = useMutationRunReport()
   const [isLoading, setIsLoading] = useState(true)
 
-  const onExport = () => {
-    if (commonStore.id) runReport({ reportId: commonStore.id })
+  const onExport = async () => {
+    if (commonStore.id) {
+      const response = await runReport({ reportId: commonStore.id })
+      if (response.error) {
+        runToast('Something went wrong', 'error')
+      } else {
+        runToast('Everything went well')
+      }
+    }
   }
 
   const onSaveAndExport = async () => {
     const { users, permissionGroups, addMore } = commonStore.recipients
 
-    await updateProductReport({
+    const response = await updateProductReport({
       columns: {
         fields: columnsStore.columns.productFields,
         warehouses: columnsStore.columns.warehouses,
@@ -47,6 +56,9 @@ export function UpdateProductReport() {
         permissionGroups: addMore ? permissionGroups : [],
       },
     })
+
+    if (response.error) runToast('Something went wrong', 'error')
+
     onExport()
   }
 

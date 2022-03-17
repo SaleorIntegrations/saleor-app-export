@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useToast } from 'saleor-app-ui'
 
 import {
   useExportCommonStore,
@@ -13,6 +14,7 @@ import OrderSetting from '../../components/OrderSetting'
 
 export function CreateOrderReport() {
   const navigate = useNavigate()
+  const runToast = useToast()
   const commonStore = useExportCommonStore()
   const columnsStore = useExportOrderColumnsStore()
   const currentUser = useCurrentUserStore(state => state.user)
@@ -26,6 +28,9 @@ export function CreateOrderReport() {
     if (id) {
       runReport({ reportId: id })
       navigate(`/report/${id}/order`)
+      runToast('Everything went well')
+    } else {
+      runToast('Something went wrong', 'error')
     }
   }
 
