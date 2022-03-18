@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useToast } from 'saleor-app-ui'
 
@@ -26,78 +26,64 @@ export function UpdateProductReport() {
   const [report] = useQueryReport({ reportId: parseInt(id || '') })
   const [, updateProductReport] = useMutationUpdateProductReport()
   const [, runReport] = useMutationRunReport()
-  const [isLoading, setIsLoading] = useState(true)
-
-  const onExport = async () => {
-    if (commonStore.id) {
-      const response = await runReport({ reportId: commonStore.id })
-      if (response.error) {
-        runToast('Something went wrong', 'error')
-      } else {
-        runToast('Everything went well')
-      }
-    }
-  }
 
   const onSaveAndExport = async () => {
-    const { users, permissionGroups, addMore } = commonStore.recipients
+    try {
+      const { productFields, ...columns } = columnsStore.columns
+      if (!commonStore.reportId) throw new Error('reportId is not set')
 
-    const response = await updateProductReport({
-      columns: {
-        fields: columnsStore.columns.productFields,
-        warehouses: columnsStore.columns.warehouses,
-        channels: columnsStore.columns.channels,
-        attributes: columnsStore.columns.attributes,
-      },
-      reportId: commonStore.id || -1,
-      name: commonStore.name,
-      recipients: {
-        users: addMore ? users : [userId],
-        permissionGroups: addMore ? permissionGroups : [],
-      },
-    })
+      // update report
+      const updateResponse = await updateProductReport({
+        columns: {
+          ...columns,
+          fields: productFields,
+        },
+        reportId: commonStore.reportId,
+        name: commonStore.name,
+        recipients: {
+          users: [userId],
+          permissionGroups: [],
+        },
+      })
+      const reportId = updateResponse.data?.updateProductsReport.report?.id
 
-    if (response.error) runToast('Something went wrong', 'error')
+      if (!reportId) throw new Error('create report error')
 
-    onExport()
+      // run report
+      const runResponse = await runReport({ reportId })
+      commonStore.setReportId(reportId)
+
+      if (runResponse.error) throw new Error('runReport error')
+
+      runToast('Everything went well')
+    } catch (error) {
+      runToast('Someting went wrong', 'error')
+    }
   }
 
   useEffect(() => {
     if (report.data && !report.fetching) {
-      const {
-        id,
-        name,
-        filter,
-        columns,
-        recipients: { users, permissionGroups },
-      } = report.data.report
+      const { id, name, filter, columns, recipients } = report.data.report
       commonStore.initialize({
-        id: id,
+        reportId: id,
         name: name,
         filter: filter ? { filterStr: filter } : null,
         fileType: FileType.CSV,
         recipients: {
-          users,
-          permissionGroups,
-          addMore: isRecipientsSelected({ users, permissionGroups }),
+          ...recipients,
+          addMore: isRecipientsSelected({ ...recipients }),
         },
       })
       columnsStore.setColumns(columns as ProductSelectedColumnsInfo)
     }
-  }, [report])
+  }, [])
 
-  useEffect(() => {
-    setIsLoading(!(report.data && !report.fetching))
-  }, [report.fetching])
-
-  if (isLoading) return <div>Loading...</div>
-
+  if (report.fetching) return <div>Loading...</div>
   return (
     <ReportPage
       reportType={columnsStore.type}
       fileType={commonStore.fileType}
       setFileType={fileType => commonStore.setFileType(fileType)}
-      onExport={onExport}
       onCancel={() => navigate('/')}
       onSaveAndExport={onSaveAndExport}
     >

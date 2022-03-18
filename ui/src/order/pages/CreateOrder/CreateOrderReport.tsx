@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useToast } from 'saleor-app-ui'
 
@@ -20,60 +20,49 @@ export function CreateOrderReport() {
   const currentUser = useCurrentUserStore(state => state.user)
   const [, createOrderReport] = useMutationCreateOrdersReport()
   const [, runReport] = useMutationRunReport()
-  const [isLoading, setIsLoading] = useState(true)
 
-  const onSave = async () => {
-    const id = await createOrderExportReport()
+  const onSaveAndExport = () =>
+    createReport(reportId => navigate(`/report/${reportId}/order`))
 
-    if (id) {
-      runReport({ reportId: id })
-      navigate(`/report/${id}/order`)
+  const onExport = () => createReport()
+
+  const createReport = async (callback?: (reportId: number) => void) => {
+    try {
+      // create report
+      const createResponse = await createOrderReport({
+        fields: columnsStore.columns.orderFields,
+        name: commonStore.name,
+        recipients: {
+          users: [currentUser.id],
+          permissionGroups: [],
+        },
+      })
+      const reportId = createResponse.data?.createOrdersReport.report?.id
+
+      if (!reportId) throw new Error('create report error')
+
+      // run report
+      const runResponse = await runReport({ reportId })
+      commonStore.setReportId(reportId)
+
+      if (runResponse.error) throw new Error('runReport error')
+
+      callback && callback(reportId)
       runToast('Everything went well')
-    } else {
-      runToast('Something went wrong', 'error')
+    } catch (error) {
+      runToast('Someting went wrong', 'error')
     }
   }
-
-  const createOrderExportReport = async () => {
-    const { addMore, users, permissionGroups } = commonStore.recipients
-    const response = await createOrderReport({
-      fields: columnsStore.columns.orderFields,
-      name: commonStore.name,
-      recipients: {
-        users: addMore ? users : [currentUser.id],
-        permissionGroups: addMore ? permissionGroups : [],
-      },
-    })
-
-    const report = response.data?.createOrdersReport
-
-    if (report && report.errors.length < 1) {
-      commonStore.setId(report.report?.id || null)
-    }
-
-    return report?.report?.id
-  }
-
-  const onTypeChange = () => {
-    navigate('/create/product', { replace: true })
-  }
-
-  useEffect(() => {
-    commonStore.reset(currentUser)
-    columnsStore.reset()
-    setIsLoading(false)
-  }, [])
-
-  if (isLoading) return <div>Loading...</div>
 
   return (
     <ReportPage
       isMutable
       reportType={columnsStore.type}
-      setReportType={onTypeChange}
+      setReportType={() => navigate('/create/product', { replace: true })}
       fileType={commonStore.fileType}
       setFileType={fileType => commonStore.setFileType(fileType)}
-      onSave={onSave}
+      onExport={onExport}
+      onSaveAndExport={onSaveAndExport}
       onCancel={() => navigate('/')}
     >
       <OrderSetting />

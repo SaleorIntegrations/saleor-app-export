@@ -6,7 +6,7 @@ import { ExportCommonStore, FileType } from '../../../globalTypes'
 export const useExportCommonStore = create<ExportCommonStore>(set => ({
   fileType: FileType.CSV,
   name: '',
-  id: null,
+  reportId: null,
   type: ExportObjectTypesEnum.PRODUCTS,
   filter: null,
   recipients: {
@@ -18,7 +18,7 @@ export const useExportCommonStore = create<ExportCommonStore>(set => ({
   setFileType: fileType => set({ fileType: fileType }),
   setName: name => set({ name: name }),
   setRecipients: recipients => set({ recipients: recipients }),
-  setId: id => set({ id: id }),
+  setReportId: reportId => set({ reportId }),
   setFilter: filter =>
     set(() => {
       if (!filter) return { filter: null }
@@ -28,7 +28,7 @@ export const useExportCommonStore = create<ExportCommonStore>(set => ({
     set({
       fileType: FileType.CSV,
       name: '',
-      id: null,
+      reportId: null,
       filter: null,
       recipients: {
         addMore: false,

@@ -26,14 +26,14 @@ export function SubmitBar(props: SubmitBarProps) {
           Save
         </Button>
       )}
-      {onSaveAndExport && (
-        <Button onClick={onSaveAndExport} variant="outlined">
-          Save & Export
+      {onExport && (
+        <Button onClick={onExport} variant="outlined" color="primary">
+          Export
         </Button>
       )}
-      {onExport && (
-        <Button onClick={onExport} variant="contained" color="primary">
-          Export
+      {onSaveAndExport && (
+        <Button onClick={onSaveAndExport} variant="contained" color="primary">
+          Save & Export
         </Button>
       )}
     </Paper>

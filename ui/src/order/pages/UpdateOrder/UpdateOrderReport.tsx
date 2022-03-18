@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useToast } from 'saleor-app-ui'
 
@@ -26,76 +26,61 @@ export function UpdateOrderReport() {
   const [report] = useQueryReport({ reportId: parseInt(id || '') })
   const [, updateOrderReport] = useMutationUpdateOrderReport()
   const [, runReport] = useMutationRunReport()
-  const [isLoading, setIsLoading] = useState(true)
-
-  const onExport = async () => {
-    if (commonStore.id) {
-      const response = await runReport({ reportId: commonStore.id })
-
-      if (response.error) {
-        runToast('Somethiong went wrong', 'error')
-      } else {
-        runToast('Everything went well')
-      }
-    }
-  }
 
   const onSaveAndExport = async () => {
-    const { addMore, users, permissionGroups } = commonStore.recipients
-    const response = await updateOrderReport({
-      fields: columnsStore.columns.orderFields,
-      reportId: commonStore.id || -1,
-      name: commonStore.name,
-      recipients: {
-        users: addMore ? users : [userId],
-        permissionGroups: addMore ? permissionGroups : [],
-      },
-    })
+    try {
+      if (!commonStore.reportId) throw new Error('reportId is not set')
 
-    if (response.error) {
-      runToast('Somethiong went wrong', 'error')
+      // update report
+      const updateResponse = await updateOrderReport({
+        fields: columnsStore.columns.orderFields,
+        reportId: commonStore.reportId,
+        name: commonStore.name,
+        recipients: {
+          users: [userId],
+          permissionGroups: [],
+        },
+      })
+      const reportId = updateResponse.data?.updateOrdersReport.report?.id
+
+      if (!reportId) throw new Error('create report error')
+
+      // run report
+      const runResponse = await runReport({ reportId })
+
+      if (runResponse.error) throw new Error('runReport error')
+
+      commonStore.setReportId(reportId)
+      runToast('Everything went well')
+    } catch (error) {
+      runToast('Someting went wrong', 'error')
     }
-    onExport()
   }
 
   useEffect(() => {
     if (report.data && !report.fetching) {
-      const {
-        id,
-        name,
-        filter,
-        columns,
-        recipients: { users, permissionGroups },
-      } = report.data.report
+      const { id, name, filter, columns, recipients } = report.data.report
       commonStore.initialize({
-        id: id,
+        reportId: id,
         name: name,
         filter: filter ? { filterStr: filter } : null,
         fileType: FileType.CSV,
         recipients: {
-          users,
-          permissionGroups,
-          addMore: isRecipientsSelected({ permissionGroups, users }),
+          ...recipients,
+          addMore: isRecipientsSelected({ ...recipients }),
         },
       })
       columnsStore.setColumns(columns as OrderSelectedColumnsInfo)
-      setIsLoading(false)
     }
-  }, [report])
+  }, [])
 
-  useEffect(() => {
-    setIsLoading(!(report.data && !report.fetching))
-  }, [report.fetching])
-
-  if (isLoading) return <div>Loading...</div>
-
+  if (report.fetching) return <div>Loading...</div>
   return (
     <ReportPage
       reportType={columnsStore.type}
       fileType={commonStore.fileType}
       setFileType={fileType => commonStore.setFileType(fileType)}
       onCancel={() => navigate('/')}
-      onExport={onExport}
       onSaveAndExport={onSaveAndExport}
     >
       <OrderSetting />

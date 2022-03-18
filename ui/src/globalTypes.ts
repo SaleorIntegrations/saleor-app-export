@@ -30,7 +30,7 @@ export interface ExportRecipientInfo extends RecipientInfo {
 export interface ExportStoreCommonData {
   fileType: FileType
   name: string
-  id: number | null
+  reportId: number | null
   filter: FilterInfo | null
   recipients: ExportRecipientInfo
 }
@@ -38,7 +38,7 @@ export interface ExportStoreCommonData {
 export interface ExportCommonStore extends ExportStoreCommonData {
   setFileType: (fileType: FileType) => void
   setName: (name: string) => void
-  setId: (id: number | null) => void
+  setReportId: (reportId: number | null) => void
   setFilter: (filter: string | null) => void
   setRecipients: (recipients: ExportRecipientInfo) => void
   initialize: (data: ExportStoreCommonData) => void
