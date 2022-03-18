@@ -1,13 +1,13 @@
 import {
   ExportObjectTypesEnum,
-  FilterInfo,
+  // FilterInfo,
   ProductSelectedColumnsInfo,
   ProductFieldEnum,
   // OrderSelectedColumnsInfo,
   // OrderFieldEnum,
-  RecipientInfo,
+  // RecipientInfo,
 } from './common/api/export/types'
-import { User } from './common/api/saleor/types'
+// import { User } from './common/api/saleor/types'
 
 export enum FileType {
   CSV = 'CSV',
@@ -23,27 +23,27 @@ export interface TableReport {
   isSelected: boolean
 }
 
-export interface ExportRecipientInfo extends RecipientInfo {
-  addMore: boolean
-}
+// export interface ExportRecipientInfo extends RecipientInfo {
+//   addMore: boolean
+// }
 
-export interface ExportStoreCommonData {
-  fileType: FileType
-  name: string
-  reportId: number | null
-  filter: FilterInfo | null
-  recipients: ExportRecipientInfo
-}
+// export interface ExportStoreCommonData {
+//   fileType: FileType
+//   name: string
+//   reportId: number | null
+//   filter: FilterInfo | null
+//   recipients: ExportRecipientInfo
+// }
 
-export interface ExportCommonStore extends ExportStoreCommonData {
-  setFileType: (fileType: FileType) => void
-  setName: (name: string) => void
-  setReportId: (reportId: number | null) => void
-  setFilter: (filter: string | null) => void
-  setRecipients: (recipients: ExportRecipientInfo) => void
-  initialize: (data: ExportStoreCommonData) => void
-  reset: (currentUser: User) => void
-}
+// export interface ExportCommonStore extends ExportStoreCommonData {
+//   setFileType: (fileType: FileType) => void
+//   setName: (name: string) => void
+//   setReportId: (reportId: number | null) => void
+//   setFilter: (filter: string | null) => void
+//   setRecipients: (recipients: ExportRecipientInfo) => void
+//   initialize: (data: ExportStoreCommonData) => void
+//   reset: (currentUser: User) => void
+// }
 
 export interface ExportProductColumns {
   type: ExportObjectTypesEnum.PRODUCTS

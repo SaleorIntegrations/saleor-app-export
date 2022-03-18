@@ -8,7 +8,7 @@ import { SurfaceModal } from '../../../../common/components/SurfaceModal'
 
 import { useStyles } from './styles'
 import { CheckboxListOption } from '../../../../common/components/CheckboxList'
-import { useExportCommonStore } from '../../../../common'
+import { useFutherCommon } from '../../../../common'
 
 enum TabPage {
   GROUP = 'GROUP',
@@ -29,7 +29,7 @@ interface RecipientsTabsProps {
 export function RecipientsTabs(props: RecipientsTabsProps) {
   const { isOpen, setIsOpen } = props
   const classes = useStyles()
-  const [recipients, setRecipients] = useExportCommonStore(state => [
+  const [recipients, setRecipients] = useFutherCommon(state => [
     state.recipients,
     state.setRecipients,
   ])

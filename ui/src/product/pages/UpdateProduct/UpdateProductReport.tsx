@@ -10,9 +10,8 @@ import { FileType } from '../../../globalTypes'
 import ReportPage from '../../../common/components/ReportPage'
 import ProductSetting from '../../components/ProductSetting'
 import {
-  isRecipientsSelected,
   useCurrentUser,
-  useExportCommonStore,
+  useCommon,
   useExportProductColumnsStore,
 } from '../../../common'
 
@@ -21,7 +20,7 @@ export function UpdateProductReport() {
   const runToast = useToast()
   const navigate = useNavigate()
   const userId = useCurrentUser(state => state.user.id)
-  const commonStore = useExportCommonStore()
+  const common = useCommon()
   const columnsStore = useExportProductColumnsStore()
   const [report] = useQueryReport({ reportId: parseInt(id || '') })
   const [, updateProductReport] = useMutationUpdateProductReport()
@@ -30,7 +29,7 @@ export function UpdateProductReport() {
   const onSaveAndExport = async () => {
     try {
       const { productFields, ...columns } = columnsStore.columns
-      if (!commonStore.reportId) throw new Error('reportId is not set')
+      if (!common.reportId) throw new Error('reportId is not set')
 
       // update report
       const updateResponse = await updateProductReport({
@@ -38,8 +37,8 @@ export function UpdateProductReport() {
           ...columns,
           fields: productFields,
         },
-        reportId: commonStore.reportId,
-        name: commonStore.name,
+        reportId: common.reportId,
+        name: common.name,
         recipients: {
           users: [userId],
           permissionGroups: [],
@@ -51,7 +50,7 @@ export function UpdateProductReport() {
 
       // run report
       const runResponse = await runReport({ reportId })
-      commonStore.setReportId(reportId)
+      common.setReportId(reportId)
 
       if (runResponse.error) throw new Error('runReport error')
 
@@ -63,16 +62,10 @@ export function UpdateProductReport() {
 
   useEffect(() => {
     if (report.data && !report.fetching) {
-      const { id, name, filter, columns, recipients } = report.data.report
-      commonStore.initialize({
+      const { id, name, columns } = report.data.report
+      common.reset({
         reportId: id,
         name: name,
-        filter: filter ? { filterStr: filter } : null,
-        fileType: FileType.CSV,
-        recipients: {
-          ...recipients,
-          addMore: isRecipientsSelected({ ...recipients }),
-        },
       })
       columnsStore.setColumns(columns as ProductSelectedColumnsInfo)
     }
@@ -82,8 +75,8 @@ export function UpdateProductReport() {
   return (
     <ReportPage
       reportType={columnsStore.type}
-      fileType={commonStore.fileType}
-      setFileType={fileType => commonStore.setFileType(fileType)}
+      fileType={FileType.CSV}
+      setFileType={() => {}}
       onCancel={() => navigate('/')}
       onSaveAndExport={onSaveAndExport}
     >

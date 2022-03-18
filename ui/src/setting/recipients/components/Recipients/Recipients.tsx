@@ -9,18 +9,18 @@ import {
 } from '@material-ui/core'
 import { Add as AddIcon } from '@material-ui/icons'
 
-import { useExportCommonStore } from '../../../../common/hooks/useExportCommonStore'
+import { useFutherCommon } from '../../../../common/hooks/useCommon'
 import { UserPills } from '../UserPills'
 import { RecipientGroupPills } from '../RecipientGroupPills'
 import { Label } from '../../../../common/components/Label'
-
-import { useStyles } from './styles'
 import RecipientsTabs from '../RecipientsTabs'
 import Pill from '../../../../common/components/Pill'
 
+import { useStyles } from './styles'
+
 export function Recipients() {
   const classes = useStyles()
-  const { setRecipients, recipients } = useExportCommonStore(state => ({
+  const { setRecipients, recipients } = useFutherCommon(state => ({
     recipients: state.recipients,
     setRecipients: state.setRecipients,
   }))

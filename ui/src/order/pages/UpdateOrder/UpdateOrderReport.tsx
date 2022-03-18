@@ -10,12 +10,7 @@ import {
 import { FileType } from '../../../globalTypes'
 import ReportPage from '../../../common/components/ReportPage'
 import OrderSetting from '../../components/OrderSetting'
-import {
-  useCurrentUser,
-  useOrder,
-  useExportCommonStore,
-  isRecipientsSelected,
-} from '../../../common'
+import { useCurrentUser, useOrder, useCommon } from '../../../common'
 import { useMutationRunReport } from '../../../common/api/export'
 import { useMutationUpdateOrderReport } from '../../api'
 
@@ -24,21 +19,21 @@ export function UpdateOrderReport() {
   const runToast = useToast()
   const navigate = useNavigate()
   const userId = useCurrentUser(state => state.user.id)
-  const columnsStore = useOrder()
-  const commonStore = useExportCommonStore()
+  const orderStore = useOrder()
+  const common = useCommon()
   const [report] = useQueryReport({ reportId: parseInt(id || '') })
   const [, updateOrderReport] = useMutationUpdateOrderReport()
   const [, runReport] = useMutationRunReport()
 
   const onSaveAndExport = async () => {
     try {
-      if (!commonStore.reportId) throw new Error('reportId is not set')
+      if (!common.reportId) throw new Error('reportId is not set')
 
       // update report
       const updateResponse = await updateOrderReport({
-        fields: columnsStore.columns.orderFields,
-        reportId: commonStore.reportId,
-        name: commonStore.name,
+        fields: orderStore.columns.orderFields,
+        reportId: common.reportId,
+        name: common.name,
         recipients: {
           users: [userId],
           permissionGroups: [],
@@ -53,7 +48,7 @@ export function UpdateOrderReport() {
 
       if (runResponse.error) throw new Error('runReport error')
 
-      commonStore.setReportId(reportId)
+      common.setReportId(reportId)
       runToast('Everything went well')
     } catch (error) {
       runToast('Someting went wrong', 'error')
@@ -62,18 +57,12 @@ export function UpdateOrderReport() {
 
   useEffect(() => {
     if (report.data && !report.fetching) {
-      const { id, name, filter, columns, recipients } = report.data.report
-      commonStore.initialize({
+      const { id, name, columns } = report.data.report
+      common.reset({
         reportId: id,
         name: name,
-        filter: filter ? { filterStr: filter } : null,
-        fileType: FileType.CSV,
-        recipients: {
-          ...recipients,
-          addMore: isRecipientsSelected({ ...recipients }),
-        },
       })
-      columnsStore.setColumns(columns as OrderSelectedColumnsInfo)
+      orderStore.setColumns(columns as OrderSelectedColumnsInfo)
     }
   }, [])
 
@@ -81,8 +70,8 @@ export function UpdateOrderReport() {
   return (
     <ReportPage
       reportType={ExportObjectTypesEnum.ORDERS}
-      fileType={commonStore.fileType}
-      setFileType={fileType => commonStore.setFileType(fileType)}
+      fileType={FileType.CSV}
+      setFileType={() => {}}
       onCancel={() => navigate('/')}
       onSaveAndExport={onSaveAndExport}
     >

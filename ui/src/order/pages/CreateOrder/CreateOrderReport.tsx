@@ -2,19 +2,20 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useToast } from 'saleor-app-ui'
 
-import { useExportCommonStore, useOrder, useCurrentUser } from '../../../common'
+import { useCommon, useOrder, useCurrentUser } from '../../../common'
 import {
   ExportObjectTypesEnum,
   useMutationRunReport,
 } from '../../../common/api/export'
 import ReportPage from '../../../common/components/ReportPage'
+import { FileType } from '../../../globalTypes'
 import { useMutationCreateOrdersReport } from '../../api'
 import OrderSetting from '../../components/OrderSetting'
 
 export function CreateOrderReport() {
   const navigate = useNavigate()
   const runToast = useToast()
-  const commonStore = useExportCommonStore()
+  const common = useCommon()
   const columnsStore = useOrder()
   const currentUser = useCurrentUser(state => state.user)
   const [, createOrderReport] = useMutationCreateOrdersReport()
@@ -30,7 +31,7 @@ export function CreateOrderReport() {
       // create report
       const createResponse = await createOrderReport({
         fields: columnsStore.columns.orderFields,
-        name: commonStore.name,
+        name: common.name,
         recipients: {
           users: [currentUser.id],
           permissionGroups: [],
@@ -42,7 +43,7 @@ export function CreateOrderReport() {
 
       // run report
       const runResponse = await runReport({ reportId })
-      commonStore.setReportId(reportId)
+      common.setReportId(reportId)
 
       if (runResponse.error) throw new Error('runReport error')
 
@@ -58,8 +59,8 @@ export function CreateOrderReport() {
       isMutable
       reportType={ExportObjectTypesEnum.ORDERS}
       setReportType={() => navigate('/create/product', { replace: true })}
-      fileType={commonStore.fileType}
-      setFileType={fileType => commonStore.setFileType(fileType)}
+      fileType={FileType.CSV}
+      setFileType={() => {}}
       onExport={onExport}
       onSaveAndExport={onSaveAndExport}
       onCancel={() => navigate('/')}

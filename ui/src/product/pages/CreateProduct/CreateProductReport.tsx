@@ -3,19 +3,20 @@ import { useNavigate } from 'react-router-dom'
 import { useToast } from 'saleor-app-ui'
 
 import {
-  useExportCommonStore,
+  useCommon,
   useExportProductColumnsStore,
   useCurrentUser,
 } from '../../../common'
 import { useMutationRunReport } from '../../../common/api/export'
 import ReportPage from '../../../common/components/ReportPage'
+import { FileType } from '../../../globalTypes'
 import { useMutationCreateProductsReport } from '../../api'
 import ProductSetting from '../../components/ProductSetting'
 
 export function CreateProductReport() {
   const navigate = useNavigate()
   const runToast = useToast()
-  const commonStore = useExportCommonStore()
+  const common = useCommon()
   const columnsStore = useExportProductColumnsStore()
   const currentUser = useCurrentUser(state => state.user)
   const [, createProductReport] = useMutationCreateProductsReport()
@@ -31,7 +32,7 @@ export function CreateProductReport() {
           ...columns,
           fields: productFields,
         },
-        name: commonStore.name,
+        name: common.name,
         recipients: {
           users: [currentUser.id],
           permissionGroups: [],
@@ -43,7 +44,7 @@ export function CreateProductReport() {
 
       // run report
       const runResponse = await runReport({ reportId })
-      commonStore.setReportId(reportId)
+      common.setReportId(reportId)
 
       if (runResponse.error) throw new Error('runReport error')
 
@@ -64,8 +65,8 @@ export function CreateProductReport() {
       isMutable
       reportType={columnsStore.type}
       setReportType={() => navigate('/create/order', { replace: true })}
-      fileType={commonStore.fileType}
-      setFileType={fileType => commonStore.setFileType(fileType)}
+      fileType={FileType.CSV}
+      setFileType={() => {}}
       onExport={onExport}
       onSaveAndExport={onSaveAndExport}
       onCancel={() => navigate('/')}

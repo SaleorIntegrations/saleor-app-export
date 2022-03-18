@@ -8,7 +8,7 @@ import CheckboxList, {
 import { SearchInput } from '../../../../common/components/SearchInput'
 import { FetchOptions } from '../RecipientsTabs'
 import { BasicSkeleton } from '../../../../common/components/BasicSkeleton'
-import { useExportCommonStore } from '../../../../common'
+import { useFutherCommon } from '../../../../common'
 import { useQueryPermissionGroups } from '../../api'
 
 interface PermissionGroupsListProps {
@@ -18,7 +18,7 @@ interface PermissionGroupsListProps {
 
 export function PermissionGroupsList(props: PermissionGroupsListProps) {
   const { fetchedOptions, setFetchedOptions } = props
-  const permissionGroups = useExportCommonStore(
+  const permissionGroups = useFutherCommon(
     state => state.recipients.permissionGroups
   )
   const [search, setSearch] = useState('')

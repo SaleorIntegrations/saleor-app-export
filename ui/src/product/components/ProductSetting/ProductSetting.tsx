@@ -3,16 +3,13 @@ import { Box } from '@material-ui/core'
 
 import { GeneralInformation } from '../../../setting/general/components/GeneralInformation'
 import { ProductColumnsArea } from '../ProductColumnsArea/ProductColumnsArea'
-import { useExportCommonStore } from '../../../common'
+import { useCommon } from '../../../common'
 
 import useStyles from './styles'
 
 export function ProductSetting() {
   const classes = useStyles()
-  const [name, setName] = useExportCommonStore(state => [
-    state.name,
-    state.setName,
-  ])
+  const [name, setName] = useCommon(state => [state.name, state.setName])
 
   return (
     <Box className={classes.list}>
