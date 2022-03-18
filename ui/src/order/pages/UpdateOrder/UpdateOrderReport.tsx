@@ -3,13 +3,16 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useToast } from 'saleor-app-ui'
 
 import { useQueryReport } from '../../../common/api/export/query'
-import { OrderSelectedColumnsInfo } from '../../../common/api/export/types'
+import {
+  OrderSelectedColumnsInfo,
+  ExportObjectTypesEnum,
+} from '../../../common/api/export/types'
 import { FileType } from '../../../globalTypes'
 import ReportPage from '../../../common/components/ReportPage'
 import OrderSetting from '../../components/OrderSetting'
 import {
-  useCurrentUserStore,
-  useExportOrderColumnsStore,
+  useCurrentUser,
+  useOrder,
   useExportCommonStore,
   isRecipientsSelected,
 } from '../../../common'
@@ -20,8 +23,8 @@ export function UpdateOrderReport() {
   const { id } = useParams()
   const runToast = useToast()
   const navigate = useNavigate()
-  const userId = useCurrentUserStore(state => state.user.id)
-  const columnsStore = useExportOrderColumnsStore()
+  const userId = useCurrentUser(state => state.user.id)
+  const columnsStore = useOrder()
   const commonStore = useExportCommonStore()
   const [report] = useQueryReport({ reportId: parseInt(id || '') })
   const [, updateOrderReport] = useMutationUpdateOrderReport()
@@ -77,7 +80,7 @@ export function UpdateOrderReport() {
   if (report.fetching) return <div>Loading...</div>
   return (
     <ReportPage
-      reportType={columnsStore.type}
+      reportType={ExportObjectTypesEnum.ORDERS}
       fileType={commonStore.fileType}
       setFileType={fileType => commonStore.setFileType(fileType)}
       onCancel={() => navigate('/')}

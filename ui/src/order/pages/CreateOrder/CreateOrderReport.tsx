@@ -2,12 +2,11 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useToast } from 'saleor-app-ui'
 
+import { useExportCommonStore, useOrder, useCurrentUser } from '../../../common'
 import {
-  useExportCommonStore,
-  useExportOrderColumnsStore,
-  useCurrentUserStore,
-} from '../../../common'
-import { useMutationRunReport } from '../../../common/api/export'
+  ExportObjectTypesEnum,
+  useMutationRunReport,
+} from '../../../common/api/export'
 import ReportPage from '../../../common/components/ReportPage'
 import { useMutationCreateOrdersReport } from '../../api'
 import OrderSetting from '../../components/OrderSetting'
@@ -16,8 +15,8 @@ export function CreateOrderReport() {
   const navigate = useNavigate()
   const runToast = useToast()
   const commonStore = useExportCommonStore()
-  const columnsStore = useExportOrderColumnsStore()
-  const currentUser = useCurrentUserStore(state => state.user)
+  const columnsStore = useOrder()
+  const currentUser = useCurrentUser(state => state.user)
   const [, createOrderReport] = useMutationCreateOrdersReport()
   const [, runReport] = useMutationRunReport()
 
@@ -57,7 +56,7 @@ export function CreateOrderReport() {
   return (
     <ReportPage
       isMutable
-      reportType={columnsStore.type}
+      reportType={ExportObjectTypesEnum.ORDERS}
       setReportType={() => navigate('/create/product', { replace: true })}
       fileType={commonStore.fileType}
       setFileType={fileType => commonStore.setFileType(fileType)}

@@ -5,7 +5,7 @@ import { useToast } from 'saleor-app-ui'
 import {
   useExportCommonStore,
   useExportProductColumnsStore,
-  useCurrentUserStore,
+  useCurrentUser,
 } from '../../../common'
 import { useMutationRunReport } from '../../../common/api/export'
 import ReportPage from '../../../common/components/ReportPage'
@@ -17,7 +17,7 @@ export function CreateProductReport() {
   const runToast = useToast()
   const commonStore = useExportCommonStore()
   const columnsStore = useExportProductColumnsStore()
-  const currentUser = useCurrentUserStore(state => state.user)
+  const currentUser = useCurrentUser(state => state.user)
   const [, createProductReport] = useMutationCreateProductsReport()
   const [, runReport] = useMutationRunReport()
 

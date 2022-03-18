@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
 
 import { useCurrentUserQuery } from './common/api/saleor/query'
-import { useCurrentUserStore } from './common/hooks/useCurrentUserStore'
+import { useCurrentUser } from './common/hooks/useCurrentUser'
 import { ReportList } from './table'
 import { UpdateOrderReport, CreateOrderReport } from './order'
 import { UpdateProductReport, CreateProductReport } from './product'
@@ -11,7 +11,7 @@ import './App.css'
 
 function App() {
   const [currentUser] = useCurrentUserQuery()
-  const setCurrentUser = useCurrentUserStore(state => state.setUser)
+  const setCurrentUser = useCurrentUser(state => state.setUser)
 
   useEffect(() => {
     if (currentUser.data) setCurrentUser(currentUser.data.me)

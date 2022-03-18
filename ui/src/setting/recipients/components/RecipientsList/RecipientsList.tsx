@@ -7,7 +7,7 @@ import { SearchInput } from '../../../../common/components/SearchInput'
 import { FetchOptions } from '../RecipientsTabs'
 import { CheckboxListOption } from '../../../../common/components/CheckboxList'
 import { BasicSkeleton } from '../../../../common/components/BasicSkeleton'
-import { useExportCommonStore, useCurrentUserStore } from '../../../../common'
+import { useExportCommonStore, useCurrentUser } from '../../../../common'
 import { useQueryStaffUsers } from '../../api'
 
 interface RecipientsListProps {
@@ -19,7 +19,7 @@ export function RecipientsList(props: RecipientsListProps) {
   const { fetchedOptions, setFetchedOptions } = props
   const users = useExportCommonStore(state => state.recipients.users)
   const [search, setSearch] = useState('')
-  const currentUserId = useCurrentUserStore(state => state.user.id)
+  const currentUserId = useCurrentUser(state => state.user.id)
   const [fetchedStaff, refetchStaffUsers] = useQueryStaffUsers(
     {
       first: 25,

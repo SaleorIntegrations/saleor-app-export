@@ -11,7 +11,7 @@ import ReportPage from '../../../common/components/ReportPage'
 import ProductSetting from '../../components/ProductSetting'
 import {
   isRecipientsSelected,
-  useCurrentUserStore,
+  useCurrentUser,
   useExportCommonStore,
   useExportProductColumnsStore,
 } from '../../../common'
@@ -20,7 +20,7 @@ export function UpdateProductReport() {
   const { id } = useParams()
   const runToast = useToast()
   const navigate = useNavigate()
-  const userId = useCurrentUserStore(state => state.user.id)
+  const userId = useCurrentUser(state => state.user.id)
   const commonStore = useExportCommonStore()
   const columnsStore = useExportProductColumnsStore()
   const [report] = useQueryReport({ reportId: parseInt(id || '') })

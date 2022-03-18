@@ -7,9 +7,9 @@ interface CurrentUserStore {
   setUser: (user: User) => void
 }
 
-export const useCurrentUserStore = create<CurrentUserStore>(set => ({
+export const useCurrentUser = create<CurrentUserStore>(set => ({
   user: { id: '', firstName: '', lastName: '', email: '' },
   setUser: user => set({ user: user }),
 }))
 
-export default useCurrentUserStore
+export default useCurrentUser

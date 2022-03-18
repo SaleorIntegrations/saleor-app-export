@@ -3,8 +3,8 @@ import {
   FilterInfo,
   ProductSelectedColumnsInfo,
   ProductFieldEnum,
-  OrderSelectedColumnsInfo,
-  OrderFieldEnum,
+  // OrderSelectedColumnsInfo,
+  // OrderFieldEnum,
   RecipientInfo,
 } from './common/api/export/types'
 import { User } from './common/api/saleor/types'
@@ -59,16 +59,16 @@ export interface ExportProductColumnsStore extends ExportProductColumns {
   reset: () => void
 }
 
-export interface ExportOrderColumns {
-  type: ExportObjectTypesEnum.ORDERS
-  columns: OrderSelectedColumnsInfo
-}
+// export interface ExportOrderColumns {
+//   type: ExportObjectTypesEnum.ORDERS
+//   columns: OrderSelectedColumnsInfo
+// }
 
-export interface ExportOrderColumnsStore extends ExportOrderColumns {
-  setColumns: (columns: OrderSelectedColumnsInfo) => void
-  setOrderFields: (orderFields: OrderFieldEnum[]) => void
-  reset: () => void
-}
+// export interface ExportOrderColumnsStore extends ExportOrderColumns {
+//   setColumns: (columns: OrderSelectedColumnsInfo) => void
+//   setOrderFields: (orderFields: OrderFieldEnum[]) => void
+//   reset: () => void
+// }
 
 export enum ExportFrequency {
   DAILY = 'DAILY',
