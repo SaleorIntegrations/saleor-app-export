@@ -5,15 +5,14 @@ import { useToast } from 'saleor-app-ui'
 import { useMutationRunReport } from '../../../common/api/export'
 import { useMutationUpdateProductReport } from '../../api'
 import { useQueryReport } from '../../../common/api/export/query'
-import { ProductSelectedColumnsInfo } from '../../../common/api/export/types'
+import {
+  ExportObjectTypesEnum,
+  ProductSelectedColumnsInfo,
+} from '../../../common/api/export/types'
 import { FileType } from '../../../globalTypes'
 import ReportPage from '../../../common/components/ReportPage'
 import ProductSetting from '../../components/ProductSetting'
-import {
-  useCurrentUser,
-  useCommon,
-  useExportProductColumnsStore,
-} from '../../../common'
+import { useCurrentUser, useCommon, useProduct } from '../../../common'
 
 export function UpdateProductReport() {
   const { id } = useParams()
@@ -21,14 +20,14 @@ export function UpdateProductReport() {
   const navigate = useNavigate()
   const userId = useCurrentUser(state => state.user.id)
   const common = useCommon()
-  const columnsStore = useExportProductColumnsStore()
+  const productStore = useProduct()
   const [report] = useQueryReport({ reportId: parseInt(id || '') })
   const [, updateProductReport] = useMutationUpdateProductReport()
   const [, runReport] = useMutationRunReport()
 
   const onSaveAndExport = async () => {
     try {
-      const { productFields, ...columns } = columnsStore.columns
+      const { productFields, ...columns } = productStore.columns
       if (!common.reportId) throw new Error('reportId is not set')
 
       // update report
@@ -67,14 +66,16 @@ export function UpdateProductReport() {
         reportId: id,
         name: name,
       })
-      columnsStore.setColumns(columns as ProductSelectedColumnsInfo)
+      productStore.reset({
+        columns: columns as ProductSelectedColumnsInfo,
+      })
     }
   }, [])
 
   if (report.fetching) return <div>Loading...</div>
   return (
     <ReportPage
-      reportType={columnsStore.type}
+      reportType={ExportObjectTypesEnum.PRODUCTS}
       fileType={FileType.CSV}
       setFileType={() => {}}
       onCancel={() => navigate('/')}

@@ -13,7 +13,7 @@ import {
 } from '../../../common/components/ModalSetting'
 import Surface from '../../../common/components/Surface'
 import { sortProductFields } from '../../utils/sortProductFields'
-import { useExportProductColumnsStore } from '../../../common'
+import { useProduct } from '../../../common'
 
 import { getFields } from './fields'
 import useStyles from './styles'
@@ -31,7 +31,7 @@ export function ProductColumnsArea(props: ProductColumnsAreaProps) {
     setProductFields,
     setWarehouses,
     columns,
-  } = useExportProductColumnsStore()
+  } = useProduct()
   const [fields, setFields] = useState(sortProductFields(columns.productFields))
   const classes = useStyles()
 

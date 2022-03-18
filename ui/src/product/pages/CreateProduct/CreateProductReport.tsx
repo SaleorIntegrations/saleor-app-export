@@ -2,12 +2,11 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useToast } from 'saleor-app-ui'
 
+import { useCommon, useProduct, useCurrentUser } from '../../../common'
 import {
-  useCommon,
-  useExportProductColumnsStore,
-  useCurrentUser,
-} from '../../../common'
-import { useMutationRunReport } from '../../../common/api/export'
+  ExportObjectTypesEnum,
+  useMutationRunReport,
+} from '../../../common/api/export'
 import ReportPage from '../../../common/components/ReportPage'
 import { FileType } from '../../../globalTypes'
 import { useMutationCreateProductsReport } from '../../api'
@@ -17,14 +16,14 @@ export function CreateProductReport() {
   const navigate = useNavigate()
   const runToast = useToast()
   const common = useCommon()
-  const columnsStore = useExportProductColumnsStore()
+  const productStore = useProduct()
   const currentUser = useCurrentUser(state => state.user)
   const [, createProductReport] = useMutationCreateProductsReport()
   const [, runReport] = useMutationRunReport()
 
   // TODO: add report flag if comeone wants just export report
   const createReport = async (callback?: (reportId: number) => void) => {
-    const { productFields, ...columns } = columnsStore.columns
+    const { productFields, ...columns } = productStore.columns
     try {
       // create report
       const createResponse = await createProductReport({
@@ -63,7 +62,7 @@ export function CreateProductReport() {
   return (
     <ReportPage
       isMutable
-      reportType={columnsStore.type}
+      reportType={ExportObjectTypesEnum.PRODUCTS}
       setReportType={() => navigate('/create/order', { replace: true })}
       fileType={FileType.CSV}
       setFileType={() => {}}
