@@ -23,6 +23,8 @@ export function CreateProductReport() {
 
   // TODO: add report flag if comeone wants just export report
   const createReport = async (callback?: (reportId: number) => void) => {
+    if (!common.valid()) return
+
     const { productFields, ...columns } = productStore.columns
     try {
       // create report
@@ -31,7 +33,7 @@ export function CreateProductReport() {
           ...columns,
           fields: productFields,
         },
-        name: common.name,
+        name: common.name.value,
         recipients: {
           users: [currentUser.id],
           permissionGroups: [],

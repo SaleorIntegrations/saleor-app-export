@@ -3,28 +3,61 @@ import create from 'zustand'
 import { FileType } from '../../../globalTypes'
 import { RecipientInfo } from '../../api/export/types'
 
+type Name = {
+  value: string
+  isValid: boolean
+}
 export interface CommonData {
-  name: string
+  name: Name
   reportId: number | null
 }
 
 export interface CommonStore extends CommonData {
-  setName: (name: string) => void
+  setName: (name: Partial<Name>) => void
   setReportId: (reportId: number | null) => void
   reset: (data?: CommonData) => void
+  valid: () => boolean
 }
 
-export const useCommon = create<CommonStore>(set => ({
-  name: '',
+export const useCommon = create<CommonStore>((set, get) => ({
+  name: {
+    value: '',
+    isValid: true,
+  },
   reportId: null,
-  setName: name => set({ name: name }),
+  setName: name =>
+    set(state => ({
+      name: {
+        ...state.name,
+        ...name,
+      },
+    })),
   setReportId: reportId => set({ reportId }),
   reset: data =>
     set({
-      name: '',
+      name: {
+        value: '',
+        isValid: true,
+      },
       reportId: null,
       ...data,
     }),
+  valid: () => {
+    let isValid = true
+
+    const name = get().name
+    if (name.value === '') {
+      isValid = false
+      set({
+        name: {
+          ...name,
+          isValid: false,
+        },
+      })
+    }
+
+    return isValid
+  },
 }))
 
 export default useCommon

@@ -27,11 +27,13 @@ export function CreateOrderReport() {
   const onExport = () => createReport()
 
   const createReport = async (callback?: (reportId: number) => void) => {
+    if (!common.valid()) return
+
     try {
       // create report
       const createResponse = await createOrderReport({
         fields: columnsStore.columns.orderFields,
-        name: common.name,
+        name: common.name.value,
         recipients: {
           users: [currentUser.id],
           permissionGroups: [],

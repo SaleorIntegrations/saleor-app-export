@@ -37,6 +37,8 @@ export function UpdateOrderReport() {
   }
 
   const onSaveAndExport = async () => {
+    if (!common.valid()) return
+
     try {
       if (!common.reportId) throw new Error('reportId is not set')
 
@@ -44,7 +46,7 @@ export function UpdateOrderReport() {
       const updateResponse = await updateOrderReport({
         fields: orderStore.columns.orderFields,
         reportId: common.reportId,
-        name: common.name,
+        name: common.name.value,
         recipients: {
           users: [userId],
           permissionGroups: [],
@@ -54,7 +56,7 @@ export function UpdateOrderReport() {
       if (!report) throw new Error('create report error')
 
       updateStore(
-        { reportId: report.id, name: report.name },
+        { reportId: report.id, name: { value: report.name, isValid: true } },
         { columns: report.columns as OrderSelectedColumnsInfo }
       )
 
@@ -73,7 +75,7 @@ export function UpdateOrderReport() {
     if (report.data && !report.fetching) {
       const { id, name, columns } = report.data.report
       updateStore(
-        { reportId: id, name: name },
+        { reportId: id, name: { value: name, isValid: true } },
         { columns: columns as OrderSelectedColumnsInfo }
       )
     }

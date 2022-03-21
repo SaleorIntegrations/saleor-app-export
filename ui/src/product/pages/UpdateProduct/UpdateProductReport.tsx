@@ -37,6 +37,8 @@ export function UpdateProductReport() {
   }
 
   const onSaveAndExport = async () => {
+    if (!common.valid()) return
+
     try {
       const { productFields, ...columns } = productStore.columns
       if (!common.reportId) throw new Error('reportId is not set')
@@ -48,7 +50,7 @@ export function UpdateProductReport() {
           fields: productFields,
         },
         reportId: common.reportId,
-        name: common.name,
+        name: common.name.value,
         recipients: {
           users: [userId],
           permissionGroups: [],
@@ -60,7 +62,7 @@ export function UpdateProductReport() {
 
       // update store
       updateStore(
-        { reportId: report.id, name: report.name },
+        { reportId: report.id, name: { value: report.name, isValid: true } },
         { columns: report.columns as ProductSelectedColumnsInfo }
       )
 
@@ -70,7 +72,7 @@ export function UpdateProductReport() {
 
       runToast('Everything went well')
     } catch (error) {
-      runToast('Someting went wrong', 'error')
+      runToast(error, 'error')
     }
   }
 
@@ -84,7 +86,7 @@ export function UpdateProductReport() {
       updateStore(
         {
           reportId: id,
-          name: name,
+          name: { value: name, isValid: true },
         },
         {
           columns: cleanColumns as ProductSelectedColumnsInfo,
