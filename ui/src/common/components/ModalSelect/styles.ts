@@ -19,6 +19,10 @@ export const useStyles = makeStyles(theme => ({
     display: 'flex',
     justifyContent: 'center',
     padding: theme.spacing(4),
+    '& > div:first-child': {
+      backgroundColor: 'unset !important',
+      backdropFilter: 'blur(2px)',
+    },
   },
 }))
 
