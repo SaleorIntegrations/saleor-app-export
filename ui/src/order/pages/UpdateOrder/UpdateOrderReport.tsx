@@ -64,7 +64,7 @@ export function UpdateOrderReport() {
       })
       orderStore.setColumns(columns as OrderSelectedColumnsInfo)
     }
-  }, [])
+  }, [report.fetching])
 
   if (report.fetching) return <div>Loading...</div>
   return (
@@ -80,4 +80,4 @@ export function UpdateOrderReport() {
   )
 }
 
-export default UpdateOrderReport
+export default React.memo(UpdateOrderReport)

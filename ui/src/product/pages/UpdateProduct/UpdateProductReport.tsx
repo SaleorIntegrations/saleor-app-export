@@ -62,15 +62,19 @@ export function UpdateProductReport() {
   useEffect(() => {
     if (report.data && !report.fetching) {
       const { id, name, columns } = report.data.report
+      // from api app has __typename
+      const cleanColumns = columns as any
+      delete cleanColumns['__typename']
+
       common.reset({
         reportId: id,
         name: name,
       })
       productStore.reset({
-        columns: columns as ProductSelectedColumnsInfo,
+        columns: cleanColumns as ProductSelectedColumnsInfo,
       })
     }
-  }, [])
+  }, [report.fetching])
 
   if (report.fetching) return <div>Loading...</div>
   return (

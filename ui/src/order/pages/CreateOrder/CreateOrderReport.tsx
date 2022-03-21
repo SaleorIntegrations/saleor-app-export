@@ -47,8 +47,8 @@ export function CreateOrderReport() {
 
       if (runResponse.error) throw new Error('runReport error')
 
-      callback && callback(reportId)
       runToast('Everything went well')
+      callback && callback(reportId)
     } catch (error) {
       runToast('Someting went wrong', 'error')
     }
