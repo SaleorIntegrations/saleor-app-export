@@ -5,11 +5,15 @@ import { useQueryReports, useMutationDeleteReport } from '../../api'
 import ReportTable from '../../components/ReportTable'
 import TableHeader from '../../components/TableHeader'
 import TableReportFilter from '../../components/TableReportFilter'
+import { useCommon, useOrder, useProduct } from '../../../common'
 
 import { reportsReducer, initialReports } from './reducer'
 import useStyles from './style'
 
 export function ReportList() {
+  const commonStore = useCommon()
+  const orderStore = useOrder()
+  const productStore = useProduct()
   const classes = useStyles()
   const [state, dispatch] = useReducer(reportsReducer, initialReports)
   const [page, setPage] = useState(0)
@@ -80,6 +84,13 @@ export function ReportList() {
   useEffect(() => {
     if (state.navigation.hasNext) refetchPureReports()
   }, [state.navigation.endCursor])
+
+  useEffect(() => {
+    // clear all stores
+    commonStore.reset()
+    orderStore.reset()
+    productStore.reset()
+  }, [])
 
   return (
     <Paper className={classes.paper}>

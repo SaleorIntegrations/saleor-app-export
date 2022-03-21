@@ -12,18 +12,29 @@ import {
 import { FileType } from '../../../globalTypes'
 import ReportPage from '../../../common/components/ReportPage'
 import ProductSetting from '../../components/ProductSetting'
-import { useCurrentUser, useCommon, useProduct } from '../../../common'
+import {
+  useCurrentUser,
+  useCommon,
+  useProduct,
+  CommonData,
+  ProductData,
+} from '../../../common'
 
 export function UpdateProductReport() {
-  const { id } = useParams()
+  const params = useParams()
   const runToast = useToast()
   const navigate = useNavigate()
   const userId = useCurrentUser(state => state.user.id)
   const common = useCommon()
   const productStore = useProduct()
-  const [report] = useQueryReport({ reportId: parseInt(id || '') })
+  const [report] = useQueryReport({ reportId: parseInt(params.id || '') })
   const [, updateProductReport] = useMutationUpdateProductReport()
   const [, runReport] = useMutationRunReport()
+
+  const updateStore = (commonData: CommonData, productData: ProductData) => {
+    common.reset(commonData)
+    productStore.reset(productData)
+  }
 
   const onSaveAndExport = async () => {
     try {
@@ -43,14 +54,18 @@ export function UpdateProductReport() {
           permissionGroups: [],
         },
       })
-      const reportId = updateResponse.data?.updateProductsReport.report?.id
 
-      if (!reportId) throw new Error('create report error')
+      const report = updateResponse.data?.updateProductsReport.report
+      if (!report) throw new Error('create report error')
+
+      // update store
+      updateStore(
+        { reportId: report.id, name: report.name },
+        { columns: report.columns as ProductSelectedColumnsInfo }
+      )
 
       // run report
-      const runResponse = await runReport({ reportId })
-      common.setReportId(reportId)
-
+      const runResponse = await runReport({ reportId: report.id })
       if (runResponse.error) throw new Error('runReport error')
 
       runToast('Everything went well')
@@ -66,13 +81,15 @@ export function UpdateProductReport() {
       const cleanColumns = columns as any
       delete cleanColumns['__typename']
 
-      common.reset({
-        reportId: id,
-        name: name,
-      })
-      productStore.reset({
-        columns: cleanColumns as ProductSelectedColumnsInfo,
-      })
+      updateStore(
+        {
+          reportId: id,
+          name: name,
+        },
+        {
+          columns: cleanColumns as ProductSelectedColumnsInfo,
+        }
+      )
     }
   }, [report.fetching])
 

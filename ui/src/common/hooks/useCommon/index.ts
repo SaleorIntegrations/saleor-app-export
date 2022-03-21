@@ -3,7 +3,7 @@ import create from 'zustand'
 import { FileType } from '../../../globalTypes'
 import { RecipientInfo } from '../../api/export/types'
 
-interface CommonData {
+export interface CommonData {
   name: string
   reportId: number | null
 }

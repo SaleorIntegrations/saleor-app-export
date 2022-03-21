@@ -6,11 +6,13 @@ import { OrderFieldEnum } from '../../api/export/types'
 export type OrderSelectedColumnsInfo = {
   orderFields: OrderFieldEnum[]
 }
-export interface OrderStore {
+export interface OrderData {
   columns: OrderSelectedColumnsInfo
+}
+export interface OrderStore extends OrderData {
   setColumns: (columns: OrderSelectedColumnsInfo) => void
   setOrderFields: (orderFields: OrderFieldEnum[]) => void
-  reset: () => void
+  reset: (data?: OrderData) => void
 }
 
 export const useOrder = create<OrderStore>(set => ({
@@ -24,10 +26,11 @@ export const useOrder = create<OrderStore>(set => ({
         draft.columns.orderFields = orderFields
       })
     ),
-  reset: () =>
+  reset: data =>
     set({
       columns: {
         orderFields: [],
+        ...data,
       },
     }),
 }))
