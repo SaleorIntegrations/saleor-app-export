@@ -91,6 +91,11 @@ export function UpdateProductReport() {
         }
       )
     }
+
+    return () => {
+      common.reset()
+      productStore.reset()
+    }
   }, [report.fetching])
 
   if (report.fetching) return <div>Loading...</div>
