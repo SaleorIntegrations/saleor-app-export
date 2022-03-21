@@ -95,7 +95,7 @@ export function ReportList() {
   return (
     <Paper className={classes.paper}>
       <TableHeader />
-      <TableReportFilter />
+      {/* <TableReportFilter /> */}
       <ReportTable
         deleteSelectedReports={deleteSelectedReports}
         deleteReport={deleteReport}
