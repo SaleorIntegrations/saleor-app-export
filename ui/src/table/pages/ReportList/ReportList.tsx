@@ -4,7 +4,7 @@ import { Paper } from '@material-ui/core'
 import { useQueryReports, useMutationDeleteReport } from '../../api'
 import ReportTable from '../../components/ReportTable'
 import TableHeader from '../../components/TableHeader'
-import TableReportFilter from '../../components/TableReportFilter'
+// import TableReportFilter from '../../components/TableReportFilter'
 import { useCommon, useOrder, useProduct } from '../../../common'
 
 import { reportsReducer, initialReports } from './reducer'
@@ -36,9 +36,9 @@ export function ReportList() {
     })
   }
 
-  const deleteSelectedReports = async () => {
-    // TODO: implement delete reports
-  }
+  // const deleteSelectedReports = async () => {
+  //   // TODO: implement delete reports
+  // }
 
   const deleteReport = async (id: number) => {
     const response = await deleteReportMutation({ reportId: id })
@@ -97,11 +97,11 @@ export function ReportList() {
       <TableHeader />
       {/* <TableReportFilter /> */}
       <ReportTable
-        deleteSelectedReports={deleteSelectedReports}
+        // deleteSelectedReports={deleteSelectedReports}
         deleteReport={deleteReport}
         unselectAllReports={() => dispatch({ type: 'UNSELECT_ALL' })}
         selectAllReports={() => dispatch({ type: 'SELECT_ALL' })}
-        toggleReport={id => dispatch({ type: 'TOGGLE_REPORT', id: id })}
+        // toggleReport={id => dispatch({ type: 'TOGGLE_REPORT', id: id })}
         reports={state.reports}
         count={state.total}
         page={page}

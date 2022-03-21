@@ -1,5 +1,10 @@
 import React from 'react'
-import { TableRow, TableCell, Checkbox, IconButton } from '@material-ui/core'
+import {
+  TableRow,
+  TableCell,
+  // Checkbox,
+  IconButton,
+} from '@material-ui/core'
 import { Delete as DeleteIcon } from '@material-ui/icons'
 
 import useStyles from '../styles'
@@ -14,10 +19,10 @@ interface ReportTableRowProps {
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
     id: number
   ) => void
-  onSelect: (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-    id: number
-  ) => void
+  // onSelect: (
+  //   event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  //   id: number
+  // ) => void
   onRowClick: (
     event: React.MouseEvent<HTMLTableRowElement, MouseEvent>,
     id: number
@@ -34,7 +39,7 @@ export function ReportTableRow(props: ReportTableRowProps) {
     recipients,
     group,
     onDelete,
-    onSelect,
+    // onSelect,
     isSelected,
     onRowClick,
   } = props
@@ -50,13 +55,13 @@ export function ReportTableRow(props: ReportTableRowProps) {
       selected={isSelected}
     >
       <TableCell width="4%" padding="checkbox">
-        <Checkbox
+        {/* <Checkbox
           checked={isSelected}
           onClick={event => {
             event.stopPropagation()
             onSelect(event, id)
           }}
-        />
+        /> */}
       </TableCell>
       <TableCell width="23%" align="left">
         {name}
