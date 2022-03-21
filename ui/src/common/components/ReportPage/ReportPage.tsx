@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Container, Grid } from '@material-ui/core'
+import { Box, Grid } from '@material-ui/core'
 
 import { ExportObjectTypesEnum } from '../../api/export/types'
 import { FileType } from '../../../globalTypes'
@@ -41,7 +41,7 @@ export function ReportPage(props: ReportPageProps) {
   } = props
 
   return (
-    <Container maxWidth="lg" className={classes.container}>
+    <Box>
       <Box className={classes.content}>
         <Grid
           container
@@ -72,7 +72,7 @@ export function ReportPage(props: ReportPageProps) {
         onSave={onSave}
         onCancel={onCancel}
       />
-    </Container>
+    </Box>
   )
 }
 
