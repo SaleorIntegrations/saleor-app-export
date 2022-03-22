@@ -55,7 +55,6 @@ export function ReportList() {
         })),
       ],
       navigation: produce(state.navigation, draft => {
-        draft.startCursor = draft.endCursor
         draft.hasNext = pageInfo.hasNext
         draft.endCursor = pageInfo.endCursor
       }),
@@ -69,11 +68,12 @@ export function ReportList() {
 
   useEffect(() => {
     if (
-      state.navigation.page * reportsPerPage + reportsPerPage ===
-      state.total
-    ) {
-      refetchPureReports()
-    }
+      state.reports.slice(
+        state.navigation.page * reportsPerPage,
+        state.navigation.page * reportsPerPage + reportsPerPage
+      ).length === 0
+    )
+      refetchPureReports({ requestPolicy: 'network-only' })
   }, [state.total])
 
   useEffect(() => {

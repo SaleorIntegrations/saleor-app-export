@@ -4,7 +4,6 @@ import { TableReport } from '../../../globalTypes'
 
 export interface Navigation {
   endCursor: string | null
-  startCursor: string | null
   hasNext: boolean
   endPage: number
   page: number
@@ -34,7 +33,6 @@ export const initialReports: ReportsState = {
   navigation: {
     hasNext: true,
     endCursor: '',
-    startCursor: '',
     endPage: 0,
     page: 0,
   },
@@ -83,7 +81,6 @@ export const reportsReducer = (state: ReportsState, action: ReportsAction) => {
         draft.navigation = action.navigation || {
           hasNext: true,
           endCursor: '',
-          startCursor: '',
           endPage: 0,
           page: 0,
         }
