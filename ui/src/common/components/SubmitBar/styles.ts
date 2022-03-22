@@ -4,7 +4,7 @@ export const useStyles = makeStyles(() => ({
   root: {
     bottom: 0,
     width: '100%',
-    zIndex: 3,
+    zIndex: 0,
     position: 'fixed',
     padding: '1.6rem 2.4rem 1.6rem 2.4rem',
     boxSizing: 'border-box',

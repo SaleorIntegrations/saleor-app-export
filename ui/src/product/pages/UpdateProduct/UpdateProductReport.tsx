@@ -61,9 +61,11 @@ export function UpdateProductReport() {
       if (!report) throw new Error('create report error')
 
       // update store
+      const cleanColumns = report.columns as any
+      delete cleanColumns['__typename']
       updateStore(
         { reportId: report.id, name: { value: report.name, isValid: true } },
-        { columns: report.columns as ProductSelectedColumnsInfo }
+        { columns: cleanColumns as ProductSelectedColumnsInfo }
       )
 
       // run report
@@ -93,11 +95,6 @@ export function UpdateProductReport() {
         }
       )
     }
-
-    // return () => {
-    //   common.reset()
-    //   productStore.reset()
-    // }
   }, [report.fetching])
 
   if (report.fetching) return <div>Loading...</div>
