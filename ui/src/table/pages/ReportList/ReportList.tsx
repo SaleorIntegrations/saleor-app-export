@@ -4,7 +4,6 @@ import { Paper } from '@material-ui/core'
 import { useQueryReports, useMutationDeleteReport } from '../../api'
 import ReportTable from '../../components/ReportTable'
 import TableHeader from '../../components/TableHeader'
-import { useCommon, useOrder, useProduct } from '../../../common'
 // import TableReportFilter from '../../components/TableReportFilter'
 
 import { reportsReducer, initialReports } from './reducer'
@@ -12,9 +11,6 @@ import useStyles from './style'
 import produce from 'immer'
 
 export function ReportList() {
-  const commonStore = useCommon()
-  const orderStore = useOrder()
-  const productStore = useProduct()
   const classes = useStyles()
   const [state, dispatch] = useReducer(reportsReducer, initialReports)
   const [reportsPerPage, setReportsPerPage] = useState(10)
@@ -75,13 +71,6 @@ export function ReportList() {
     )
       refetchPureReports({ requestPolicy: 'network-only' })
   }, [state.total])
-
-  useEffect(() => {
-    // clear all stores
-    commonStore.reset()
-    orderStore.reset()
-    productStore.reset()
-  }, [])
 
   return (
     <Paper className={classes.paper}>

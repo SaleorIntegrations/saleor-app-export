@@ -79,11 +79,6 @@ export function UpdateOrderReport() {
         { columns: columns as OrderSelectedColumnsInfo }
       )
     }
-
-    return () => {
-      common.reset()
-      orderStore.reset()
-    }
   }, [report.fetching])
 
   if (report.fetching) return <div>Loading...</div>
