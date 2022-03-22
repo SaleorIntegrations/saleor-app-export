@@ -29,15 +29,20 @@ function App() {
   }, [currentUser, setCurrentUser])
 
   useEffect(() => {
-    const match =
-      location.pathname === '/' ||
-      matchPath('/create/order', location.pathname) ||
-      matchPath('/create/product', location.pathname)
-
-    if (match) {
+    if (location.pathname === '/') {
       commonStore.reset()
       orderStore.reset()
       productStore.reset()
+    }
+
+    if (matchPath('/report/:id/product', location.pathname)) {
+      productStore.reset()
+      commonStore.reset()
+    }
+
+    if (matchPath('/report/:id/order', location.pathname)) {
+      orderStore.reset()
+      commonStore.reset()
     }
   }, [location.pathname])
 
