@@ -9,6 +9,7 @@ import { useCommon, useOrder, useProduct } from '../../../common'
 
 import { reportsReducer, initialReports } from './reducer'
 import useStyles from './style'
+import produce from 'immer'
 
 export function ReportList() {
   const commonStore = useCommon()
@@ -16,14 +17,13 @@ export function ReportList() {
   const productStore = useProduct()
   const classes = useStyles()
   const [state, dispatch] = useReducer(reportsReducer, initialReports)
-  const [page, setPage] = useState(0)
   const [reportsPerPage, setReportsPerPage] = useState(10)
   const [pureReports, refetchPureReports] = useQueryReports(
     {
-      first: 25,
+      first: reportsPerPage,
       after: state.navigation.endCursor,
     },
-    { pause: true, requestPolicy: 'network-only' }
+    { pause: true }
   )
   const [, deleteReportMutation] = useMutationDeleteReport()
 
@@ -32,20 +32,21 @@ export function ReportList() {
     dispatch({ type: 'SET_REPORTS', reports: [] })
     dispatch({
       type: 'SET_NAVIGATION',
-      navigation: { endCursor: '', hasNext: true },
+      navigation: {
+        endCursor: '',
+        startCursor: '',
+        hasNext: true,
+        endPage: 0,
+        page: 0,
+      },
     })
   }
 
-  // const deleteSelectedReports = async () => {
-  //   // TODO: implement delete reports
-  // }
-
   const deleteReport = async (id: number) => {
     const response = await deleteReportMutation({ reportId: id })
-
-    if (response.data && response.data.deleteReport.errors.length === 0) {
-      reset()
-      refetchPureReports()
+    if (!response.error) {
+      dispatch({ type: 'DELETE_REPORT', id })
+      dispatch({ type: 'SET_TOTAL', total: state.total - 1 })
     }
   }
 
@@ -69,21 +70,31 @@ export function ReportList() {
       })
       dispatch({
         type: 'SET_NAVIGATION',
-        navigation: {
-          hasNext: pageInfo.hasNext,
-          endCursor: pageInfo.endCursor,
-        },
+        navigation: produce(state.navigation, draft => {
+          draft.startCursor = draft.endCursor
+          draft.hasNext = pageInfo.hasNext
+          draft.endCursor = pageInfo.endCursor
+        }),
       })
       dispatch({
         type: 'SET_TOTAL',
         total: totalCount,
       })
     }
-  }, [pureReports])
+  }, [pureReports.data])
 
   useEffect(() => {
-    if (state.navigation.hasNext) refetchPureReports()
-  }, [state.navigation.endCursor])
+    refetchPureReports()
+  }, [state.navigation.endPage])
+
+  useEffect(() => {
+    if (
+      state.navigation.page * reportsPerPage + reportsPerPage ===
+      state.total
+    ) {
+      refetchPureReports()
+    }
+  }, [state.total])
 
   useEffect(() => {
     // clear all stores
@@ -98,20 +109,27 @@ export function ReportList() {
       {/* <TableReportFilter /> */}
       <ReportTable
         // deleteSelectedReports={deleteSelectedReports}
+        // toggleReport={id => dispatch({ type: 'TOGGLE_REPORT', id: id })}
         deleteReport={deleteReport}
         unselectAllReports={() => dispatch({ type: 'UNSELECT_ALL' })}
         selectAllReports={() => dispatch({ type: 'SELECT_ALL' })}
-        // toggleReport={id => dispatch({ type: 'TOGGLE_REPORT', id: id })}
         reports={state.reports}
         count={state.total}
-        page={page}
-        setPage={page => {
-          setPage(page)
-        }}
+        page={state.navigation.page}
+        setPage={page =>
+          dispatch({
+            type: 'SET_NAVIGATION',
+            navigation: produce(state.navigation, draft => {
+              draft.page = page
+              if (draft.endPage < page) {
+                draft.endPage = page
+              }
+            }),
+          })
+        }
         rowsPerPage={reportsPerPage}
         setRowsPerPage={rowsPerPage => {
           reset()
-          setPage(0)
           setReportsPerPage(rowsPerPage)
         }}
       />
