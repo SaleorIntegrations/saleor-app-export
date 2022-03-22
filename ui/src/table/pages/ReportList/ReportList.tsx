@@ -4,8 +4,8 @@ import { Paper } from '@material-ui/core'
 import { useQueryReports, useMutationDeleteReport } from '../../api'
 import ReportTable from '../../components/ReportTable'
 import TableHeader from '../../components/TableHeader'
-// import TableReportFilter from '../../components/TableReportFilter'
 import { useCommon, useOrder, useProduct } from '../../../common'
+// import TableReportFilter from '../../components/TableReportFilter'
 
 import { reportsReducer, initialReports } from './reducer'
 import useStyles from './style'
@@ -27,20 +27,7 @@ export function ReportList() {
   )
   const [, deleteReportMutation] = useMutationDeleteReport()
 
-  const reset = () => {
-    dispatch({ type: 'SET_TOTAL', total: 0 })
-    dispatch({ type: 'SET_REPORTS', reports: [] })
-    dispatch({
-      type: 'SET_NAVIGATION',
-      navigation: {
-        endCursor: '',
-        startCursor: '',
-        hasNext: true,
-        endPage: 0,
-        page: 0,
-      },
-    })
-  }
+  const reset = () => dispatch({ type: 'RESET' })
 
   const deleteReport = async (id: number) => {
     const response = await deleteReportMutation({ reportId: id })
@@ -51,41 +38,34 @@ export function ReportList() {
   }
 
   useEffect(() => {
-    if (pureReports.data && !pureReports.fetching) {
-      const { edges, pageInfo, totalCount } = pureReports.data.reports
+    if (!pureReports.data || pureReports.fetching) return
 
-      dispatch({
-        type: 'SET_REPORTS',
-        reports: [
-          ...state.reports,
-          ...edges.map(({ node }) => ({
-            isSelected: false,
-            id: node.id,
-            entity: node.type,
-            recipients: node.recipients.users.length,
-            groups: node.recipients.permissionGroups.length,
-            name: node.name,
-          })),
-        ],
-      })
-      dispatch({
-        type: 'SET_NAVIGATION',
-        navigation: produce(state.navigation, draft => {
-          draft.startCursor = draft.endCursor
-          draft.hasNext = pageInfo.hasNext
-          draft.endCursor = pageInfo.endCursor
-        }),
-      })
-      dispatch({
-        type: 'SET_TOTAL',
-        total: totalCount,
-      })
-    }
+    const { edges, pageInfo, totalCount } = pureReports.data.reports
+    dispatch({
+      type: 'RESET',
+      reports: [
+        ...state.reports,
+        ...edges.map(({ node }) => ({
+          isSelected: false,
+          id: node.id,
+          entity: node.type,
+          recipients: node.recipients.users.length,
+          groups: node.recipients.permissionGroups.length,
+          name: node.name,
+        })),
+      ],
+      navigation: produce(state.navigation, draft => {
+        draft.startCursor = draft.endCursor
+        draft.hasNext = pageInfo.hasNext
+        draft.endCursor = pageInfo.endCursor
+      }),
+      total: totalCount,
+    })
   }, [pureReports.data])
 
   useEffect(() => {
-    refetchPureReports()
-  }, [state.navigation.endPage])
+    refetchPureReports({ requestPolicy: 'network-only' })
+  }, [state.navigation.endPage, reportsPerPage])
 
   useEffect(() => {
     if (

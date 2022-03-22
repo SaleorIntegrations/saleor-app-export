@@ -25,6 +25,7 @@ export interface ReportsAction extends Partial<ReportsState> {
     | 'SET_NAVIGATION'
     | 'SET_TOTAL'
     | 'DELETE_REPORT'
+    | 'RESET'
   id?: number
 }
 
@@ -75,6 +76,18 @@ export const reportsReducer = (state: ReportsState, action: ReportsAction) => {
     case 'SET_TOTAL':
       return produce(state, draft => {
         draft.total = action.total || state.total
+      })
+    case 'RESET':
+      return produce(state, draft => {
+        draft.total = action.total || 0
+        draft.navigation = action.navigation || {
+          hasNext: true,
+          endCursor: '',
+          startCursor: '',
+          endPage: 0,
+          page: 0,
+        }
+        draft.reports = action.reports || []
       })
     default:
       return state
