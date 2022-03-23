@@ -5,8 +5,9 @@ import {
   TableContainer,
   Table,
   TableBody,
-  TablePagination,
+  //TablePagination,
 } from '@material-ui/core'
+import { TablePagination } from '@material-ui/core'
 
 import { Order } from './utils'
 import sortTable from '../../utils/sortTable'

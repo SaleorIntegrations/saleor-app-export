@@ -20,7 +20,8 @@ export const useStyles = makeStyles(theme => ({
     justifyContent: 'center',
     padding: theme.spacing(4),
     '& > div:first-child': {
-      backgroundColor: 'unset !important',
+      opacity: '0.8',
+      backgroundColor: `${theme.palette.background.default} !important`,
       backdropFilter: 'blur(2px)',
     },
   },

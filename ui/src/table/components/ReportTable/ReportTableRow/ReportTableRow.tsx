@@ -3,11 +3,10 @@ import {
   TableRow,
   TableCell,
   // Checkbox,
-  IconButton,
 } from '@material-ui/core'
-import { Delete as DeleteIcon } from '@material-ui/icons'
 
 import useStyles from '../styles'
+import DeleteReportDialog from '../../DeleteReportDialog'
 
 interface ReportTableRowProps {
   id: number
@@ -76,14 +75,7 @@ export function ReportTableRow(props: ReportTableRowProps) {
         {group}
       </TableCell>
       <TableCell width="4%" align="center" padding="checkbox">
-        <IconButton
-          onClick={event => {
-            event.stopPropagation()
-            onDelete(event, id)
-          }}
-        >
-          <DeleteIcon />
-        </IconButton>
+        <DeleteReportDialog id={id} name={name} onDelete={onDelete} />
       </TableCell>
     </TableRow>
   )

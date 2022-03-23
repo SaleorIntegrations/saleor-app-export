@@ -1,5 +1,6 @@
 import React, { useEffect, useReducer, useState } from 'react'
 import { Paper } from '@material-ui/core'
+import { useToast } from 'saleor-app-ui'
 
 import { useQueryReports, useMutationDeleteReport } from '../../api'
 import ReportTable from '../../components/ReportTable'
@@ -12,6 +13,7 @@ import produce from 'immer'
 
 export function ReportList() {
   const classes = useStyles()
+  const runToast = useToast()
   const [state, dispatch] = useReducer(reportsReducer, initialReports)
   const [reportsPerPage, setReportsPerPage] = useState(10)
   const [pureReports, refetchPureReports] = useQueryReports(
@@ -30,6 +32,9 @@ export function ReportList() {
     if (!response.error) {
       dispatch({ type: 'DELETE_REPORT', id })
       dispatch({ type: 'SET_TOTAL', total: state.total - 1 })
+      runToast('Report has been deleted')
+    } else {
+      runToast("Report hasn't been deleted", 'error')
     }
   }
 
