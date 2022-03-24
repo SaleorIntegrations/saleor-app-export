@@ -19,6 +19,7 @@ export interface ModalSettingProps {
   additionalSelect?: React.ReactNode
   onExit: () => void
   onSubmit: () => void
+  offMultiCheck?: boolean
 }
 
 export function ModalSetting(props: ModalSettingProps) {
@@ -34,6 +35,7 @@ export function ModalSetting(props: ModalSettingProps) {
     additionalSelect,
     onExit,
     onSubmit,
+    offMultiCheck,
   } = props
   const classes = useStyles()
 
@@ -44,6 +46,7 @@ export function ModalSetting(props: ModalSettingProps) {
         <Typography>{subtitle}</Typography>
         <Box margin="1.2rem 0">{search}</Box>
         <CheckboxList
+          offMultiCheck={offMultiCheck}
           options={options}
           mainCheckboxTitle={checkboxTitle}
           subCheckboxTitle={checkboxSubtitle}
@@ -64,4 +67,4 @@ export function ModalSetting(props: ModalSettingProps) {
   )
 }
 
-export default ModalSetting
+//export default ModalSetting

@@ -18,13 +18,20 @@ interface CheckboxListProps {
   mainCheckboxTitle: string
   subCheckboxTitle?: string
   setOptions: (options: CheckboxListOption[]) => void
+  offMultiCheck?: boolean
   filter?: (option: CheckboxListOption) => boolean
 }
 
 export function CheckboxList(props: CheckboxListProps) {
   const classes = useStyles()
-  const { options, mainCheckboxTitle, subCheckboxTitle, setOptions, filter } =
-    props
+  const {
+    options,
+    mainCheckboxTitle,
+    subCheckboxTitle,
+    setOptions,
+    filter,
+    offMultiCheck,
+  } = props
 
   const filtredOptions = filter ? options.filter(filter) : options
 
@@ -57,15 +64,19 @@ export function CheckboxList(props: CheckboxListProps) {
 
   return (
     <Box>
-      <FormControlLabel
-        label={<ComplexLabel main={mainCheckboxTitle} sub={subCheckboxTitle} />}
-        control={
-          <Checkbox
-            checked={options.every(option => option.checked)}
-            onChange={onAllCheckboxChange}
-          />
-        }
-      />
+      {!offMultiCheck && (
+        <FormControlLabel
+          label={
+            <ComplexLabel main={mainCheckboxTitle} sub={subCheckboxTitle} />
+          }
+          control={
+            <Checkbox
+              checked={options.every(option => option.checked)}
+              onChange={onAllCheckboxChange}
+            />
+          }
+        />
+      )}
       <Box>
         {filtredOptions.map(option => (
           <FormControl key={option.id} className={classes.checkSlot}>

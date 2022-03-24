@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import ModalSetting, { ModalOption } from '../ModalSetting'
+import { ModalOption, ModalSetting } from '../ModalSetting'
 import SearchInput from '../../SearchInput'
 
 interface BaseFieldSettingModalProps {

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-import ModalSetting, { ModalOption } from '../ModalSetting'
+import { ModalOption, ModalSetting } from '../ModalSetting'
 import SearchInput from '../../SearchInput'
 import { useQueryWarehouseList } from '../../../api/saleor/query'
 import CheckboxList from '../../CheckboxList'

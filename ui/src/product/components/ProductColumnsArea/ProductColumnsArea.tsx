@@ -7,13 +7,13 @@ import { ModalSelect } from '../../../common/components/ModalSelect'
 import { ProductFieldEnum } from '../../../common/api/export/types'
 import {
   ChannelSettingModal,
-  AttributeSettingModal,
   BaseFieldSettingModal,
   InventorySettingModal,
 } from '../../../common/components/ModalSetting'
 import Surface from '../../../common/components/Surface'
 import { sortProductFields } from '../../utils/sortProductFields'
 import { useProduct } from '../../../common'
+import { AttributesEdit } from '../AttributesEdit'
 
 import { getFields } from './fields'
 import useStyles from './styles'
@@ -87,7 +87,11 @@ export function ProductColumnsArea(props: ProductColumnsAreaProps) {
               />
             )}
           />
-          <ModalSelect
+          <AttributesEdit
+          // attributes={columns.attributes}
+          // setAttributes={setAttributes}
+          />
+          {/* <ModalSelect
             title="Attributes"
             description={
               columns.attributes.length
@@ -95,13 +99,13 @@ export function ProductColumnsArea(props: ProductColumnsAreaProps) {
                 : undefined
             }
             render={setIsOpen => (
-              <AttributeSettingModal
+              <AttributesList
                 attributes={columns.attributes}
                 setAttributes={setAttributes}
                 setIsOpen={setIsOpen}
               />
             )}
-          />
+          /> */}
           <ModalSelect
             title="Financial"
             description={
