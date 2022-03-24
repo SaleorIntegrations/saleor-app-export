@@ -11,6 +11,8 @@ import {
 } from '../../../common'
 import { useQueryWarehouseList } from '../../../common/api/saleor/query'
 import { OptionsCheck, Option } from '../../../common/components/OptionsCheck'
+import { enrichedProductFields, inventoryFields } from '../../utils'
+import { ProductFieldEnum } from '../../../common/api/export'
 
 export function InventoryEdit() {
   const productStore = useProduct()
@@ -20,6 +22,12 @@ export function InventoryEdit() {
     {},
     { pause: true }
   )
+  const [inventoryOptions, setInventoryOptions] = useState<Option[]>(
+    enrichedProductFields['inventoryFields'].map(field => ({
+      ...field,
+      checked: productStore.columns.productFields.includes(field.value),
+    }))
+  )
   const [warehouses, setWarehouses] = useState<Option[]>([])
 
   const onSubmit = () => {
@@ -27,6 +35,21 @@ export function InventoryEdit() {
       warehouses
         .filter(warehouse => warehouse.checked)
         .map(option => option.value)
+    )
+    productStore.setProductFields(
+      produce(productStore.columns.productFields, draft => {
+        const notInventoryFields = draft.filter(
+          field => !inventoryFields.includes(field)
+        )
+        const setInventoryFields = inventoryOptions
+          .filter(field => field.checked)
+          .map(field => field.value)
+
+        draft = [
+          ...notInventoryFields,
+          ...setInventoryFields,
+        ] as ProductFieldEnum[]
+      })
     )
     setIsOpen(false)
   }
@@ -40,6 +63,15 @@ export function InventoryEdit() {
 
   const onWarehouseCheck = (option: Option) => {
     setWarehouses(
+      produce(draft => {
+        const index = draft.findIndex(attr => attr.value === option.value)
+        draft[index].checked = !option.checked
+      })
+    )
+  }
+
+  const onFieldCheck = (option: Option) => {
+    setInventoryOptions(
       produce(draft => {
         const index = draft.findIndex(attr => attr.value === option.value)
         draft[index].checked = !option.checked
@@ -82,6 +114,12 @@ export function InventoryEdit() {
           onSubmit={onSubmit}
           onExit={() => setIsOpen(false)}
         >
+          <OptionsCheck
+            options={inventoryOptions.filter(field =>
+              field.name.includes(query)
+            )}
+            onCheck={onFieldCheck}
+          />
           <OptionsCheck
             options={warehouses.filter(warehouse =>
               warehouse.name.includes(query)
