@@ -14,6 +14,7 @@ import Surface from '../../../common/components/Surface'
 import { sortProductFields } from '../../utils/sortProductFields'
 import { useProduct } from '../../../common'
 import { AttributesEdit } from '../AttributesEdit'
+import { ChannelsEdit } from '../ChannelsEdit'
 
 import { getFields } from './fields'
 import useStyles from './styles'
@@ -25,13 +26,7 @@ interface ProductColumnsAreaProps {
 
 export function ProductColumnsArea(props: ProductColumnsAreaProps) {
   const { title, subtitle } = props
-  const {
-    setAttributes,
-    setChannels,
-    setProductFields,
-    setWarehouses,
-    columns,
-  } = useProduct()
+  const { setChannels, setProductFields, setWarehouses, columns } = useProduct()
   const [fields, setFields] = useState(sortProductFields(columns.productFields))
   const classes = useStyles()
 
@@ -47,7 +42,8 @@ export function ProductColumnsArea(props: ProductColumnsAreaProps) {
           <Typography>{subtitle}</Typography>
         </Box>
         <Box className={classes.selectBox}>
-          <ModalSelect
+          <ChannelsEdit />
+          {/* <ModalSelect
             title="Channels"
             description={
               columns.channels.length
@@ -61,7 +57,7 @@ export function ProductColumnsArea(props: ProductColumnsAreaProps) {
                 setIsOpen={setIsOpen}
               />
             )}
-          />
+          /> */}
           <ModalSelect
             title="Product organsation"
             description={
@@ -87,25 +83,7 @@ export function ProductColumnsArea(props: ProductColumnsAreaProps) {
               />
             )}
           />
-          <AttributesEdit
-          // attributes={columns.attributes}
-          // setAttributes={setAttributes}
-          />
-          {/* <ModalSelect
-            title="Attributes"
-            description={
-              columns.attributes.length
-                ? `selected ${columns.attributes.length}`
-                : undefined
-            }
-            render={setIsOpen => (
-              <AttributesList
-                attributes={columns.attributes}
-                setAttributes={setAttributes}
-                setIsOpen={setIsOpen}
-              />
-            )}
-          /> */}
+          <AttributesEdit />
           <ModalSelect
             title="Financial"
             description={
