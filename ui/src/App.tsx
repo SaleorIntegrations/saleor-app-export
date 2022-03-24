@@ -1,11 +1,5 @@
 import React, { useEffect } from 'react'
-import {
-  Routes,
-  Route,
-  Navigate,
-  useLocation,
-  matchPath,
-} from 'react-router-dom'
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
 
 import { useCurrentUserQuery } from './common/api/saleor/query'
 import { useCurrentUser } from './common/hooks/useCurrentUser'
@@ -33,16 +27,6 @@ function App() {
       commonStore.reset()
       orderStore.reset()
       productStore.reset()
-    }
-
-    if (matchPath('/report/:id/product', location.pathname)) {
-      productStore.reset()
-      commonStore.reset()
-    }
-
-    if (matchPath('/report/:id/order', location.pathname)) {
-      orderStore.reset()
-      commonStore.reset()
     }
   }, [location.pathname])
 
