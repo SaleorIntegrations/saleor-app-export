@@ -11,8 +11,8 @@ import {
 } from '../../../common'
 import { useQueryWarehouseList } from '../../../common/api/saleor/query'
 import { OptionsCheck, Option } from '../../../common/components/OptionsCheck'
-import { enrichedProductFields, inventoryFields } from '../../utils'
 import { ProductFieldEnum } from '../../../common/api/export'
+import { useProductFieldOptions } from '../../hooks'
 
 export function InventoryEdit() {
   const productStore = useProduct()
@@ -22,12 +22,8 @@ export function InventoryEdit() {
     {},
     { pause: true }
   )
-  const [inventoryOptions, setInventoryOptions] = useState<Option[]>(
-    enrichedProductFields['inventoryFields'].map(field => ({
-      ...field,
-      checked: productStore.columns.productFields.includes(field.value),
-    }))
-  )
+  const [inventoryOptions, setInventoryOptions] =
+    useProductFieldOptions('inventoryFields')
   const [warehouses, setWarehouses] = useState<Option[]>([])
 
   const onSubmit = () => {
@@ -36,30 +32,14 @@ export function InventoryEdit() {
         .filter(warehouse => warehouse.checked)
         .map(option => option.value)
     )
-    productStore.setProductFields(
-      produce(productStore.columns.productFields, draft => {
-        const notInventoryFields = draft.filter(
-          field => !inventoryFields.includes(field)
-        )
-        const setInventoryFields = inventoryOptions
-          .filter(field => field.checked)
-          .map(field => field.value)
-
-        draft = [
-          ...notInventoryFields,
-          ...setInventoryFields,
-        ] as ProductFieldEnum[]
-      })
+    productStore.setSpecificFields(
+      'inventoryFields',
+      inventoryOptions
+        .filter(field => field.checked)
+        .map(field => field.value) as ProductFieldEnum[]
     )
     setIsOpen(false)
   }
-
-  const search = (
-    <SearchInput
-      onChange={event => setQuery(event.target.value)}
-      value={query}
-    />
-  )
 
   const onWarehouseCheck = (option: Option) => {
     setWarehouses(
@@ -95,20 +75,26 @@ export function InventoryEdit() {
     fetchWarehouses()
   }, [])
 
+  const allSelectedCount =
+    productStore.columns.warehouses.length +
+    productStore.getSpecificFields('inventoryFields').length
   return (
     <>
       <FieldEdit
         setIsOpen={setIsOpen}
         title="Inventory"
         description={
-          productStore.columns.warehouses.length
-            ? `selected ${productStore.columns.warehouses.length}`
-            : undefined
+          allSelectedCount ? `selected ${allSelectedCount}` : undefined
         }
       />
       <Dialog onClose={() => setIsOpen(false)} open={isOpen}>
         <FieldEditPlatform
-          search={search}
+          search={
+            <SearchInput
+              onChange={event => setQuery(event.target.value)}
+              value={query}
+            />
+          }
           title="Select Inventory"
           subtitle="Select the inventory informations you want to export information for"
           onSubmit={onSubmit}
