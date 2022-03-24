@@ -15,6 +15,7 @@ import { sortProductFields } from '../../utils/sortProductFields'
 import { useProduct } from '../../../common'
 import { AttributesEdit } from '../AttributesEdit'
 import { ChannelsEdit } from '../ChannelsEdit'
+import { InventoryEdit } from '../InventoryEdit'
 
 import { getFields } from './fields'
 import useStyles from './styles'
@@ -108,7 +109,8 @@ export function ProductColumnsArea(props: ProductColumnsAreaProps) {
               />
             )}
           />
-          <ModalSelect
+          <InventoryEdit />
+          {/* <ModalSelect
             title="Inventory"
             description={
               fields.inventory.length || columns.warehouses.length
@@ -133,7 +135,7 @@ export function ProductColumnsArea(props: ProductColumnsAreaProps) {
                 fieldOptions={getFields(fields.inventory, 'inventory')}
               />
             )}
-          />
+          /> */}
           <ModalSelect
             title="SEO"
             description={
