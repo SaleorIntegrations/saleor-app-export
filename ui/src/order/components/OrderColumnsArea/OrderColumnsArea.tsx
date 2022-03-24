@@ -1,16 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { Box, Typography } from '@material-ui/core'
-import { produce } from 'immer'
 
-import { Surface } from '../../../common/components/Surface'
-import { ModalSelect } from '../../../common/components/ModalSelect'
-import { BaseFieldSettingModal } from '../../../common/components/ModalSetting'
-import { useOrder } from '../../../common'
-import { OrderFieldEnum } from '../../../common/api/export/types'
-import { sortOrderFields } from '../../utils'
+import { Surface } from '../../../common/components'
+import OrderFieldEdit from '../OrderFieldEdit'
 
 import useStyles from './styles'
-import { getFields } from './fields'
 
 interface OrderColumnsAreaProps {
   title: string
@@ -20,12 +14,6 @@ interface OrderColumnsAreaProps {
 export function OrderColumnsArea(props: OrderColumnsAreaProps) {
   const classes = useStyles()
   const { title, subtitle } = props
-  const { columns, setOrderFields } = useOrder()
-  const [fields, setFields] = useState(sortOrderFields(columns.orderFields))
-
-  useEffect(() => {
-    setOrderFields(Object.values(fields).flat())
-  }, [fields])
 
   return (
     <Surface padding={3}>
@@ -34,145 +22,41 @@ export function OrderColumnsArea(props: OrderColumnsAreaProps) {
         <Typography>{subtitle}</Typography>
       </Box>
       <Box className={classes.selectBox}>
-        <ModalSelect
+        <OrderFieldEdit
           title="Basic"
-          description={
-            fields.basic.length ? `selected ${fields.basic.length}` : undefined
-          }
-          render={setIsOpen => (
-            <BaseFieldSettingModal
-              fields={fields.basic}
-              setFields={newBasic =>
-                setFields(
-                  produce(draft => {
-                    draft.basic = newBasic as OrderFieldEnum[]
-                  })
-                )
-              }
-              setIsOpen={setIsOpen}
-              title="Select Basic Informations"
-              subtitle="Select the order basic informations you want to export information for"
-              fieldOptions={getFields(fields.basic, 'basic')}
-            />
-          )}
+          dialogTitle="Select Basic Informations"
+          dialogSubtitle="Select the order basic informations you want to export information for"
+          fieldKey="basicFields"
         />
-        <ModalSelect
+        <OrderFieldEdit
           title="Financial"
-          description={
-            fields.financial.length
-              ? `selected ${fields.financial.length}`
-              : undefined
-          }
-          render={setIsOpen => (
-            <BaseFieldSettingModal
-              fields={fields.financial}
-              setFields={newFinancial =>
-                setFields(
-                  produce(draft => {
-                    draft.financial = newFinancial as OrderFieldEnum[]
-                  })
-                )
-              }
-              setIsOpen={setIsOpen}
-              title="Select Financial Informations"
-              subtitle="Select the order financial informations you want to export information for"
-              fieldOptions={getFields(fields.financial, 'financial')}
-            />
-          )}
+          dialogTitle="Select Financial Informations"
+          dialogSubtitle="Select the order financial informations you want to export information for"
+          fieldKey="financialFields"
         />
-        <ModalSelect
+        <OrderFieldEdit
           title="Customer"
-          description={
-            fields.customer.length
-              ? `selected ${fields.customer.length}`
-              : undefined
-          }
-          render={setIsOpen => (
-            <BaseFieldSettingModal
-              fields={fields.customer}
-              setFields={newCustomer =>
-                setFields(
-                  produce(draft => {
-                    draft.customer = newCustomer as OrderFieldEnum[]
-                  })
-                )
-              }
-              setIsOpen={setIsOpen}
-              title="Select Customer Informations"
-              subtitle="Select the order customer you want to export information for"
-              fieldOptions={getFields(fields.customer, 'customer')}
-            />
-          )}
+          dialogTitle="Select Customer Informations"
+          dialogSubtitle="Select the order customer you want to export information for"
+          fieldKey="customerFields"
         />
-        <ModalSelect
+        <OrderFieldEdit
           title="Items"
-          description={
-            fields.items.length ? `selected ${fields.items.length}` : undefined
-          }
-          render={setIsOpen => (
-            <BaseFieldSettingModal
-              fields={fields.items}
-              setFields={newItems =>
-                setFields(
-                  produce(draft => {
-                    draft.items = newItems as OrderFieldEnum[]
-                  })
-                )
-              }
-              setIsOpen={setIsOpen}
-              title="Select Items Informations"
-              subtitle="Select the order items you want to export information for"
-              fieldOptions={getFields(fields.items, 'items')}
-            />
-          )}
+          dialogTitle="Select Items Informations"
+          dialogSubtitle="Select the order items you want to export information for"
+          fieldKey="itemsFields"
         />
-        <ModalSelect
+        <OrderFieldEdit
           title="Payments"
-          description={
-            fields.payments.length
-              ? `selected ${fields.payments.length}`
-              : undefined
-          }
-          render={setIsOpen => (
-            <BaseFieldSettingModal
-              fields={fields.payments}
-              setFields={newPayments =>
-                setFields(
-                  produce(draft => {
-                    draft.payments = newPayments as OrderFieldEnum[]
-                  })
-                )
-              }
-              setIsOpen={setIsOpen}
-              title="Select Payments Informations"
-              subtitle="Select the order payments informations you want to export information for"
-              fieldOptions={getFields(fields.payments, 'payments')}
-            />
-          )}
+          dialogTitle="Select Payments Informations"
+          dialogSubtitle="Select the order payments informations you want to export information for"
+          fieldKey="paymentFields"
         />
-        <ModalSelect
+        <OrderFieldEdit
           title="Fulfillments"
-          description={
-            fields.fulfillments.length
-              ? `selected ${fields.fulfillments.length}`
-              : undefined
-          }
-          render={setIsOpen => (
-            <BaseFieldSettingModal
-              fields={fields.fulfillments}
-              setFields={newFulfillments =>
-                setFields(
-                  produce(draft => {
-                    draft.fulfillments = newFulfillments as OrderFieldEnum[]
-                  })
-                )
-              }
-              setIsOpen={setIsOpen}
-              title="Select Fulfillments Informations"
-              subtitle="Select the order fulfillments informations you want to export information for"
-              fieldOptions={getFields(fields.fulfillments, 'fulfillments')}
-            />
-          )}
+          dialogTitle="Select Fulfillments Informations"
+          dialogSubtitle="Select the order fulfillments informations you want to export information for"
+          fieldKey="fulfillmentsFields"
         />
       </Box>
     </Surface>

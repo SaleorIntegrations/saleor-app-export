@@ -16,10 +16,7 @@ export interface ProductStore extends ProductData {
   setAttributes: (attributes: string[]) => void
   setWarehouses: (warehouses: string[]) => void
   setProductFields: (productFields: ProductFieldEnum[]) => void
-  setSpecificFields: (
-    key: keyof typeof productFields,
-    fields: ProductFieldEnum[]
-  ) => void
+  setSpecificFields: (key: ProductFieldsKey, fields: ProductFieldEnum[]) => void
   getSpecificFields: (key: ProductFieldsKey) => ProductFieldEnum[]
   reset: (data?: ProductData) => void
 }
