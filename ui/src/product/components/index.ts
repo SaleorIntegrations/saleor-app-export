@@ -1,3 +1,6 @@
 export * from './ProductColumnsArea'
 export * from './ProductSetting'
 export * from './AttributesEdit'
+export * from './ChannelsEdit'
+export * from './InventoryEdit'
+export * from './ProductFieldEdit'

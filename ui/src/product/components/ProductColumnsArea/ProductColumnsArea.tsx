@@ -19,6 +19,7 @@ import { InventoryEdit } from '../InventoryEdit'
 
 import { getFields } from './fields'
 import useStyles from './styles'
+import ProductFieldEdit from '../ProductFieldEdit'
 
 interface ProductColumnsAreaProps {
   title: string
@@ -27,13 +28,13 @@ interface ProductColumnsAreaProps {
 
 export function ProductColumnsArea(props: ProductColumnsAreaProps) {
   const { title, subtitle } = props
-  const { setChannels, setProductFields, setWarehouses, columns } = useProduct()
-  const [fields, setFields] = useState(sortProductFields(columns.productFields))
+  // const { setChannels, setProductFields, setWarehouses, columns } = useProduct()
+  //const [fields, setFields] = useState(sortProductFields(columns.productFields))
   const classes = useStyles()
 
-  useEffect(() => {
-    setProductFields(Object.values(fields).flat())
-  }, [fields])
+  // useEffect(() => {
+  //   setProductFields(Object.values(fields).flat())
+  // }, [fields])
 
   return (
     <Surface padding={0}>
@@ -59,7 +60,13 @@ export function ProductColumnsArea(props: ProductColumnsAreaProps) {
               />
             )}
           /> */}
-          <ModalSelect
+          <ProductFieldEdit
+            fieldKey="organisationFields"
+            title="Product organsation"
+            dialogTitle="Select Product Organization"
+            dialogSubtitle="Select the product organizations you want to export information for"
+          />
+          {/* <ModalSelect
             title="Product organsation"
             description={
               fields.organisations.length
@@ -83,9 +90,15 @@ export function ProductColumnsArea(props: ProductColumnsAreaProps) {
                 fieldOptions={getFields(fields.organisations, 'organisations')}
               />
             )}
-          />
+          /> */}
           <AttributesEdit />
-          <ModalSelect
+          <ProductFieldEdit
+            fieldKey="financialFields"
+            title="Financial"
+            dialogTitle="Select Financial Informations"
+            dialogSubtitle="Select the financial informations you want to export information for"
+          />
+          {/* <ModalSelect
             title="Financial"
             description={
               fields.financials.length
@@ -108,8 +121,14 @@ export function ProductColumnsArea(props: ProductColumnsAreaProps) {
                 fieldOptions={getFields(fields.financials, 'financials')}
               />
             )}
-          />
+          /> */}
           <InventoryEdit />
+          <ProductFieldEdit
+            fieldKey="seoFields"
+            title="SEO"
+            dialogTitle="Select SEO Informations"
+            dialogSubtitle="Select the SEO informations you want to export information for"
+          />
           {/* <ModalSelect
             title="Inventory"
             description={
@@ -136,7 +155,7 @@ export function ProductColumnsArea(props: ProductColumnsAreaProps) {
               />
             )}
           /> */}
-          <ModalSelect
+          {/* <ModalSelect
             title="SEO"
             description={
               fields.seo.length ? `selected ${fields.seo.length}` : undefined
@@ -157,7 +176,7 @@ export function ProductColumnsArea(props: ProductColumnsAreaProps) {
                 fieldOptions={getFields(fields.seo, 'seo')}
               />
             )}
-          />
+          /> */}
         </Box>
       </Box>
     </Surface>
