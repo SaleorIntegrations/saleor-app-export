@@ -43,13 +43,6 @@ export function AttributesEdit() {
     setIsOpen(false)
   }
 
-  const search = (
-    <SearchInput
-      onChange={event => setQuery(event.target.value)}
-      value={query}
-    />
-  )
-
   const onCheck = (option: Option) => {
     setOptions(
       produce(draft => {
@@ -80,8 +73,11 @@ export function AttributesEdit() {
   }, [fetchedAttributes.data])
 
   useEffect(() => {
-    refetchAttributes()
-  }, [])
+    // check hasNext beacuse result can be empty so options would be empty array
+    if (navigation.hasNext === true && options.length === 0) {
+      refetchAttributes()
+    }
+  }, [options])
 
   return (
     <>
@@ -94,14 +90,27 @@ export function AttributesEdit() {
       />
       <Dialog onClose={() => setIsOpen(false)} open={isOpen}>
         <FieldEditPlatform
-          search={search}
+          search={
+            <SearchInput
+              onChange={event => {
+                setNavigation({
+                  after: '',
+                  first: 10,
+                  hasNext: true,
+                })
+                setOptions([])
+                setQuery(event.target.value)
+              }}
+              value={query}
+            />
+          }
           title="Select attributes"
           subtitle="Select the attributes you want to export information for"
           onSubmit={onSubmit}
           onExit={() => setIsOpen(false)}
         >
           <OptionsCheck options={options} onCheck={onCheck} />
-          {fetchedAttributes.fetching && <Skeleton height={80} />}
+          {fetchedAttributes.fetching && <Skeleton height={200} />}
           {navigation.hasNext ? (
             <Box marginTop={2}>
               <Button
