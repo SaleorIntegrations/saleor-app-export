@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { Skeleton } from '@material-ui/lab'
-import { Dialog } from '@material-ui/core'
 import produce from 'immer'
 
 import {
@@ -9,6 +8,7 @@ import {
   FieldEdit,
   SearchInput,
   CheckAll,
+  BlurDialog,
 } from '../../../common'
 import { useQueryBaseChannels } from '../../../common/api/saleor/query'
 import { OptionsCheck, Option } from '../../../common/components/OptionsCheck'
@@ -77,7 +77,7 @@ export function ChannelsEdit() {
           channels.length ? `selected ${channels.length}` : undefined
         }
       />
-      <Dialog onClose={() => setIsOpen(false)} open={isOpen}>
+      <BlurDialog onClose={() => setIsOpen(false)} open={isOpen}>
         <FieldEditPlatform
           search={search}
           title="Select channels"
@@ -100,7 +100,7 @@ export function ChannelsEdit() {
           />
           {fetchedChannels.fetching && <Skeleton height={80} />}
         </FieldEditPlatform>
-      </Dialog>
+      </BlurDialog>
     </>
   )
 }

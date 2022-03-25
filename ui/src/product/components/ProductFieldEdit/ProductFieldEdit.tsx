@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { Dialog } from '@material-ui/core'
 import produce from 'immer'
 
 import {
@@ -9,6 +8,7 @@ import {
   FieldEdit,
   SearchInput,
   CheckAll,
+  BlurDialog,
 } from '../../../common'
 import { OptionsCheck, Option } from '../../../common/components/OptionsCheck'
 import { ProductFieldEnum } from '../../../common/api/export'
@@ -64,7 +64,7 @@ export function ProductFieldEdit(props: ProductFieldEditProps) {
             : undefined
         }
       />
-      <Dialog onClose={() => setIsOpen(false)} open={isOpen}>
+      <BlurDialog onClose={() => setIsOpen(false)} open={isOpen}>
         <FieldEditPlatform
           search={
             <SearchInput
@@ -86,7 +86,7 @@ export function ProductFieldEdit(props: ProductFieldEditProps) {
           />
           <OptionsCheck options={options} onCheck={onCheck} />
         </FieldEditPlatform>
-      </Dialog>
+      </BlurDialog>
     </>
   )
 }

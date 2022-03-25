@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Skeleton } from '@material-ui/lab'
-import { Box, Dialog, Typography } from '@material-ui/core'
+import { Box, Typography } from '@material-ui/core'
 import produce from 'immer'
 
 import {
@@ -9,6 +9,7 @@ import {
   FieldEdit,
   SearchInput,
   CheckAll,
+  BlurDialog,
 } from '../../../common'
 import { useQueryWarehouseList } from '../../../common/api/saleor/query'
 import { OptionsCheck, Option } from '../../../common/components/OptionsCheck'
@@ -94,7 +95,7 @@ export function InventoryEdit() {
           allSelectedCount ? `selected ${allSelectedCount}` : undefined
         }
       />
-      <Dialog onClose={() => setIsOpen(false)} open={isOpen}>
+      <BlurDialog onClose={() => setIsOpen(false)} open={isOpen}>
         <FieldEditPlatform
           search={
             <SearchInput
@@ -136,7 +137,7 @@ export function InventoryEdit() {
             {fetchedWarehouses.fetching && <Skeleton height={80} />}
           </Box>
         </FieldEditPlatform>
-      </Dialog>
+      </BlurDialog>
     </>
   )
 }

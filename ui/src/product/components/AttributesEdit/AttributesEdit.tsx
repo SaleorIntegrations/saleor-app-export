@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Skeleton } from '@material-ui/lab'
-import { Box, Button, Dialog } from '@material-ui/core'
+import { Box, Button } from '@material-ui/core'
 import produce from 'immer'
 
 import {
@@ -8,6 +8,7 @@ import {
   FieldEditPlatform,
   FieldEdit,
   SearchInput,
+  BlurDialog,
 } from '../../../common'
 import { useQuerySearchAttributes } from '../../../common/api/saleor/query'
 import { OptionsCheck, Option } from '../../../common/components/OptionsCheck'
@@ -88,7 +89,7 @@ export function AttributesEdit() {
           attributes.length ? `selected ${attributes.length}` : undefined
         }
       />
-      <Dialog onClose={() => setIsOpen(false)} open={isOpen}>
+      <BlurDialog onClose={() => setIsOpen(false)} open={isOpen}>
         <FieldEditPlatform
           search={
             <SearchInput
@@ -123,7 +124,7 @@ export function AttributesEdit() {
             </Box>
           ) : undefined}
         </FieldEditPlatform>
-      </Dialog>
+      </BlurDialog>
     </>
   )
 }
