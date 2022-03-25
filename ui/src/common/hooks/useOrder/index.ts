@@ -45,8 +45,8 @@ export const useOrder = create<OrderStore>((set, get) => ({
     set({
       columns: {
         orderFields: [],
-        ...data,
       },
+      ...data,
     }),
 }))
 
