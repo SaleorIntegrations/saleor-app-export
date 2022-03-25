@@ -8,6 +8,7 @@ import {
   FieldEditPlatform,
   FieldEdit,
   SearchInput,
+  CheckAll,
 } from '../../../common'
 import { useQueryBaseChannels } from '../../../common/api/saleor/query'
 import { OptionsCheck, Option } from '../../../common/components/OptionsCheck'
@@ -45,6 +46,12 @@ export function ChannelsEdit() {
     )
   }
 
+  const onAllCheck = (isChecked: boolean) => {
+    setOptions(state =>
+      state.map(option => ({ ...option, checked: !isChecked }))
+    )
+  }
+
   useEffect(() => {
     if (!fetchedChannels.data || fetchedChannels.fetching) return
 
@@ -78,8 +85,17 @@ export function ChannelsEdit() {
           onSubmit={onSubmit}
           onExit={() => setIsOpen(false)}
         >
+          <CheckAll
+            title="Select all channels"
+            description="Make all channels available on all currently created options."
+            isChecked={options.every(option => option.checked)}
+            onCheck={onAllCheck}
+            hide={Boolean(query)}
+          />
           <OptionsCheck
-            options={options.filter(option => option.name.includes(query))}
+            options={options.filter(option =>
+              option.name.toLowerCase().includes(query.toLowerCase())
+            )}
             onCheck={onCheck}
           />
           {fetchedChannels.fetching && <Skeleton height={80} />}

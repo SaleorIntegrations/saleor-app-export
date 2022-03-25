@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Skeleton } from '@material-ui/lab'
-import { Dialog } from '@material-ui/core'
+import { Box, Dialog, Typography } from '@material-ui/core'
 import produce from 'immer'
 
 import {
@@ -8,6 +8,7 @@ import {
   FieldEditPlatform,
   FieldEdit,
   SearchInput,
+  CheckAll,
 } from '../../../common'
 import { useQueryWarehouseList } from '../../../common/api/saleor/query'
 import { OptionsCheck, Option } from '../../../common/components/OptionsCheck'
@@ -59,6 +60,12 @@ export function InventoryEdit() {
     )
   }
 
+  const onAllFieldCheck = (isChecked: boolean) => {
+    setInventoryOptions(state =>
+      state.map(option => ({ ...option, checked: !isChecked }))
+    )
+  }
+
   useEffect(() => {
     if (!fetchedWarehouses.data || fetchedWarehouses.fetching) return
 
@@ -100,19 +107,34 @@ export function InventoryEdit() {
           onSubmit={onSubmit}
           onExit={() => setIsOpen(false)}
         >
-          <OptionsCheck
-            options={inventoryOptions.filter(field =>
-              field.name.includes(query)
-            )}
-            onCheck={onFieldCheck}
-          />
-          <OptionsCheck
-            options={warehouses.filter(warehouse =>
-              warehouse.name.includes(query)
-            )}
-            onCheck={onWarehouseCheck}
-          />
-          {fetchedWarehouses.fetching && <Skeleton height={80} />}
+          <Box marginBottom={2}>
+            <Typography variant="h5" gutterBottom>
+              Inventory
+            </Typography>
+            <CheckAll
+              title="Select all fields"
+              description="Make all inventory variants available on all currently created options."
+              isChecked={inventoryOptions.every(option => option.checked)}
+              onCheck={onAllFieldCheck}
+              hide={Boolean(query)}
+            />
+            <OptionsCheck
+              options={inventoryOptions.filter(field =>
+                field.name.includes(query)
+              )}
+              onCheck={onFieldCheck}
+            />
+          </Box>
+          <Box>
+            <Typography variant="h5">Warehouses</Typography>
+            <OptionsCheck
+              options={warehouses.filter(warehouse =>
+                warehouse.name.includes(query)
+              )}
+              onCheck={onWarehouseCheck}
+            />
+            {fetchedWarehouses.fetching && <Skeleton height={80} />}
+          </Box>
         </FieldEditPlatform>
       </Dialog>
     </>

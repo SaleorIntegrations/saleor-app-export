@@ -5,6 +5,9 @@ export const useStyles = makeStyles(theme => ({
     width: '100%',
     paddingTop: theme.spacing(1),
     borderBottom: '1px solid #EFF5F8',
+    '&:last-child': {
+      borderBottom: 'none',
+    },
   },
 }))
 

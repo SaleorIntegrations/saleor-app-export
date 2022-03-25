@@ -16,6 +16,7 @@ export const useStyles = makeStyles(theme => ({
   body: {
     maxHeight: '70vh',
     overflow: 'auto',
+    padding: '1em',
   },
 }))
 

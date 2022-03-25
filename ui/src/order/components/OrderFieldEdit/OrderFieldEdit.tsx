@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Dialog } from '@material-ui/core'
+import { Dialog, Typography } from '@material-ui/core'
 import produce from 'immer'
 
 import {
@@ -8,6 +8,7 @@ import {
   FieldEdit,
   SearchInput,
   useOrder,
+  CheckAll,
 } from '../../../common'
 import { OptionsCheck, Option } from '../../../common/components/OptionsCheck'
 import { OrderFieldEnum } from '../../../common/api/export'
@@ -18,10 +19,11 @@ interface OrderFieldEditProps {
   fieldKey: OrderFieldsKey
   dialogTitle: string
   dialogSubtitle: string
+  allCheckTitle?: string
 }
 
 export function OrderFieldEdit(props: OrderFieldEditProps) {
-  const { fieldKey, title, dialogTitle, dialogSubtitle } = props
+  const { fieldKey, title, dialogTitle, dialogSubtitle, allCheckTitle } = props
   const orderStore = useOrder()
   const [isOpen, setIsOpen] = useState(false)
   const [query, setQuery] = useState('')
@@ -43,6 +45,12 @@ export function OrderFieldEdit(props: OrderFieldEditProps) {
         const index = draft.findIndex(attr => attr.value === option.value)
         draft[index].checked = !option.checked
       })
+    )
+  }
+
+  const onAllCheck = (isChecked: boolean) => {
+    setOptions(state =>
+      state.map(option => ({ ...option, checked: !isChecked }))
     )
   }
 
@@ -70,6 +78,16 @@ export function OrderFieldEdit(props: OrderFieldEditProps) {
           onSubmit={onSubmit}
           onExit={() => setIsOpen(false)}
         >
+          <Typography variant="h5" gutterBottom>
+            {allCheckTitle}
+          </Typography>
+          <CheckAll
+            title="Select all variants"
+            description="Make all variants available on all currently created options."
+            isChecked={options.every(option => option.checked)}
+            onCheck={onAllCheck}
+            hide={Boolean(query)}
+          />
           <OptionsCheck options={options} onCheck={onCheck} />
         </FieldEditPlatform>
       </Dialog>
