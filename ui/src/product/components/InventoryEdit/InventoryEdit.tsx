@@ -63,7 +63,7 @@ export function InventoryEdit() {
 
   const onAllFieldCheck = (isChecked: boolean) => {
     setInventoryOptions(state =>
-      state.map(option => ({ ...option, checked: !isChecked }))
+      state.map(option => ({ ...option, checked: isChecked }))
     )
   }
 

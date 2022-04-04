@@ -17,7 +17,7 @@ export function CheckAll(props: CheckAllProps): JSX.Element | null {
     <FormControlLabel
       label={<InputComplexLabel main={title} sub={description} />}
       control={
-        <Checkbox checked={isChecked} onClick={() => onCheck(isChecked)} />
+        <Checkbox checked={isChecked} onClick={() => onCheck(!isChecked)} />
       }
     />
   )

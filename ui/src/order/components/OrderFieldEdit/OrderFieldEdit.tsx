@@ -49,7 +49,7 @@ export function OrderFieldEdit(props: OrderFieldEditProps) {
 
   const onAllCheck = (isChecked: boolean) => {
     setOptions(state =>
-      state.map(option => ({ ...option, checked: !isChecked }))
+      state.map(option => ({ ...option, checked: isChecked }))
     )
   }
 
