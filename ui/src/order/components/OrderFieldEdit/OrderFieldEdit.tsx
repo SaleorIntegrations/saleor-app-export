@@ -85,7 +85,12 @@ export function OrderFieldEdit(props: OrderFieldEditProps) {
               onCheck={onAllCheck}
             />
           )}
-          <OptionsCheck options={options} onCheck={onCheck} />
+          <OptionsCheck
+            options={options.filter(option =>
+              option.name.toLowerCase().includes(query.toLowerCase())
+            )}
+            onCheck={onCheck}
+          />
         </FieldEditPlatform>
       </BlurDialog>
     </>

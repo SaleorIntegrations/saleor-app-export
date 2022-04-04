@@ -121,8 +121,8 @@ export function InventoryEdit() {
               />
             )}
             <OptionsCheck
-              options={inventoryOptions.filter(field =>
-                field.name.includes(query)
+              options={inventoryOptions.filter(option =>
+                option.name.toLowerCase().includes(query.toLowerCase())
               )}
               onCheck={onFieldCheck}
             />
@@ -130,8 +130,8 @@ export function InventoryEdit() {
           <Box>
             <Typography variant="h5">Warehouses</Typography>
             <OptionsCheck
-              options={warehouses.filter(warehouse =>
-                warehouse.name.includes(query)
+              options={warehouses.filter(option =>
+                option.name.toLowerCase().includes(query.toLowerCase())
               )}
               onCheck={onWarehouseCheck}
             />
