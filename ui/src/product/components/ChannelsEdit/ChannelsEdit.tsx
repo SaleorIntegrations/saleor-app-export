@@ -90,7 +90,7 @@ export function ChannelsEdit() {
             options={options.filter(option =>
               option.name.toLowerCase().includes(query.toLowerCase())
             )}
-            onCheck={onCheck}
+            setOptions={setOptions}
           />
           {fetchedChannels.fetching && <Skeleton height={80} />}
         </FieldEditPlatform>

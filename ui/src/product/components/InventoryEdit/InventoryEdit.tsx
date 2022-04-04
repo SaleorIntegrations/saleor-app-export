@@ -119,7 +119,7 @@ export function InventoryEdit() {
               options={inventoryOptions.filter(option =>
                 option.name.toLowerCase().includes(query.toLowerCase())
               )}
-              onCheck={onFieldCheck}
+              setOptions={setInventoryOptions}
             />
           </Box>
           <Box>
@@ -128,7 +128,7 @@ export function InventoryEdit() {
               options={warehouses.filter(option =>
                 option.name.toLowerCase().includes(query.toLowerCase())
               )}
-              onCheck={onWarehouseCheck}
+              setOptions={setWarehouses}
             />
             {fetchedWarehouses.fetching && <Skeleton height={80} />}
           </Box>

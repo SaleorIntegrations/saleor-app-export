@@ -84,7 +84,7 @@ export function ProductFieldEdit(props: ProductFieldEditProps) {
             options={options.filter(option =>
               option.name.toLowerCase().includes(query.toLowerCase())
             )}
-            onCheck={onCheck}
+            setOptions={setOptions}
           />
         </FieldEditPlatform>
       </BlurDialog>

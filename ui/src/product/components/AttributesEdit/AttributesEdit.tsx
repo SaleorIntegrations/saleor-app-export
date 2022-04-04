@@ -110,7 +110,7 @@ export function AttributesEdit() {
           onSubmit={onSubmit}
           onExit={() => setIsOpen(false)}
         >
-          <OptionsCheck options={options} onCheck={onCheck} />
+          <OptionsCheck options={options} setOptions={setOptions} />
           {fetchedAttributes.fetching && <Skeleton height={200} />}
           {navigation.hasNext ? (
             <Box marginTop={2}>
