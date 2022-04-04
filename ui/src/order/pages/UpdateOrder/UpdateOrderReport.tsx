@@ -74,9 +74,13 @@ export function UpdateOrderReport() {
   useEffect(() => {
     if (report.data && !report.fetching) {
       const { id, name, columns } = report.data.report
+
+      const cleanColumns = columns as any
+      delete cleanColumns['__typename']
+
       updateStore(
         { reportId: id, name: { value: name, isValid: true } },
-        { columns: columns as OrderSelectedColumnsInfo }
+        { columns: cleanColumns }
       )
     }
   }, [report.fetching])

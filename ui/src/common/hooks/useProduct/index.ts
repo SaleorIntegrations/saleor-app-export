@@ -1,11 +1,11 @@
 import create from 'zustand'
-import { produce } from 'immer'
 
 import {
   ProductFieldEnum,
   ProductSelectedColumnsInfo,
 } from '../../api/export/types'
 import productFields from '../../../product/utils/productFields'
+import { immer } from '../../../zustand'
 
 export interface ProductData {
   columns: ProductSelectedColumnsInfo
@@ -21,60 +21,43 @@ export interface ProductStore extends ProductData {
   reset: (data?: ProductData) => void
 }
 
-export const useProduct = create<ProductStore>((set, get) => ({
+const initState: ProductData = {
   columns: {
     attributes: [],
     channels: [],
     warehouses: [],
     productFields: [],
   },
-  setAttributes: attributes =>
-    set(state =>
-      produce(state, draft => {
-        draft.columns.attributes = attributes
-      })
-    ),
-  setChannels: channels =>
-    set(state =>
-      produce(state, draft => {
-        draft.columns.channels = channels
-      })
-    ),
-  setWarehouses: warehouses =>
-    set(state =>
-      produce(state, draft => {
-        draft.columns.warehouses = warehouses
-      })
-    ),
-  setProductFields: productFields =>
-    set(state =>
-      produce(state, draft => {
-        draft.columns.productFields = productFields
-      })
-    ),
-  setSpecificFields: (key, fields) =>
-    set(state => {
-      const notSpecificFields = state.columns.productFields.filter(
-        field => !productFields[key].includes(field)
-      )
-      return produce(state, draft => {
-        draft.columns.productFields = [...fields, ...notSpecificFields]
-      })
-    }),
-  getSpecificFields: key =>
-    get().columns.productFields.filter(field =>
-      productFields[key].includes(field)
-    ),
-  reset: data =>
-    set(() => ({
-      columns: {
-        attributes: [],
-        channels: [],
-        warehouses: [],
-        productFields: [],
-      },
-      ...data,
-    })),
-}))
+}
+
+export const useProduct = create<ProductStore>(
+  immer((set, get) => ({
+    columns: initState.columns,
+    setAttributes: attributes =>
+      set(state => void (state.columns.attributes = attributes)),
+    setChannels: channels =>
+      set(state => void (state.columns.channels = channels)),
+    setWarehouses: warehouses =>
+      set(state => void (state.columns.warehouses = warehouses)),
+    setProductFields: productFields =>
+      set(state => void (state.columns.productFields = productFields)),
+    setSpecificFields: (key, fields) =>
+      set(state => {
+        const notSpecificFields = state.columns.productFields.filter(
+          field => !productFields[key].includes(field)
+        )
+        state.columns.productFields = [...fields, ...notSpecificFields]
+      }),
+    getSpecificFields: key =>
+      get().columns.productFields.filter(field =>
+        productFields[key].includes(field)
+      ),
+    reset: data =>
+      set(() => ({
+        ...initState,
+        ...data,
+      })),
+  }))
+)
 
 export default useProduct

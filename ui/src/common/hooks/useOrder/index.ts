@@ -1,8 +1,8 @@
 import create from 'zustand'
-import { produce } from 'immer'
 
 import { OrderFieldEnum } from '../../api/export/types'
 import orderFields from '../../../order/utils/orderFields'
+import { immer } from '../../../zustand'
 
 export type OrderSelectedColumnsInfo = {
   orderFields: OrderFieldEnum[]
@@ -19,35 +19,33 @@ export interface OrderStore extends OrderData {
   reset: (data?: OrderData) => void
 }
 
-export const useOrder = create<OrderStore>((set, get) => ({
+const initState: OrderData = {
   columns: {
     orderFields: [],
   },
-  setColumns: columns => set({ columns: columns }),
-  setOrderFields: orderFields =>
-    set(state =>
-      produce(state, draft => {
-        draft.columns.orderFields = orderFields
-      })
-    ),
-  setSpecificFields: (key, fields) =>
-    set(state => {
-      const notSpecificFields = state.columns.orderFields.filter(
-        field => !orderFields[key].includes(field)
-      )
-      return produce(state, draft => {
-        draft.columns.orderFields = [...fields, ...notSpecificFields]
-      })
-    }),
-  getSpecificFields: key =>
-    get().columns.orderFields.filter(field => orderFields[key].includes(field)),
-  reset: data =>
-    set({
-      columns: {
-        orderFields: [],
-      },
-      ...data,
-    }),
-}))
+}
+
+export const useOrder = create<OrderStore>(
+  immer((set, get) => ({
+    columns: {
+      orderFields: [],
+    },
+    setColumns: columns => set(state => void (state.columns = columns)),
+    setOrderFields: orderFields =>
+      set(state => void (state.columns.orderFields = orderFields)),
+    setSpecificFields: (key, fields) =>
+      set(state => {
+        const notSpecificFields = state.columns.orderFields.filter(
+          field => !orderFields[key].includes(field)
+        )
+        state.columns.orderFields = [...fields, ...notSpecificFields]
+      }),
+    getSpecificFields: key =>
+      get().columns.orderFields.filter(field =>
+        orderFields[key].includes(field)
+      ),
+    reset: data => set(() => ({ ...initState, ...data })),
+  }))
+)
 
 export default useOrder
