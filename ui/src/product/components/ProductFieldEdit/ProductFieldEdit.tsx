@@ -47,12 +47,6 @@ export function ProductFieldEdit(props: ProductFieldEditProps) {
     )
   }
 
-  const onAllCheck = (isChecked: boolean) => {
-    setOptions(state =>
-      state.map(option => ({ ...option, checked: isChecked }))
-    )
-  }
-
   return (
     <>
       <FieldEdit
@@ -82,7 +76,8 @@ export function ProductFieldEdit(props: ProductFieldEditProps) {
               title="Select all variants"
               description="Make all variants available on all currently created options."
               isChecked={options.every(option => option.checked)}
-              onCheck={onAllCheck}
+              setOptions={setOptions}
+              options={options}
             />
           )}
           <OptionsCheck

@@ -39,12 +39,6 @@ export function ChannelsEdit() {
     )
   }
 
-  const onAllCheck = (isChecked: boolean) => {
-    setOptions(state =>
-      state.map(option => ({ ...option, checked: isChecked }))
-    )
-  }
-
   useEffect(() => {
     if (!fetchedChannels.data || fetchedChannels.fetching) return
 
@@ -88,7 +82,8 @@ export function ChannelsEdit() {
               title="Select all channels"
               description="Make all channels available on all currently created options."
               isChecked={options.every(option => option.checked)}
-              onCheck={onAllCheck}
+              setOptions={setOptions}
+              options={options}
             />
           )}
           <OptionsCheck

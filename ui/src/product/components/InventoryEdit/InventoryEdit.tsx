@@ -61,12 +61,6 @@ export function InventoryEdit() {
     )
   }
 
-  const onAllFieldCheck = (isChecked: boolean) => {
-    setInventoryOptions(state =>
-      state.map(option => ({ ...option, checked: isChecked }))
-    )
-  }
-
   useEffect(() => {
     if (!fetchedWarehouses.data || fetchedWarehouses.fetching) return
 
@@ -117,7 +111,8 @@ export function InventoryEdit() {
                 title="Select all fields"
                 description="Make all inventory variants available on all currently created options."
                 isChecked={inventoryOptions.every(option => option.checked)}
-                onCheck={onAllFieldCheck}
+                setOptions={setInventoryOptions}
+                options={inventoryOptions}
               />
             )}
             <OptionsCheck
