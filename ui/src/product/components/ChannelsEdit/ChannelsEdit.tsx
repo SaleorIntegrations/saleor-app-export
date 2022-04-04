@@ -30,13 +30,6 @@ export function ChannelsEdit() {
     setIsOpen(false)
   }
 
-  const search = (
-    <SearchInput
-      onChange={event => setQuery(event.target.value)}
-      value={query}
-    />
-  )
-
   const onCheck = (option: Option) => {
     setOptions(
       produce(draft => {
@@ -79,7 +72,12 @@ export function ChannelsEdit() {
       />
       <BlurDialog onClose={() => setIsOpen(false)} open={isOpen}>
         <FieldEditPlatform
-          search={search}
+          search={
+            <SearchInput
+              onChange={event => setQuery(event.target.value)}
+              value={query}
+            />
+          }
           title="Select channels"
           subtitle="Select the channels you want to export information for"
           onSubmit={onSubmit}
