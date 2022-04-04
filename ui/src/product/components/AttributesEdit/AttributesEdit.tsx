@@ -44,15 +44,6 @@ export function AttributesEdit() {
     setIsOpen(false)
   }
 
-  const onCheck = (option: Option) => {
-    setOptions(
-      produce(draft => {
-        const index = draft.findIndex(attr => attr.value === option.value)
-        draft[index].checked = !option.checked
-      })
-    )
-  }
-
   useEffect(() => {
     if (!fetchedAttributes.data || fetchedAttributes.fetching) return
 

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Skeleton } from '@material-ui/lab'
 import { Box, Typography } from '@material-ui/core'
-import produce from 'immer'
 
 import {
   useProduct,
@@ -41,24 +40,6 @@ export function InventoryEdit() {
         .map(field => field.value) as ProductFieldEnum[]
     )
     setIsOpen(false)
-  }
-
-  const onWarehouseCheck = (option: Option) => {
-    setWarehouses(
-      produce(draft => {
-        const index = draft.findIndex(attr => attr.value === option.value)
-        draft[index].checked = !option.checked
-      })
-    )
-  }
-
-  const onFieldCheck = (option: Option) => {
-    setInventoryOptions(
-      produce(draft => {
-        const index = draft.findIndex(attr => attr.value === option.value)
-        draft[index].checked = !option.checked
-      })
-    )
   }
 
   useEffect(() => {

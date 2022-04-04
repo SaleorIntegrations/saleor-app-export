@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import produce from 'immer'
 
 import {
   ProductFieldsKey,
@@ -10,7 +9,7 @@ import {
   CheckAll,
   BlurDialog,
 } from '../../../common'
-import { OptionsCheck, Option } from '../../../common/components/OptionsCheck'
+import { OptionsCheck } from '../../../common/components/OptionsCheck'
 import { ProductFieldEnum } from '../../../common/api/export'
 import { useProductFieldOptions } from '../../hooks'
 
@@ -36,15 +35,6 @@ export function ProductFieldEdit(props: ProductFieldEditProps) {
         .map(field => field.value) as ProductFieldEnum[]
     )
     setIsOpen(false)
-  }
-
-  const onCheck = (option: Option) => {
-    setOptions(
-      produce(draft => {
-        const index = draft.findIndex(attr => attr.value === option.value)
-        draft[index].checked = !option.checked
-      })
-    )
   }
 
   return (

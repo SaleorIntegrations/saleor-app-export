@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import produce from 'immer'
 
 import {
   OrderFieldsKey,
@@ -10,7 +9,7 @@ import {
   CheckAll,
   BlurDialog,
 } from '../../../common'
-import { OptionsCheck, Option } from '../../../common/components/OptionsCheck'
+import { OptionsCheck } from '../../../common/components/OptionsCheck'
 import { OrderFieldEnum } from '../../../common/api/export'
 import { useOrderFieldOptions } from '../../hooks'
 
@@ -36,15 +35,6 @@ export function OrderFieldEdit(props: OrderFieldEditProps) {
         .map(field => field.value) as OrderFieldEnum[]
     )
     setIsOpen(false)
-  }
-
-  const onCheck = (option: Option) => {
-    setOptions(
-      produce(draft => {
-        const index = draft.findIndex(attr => attr.value === option.value)
-        draft[index].checked = !option.checked
-      })
-    )
   }
 
   return (

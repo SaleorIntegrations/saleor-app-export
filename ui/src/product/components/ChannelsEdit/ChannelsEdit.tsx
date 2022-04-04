@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { Skeleton } from '@material-ui/lab'
-import produce from 'immer'
 
 import {
   useProduct,
@@ -28,15 +27,6 @@ export function ChannelsEdit() {
       options.filter(option => option.checked).map(option => option.value)
     )
     setIsOpen(false)
-  }
-
-  const onCheck = (option: Option) => {
-    setOptions(
-      produce(draft => {
-        const index = draft.findIndex(attr => attr.value === option.value)
-        draft[index].checked = !option.checked
-      })
-    )
   }
 
   useEffect(() => {
