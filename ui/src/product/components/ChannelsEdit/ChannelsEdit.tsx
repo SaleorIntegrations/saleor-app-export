@@ -85,13 +85,14 @@ export function ChannelsEdit() {
           onSubmit={onSubmit}
           onExit={() => setIsOpen(false)}
         >
-          <CheckAll
-            title="Select all channels"
-            description="Make all channels available on all currently created options."
-            isChecked={options.every(option => option.checked)}
-            onCheck={onAllCheck}
-            hide={Boolean(query)}
-          />
+          {!query && (
+            <CheckAll
+              title="Select all channels"
+              description="Make all channels available on all currently created options."
+              isChecked={options.every(option => option.checked)}
+              onCheck={onAllCheck}
+            />
+          )}
           <OptionsCheck
             options={options.filter(option =>
               option.name.toLowerCase().includes(query.toLowerCase())

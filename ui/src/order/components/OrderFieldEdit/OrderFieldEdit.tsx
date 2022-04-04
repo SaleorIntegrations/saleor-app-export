@@ -77,13 +77,14 @@ export function OrderFieldEdit(props: OrderFieldEditProps) {
           onSubmit={onSubmit}
           onExit={() => setIsOpen(false)}
         >
-          <CheckAll
-            title="Select all variants"
-            description="Make all variants available on all currently created options."
-            isChecked={options.every(option => option.checked)}
-            onCheck={onAllCheck}
-            hide={Boolean(query)}
-          />
+          {!query && (
+            <CheckAll
+              title="Select all variants"
+              description="Make all variants available on all currently created options."
+              isChecked={options.every(option => option.checked)}
+              onCheck={onAllCheck}
+            />
+          )}
           <OptionsCheck options={options} onCheck={onCheck} />
         </FieldEditPlatform>
       </BlurDialog>

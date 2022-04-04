@@ -112,13 +112,14 @@ export function InventoryEdit() {
             <Typography variant="h5" gutterBottom>
               Inventory
             </Typography>
-            <CheckAll
-              title="Select all fields"
-              description="Make all inventory variants available on all currently created options."
-              isChecked={inventoryOptions.every(option => option.checked)}
-              onCheck={onAllFieldCheck}
-              hide={Boolean(query)}
-            />
+            {!query && (
+              <CheckAll
+                title="Select all fields"
+                description="Make all inventory variants available on all currently created options."
+                isChecked={inventoryOptions.every(option => option.checked)}
+                onCheck={onAllFieldCheck}
+              />
+            )}
             <OptionsCheck
               options={inventoryOptions.filter(field =>
                 field.name.includes(query)

@@ -8,13 +8,10 @@ interface CheckAllProps {
   description: string
   isChecked: boolean
   onCheck: (isChecked: boolean) => void
-  hide?: boolean
 }
 
 export function CheckAll(props: CheckAllProps): JSX.Element | null {
-  const { title, description, isChecked, onCheck, hide } = props
-
-  if (hide) return null
+  const { title, description, isChecked, onCheck } = props
 
   return (
     <FormControlLabel
