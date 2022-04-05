@@ -13,7 +13,7 @@ from app.core.reports.models import Job, JobStatusesEnum
 @mock.patch("app.core.export.tasks.continue_job")
 @mock.patch.object(ProductExportMethods, "get_headers")
 async def test_start_job_for_report(
-    m_headers, m_continue, db_session, export_products_job, x_saleor_domain
+    m_headers, m_continue, db_session, export_products_job, x_saleor_domain, tenant_id
 ):
     # given
     job = export_products_job
@@ -26,7 +26,7 @@ async def test_start_job_for_report(
     assert os.path.isfile(job.content_file)
     with open(job.content_file) as f:
         assert len(f.readlines()) == 1
-    m_continue.delay.assert_called_once_with(job.id, x_saleor_domain)
+    m_continue.delay.assert_called_once_with(job.id, x_saleor_domain, tenant_id=tenant_id)
 
 
 @pytest.mark.asyncio
@@ -39,6 +39,7 @@ async def test_continue_job_with_empty_cursor(
     db_session,
     export_products_job,
     x_saleor_domain,
+    tenant_id,
 ):
     # given
     m_fetch_response.return_value = dummy_variants_response_has_no_next
@@ -60,6 +61,7 @@ async def test_continue_job_with_next_page(
     db_session,
     export_products_job,
     x_saleor_domain,
+    tenant_id,
 ):
     # given
     m_fetch_response.return_value = dummy_variants_response_has_next
@@ -71,7 +73,7 @@ async def test_continue_job_with_next_page(
     refreshed_job = (
         await db_session.exec(select(Job).where(Job.id == export_products_job.id))
     ).one()
-    m_continue.delay.assert_called_once_with(export_products_job.id, x_saleor_domain)
+    m_continue.delay.assert_called_once_with(export_products_job.id, x_saleor_domain, tenant_id=tenant_id)
     assert refreshed_job.cursor != ""
 
 

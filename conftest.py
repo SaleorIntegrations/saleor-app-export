@@ -3,6 +3,9 @@ from typing import Generator
 
 import pytest  # noqa
 from httpx import AsyncClient
+from saleor_app_base.core import context
+from saleor_app_base.core.context import init
+from saleor_app_base.core.tenant_settings import TenantContext
 from saleor_app_base.tests.fixtures import *  # noqa
 from sqlalchemy.ext.asyncio import create_async_engine
 from sqlmodel import SQLModel
@@ -59,7 +62,7 @@ async def async_client(fastapi):
 
 @pytest.fixture
 async def tenant(db_session, x_saleor_token, x_saleor_domain):
-    settings = SettingsModel(
+    tenant = TenantModel(
         # General settings
         domain=x_saleor_domain,
         tenant_id=uuid4().hex,
@@ -67,8 +70,8 @@ async def tenant(db_session, x_saleor_token, x_saleor_domain):
         saleor_token=x_saleor_token,
         secret_key="",
     )
-    db_session.add(settings)
-    return settings
+    db_session.add(tenant)
+    return tenant
 
 
 @pytest.fixture
@@ -106,3 +109,9 @@ def graphql(async_client, tenant, x_saleor_domain, x_saleor_token, mock_verify):
             return response.json()
 
     return GqlClient()
+
+
+@pytest.fixture
+def tenant_id(db_session, x_saleor_token, x_saleor_domain, tenant):
+    context._tenant_context.set(TenantContext(tenant=tenant))
+    return tenant.tenant_id

@@ -13,7 +13,7 @@ from app.core.reports.models import Job
 @mock.patch("app.core.export.tasks.continue_job")
 @mock.patch.object(OrderExportMethods, "get_headers")
 async def test_start_job_for_report(
-    m_headers, m_continue, db_session, export_orders_job, x_saleor_domain
+    m_headers, m_continue, db_session, export_orders_job, x_saleor_domain, tenant_id
 ):
     # given
     job = export_orders_job
@@ -26,7 +26,7 @@ async def test_start_job_for_report(
     assert os.path.isfile(job.content_file)
     with open(job.content_file) as f:
         assert len(f.readlines()) == 1
-    m_continue.delay.assert_called_once_with(job.id, x_saleor_domain)
+    m_continue.delay.assert_called_once_with(job.id, x_saleor_domain, tenant_id=tenant_id)
 
 
 @pytest.mark.asyncio
@@ -41,6 +41,7 @@ async def test_continue_job_with_empty_cursor(
     db_session,
     export_orders_job,
     x_saleor_domain,
+    tenant_id,
 ):
     # given
     m_fetch_response.return_value = dummy_orders_response_has_no_next
@@ -50,7 +51,7 @@ async def test_continue_job_with_empty_cursor(
 
     # then
     assert m_continue.delay.call_count == 0
-    m_finish.delay.assert_called_once_with(export_orders_job.id, x_saleor_domain)
+    m_finish.delay.assert_called_once_with(export_orders_job.id, x_saleor_domain, tenant_id=tenant_id)
 
 
 @pytest.mark.asyncio
@@ -63,6 +64,7 @@ async def test_continue_job_with_next_page(
     db_session,
     export_orders_job,
     x_saleor_domain,
+    tenant_id,
 ):
     # given
     m_fetch_response.return_value = dummy_orders_response_has_next

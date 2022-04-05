@@ -22,7 +22,7 @@ mutation RunReport($reportId: Int!) {
 @pytest.mark.asyncio
 @mock.patch("app.graphql.reports.mutations.job.start_job_for_report")
 async def test_run_report_creates_job(
-    m_task, db_session, graphql, orders_report, x_saleor_domain
+    m_task, db_session, graphql, orders_report, x_saleor_domain, tenant_id
 ):
     # given
     variables = {"reportId": orders_report.id}
@@ -36,7 +36,7 @@ async def test_run_report_creates_job(
     ).one()
     assert result["data"]["runReport"]["job"]["id"] == job.id
     assert result["data"]["runReport"]["job"]["report"]["id"] == orders_report.id
-    m_task.delay.assert_called_once_with(job.id, x_saleor_domain)
+    m_task.delay.assert_called_once_with(job.id, x_saleor_domain, tenant_id=tenant_id)
 
 
 @pytest.mark.asyncio
