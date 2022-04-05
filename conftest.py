@@ -1,18 +1,19 @@
 import asyncio
+from select import select
 from typing import Generator
 
 import pytest  # noqa
 from httpx import AsyncClient
 from saleor_app_base.core import context
-from saleor_app_base.core.context import init
 from saleor_app_base.core.tenant_settings import TenantContext
+from saleor_app_base.database import get_db as base_db
 from saleor_app_base.tests.fixtures import *  # noqa
 from sqlalchemy.ext.asyncio import create_async_engine
 from sqlmodel import SQLModel
 from sqlmodel.ext.asyncio.session import AsyncSession
 from testing.postgresql import Postgresql
 
-from db import async_session, get_db
+from db import async_session, get_db as export_db
 from main import app as fastapi_app
 from tests.fixtures import *  # noqa
 
@@ -48,9 +49,10 @@ def override_get_db(db_session: AsyncSession):
     return _override_get_db
 
 
-@pytest.fixture
+@pytest.fixture(autouse=True)
 def fastapi(override_get_db):
-    fastapi_app.dependency_overrides[get_db] = override_get_db
+    fastapi_app.dependency_overrides[export_db] = override_get_db
+    fastapi_app.dependency_overrides[base_db] = override_get_db
     return fastapi_app
 
 
@@ -58,20 +60,6 @@ def fastapi(override_get_db):
 async def async_client(fastapi):
     async with AsyncClient(app=fastapi, base_url="http://test") as ac:
         yield ac
-
-
-@pytest.fixture
-async def tenant(db_session, x_saleor_token, x_saleor_domain):
-    tenant = TenantModel(
-        # General settings
-        domain=x_saleor_domain,
-        tenant_id=uuid4().hex,
-        data={},
-        saleor_token=x_saleor_token,
-        secret_key="",
-    )
-    db_session.add(tenant)
-    return tenant
 
 
 @pytest.fixture
@@ -98,7 +86,7 @@ def graphql(async_client, tenant, x_saleor_domain, x_saleor_token, mock_verify):
                 **kwargs,
             )
             assert response.status_code == 422
-            # Test authenticated requeset
+            # Test authenticated request
             response = await async_client.post(
                 **kwargs,
                 headers={
@@ -112,6 +100,6 @@ def graphql(async_client, tenant, x_saleor_domain, x_saleor_token, mock_verify):
 
 
 @pytest.fixture
-def tenant_id(db_session, x_saleor_token, x_saleor_domain, tenant):
+def tenant_id(tenant):
     context._tenant_context.set(TenantContext(tenant=tenant))
     return tenant.tenant_id
