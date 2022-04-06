@@ -75,7 +75,7 @@ export function UpdateOrderReport() {
     if (report.data && !report.fetching) {
       const { id, name, columns } = report.data.report
 
-      const cleanColumns = columns as any
+      const cleanColumns = { ...columns } as any
       delete cleanColumns['__typename']
 
       updateStore(
