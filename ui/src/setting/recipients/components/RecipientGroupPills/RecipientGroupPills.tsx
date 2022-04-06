@@ -3,11 +3,11 @@ import { produce } from 'immer'
 
 import { PillsSkeleton } from '../../../../common/components/PillsSkeleton'
 import { Pill } from '../../../../common/components/Pill'
-import { useExportCommonStore } from '../../../../common'
+import { useFutherCommon } from '../../../../common'
 import { useQueryPermissionGroups } from '../../api'
 
 export function RecipientGroupPills() {
-  const { setRecipients, recipients } = useExportCommonStore(state => ({
+  const { setRecipients, recipients } = useFutherCommon(state => ({
     recipients: state.recipients,
     setRecipients: state.setRecipients,
   }))

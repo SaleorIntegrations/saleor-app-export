@@ -9,14 +9,10 @@ export const useStyles = makeStyles(theme => ({
       marginTop: theme.spacing(2),
     },
   },
-  container: {
-    display: 'flex',
-    flexDirection: 'column',
-    height: '100%',
-  },
   content: {
     flex: '1 1 auto',
     margin: '1em 0',
+    paddingBottom: '80px',
   },
 }))
 

@@ -1,14 +1,14 @@
 import React from 'react'
-import { Box, Container, Grid } from '@material-ui/core'
+import { Box, Grid } from '@material-ui/core'
 
 import { ExportObjectTypesEnum } from '../../api/export/types'
 import { FileType } from '../../../globalTypes'
-import ExportPicker from '../../../setting/general/components/ExportPicker'
+// import ExportPicker from '../../../setting/general/components/ExportPicker'
+// import ScheduleAndSharing from '../../../setting/common/components/ScheduleAndSharing'
 import ReportType from '../../../setting/general/components/ReportType'
 import SubmitBar from '../SubmitBar'
 
 import useStyles from './styles'
-import ScheduleAndSharing from '../../../setting/common/components/ScheduleAndSharing'
 
 interface ReportPageProps {
   reportType: ExportObjectTypesEnum
@@ -29,8 +29,8 @@ export function ReportPage(props: ReportPageProps) {
   const classes = useStyles()
   const {
     reportType,
-    setFileType,
-    fileType,
+    // setFileType,
+    // fileType,
     setReportType,
     isMutable,
     children,
@@ -41,7 +41,7 @@ export function ReportPage(props: ReportPageProps) {
   } = props
 
   return (
-    <Container maxWidth="lg" className={classes.container}>
+    <Box>
       <Box className={classes.content}>
         <Grid
           container
@@ -57,8 +57,8 @@ export function ReportPage(props: ReportPageProps) {
                 onReportTypeChange={setReportType}
                 isMutable={isMutable}
               />
-              <ExportPicker fileType={fileType} setFileType={setFileType} />
-              <ScheduleAndSharing />
+              {/* <ExportPicker fileType={fileType} setFileType={setFileType} /> */}
+              {/* <ScheduleAndSharing /> */}
             </Box>
           </Grid>
           <Grid item md={8}>
@@ -72,7 +72,7 @@ export function ReportPage(props: ReportPageProps) {
         onSave={onSave}
         onCancel={onCancel}
       />
-    </Container>
+    </Box>
   )
 }
 

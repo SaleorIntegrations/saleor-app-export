@@ -1,106 +1,109 @@
 import React, { useEffect, useReducer, useState } from 'react'
 import { Paper } from '@material-ui/core'
+import { useToast } from 'saleor-app-ui'
 
 import { useQueryReports, useMutationDeleteReport } from '../../api'
 import ReportTable from '../../components/ReportTable'
 import TableHeader from '../../components/TableHeader'
-import TableReportFilter from '../../components/TableReportFilter'
+// import TableReportFilter from '../../components/TableReportFilter'
 
 import { reportsReducer, initialReports } from './reducer'
 import useStyles from './style'
+import produce from 'immer'
 
 export function ReportList() {
   const classes = useStyles()
+  const runToast = useToast()
   const [state, dispatch] = useReducer(reportsReducer, initialReports)
-  const [page, setPage] = useState(0)
   const [reportsPerPage, setReportsPerPage] = useState(10)
   const [pureReports, refetchPureReports] = useQueryReports(
     {
-      first: 25,
+      first: reportsPerPage,
       after: state.navigation.endCursor,
     },
-    { pause: true, requestPolicy: 'network-only' }
+    { pause: true }
   )
   const [, deleteReportMutation] = useMutationDeleteReport()
 
-  const reset = () => {
-    dispatch({ type: 'SET_TOTAL', total: 0 })
-    dispatch({ type: 'SET_REPORTS', reports: [] })
-    dispatch({
-      type: 'SET_NAVIGATION',
-      navigation: { endCursor: '', hasNext: true },
-    })
-  }
-
-  const deleteSelectedReports = async () => {
-    // TODO: implement delete reports
-  }
+  const reset = () => dispatch({ type: 'RESET' })
 
   const deleteReport = async (id: number) => {
     const response = await deleteReportMutation({ reportId: id })
-
-    if (response.data && response.data.deleteReport.errors.length === 0) {
-      reset()
-      refetchPureReports()
+    if (!response.error) {
+      dispatch({ type: 'DELETE_REPORT', id })
+      dispatch({ type: 'SET_TOTAL', total: state.total - 1 })
+      runToast('Report has been deleted')
+    } else {
+      runToast("Report hasn't been deleted", 'error')
     }
   }
 
   useEffect(() => {
-    if (pureReports.data && !pureReports.fetching) {
-      const { edges, pageInfo, totalCount } = pureReports.data.reports
+    if (!pureReports.data || pureReports.fetching) return
 
-      dispatch({
-        type: 'SET_REPORTS',
-        reports: [
-          ...state.reports,
-          ...edges.map(({ node }) => ({
-            isSelected: false,
-            id: node.id,
-            entity: node.type,
-            recipients: node.recipients.users.length,
-            groups: node.recipients.permissionGroups.length,
-            name: node.name,
-          })),
-        ],
-      })
-      dispatch({
-        type: 'SET_NAVIGATION',
-        navigation: {
-          hasNext: pageInfo.hasNext,
-          endCursor: pageInfo.endCursor,
-        },
-      })
-      dispatch({
-        type: 'SET_TOTAL',
-        total: totalCount,
-      })
-    }
-  }, [pureReports])
+    const { edges, pageInfo, totalCount } = pureReports.data.reports
+    dispatch({
+      type: 'RESET',
+      reports: [
+        ...state.reports,
+        ...edges.map(({ node }) => ({
+          isSelected: false,
+          id: node.id,
+          entity: node.type,
+          recipients: node.recipients.users.length,
+          groups: node.recipients.permissionGroups.length,
+          name: node.name,
+        })),
+      ],
+      navigation: produce(state.navigation, draft => {
+        draft.hasNext = pageInfo.hasNext
+        draft.endCursor = pageInfo.endCursor
+      }),
+      total: totalCount,
+    })
+  }, [pureReports.data])
 
   useEffect(() => {
-    if (state.navigation.hasNext) refetchPureReports()
-  }, [state.navigation.endCursor])
+    refetchPureReports({ requestPolicy: 'network-only' })
+  }, [state.navigation.endPage, reportsPerPage])
+
+  useEffect(() => {
+    if (
+      state.reports.slice(
+        state.navigation.page * reportsPerPage,
+        state.navigation.page * reportsPerPage + reportsPerPage
+      ).length === 0
+    )
+      refetchPureReports({ requestPolicy: 'network-only' })
+  }, [state.total])
 
   return (
     <Paper className={classes.paper}>
       <TableHeader />
-      <TableReportFilter />
+      {/* <TableReportFilter /> */}
       <ReportTable
-        deleteSelectedReports={deleteSelectedReports}
+        // deleteSelectedReports={deleteSelectedReports}
+        // toggleReport={id => dispatch({ type: 'TOGGLE_REPORT', id: id })}
         deleteReport={deleteReport}
         unselectAllReports={() => dispatch({ type: 'UNSELECT_ALL' })}
         selectAllReports={() => dispatch({ type: 'SELECT_ALL' })}
-        toggleReport={id => dispatch({ type: 'TOGGLE_REPORT', id: id })}
         reports={state.reports}
         count={state.total}
-        page={page}
-        setPage={page => {
-          setPage(page)
-        }}
+        page={state.navigation.page}
+        setPage={page =>
+          dispatch({
+            type: 'SET_NAVIGATION',
+            navigation: produce(state.navigation, draft => {
+              draft.page = page
+              if (draft.endPage < page) {
+                draft.endPage = page
+              }
+            }),
+          })
+        }
         rowsPerPage={reportsPerPage}
         setRowsPerPage={rowsPerPage => {
           reset()
-          setPage(0)
           setReportsPerPage(rowsPerPage)
         }}
       />

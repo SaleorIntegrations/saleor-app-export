@@ -1,79 +1,75 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useToast } from 'saleor-app-ui'
 
+import { useCommon, useProduct, useCurrentUser } from '../../../common'
 import {
-  useExportCommonStore,
-  useExportProductColumnsStore,
-  useCurrentUserStore,
-} from '../../../common'
-import { useMutationRunReport } from '../../../common/api/export'
+  ExportObjectTypesEnum,
+  useMutationRunReport,
+} from '../../../common/api/export'
 import ReportPage from '../../../common/components/ReportPage'
+import { FileType } from '../../../globalTypes'
 import { useMutationCreateProductsReport } from '../../api'
 import ProductSetting from '../../components/ProductSetting'
 
 export function CreateProductReport() {
   const navigate = useNavigate()
-  const commonStore = useExportCommonStore()
-  const columnsStore = useExportProductColumnsStore()
-  const currentUser = useCurrentUserStore(state => state.user)
+  const runToast = useToast()
+  const common = useCommon()
+  const productStore = useProduct()
+  const currentUser = useCurrentUser(state => state.user)
   const [, createProductReport] = useMutationCreateProductsReport()
   const [, runReport] = useMutationRunReport()
-  const [isLoading, setIsLoading] = useState(true)
 
-  const onSave = async () => {
-    const id = await createProductExportReport()
+  // TODO: add report flag if comeone wants just export report
+  const createReport = async (callback?: (reportId: number) => void) => {
+    if (!common.valid()) return
 
-    if (id) {
-      runReport({ reportId: id })
-      navigate(`/report/${id}/product`)
+    const { productFields, ...columns } = productStore.columns
+    try {
+      // create report
+      const createResponse = await createProductReport({
+        columns: {
+          ...columns,
+          fields: productFields,
+        },
+        name: common.name.value,
+        recipients: {
+          users: [currentUser.id],
+          permissionGroups: [],
+        },
+      })
+      const reportId = createResponse.data?.createProductsReport.report?.id
+
+      if (!reportId) throw new Error('create report error')
+
+      // run report
+      const runResponse = await runReport({ reportId })
+      common.setReportId(reportId)
+
+      if (runResponse.error) throw new Error('runReport error')
+
+      callback && callback(reportId)
+      runToast('Everything went well')
+    } catch (error) {
+      runToast('Someting went wrong', 'error')
     }
   }
 
-  const createProductExportReport = async () => {
-    const { addMore, users, permissionGroups } = commonStore.recipients
-    const response = await createProductReport({
-      columns: {
-        attributes: columnsStore.columns.attributes,
-        fields: columnsStore.columns.productFields,
-        channels: columnsStore.columns.channels,
-        warehouses: columnsStore.columns.warehouses,
-      },
-      name: commonStore.name,
-      recipients: {
-        users: addMore ? users : [currentUser.id],
-        permissionGroups: addMore ? permissionGroups : [],
-      },
-    })
+  const onSaveAndExport = () =>
+    createReport(reportId => navigate(`/report/${reportId}/product`))
 
-    const report = response.data?.createProductsReport
-
-    if (report && report.errors.length < 1) {
-      commonStore.setId(report.report?.id || null)
-    }
-
-    return report?.report?.id
-  }
-
-  const onTypeChange = () => {
-    navigate('/create/order', { replace: true })
-  }
-
-  useEffect(() => {
-    commonStore.reset(currentUser)
-    columnsStore.reset()
-    setIsLoading(false)
-  }, [])
-
-  if (isLoading) return <div>Loading...</div>
+  const onExport = () => createReport()
 
   return (
     <ReportPage
       isMutable
-      reportType={columnsStore.type}
-      setReportType={onTypeChange}
-      fileType={commonStore.fileType}
-      setFileType={fileType => commonStore.setFileType(fileType)}
-      onSave={onSave}
+      reportType={ExportObjectTypesEnum.PRODUCTS}
+      setReportType={() => navigate('/create/order', { replace: true })}
+      fileType={FileType.CSV}
+      setFileType={() => {}}
+      onExport={onExport}
+      onSaveAndExport={onSaveAndExport}
       onCancel={() => navigate('/')}
     >
       <ProductSetting />

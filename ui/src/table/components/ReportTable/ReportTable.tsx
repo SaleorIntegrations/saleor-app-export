@@ -5,8 +5,9 @@ import {
   TableContainer,
   Table,
   TableBody,
-  TablePagination,
+  //TablePagination,
 } from '@material-ui/core'
+import { TablePagination } from '@material-ui/core'
 
 import { Order } from './utils'
 import sortTable from '../../utils/sortTable'
@@ -19,11 +20,11 @@ import useStyles from './styles'
 
 interface ReportTableProps {
   reports: TableReport[]
-  toggleReport: (id: number) => void
+  // toggleReport: (id: number) => void
   selectAllReports: () => void
   unselectAllReports: () => void
   deleteReport: (id: number) => void
-  deleteSelectedReports: () => void
+  // deleteSelectedReports: () => void
   page: number
   setPage: (page: number) => void
   rowsPerPage: number
@@ -36,11 +37,11 @@ export function ReportTable(props: ReportTableProps) {
   const classes = useStyles()
   const {
     reports,
-    toggleReport,
+    // toggleReport,
     selectAllReports,
     unselectAllReports,
     deleteReport,
-    deleteSelectedReports,
+    // deleteSelectedReports,
     count,
     page,
     setPage,
@@ -79,7 +80,7 @@ export function ReportTable(props: ReportTableProps) {
             }
             rowCount={reports.length}
             onSelectAllClick={onSelectAllClick}
-            onMultiDelete={() => deleteSelectedReports()}
+            // onMultiDelete={() => deleteSelectedReports()}
             order={order}
             orderBy={orderBy}
             onSort={onSort}
@@ -105,7 +106,7 @@ export function ReportTable(props: ReportTableProps) {
                   recipients={d.recipients}
                   group={d.groups}
                   isSelected={d.isSelected}
-                  onSelect={(_, id) => toggleReport(id)}
+                  // onSelect={(_, id) => toggleReport(id)}
                   onDelete={(_, id) => deleteReport(id)}
                 />
               ))}

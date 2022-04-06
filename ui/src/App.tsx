@@ -1,21 +1,34 @@
 import React, { useEffect } from 'react'
-import { Routes, Route, Navigate } from 'react-router-dom'
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
 
 import { useCurrentUserQuery } from './common/api/saleor/query'
-import { useCurrentUserStore } from './common/hooks/useCurrentUserStore'
+import { useCurrentUser } from './common/hooks/useCurrentUser'
 import { ReportList } from './table'
 import { UpdateOrderReport, CreateOrderReport } from './order'
 import { UpdateProductReport, CreateProductReport } from './product'
+import { useCommon, useOrder, useProduct } from './common'
 
 import './App.css'
 
 function App() {
+  const commonStore = useCommon()
+  const orderStore = useOrder()
+  const productStore = useProduct()
   const [currentUser] = useCurrentUserQuery()
-  const setCurrentUser = useCurrentUserStore(state => state.setUser)
+  const location = useLocation()
+  const setCurrentUser = useCurrentUser(state => state.setUser)
 
   useEffect(() => {
     if (currentUser.data) setCurrentUser(currentUser.data.me)
   }, [currentUser, setCurrentUser])
+
+  useEffect(() => {
+    if (location.pathname === '/') {
+      commonStore.reset()
+      orderStore.reset()
+      productStore.reset()
+    }
+  }, [location.pathname])
 
   if (currentUser.fetching) return <div>Loading...</div>
 

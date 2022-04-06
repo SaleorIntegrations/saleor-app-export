@@ -12,9 +12,6 @@ export const useStyles = makeStyles(theme => ({
   paddingBox: {
     padding: theme.spacing(3),
   },
-  bottomHr: {
-    borderBottom: '1px solid #EFF5F8',
-  },
 }))
 
 export default useStyles

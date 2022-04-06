@@ -1,91 +1,108 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import { useToast } from 'saleor-app-ui'
 
 import { useMutationRunReport } from '../../../common/api/export'
 import { useMutationUpdateProductReport } from '../../api'
 import { useQueryReport } from '../../../common/api/export/query'
-import { ProductSelectedColumnsInfo } from '../../../common/api/export/types'
+import {
+  ExportObjectTypesEnum,
+  ProductSelectedColumnsInfo,
+} from '../../../common/api/export/types'
 import { FileType } from '../../../globalTypes'
 import ReportPage from '../../../common/components/ReportPage'
 import ProductSetting from '../../components/ProductSetting'
 import {
-  isRecipientsSelected,
-  useCurrentUserStore,
-  useExportCommonStore,
-  useExportProductColumnsStore,
+  useCurrentUser,
+  useCommon,
+  useProduct,
+  CommonData,
+  ProductData,
 } from '../../../common'
 
 export function UpdateProductReport() {
-  const { id } = useParams()
+  const params = useParams()
+  const runToast = useToast()
   const navigate = useNavigate()
-  const userId = useCurrentUserStore(state => state.user.id)
-  const commonStore = useExportCommonStore()
-  const columnsStore = useExportProductColumnsStore()
-  const [report] = useQueryReport({ reportId: parseInt(id || '') })
+  const userId = useCurrentUser(state => state.user.id)
+  const common = useCommon()
+  const productStore = useProduct()
+  const [report] = useQueryReport({ reportId: parseInt(params.id || '') })
   const [, updateProductReport] = useMutationUpdateProductReport()
   const [, runReport] = useMutationRunReport()
-  const [isLoading, setIsLoading] = useState(true)
 
-  const onExport = () => {
-    if (commonStore.id) runReport({ reportId: commonStore.id })
+  const updateStore = (commonData: CommonData, productData: ProductData) => {
+    common.reset(commonData)
+    productStore.reset(productData)
   }
 
   const onSaveAndExport = async () => {
-    const { users, permissionGroups, addMore } = commonStore.recipients
+    if (!common.valid()) return
 
-    await updateProductReport({
-      columns: {
-        fields: columnsStore.columns.productFields,
-        warehouses: columnsStore.columns.warehouses,
-        channels: columnsStore.columns.channels,
-        attributes: columnsStore.columns.attributes,
-      },
-      reportId: commonStore.id || -1,
-      name: commonStore.name,
-      recipients: {
-        users: addMore ? users : [userId],
-        permissionGroups: addMore ? permissionGroups : [],
-      },
-    })
-    onExport()
+    try {
+      const { productFields, ...columns } = productStore.columns
+      if (!common.reportId) throw new Error('reportId is not set')
+
+      // update report
+      const updateResponse = await updateProductReport({
+        columns: {
+          ...columns,
+          fields: productFields,
+        },
+        reportId: common.reportId,
+        name: common.name.value,
+        recipients: {
+          users: [userId],
+          permissionGroups: [],
+        },
+      })
+
+      const report = updateResponse.data?.updateProductsReport.report
+      if (!report) throw new Error('create report error')
+
+      // update store
+      const cleanColumns = report.columns as any
+      delete cleanColumns['__typename']
+      updateStore(
+        { reportId: report.id, name: { value: report.name, isValid: true } },
+        { columns: cleanColumns as ProductSelectedColumnsInfo }
+      )
+
+      // run report
+      const runResponse = await runReport({ reportId: report.id })
+      if (runResponse.error) throw new Error('runReport error')
+
+      runToast('Everything went well')
+    } catch (error) {
+      runToast(error, 'error')
+    }
   }
 
   useEffect(() => {
     if (report.data && !report.fetching) {
-      const {
-        id,
-        name,
-        filter,
-        columns,
-        recipients: { users, permissionGroups },
-      } = report.data.report
-      commonStore.initialize({
-        id: id,
-        name: name,
-        filter: filter ? { filterStr: filter } : null,
-        fileType: FileType.CSV,
-        recipients: {
-          users,
-          permissionGroups,
-          addMore: isRecipientsSelected({ users, permissionGroups }),
-        },
-      })
-      columnsStore.setColumns(columns as ProductSelectedColumnsInfo)
-    }
-  }, [report])
+      const { id, name, columns } = report.data.report
+      // clean up columns
+      const cleanColumns = { ...columns } as any
+      delete cleanColumns['__typename']
 
-  useEffect(() => {
-    setIsLoading(!(report.data && !report.fetching))
+      updateStore(
+        {
+          reportId: id,
+          name: { value: name, isValid: true },
+        },
+        {
+          columns: cleanColumns as ProductSelectedColumnsInfo,
+        }
+      )
+    }
   }, [report.fetching])
 
-  if (isLoading) return <div>Loading...</div>
-
+  if (report.fetching) return <div>Loading...</div>
   return (
     <ReportPage
-      reportType={columnsStore.type}
-      fileType={commonStore.fileType}
-      setFileType={fileType => commonStore.setFileType(fileType)}
-      onExport={onExport}
+      reportType={ExportObjectTypesEnum.PRODUCTS}
+      fileType={FileType.CSV}
+      setFileType={() => {}}
       onCancel={() => navigate('/')}
       onSaveAndExport={onSaveAndExport}
     >

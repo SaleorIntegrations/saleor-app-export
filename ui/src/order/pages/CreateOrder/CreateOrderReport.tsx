@@ -1,74 +1,70 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useToast } from 'saleor-app-ui'
 
+import { useCommon, useOrder, useCurrentUser } from '../../../common'
 import {
-  useExportCommonStore,
-  useExportOrderColumnsStore,
-  useCurrentUserStore,
-} from '../../../common'
-import { useMutationRunReport } from '../../../common/api/export'
+  ExportObjectTypesEnum,
+  useMutationRunReport,
+} from '../../../common/api/export'
 import ReportPage from '../../../common/components/ReportPage'
+import { FileType } from '../../../globalTypes'
 import { useMutationCreateOrdersReport } from '../../api'
 import OrderSetting from '../../components/OrderSetting'
 
 export function CreateOrderReport() {
   const navigate = useNavigate()
-  const commonStore = useExportCommonStore()
-  const columnsStore = useExportOrderColumnsStore()
-  const currentUser = useCurrentUserStore(state => state.user)
+  const runToast = useToast()
+  const common = useCommon()
+  const columnsStore = useOrder()
+  const currentUser = useCurrentUser(state => state.user)
   const [, createOrderReport] = useMutationCreateOrdersReport()
   const [, runReport] = useMutationRunReport()
-  const [isLoading, setIsLoading] = useState(true)
 
-  const onSave = async () => {
-    const id = await createOrderExportReport()
+  const onSaveAndExport = () =>
+    createReport(reportId => navigate(`/report/${reportId}/order`))
 
-    if (id) {
-      runReport({ reportId: id })
-      navigate(`/report/${id}/order`)
+  const onExport = () => createReport()
+
+  const createReport = async (callback?: (reportId: number) => void) => {
+    if (!common.valid()) return
+
+    try {
+      // create report
+      const createResponse = await createOrderReport({
+        fields: columnsStore.columns.orderFields,
+        name: common.name.value,
+        recipients: {
+          users: [currentUser.id],
+          permissionGroups: [],
+        },
+      })
+      const reportId = createResponse.data?.createOrdersReport.report?.id
+
+      if (!reportId) throw new Error('create report error')
+
+      // run report
+      const runResponse = await runReport({ reportId })
+      common.setReportId(reportId)
+
+      if (runResponse.error) throw new Error('runReport error')
+
+      runToast('Everything went well')
+      callback && callback(reportId)
+    } catch (error) {
+      runToast('Someting went wrong', 'error')
     }
   }
-
-  const createOrderExportReport = async () => {
-    const { addMore, users, permissionGroups } = commonStore.recipients
-    const response = await createOrderReport({
-      fields: columnsStore.columns.orderFields,
-      name: commonStore.name,
-      recipients: {
-        users: addMore ? users : [currentUser.id],
-        permissionGroups: addMore ? permissionGroups : [],
-      },
-    })
-
-    const report = response.data?.createOrdersReport
-
-    if (report && report.errors.length < 1) {
-      commonStore.setId(report.report?.id || null)
-    }
-
-    return report?.report?.id
-  }
-
-  const onTypeChange = () => {
-    navigate('/create/product', { replace: true })
-  }
-
-  useEffect(() => {
-    commonStore.reset(currentUser)
-    columnsStore.reset()
-    setIsLoading(false)
-  }, [])
-
-  if (isLoading) return <div>Loading...</div>
 
   return (
     <ReportPage
       isMutable
-      reportType={columnsStore.type}
-      setReportType={onTypeChange}
-      fileType={commonStore.fileType}
-      setFileType={fileType => commonStore.setFileType(fileType)}
-      onSave={onSave}
+      reportType={ExportObjectTypesEnum.ORDERS}
+      setReportType={() => navigate('/create/product', { replace: true })}
+      fileType={FileType.CSV}
+      setFileType={() => {}}
+      onExport={onExport}
+      onSaveAndExport={onSaveAndExport}
       onCancel={() => navigate('/')}
     >
       <OrderSetting />

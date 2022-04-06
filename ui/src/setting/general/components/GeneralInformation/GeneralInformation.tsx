@@ -2,17 +2,12 @@ import React from 'react'
 import { Typography, TextField } from '@material-ui/core'
 
 import Surface from '../../../../common/components/Surface'
+import { useCommon } from '../../../../common/hooks'
+
 import useStyles from './styles'
 
-export interface GeneralInformationProps {
-  value: string
-  onChange: (
-    _event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
-  ) => void
-}
-
-export function GeneralInformation(props: GeneralInformationProps) {
-  const { value, onChange } = props
+export function GeneralInformation() {
+  const [name, setName] = useCommon(state => [state.name, state.setName])
   const classes = useStyles()
 
   return (
@@ -23,8 +18,12 @@ export function GeneralInformation(props: GeneralInformationProps) {
         export list in app main view.
       </Typography>
       <TextField
-        value={value}
-        onChange={onChange}
+        error={!name.isValid}
+        value={name.value}
+        helperText={!name.isValid ? 'Field is required' : undefined}
+        onChange={_event =>
+          setName({ value: _event.target.value, isValid: true })
+        }
         fullWidth
         label="Report name"
       />

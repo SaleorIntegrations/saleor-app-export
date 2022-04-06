@@ -5,6 +5,8 @@ import { TableReport } from '../../../globalTypes'
 export interface Navigation {
   endCursor: string | null
   hasNext: boolean
+  endPage: number
+  page: number
 }
 
 export interface ReportsState {
@@ -21,6 +23,8 @@ export interface ReportsAction extends Partial<ReportsState> {
     | 'SET_REPORTS'
     | 'SET_NAVIGATION'
     | 'SET_TOTAL'
+    | 'DELETE_REPORT'
+    | 'RESET'
   id?: number
 }
 
@@ -29,6 +33,8 @@ export const initialReports: ReportsState = {
   navigation: {
     hasNext: true,
     endCursor: '',
+    endPage: 0,
+    page: 0,
   },
   total: 0,
 }
@@ -56,6 +62,11 @@ export const reportsReducer = (state: ReportsState, action: ReportsAction) => {
       return produce(state, draft => {
         draft.reports = action.reports || state.reports
       })
+    case 'DELETE_REPORT':
+      return produce(state, draft => {
+        if (!action.id) return state
+        draft.reports = draft.reports.filter(report => report.id !== action.id)
+      })
     case 'SET_NAVIGATION':
       return produce(state, draft => {
         draft.navigation = action.navigation || state.navigation
@@ -63,6 +74,17 @@ export const reportsReducer = (state: ReportsState, action: ReportsAction) => {
     case 'SET_TOTAL':
       return produce(state, draft => {
         draft.total = action.total || state.total
+      })
+    case 'RESET':
+      return produce(state, draft => {
+        draft.total = action.total || 0
+        draft.navigation = action.navigation || {
+          hasNext: true,
+          endCursor: '',
+          endPage: 0,
+          page: 0,
+        }
+        draft.reports = action.reports || []
       })
     default:
       return state

@@ -1,88 +1,97 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import { useToast } from 'saleor-app-ui'
 
 import { useQueryReport } from '../../../common/api/export/query'
-import { OrderSelectedColumnsInfo } from '../../../common/api/export/types'
+import {
+  OrderSelectedColumnsInfo,
+  ExportObjectTypesEnum,
+} from '../../../common/api/export/types'
 import { FileType } from '../../../globalTypes'
 import ReportPage from '../../../common/components/ReportPage'
 import OrderSetting from '../../components/OrderSetting'
 import {
-  useCurrentUserStore,
-  useExportOrderColumnsStore,
-  useExportCommonStore,
-  isRecipientsSelected,
+  useCurrentUser,
+  useOrder,
+  useCommon,
+  CommonData,
+  OrderData,
 } from '../../../common'
 import { useMutationRunReport } from '../../../common/api/export'
 import { useMutationUpdateOrderReport } from '../../api'
 
 export function UpdateOrderReport() {
   const { id } = useParams()
+  const runToast = useToast()
   const navigate = useNavigate()
-  const userId = useCurrentUserStore(state => state.user.id)
-  const columnsStore = useExportOrderColumnsStore()
-  const commonStore = useExportCommonStore()
+  const userId = useCurrentUser(state => state.user.id)
+  const orderStore = useOrder()
+  const common = useCommon()
   const [report] = useQueryReport({ reportId: parseInt(id || '') })
   const [, updateOrderReport] = useMutationUpdateOrderReport()
   const [, runReport] = useMutationRunReport()
-  const [isLoading, setIsLoading] = useState(true)
 
-  const onExport = () => {
-    if (commonStore.id) runReport({ reportId: commonStore.id })
+  const updateStore = (commonData: CommonData, orderData: OrderData) => {
+    common.reset(commonData)
+    orderStore.reset(orderData)
   }
 
   const onSaveAndExport = async () => {
-    const { addMore, users, permissionGroups } = commonStore.recipients
+    if (!common.valid()) return
 
-    await updateOrderReport({
-      fields: columnsStore.columns.orderFields,
-      reportId: commonStore.id || -1,
-      name: commonStore.name,
-      recipients: {
-        users: addMore ? users : [userId],
-        permissionGroups: addMore ? permissionGroups : [],
-      },
-    })
-    onExport()
+    try {
+      if (!common.reportId) throw new Error('reportId is not set')
+
+      // update report
+      const updateResponse = await updateOrderReport({
+        fields: orderStore.columns.orderFields,
+        reportId: common.reportId,
+        name: common.name.value,
+        recipients: {
+          users: [userId],
+          permissionGroups: [],
+        },
+      })
+      const report = updateResponse.data?.updateOrdersReport.report
+      if (!report) throw new Error('create report error')
+
+      updateStore(
+        { reportId: report.id, name: { value: report.name, isValid: true } },
+        { columns: report.columns as OrderSelectedColumnsInfo }
+      )
+
+      // run report
+      const runResponse = await runReport({ reportId: report.id })
+      if (runResponse.error) throw new Error('runReport error')
+
+      common.setReportId(report.id)
+      runToast('Everything went well')
+    } catch (error) {
+      runToast('Someting went wrong', 'error')
+    }
   }
 
   useEffect(() => {
     if (report.data && !report.fetching) {
-      const {
-        id,
-        name,
-        filter,
-        columns,
-        recipients: { users, permissionGroups },
-      } = report.data.report
-      commonStore.initialize({
-        id: id,
-        name: name,
-        filter: filter ? { filterStr: filter } : null,
-        fileType: FileType.CSV,
-        recipients: {
-          users,
-          permissionGroups,
-          addMore: isRecipientsSelected({ permissionGroups, users }),
-        },
-      })
-      columnsStore.setColumns(columns as OrderSelectedColumnsInfo)
-      setIsLoading(false)
-    }
-  }, [report])
+      const { id, name, columns } = report.data.report
 
-  useEffect(() => {
-    setIsLoading(!(report.data && !report.fetching))
+      const cleanColumns = { ...columns } as any
+      delete cleanColumns['__typename']
+
+      updateStore(
+        { reportId: id, name: { value: name, isValid: true } },
+        { columns: cleanColumns }
+      )
+    }
   }, [report.fetching])
 
-  if (isLoading) return <div>Loading...</div>
-
+  if (report.fetching) return <div>Loading...</div>
   return (
     <ReportPage
-      reportType={columnsStore.type}
-      fileType={commonStore.fileType}
-      setFileType={fileType => commonStore.setFileType(fileType)}
+      reportType={ExportObjectTypesEnum.ORDERS}
+      fileType={FileType.CSV}
+      setFileType={() => {}}
       onCancel={() => navigate('/')}
-      onExport={onExport}
       onSaveAndExport={onSaveAndExport}
     >
       <OrderSetting />
@@ -90,4 +99,4 @@ export function UpdateOrderReport() {
   )
 }
 
-export default UpdateOrderReport
+export default React.memo(UpdateOrderReport)
